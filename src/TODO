@@ -1,0 +1,2 @@
+1. person 패키지에 있는 Customer와 BusinessOwner의 공통 필드를 뽑아서 추상클래스로 만들기
+2. objectDBIO에 있는 id, password를 env파일에 담아서 사용하도록 변경하기
