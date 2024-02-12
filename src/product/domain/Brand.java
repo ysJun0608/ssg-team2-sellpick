@@ -5,6 +5,21 @@ public class Brand {
     private Long id;
     // 브랜드 이름
     private String name;
-    // 브랜드 코드
-    private String code;
+
+    // GETTER, SETTER
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

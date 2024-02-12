@@ -6,6 +6,7 @@ public class ShoppingMall {
     // 쇼핑몰 명
     private String name;
 
+    // GETTER, SETTER
     public Long getId() {
         return id;
     }

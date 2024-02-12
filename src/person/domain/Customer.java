@@ -11,9 +11,7 @@ public class Customer {
     // 비밀번호
     private String password;
     // 전화번호
-    private String homeTel;
-    // 휴대폰 번호
-    private String mobile;
+    private String phone;
     // 주소
     private String address;
 }

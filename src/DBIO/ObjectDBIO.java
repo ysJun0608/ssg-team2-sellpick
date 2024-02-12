@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public abstract class ObjectDBIO {
     private final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private final String MYSQL_URL = "jdbc:mysql://localhost:3306/team_1?serverTimezone=Asia/Seoul";
+    private final String MYSQL_URL = "jdbc:mysql://localhost:3306/SELLPICK?serverTimezone=Asia/Seoul";
     private final String MYSQL_ID = "root"; // TODO : env 파일로 변경
     private final String MYSQL_PW = "admin1234"; // TODO : env 파일로 변경
 
