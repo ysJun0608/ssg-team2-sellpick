@@ -148,8 +148,8 @@ CREATE TABLE MGT_ORDERS
     ID             INT AUTO_INCREMENT NOT NULL,
     PURCHASER      VARCHAR(10)        NULL                          		COMMENT '매입 거래처',
     AMOUNT         INT                NULL                          		COMMENT '주문 수량',
-    CONfIRM        BOOLEAN            NOT NULL DEFAULT FALSE           		COMMENT '발주 확정 여부(Y/N)',
-    DATE           DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP 	COMMENT '발주 일자',
+    CONFIRM        BOOLEAN            NOT NULL DEFAULT FALSE           		COMMENT '발주 확정 여부(Y/N)',
+    CREATED_AT     DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP 	COMMENT '발주 일자',
 
     PRODUCTS_ID    INT                NOT NULL                      		COMMENT '상품 ID(FK)',
 
