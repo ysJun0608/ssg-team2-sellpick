@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class WarehouseInsertReleaseDao extends ObjectDBIO {
@@ -35,8 +36,8 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
             long productid = Long.parseLong(input.readLine());
             pstmt.setLong(5,productid);
             System.out.println("입고된 수량을 입력해주세요");
-            long quantity = Long.parseLong(input.readLine());
-            pstmt.setLong(1,quantity);
+            long amount = Long.parseLong(input.readLine());
+            pstmt.setLong(1,amount);
             System.out.println("입고된 물품의 총 가격을 입력해주세요");
             long totalprice = Long.parseLong(input.readLine());
             pstmt.setLong(2,totalprice);
@@ -44,10 +45,10 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
             if (rows > 0) {
                 System.out.println("입고기록이 생성되었습니다.");
             }
-            warehouseInsertRelease.setDate(new Date());
-            warehouseInsertRelease.setQuantity(quantity);
+            warehouseInsertRelease.setCreatedAt(LocalDateTime.now());
+            warehouseInsertRelease.setAmount(amount);
             warehouseInsertRelease.setTotalPrice(totalprice);
-            warehouseInsertRelease.setProductid(productid);
+            warehouseInsertRelease.setProductsId(productid);
             pstmt.close();
             close(conn);
         } catch (Exception e) {
@@ -73,8 +74,8 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
             long productid = Long.parseLong(input.readLine());
             pstmt.setLong(5,productid);
             System.out.println("출고된 수량을 입력해주세요");
-            long quantity = Long.parseLong(input.readLine());
-            pstmt.setLong(1,quantity);
+            long amount = Long.parseLong(input.readLine());
+            pstmt.setLong(1,amount);
             System.out.println("출고된 물품의 총 가격을 입력해주세요");
             long totalprice = Long.parseLong(input.readLine());
             pstmt.setLong(2,totalprice);
@@ -82,10 +83,10 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
             if (rows > 0) {
                 System.out.println("출고기록이 생성되었습니다.");
             }
-            warehouseInsertRelease.setDate(new Date());
-            warehouseInsertRelease.setQuantity(quantity);
+            warehouseInsertRelease.setCreatedAt(LocalDateTime.now());
+            warehouseInsertRelease.setAmount(amount);
             warehouseInsertRelease.setTotalPrice(totalprice);
-            warehouseInsertRelease.setProductid(productid);
+            warehouseInsertRelease.setProductsId(productid);
             pstmt.close();
             close(conn);
         } catch (Exception e) {
