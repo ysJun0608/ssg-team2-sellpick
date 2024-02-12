@@ -111,7 +111,7 @@ public class MgtOrderDao extends ObjectDBIO {
     }
 
     // 발주등록(단건) 메뉴에서 발주된 주문을 확정 취소
-    public boolean cencelOrder() {
+    public boolean cancelOrder() {
         try {
             String sql = "INSERT INTO mgt_orders VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement psmt = conn.prepareStatement(sql);
@@ -127,7 +127,7 @@ public class MgtOrderDao extends ObjectDBIO {
                 psmt.setBoolean(6, false);
                 boolean result = psmt.execute();
                 if (result == false) {
-                    System.out.printf("발주 확정이 실패하였습니다. 다시 입력 부탁드립니다.");
+                    System.out.printf("발주확정 취소가 실패하였습니다. 다시 입력 부탁드립니다.");
                     break;
                 }
 
