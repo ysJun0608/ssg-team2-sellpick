@@ -1,5 +1,6 @@
 package inventory.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Settlement {
@@ -12,7 +13,7 @@ public class Settlement {
     //금액
     private Long total_price;
     //생성날짜
-    private Date create_at;
+    private LocalDateTime create_at;
     //수정날짜
-    private Date modified_at;
+    private LocalDateTime modified_at;
 }

@@ -1,6 +1,6 @@
 package inventory.domain;
 
-public enum Type {
+public enum WarehouseType {
     WET,
     DRY;
 }
