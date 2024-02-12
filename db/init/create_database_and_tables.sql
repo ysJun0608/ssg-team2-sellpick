@@ -94,14 +94,15 @@ CREATE TABLE WAREHOUSE
 # 상품
 CREATE TABLE PRODUCTS
 (
-    ID           INT     NOT NULL,
-    STATUS       BOOLEAN NULL           COMMENT '판매 중(Y) OR 판매 중지(N)',
-    COST         INT     NULL           COMMENT '원가',
-    PRICE        INT     NULL           COMMENT '판매가',
+    ID           INT            NOT NULL,
+    NAME         VARCHAR(20)    NOT NULL       COMMENT '상품 이름',
+    STATUS       BOOLEAN        NULL           COMMENT '판매 중(Y) OR 판매 중지(N)',
+    COST         INT            NULL           COMMENT '원가',
+    PRICE        INT            NULL           COMMENT '판매가',
 
-    BRAND_ID     INT     NOT NULL       COMMENT '브랜드 코드(FK)',
-    OWNER_ID     INT     NOT NULL       COMMENT '사업자 ID(FK)',
-    WAREHOUSE_ID INT     NOT NULL       COMMENT '창고 ID(FK)',
+    BRAND_ID     INT            NOT NULL       COMMENT '브랜드 코드(FK)',
+    OWNER_ID     INT            NOT NULL       COMMENT '사업자 ID(FK)',
+    WAREHOUSE_ID INT            NOT NULL       COMMENT '창고 ID(FK)',
 
     PRIMARY KEY (ID),
     CONSTRAINT FK_PRODUCTS_BRAND_ID     FOREIGN KEY (BRAND_ID)      REFERENCES BRAND (ID),
