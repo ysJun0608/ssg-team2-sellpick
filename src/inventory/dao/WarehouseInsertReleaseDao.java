@@ -9,8 +9,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
 
 public class WarehouseInsertReleaseDao extends ObjectDBIO {
     Connection conn = null;
@@ -21,14 +19,14 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
     public WarehouseInsertRelease warehouseInsert(Warehouse warehouse){ // 창고를 가져오기
         WarehouseInsertRelease warehouseInsertRelease = new WarehouseInsertRelease();
         try {
-            open();
+            conn=open();
             String sql = new StringBuilder()
                     .append("INSERT INTO warehouse_insert_release ")
                     .append("(AMOUNT, TOTAL_PRICE, CREATED_AT, TYPE, PRODUCTS_ID) ")
                     .append("VALUES (?, ?, now(), ?, ?)")
                     .toString();
 
-            warehouseInsertRelease.setType(InsertReleaseType.Insert);
+            warehouseInsertRelease.setType(InsertReleaseType.INSERT);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(4,warehouseInsertRelease.getType().toString());
 
@@ -69,7 +67,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
                     .append("VALUES (?, ?, now(), ?, ?)")
                     .toString();
             // 창고를 파라미터로 받긴하는데 창고를 아직 사용하진 않는다.
-            warehouseInsertRelease.setType(InsertReleaseType.Release);
+            warehouseInsertRelease.setType(InsertReleaseType.RELEASE);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(4,warehouseInsertRelease.getType().toString());
             System.out.println("출고된 상품의 번호를 입력해주세요");

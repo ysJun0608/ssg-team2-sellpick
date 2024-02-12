@@ -6,6 +6,6 @@ public class MainMenu {
     public static void main(String[] args) {
         WarehouseDao dao = new WarehouseDao();
 
-        dao.warehouseRead();
+        dao.readWarehouse();
     }
 }

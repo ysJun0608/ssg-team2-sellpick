@@ -4,7 +4,6 @@ import DBIO.ObjectDBIO;
 import delivery.domain.DeliveryCmp;
 import inventory.domain.WarehouseType;
 import inventory.domain.Warehouse;
-import inventory.service.WarehouseService;
 import smOrders.domain.ShoppingMall;
 
 import java.io.BufferedReader;
@@ -21,15 +20,16 @@ public class WarehouseDao extends ObjectDBIO {
     ArrayList<Warehouse> warehouses = new ArrayList<>();
 
     // TODO : implement
-    public void DeliverycmpRead() {
+    public Long readDeliveryCmp() {
+        Long chooseDcId =  null;
         try {
             conn = open();
             /**
              * 택배사 데이터 가져와서 창고와 연동할 데이터 추가하는 코드
              */
             ArrayList<DeliveryCmp> deliveryCmps = new ArrayList<>();
-            String selectDelivery_cmp = "select id, name from delivery_cmp";
-            PreparedStatement pstmtD = conn.prepareStatement(selectDelivery_cmp);
+            String selectDeliveryCmp = "select id, name from delivery_cmp";
+            PreparedStatement pstmtD = conn.prepareStatement(selectDeliveryCmp);
             ResultSet dcRs = pstmtD.executeQuery();
             while (dcRs.next()) {
                 Long id = dcRs.getLong("id");
@@ -44,11 +44,12 @@ public class WarehouseDao extends ObjectDBIO {
             for (DeliveryCmp deliveryCmp : deliveryCmps) {
                 System.out.println(deliveryCmp.toString());
             }
-
-        } catch (SQLException e) {
+            System.out.println("창고에서 사용할 택배사번호를 입력해주세요");
+           chooseDcId = Long.valueOf(input.readLine());
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
-    }
+   return chooseDcId; }
 
 
     /**
@@ -61,10 +62,7 @@ public class WarehouseDao extends ObjectDBIO {
             /**
              * 택배사 데이터 가져와서 창고와 연동할 데이터 추가하는 코드
              */
-            DeliverycmpRead();
-            System.out.println("창고에서 사용할 택배사번호를 입력해주세요");
-            Long chooseDcId = Long.valueOf(input.readLine());
-
+            Long chooseDcId = readDeliveryCmp();
             /**
              * 창고 생성하는 기능
              */
@@ -147,12 +145,12 @@ public class WarehouseDao extends ObjectDBIO {
      * 1.전체 warehouse를 보여준다
      * 2.보여주고 난 select 된 창고를 넘겨준다
      */
-    public Warehouse warehouseRead() {
+    public Warehouse readWarehouse() {
         conn = open();
         Warehouse warehouse = new Warehouse();
         try {
-            String selectall = "select * from warehouse";
-            PreparedStatement pstmt = conn.prepareStatement(selectall);
+            String selectAll = "select * from warehouse";
+            PreparedStatement pstmt = conn.prepareStatement(selectAll);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Warehouse rows = new Warehouse();
@@ -192,9 +190,9 @@ public class WarehouseDao extends ObjectDBIO {
         try {
             System.out.println("변경하고자하는 창고의 세부사항을 입력해주세요");
             System.out.println("1. 택배사 변경 | 2. 전체변경");
-            String choosenum = input.readLine();
-            switch (choosenum) {
-                case "1" -> UpdateDELIVERY_CMP_ID(warehouse);
+            String chooseNum = input.readLine();
+            switch (chooseNum) {
+                case "1" -> updateDeliveryCmpId(warehouse);
                 case "2" -> updateWarehouse(warehouse);
             }
         } catch (IOException e) {
@@ -203,16 +201,14 @@ public class WarehouseDao extends ObjectDBIO {
         return warehouse;
     }
 
-    public void UpdateDELIVERY_CMP_ID(Warehouse warehouse) {
+    public void updateDeliveryCmpId(Warehouse warehouse) {
         conn = open();
-        DeliverycmpRead();
+        Long chooseDcId = readDeliveryCmp();
         try {
             Long id = warehouse.getId();
             String sql = "UPDATE warehouse SET DELIVERY_CMP_ID = ? WHERE id = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
-            System.out.println("창고에서 사용할 택배사번호를 입력해주세요");
-            Long chooseDcId = Long.valueOf(input.readLine());
             pstmt.setLong(1, chooseDcId);
             pstmt.setLong(2, id);
             int rows = pstmt.executeUpdate();
@@ -222,7 +218,7 @@ public class WarehouseDao extends ObjectDBIO {
             pstmt.close();
             close(conn);
 
-        } catch (SQLException | IOException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -234,14 +230,12 @@ public class WarehouseDao extends ObjectDBIO {
     public Warehouse updateWarehouse(Warehouse warehouse) {
         try {
             conn = open();
-            DeliverycmpRead();
+            Long chooseDcId = readDeliveryCmp();
             String sql = "UPDATE warehouse SET type = ?, location = ?,DELIVERY_CMP_ID = ? WHERE id = ?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
                 Long id = warehouse.getId();
 
-                System.out.println("창고에서 사용할 택배사번호를 입력해주세요");
-                Long chooseDcId = Long.valueOf(input.readLine());
                 System.out.println("창고 타입을 숫자로 입력해주세요");
                 System.out.println("1. WET | 2. DRY");
                 int num = Integer.parseInt(input.readLine());
