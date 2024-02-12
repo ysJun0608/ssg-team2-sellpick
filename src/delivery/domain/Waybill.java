@@ -7,8 +7,6 @@ public class Waybill {
     private Long id;
     // 운송 시작 날짜
     private LocalDate deliveryAt;
-    // 고객 id
-    private Long customerId;
     // 주문 id
     private Long ordersId;
 
@@ -27,14 +25,6 @@ public class Waybill {
 
     public void setDeliveryAt(LocalDate deliveryAt) {
         this.deliveryAt = deliveryAt;
-    }
-
-    public Long getCustomerId() {
-        return customerId;
-    }
-
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
     }
 
     public Long getOrdersId() {
