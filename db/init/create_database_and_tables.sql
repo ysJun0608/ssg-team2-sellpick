@@ -94,14 +94,15 @@ CREATE TABLE WAREHOUSE
 # 상품
 CREATE TABLE PRODUCTS
 (
-    ID           INT     NOT NULL,
-    STATUS       BOOLEAN NULL           COMMENT '판매 중(Y) OR 판매 중지(N)',
-    COST         INT     NULL           COMMENT '원가',
-    PRICE        INT     NULL           COMMENT '판매가',
+    ID           INT            NOT NULL,
+    NAME         VARCHAR(20)    NOT NULL       COMMENT '상품 이름',
+    STATUS       BOOLEAN        NULL           COMMENT '판매 중(Y) OR 판매 중지(N)',
+    COST         INT            NULL           COMMENT '원가',
+    PRICE        INT            NULL           COMMENT '판매가',
 
-    BRAND_ID     INT     NOT NULL       COMMENT '브랜드 코드(FK)',
-    OWNER_ID     INT     NOT NULL       COMMENT '사업자 ID(FK)',
-    WAREHOUSE_ID INT     NOT NULL       COMMENT '창고 ID(FK)',
+    BRAND_ID     INT            NOT NULL       COMMENT '브랜드 코드(FK)',
+    OWNER_ID     INT            NOT NULL       COMMENT '사업자 ID(FK)',
+    WAREHOUSE_ID INT            NOT NULL       COMMENT '창고 ID(FK)',
 
     PRIMARY KEY (ID),
     CONSTRAINT FK_PRODUCTS_BRAND_ID     FOREIGN KEY (BRAND_ID)      REFERENCES BRAND (ID),
@@ -127,18 +128,18 @@ CREATE TABLE WAREHOUSE_SHOPPING_MALL_RELATIONSHIP (
 # 창고 입출고
 CREATE TABLE WAREHOUSE_INSERT_RELEASE
 (
-    ID          INT AUTO_INCREMENT         NOT NULL,
-    AMOUNT      INT                        NOT NULL COMMENT '수량',
-    CREATED_AT  DATE                       NOT NULL COMMENT '입고 OR 출고 날짜',
-    TYPE        VARCHAR(10)                NOT NULL COMMENT '입고(INSERT) OR 출고(RELEASE)', # TODO : ENUM ('INSERT', 'RELEASE')으로 변경
-    TOTAL_PRICE INT                        NOT NULL COMMENT '총 금액',
+    ID              INT AUTO_INCREMENT         NOT NULL,
+    AMOUNT          INT                        NOT NULL COMMENT '수량',
+    CREATED_AT      DATE                       NOT NULL COMMENT '입고 OR 출고 날짜',
+    TYPE            VARCHAR(10)                NOT NULL COMMENT '입고(INSERT) OR 출고(RELEASE)', # TODO : ENUM ('INSERT', 'RELEASE')으로 변경
+    TOTAL_PRICE     INT                        NOT NULL COMMENT '총 금액',
 
-    PRODUCTS_ID INT                        NOT NULL COMMENT '상품 ID(FK)',
-    DEADLINE_ID INT                        NOT NULL COMMENT '마감(일) ID(FK)',
+    PRODUCTS_ID     INT                        NOT NULL COMMENT '상품 ID(FK)',
+    SETTLEMENT_ID   INT                        NOT NULL COMMENT '마감(일) ID(FK)',
 
     PRIMARY KEY (ID),
     CONSTRAINT FK_WAREHOUSE_INSERT_RELEASE_PRODUCTS_ID FOREIGN KEY (PRODUCTS_ID) REFERENCES PRODUCTS (ID),
-    CONSTRAINT FK_WAREHOUSE_INSERT_RELEASE_DEADLINE_ID FOREIGN KEY (DEADLINE_ID) REFERENCES SETTLEMENT (ID)
+    CONSTRAINT FK_WAREHOUSE_INSERT_RELEASE_SETTLEMENT_ID FOREIGN KEY (SETTLEMENT_ID) REFERENCES SETTLEMENT (ID)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI
     COMMENT = '창고 입출고';
 
@@ -148,8 +149,8 @@ CREATE TABLE MGT_ORDERS
     ID             INT AUTO_INCREMENT NOT NULL,
     PURCHASER      VARCHAR(10)        NULL                          		COMMENT '매입 거래처',
     AMOUNT         INT                NULL                          		COMMENT '주문 수량',
-    CONfIRM        BOOLEAN            NOT NULL DEFAULT FALSE           		COMMENT '발주 확정 여부(Y/N)',
-    DATE           DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP 	COMMENT '발주 일자',
+    CONFIRM        BOOLEAN            NOT NULL DEFAULT FALSE           		COMMENT '발주 확정 여부(Y/N)',
+    CREATED_AT     DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP 	COMMENT '발주 일자',
 
     PRODUCTS_ID    INT                NOT NULL                      		COMMENT '상품 ID(FK)',
 
@@ -162,7 +163,7 @@ CREATE TABLE MGT_ORDERS
 CREATE TABLE SM_ORDERS
 (
     ID                    INT AUTO_INCREMENT NOT NULL,
-    AMOUNT                INT                NOT NULL                           COMMENT '주문 수량',
+    QUANTITY              INT                NOT NULL                           COMMENT '주문 수량',
     PAYMENT_AMOUNT        INT                NOT NULL                           COMMENT '결제 금액',
     CREATED_AT            DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '주문 일자',
     EXPECTED_AT           DATETIME           NOT NULL                           COMMENT '예상 배송일',
@@ -183,7 +184,7 @@ CREATE TABLE SM_ORDERS
 CREATE TABLE WAYBILL
 (
     ID              INT AUTO_INCREMENT NOT NULL                             COMMENT '운송장 ID',
-    DELIVERY_DATE   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP   COMMENT '배송 시작 일자',
+    DELIVERY_AT   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP   COMMENT '배송 시작 일자',
 
     ORDERS_ID       INT                NOT NULL                             COMMENT '주문 ID(FK)',
     CUSTOMER_ID     INT                NOT NULL                             COMMENT '고객 ID(FK)',
