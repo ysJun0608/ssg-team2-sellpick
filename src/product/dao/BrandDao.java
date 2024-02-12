@@ -8,10 +8,12 @@ import java.util.List;
 
 public class BrandDao extends ObjectDBIO {
     private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/sqldb?serverTimezone=Asia/Seoul";
-    private static final String USERNAME = "root";
-    private static final String PASSWORD = "admin1234";
-
+    private static final String MYSQL_URL = System.getenv("DB_URL");
+    private static final String USERNAME = System.getenv("DB_USERNAME");
+    private static final String PASSWORD = System.getenv("DB_PASSWORD");
+/*
+    브랜드 코드 ID에 해당하는 브랜드 이름을 데이터베이스에서 조회합니다.
+*/
     public String getBrandName(int brandCodeId) {
         Connection conn = open();
         String brandName = null;
@@ -37,7 +39,7 @@ public class BrandDao extends ObjectDBIO {
     }
 
     public List<String> getAllBrands() {
-        Connection conn = getConnection();
+        Connection conn = open();
         List<String> brand = new ArrayList<>();
 
         try {

@@ -12,11 +12,11 @@ public class Products {
     // 원가
     private int cost;
     // 브랜드 id
-    private Long brandId;
+    private Long brand_Id;
     // 사업자 id
-    private Long businessOwnerId;
+    private Long Owner_Id;
     // 창고 id
-    private Long warehouseId;
+    private Long warehouse_Id;
 
     // GETTER, SETTER
     public Long getId() {
@@ -59,27 +59,27 @@ public class Products {
         this.cost = cost;
     }
 
-    public Long getBrandId() {
-        return brandId;
+    public Long getBrand_Id() {
+        return brand_Id;
     }
 
-    public void setBrandId(Long brandId) {
-        this.brandId = brandId;
+    public void setBrand_Id(Long brand_Id) {
+        this.brand_Id = brand_Id;
     }
 
-    public Long getBusinessOwnerId() {
-        return businessOwnerId;
+    public Long getOwner_Id() {
+        return Owner_Id;
     }
 
-    public void setBusinessOwnerId(Long businessOwnerId) {
-        this.businessOwnerId = businessOwnerId;
+    public void setOwner_Id(Long owner_Id) {
+        Owner_Id = owner_Id;
     }
 
-    public Long getWarehouseId() {
-        return warehouseId;
+    public Long getWarehouse_Id() {
+        return warehouse_Id;
     }
 
-    public void setWarehouseId(Long warehouseId) {
-        this.warehouseId = warehouseId;
+    public void setWarehouse_Id(Long warehouse_Id) {
+        this.warehouse_Id = warehouse_Id;
     }
 }
