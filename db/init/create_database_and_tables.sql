@@ -163,7 +163,7 @@ CREATE TABLE MGT_ORDERS
 CREATE TABLE SM_ORDERS
 (
     ID                    INT AUTO_INCREMENT NOT NULL,
-    AMOUNT                INT                NOT NULL                           COMMENT '주문 수량',
+    QUANTITY              INT                NOT NULL                           COMMENT '주문 수량',
     PAYMENT_AMOUNT        INT                NOT NULL                           COMMENT '결제 금액',
     CREATED_AT            DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '주문 일자',
     EXPECTED_AT           DATETIME           NOT NULL                           COMMENT '예상 배송일',
