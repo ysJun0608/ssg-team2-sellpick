@@ -18,19 +18,8 @@ public class MgtOrder {
     // 매입 거래처
     private String purchaser;
 
-//    // 창고 id
-//    private Long warehouseId;
-
     // 상품 id
     private Long productsId;
-
-
-
-//    // 발주 구분
-//    private String orderType;
-//
-//    // 발주 유형
-//    private String orderCategory;
 
     // 수량
     private int quantity;
@@ -38,5 +27,12 @@ public class MgtOrder {
     // 확정여부
     private boolean confirm;
 
-
+//    // 창고 id
+//    private Long warehouseId;
+//
+//    // 발주 구분
+//    private String orderType;
+//
+//    // 발주 유형
+//    private String orderCategory;
 }
