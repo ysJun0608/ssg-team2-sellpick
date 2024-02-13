@@ -1,9 +1,11 @@
 package inventory.domain;
 
 import inventory.enums.WhInOutType;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
+@Data
 public class WarehouseInsertRelease {
     // 입출고 id
     private Long id;

@@ -1,7 +1,9 @@
 package inventory.domain;
 
 import inventory.enums.WhType;
+import lombok.Data;
 
+@Data
 public class Warehouse {
     // 창고 id
     private Long id;

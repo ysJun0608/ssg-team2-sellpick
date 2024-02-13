@@ -1,7 +1,9 @@
 package mgtOrders.domain;
 
+import lombok.Data;
 import mgtOrders.enums.MgtOrdersStatus;
 
+@Data
 public class MgtOrders {
     // 발주 id
     private Long id;
