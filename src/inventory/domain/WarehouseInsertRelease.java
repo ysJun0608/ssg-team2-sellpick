@@ -2,13 +2,15 @@ package inventory.domain;
 
 import inventory.enums.WhInOutType;
 
+import java.time.LocalDateTime;
+
 public class WarehouseInsertRelease {
     // 입출고 id
     private Long id;
     // 수량
     private Long quantity;
     // 날짜(입고일, 출고일)
-    private String createdAt;
+    private LocalDateTime createdAt;
     // 입출고 타입
     private WhInOutType type;
     // 총가격
