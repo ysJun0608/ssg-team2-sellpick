@@ -3,6 +3,7 @@ package delivery.dao;
 import DBIO.ObjectDBIO;
 import delivery.domain.DeliveryCmp;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 
 public class DeliveryCmpDao extends ObjectDBIO {
     Scanner sc = new Scanner(System.in);
-    java.sql.Connection conn = null;
+    Connection conn = null;
 
     //택배사 리스트를 보여주고 택배사를 결정하게 하는 메소드
     public DeliveryCmp chooseCompany() {
