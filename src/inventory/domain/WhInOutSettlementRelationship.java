@@ -7,29 +7,4 @@ public class WhInOutSettlementRelationship {
     private Long whInsertReleaseId;
     // 마감 id (FK)
     private Long settlementId;
-
-    // GETTER, SETTER
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getWhInsertReleaseId() {
-        return whInsertReleaseId;
-    }
-
-    public void setWhInsertReleaseId(Long whInsertReleaseId) {
-        this.whInsertReleaseId = whInsertReleaseId;
-    }
-
-    public Long getSettlementId() {
-        return settlementId;
-    }
-
-    public void setSettlementId(Long settlementId) {
-        this.settlementId = settlementId;
-    }
 }
