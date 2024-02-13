@@ -16,7 +16,7 @@ public class WaybillDao extends ObjectDBIO {
         Long ordersNum = Long.parseLong(sc.nextLine());
         try{
             String ordersidsql = "INSERT INTO WAYBILL (ORDERS_ID) " +
-                    "values(?);";
+                    "values(?)";
 
             //PreparedStatement 얻기 및 값 지정
             PreparedStatement pstmt = conn.prepareStatement(ordersidsql, Statement.RETURN_GENERATED_KEYS);
@@ -66,7 +66,7 @@ public class WaybillDao extends ObjectDBIO {
                     "(SELECT c.name FROM customer c JOIN sm_orders o ON c.id = o.customer_id WHERE o.id = ?) AS customer_name, " +
                     "(SELECT c.phone FROM customer c JOIN sm_orders o ON c.id = o.customer_id WHERE o.id = ?) AS customer_phone, " +
                     "(SELECT c.address FROM customer c JOIN sm_orders o ON c.id = o.customer_id WHERE o.id = ?) AS customer_address, " +
-                    "(SELECT wh.location FROM warehouse wh JOIN warehouse_section ws ON wh.id = ws.warehouse_id JOIN products p ON ws.id = p.wh_section_id JOIN sm_orders o ON p.id = o.products_id WHERE o.id = ?) AS warehouse_location, " + //상품테이블의 창고 id = 창고테이블의 창고 id
+                    "(SELECT wh.location FROM warehouse wh JOIN warehouse_section ws ON wh.id = ws.warehouse_id JOIN inventory i ON ws.id = i.wh_section_id JOIN products p ON i.products_id = p.id JOIN sm_orders o ON p.id = o.products_id WHERE o.id = ?) AS warehouse_location, " + //상품테이블의 창고 id = 창고테이블의 창고 id
                     "(SELECT b.phone FROM business_owner b JOIN products p ON b.id = p.owner_id JOIN sm_orders o ON p.id = o.products_id WHERE o.id = ?) AS business_phone " +
                     "FROM waybill w " +
                     "WHERE w.orders_id = ? ";
@@ -94,7 +94,7 @@ public class WaybillDao extends ObjectDBIO {
                 System.out.println("-- 보낸 이 --");
                 System.out.println("쇼핑몰 이름: " + rs.getString("shopping_mall_name"));
                 System.out.println("창고 주소: " + rs.getString("warehouse_location"));
-                System.out.println("사업자 휴대폰 주소: " + rs.getString("business_phone"));
+                System.out.println("사업자 휴대폰 번호: " + rs.getString("business_phone"));
                 System.out.println("-- 받는 이 --");
                 System.out.println("고객 ID: " + rs.getLong("customer_id"));
                 System.out.println("고객 이름: " + rs.getString("customer_name"));
