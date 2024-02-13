@@ -78,10 +78,10 @@ CREATE TABLE SETTLEMENT
 # 발주 관리
 CREATE TABLE MGT_ORDERS
 (
-    ID             INT          AUTO_INCREMENT NOT NULL,
-    PURCHASER      VARCHAR(10)                 NULL                          		COMMENT '매입 거래처',
-    STATUS         VARCHAR(10)                 NOT NULL DEFAULT 'READY'           	COMMENT '발주 상태 (준비중, 완료, 배송완료)', # TODO : ENUM ('READY', 'DONE', 'DELIVERY_COMPLETE')으로 변경
-    CREATED_AT     DATETIME                    NOT NULL DEFAULT CURRENT_TIMESTAMP 	COMMENT '발주 일자',
+    ID             INT                                AUTO_INCREMENT            NOT NULL,
+    PURCHASER      VARCHAR(10)                                                  NULL     COMMENT '매입 거래처',
+    STATUS         ENUM('READY', 'DONE', 'DELIVERED') DEFAULT 'READY'           NOT NULL COMMENT '발주 상태 (준비중, 완료, 배송완료)',
+    CREATED_AT     DATETIME                           DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '발주 일자',
 
     PRIMARY KEY (ID)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI
@@ -166,7 +166,7 @@ CREATE TABLE WAREHOUSE_SHOPPING_MALL_RELATIONSHIP (
 CREATE TABLE WAREHOUSE_INSERT_RELEASE
 (
     ID              INT                       AUTO_INCREMENT             NOT NULL,
-    AMOUNT          INT                       DEFAULT 0                  NOT NULL COMMENT '수량',
+    QUANTITY        INT                       DEFAULT 0                  NOT NULL COMMENT '수량',
     CREATED_AT      DATETIME                  DEFAULT CURRENT_TIMESTAMP  NOT NULL COMMENT '입고 OR 출고 날짜',
     TYPE            ENUM('INSERT', 'RELEASE')                            NOT NULL COMMENT '입고(INSERT) OR 출고(RELEASE)',
     TOTAL_PRICE     INT                       DEFAULT 0                  NOT NULL COMMENT '총 금액',
