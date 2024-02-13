@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public abstract class ObjectDBIO {
     private final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String URL = "jdbc:mysql://localhost:3306/sellpick?serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false";
+    private static final String MYSQL_URL = "jdbc:mysql://localhost:3306/sellpick?serverTimezone=Asia/Seoul&useLegacyDatetimeCode=false";
     private final String MYSQL_ID = "root"; // TODO : env 파일로 변경
     private final String MYSQL_PW = "admin1234"; // TODO : env 파일로 변경
 
@@ -14,7 +14,7 @@ public abstract class ObjectDBIO {
     protected Connection open() {
         try {
             Class.forName(MYSQL_DRIVER);
-            return DriverManager.getConnection(URL, MYSQL_ID, MYSQL_PW);
+            return DriverManager.getConnection(MYSQL_URL, MYSQL_ID, MYSQL_PW);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

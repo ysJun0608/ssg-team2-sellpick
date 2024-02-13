@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BrandDao extends ObjectDBIO {
-    private static final String JDBC_DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String MYSQL_URL = System.getenv("DB_URL");
-    private static final String USERNAME = System.getenv("DB_USERNAME");
-    private static final String PASSWORD = System.getenv("DB_PASSWORD");
 /*
     브랜드 코드 ID에 해당하는 브랜드 이름을 데이터베이스에서 조회합니다.
 */
@@ -60,6 +56,7 @@ public class BrandDao extends ObjectDBIO {
 
         return brand;
     }
+
 
 
 }

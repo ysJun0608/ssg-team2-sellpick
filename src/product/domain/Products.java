@@ -7,16 +7,18 @@ public class Products {
     private String name;
     // 상품 판매 상태(판매 중 / 중지)
     private boolean status;
-    // 판매가
-    private int price;
     // 원가
     private int cost;
+    //상품 수량
+    private int quantity;
+    // 판매가
+    private int price;
     // 브랜드 id
-    private Long brand_Id;
+    private Long brandId;
     // 사업자 id
-    private Long Owner_Id;
-    // 창고 id
-    private Long warehouse_Id;
+    private Long businessownerId;
+
+
 
     // GETTER, SETTER
     public Long getId() {
@@ -59,27 +61,29 @@ public class Products {
         this.cost = cost;
     }
 
-    public Long getBrand_Id() {
-        return brand_Id;
+    public Long getBrandId() {
+        return brandId;
     }
 
-    public void setBrand_Id(Long brand_Id) {
-        this.brand_Id = brand_Id;
+    public void setBrandId(Long brandId) {
+        this.brandId = brandId;
     }
 
-    public Long getOwner_Id() {
-        return Owner_Id;
+    public Long getBusinessownerId() {
+        return businessownerId;
     }
 
-    public void setOwner_Id(Long owner_Id) {
-        Owner_Id = owner_Id;
+    public void setBusinessownerId(Long businessownerId) {
+        this.businessownerId = businessownerId;
     }
 
-    public Long getWarehouse_Id() {
-        return warehouse_Id;
+
+
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setWarehouse_Id(Long warehouse_Id) {
-        this.warehouse_Id = warehouse_Id;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
