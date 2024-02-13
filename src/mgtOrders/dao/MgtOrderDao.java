@@ -6,13 +6,8 @@ import mgtOrders.domain.MgtOrder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class MgtOrderDao extends ObjectDBIO {
     Connection conn = null;
@@ -23,54 +18,72 @@ public class MgtOrderDao extends ObjectDBIO {
 
     public boolean add() {
         try {
-            /** 발주마스터 생성
-             *  입력값 받기 (발주일자, 매입거래처)
-             **/
-            System.out.printf("발주마스터를 생성하기 위해 발주일자, 매입거래처 순으로 입력해주세요");
-            System.out.printf("발주일자는 20240211형태로 입력해주세요");
-            String createdAt = bufferedReader.readLine();
+            int id = 0;
+            int productId = 0;
+            int quantity = 0;
+            // 발주마스터 생성
+            System.out.printf("발주마스터를 생성하기 위해 매입거래처를 입력해주세요");
             String purChaser = bufferedReader.readLine();
 
+
+            java.util.Date today = new java.util.Date();
+            Date createdAt = new Date(today.getTime());
+
             conn = open();
-            /**
-             *  발주 할 상품 입력
-             *  상품 Id를 이용하여 등록
-             **/
 
-            // 발주관리 id 값 만들기
-            String sqlCnt = "SELECT count(*) FROM mgt_orders";
-            PreparedStatement psmtCnt = conn.prepareStatement(sqlCnt);
-            int rows = psmtCnt.executeUpdate();
-            String tempSerialNumb = String.format("%06", rows + 1);
-            String tempId = createdAt + tempSerialNumb;
-            Long id = Long.parseLong(tempId);
+            boolean result = false;
 
-            while (true) {
+            while (!result) {
+                String sql = "INSERT INTO mgt_orders VALUES (?, ?, ?, ?)";
+                PreparedStatement psmt = conn.prepareStatement(sql);
+                psmt.setString(1, null);
+                psmt.setDate(2, createdAt);
+                psmt.setString(3, purChaser);
+                psmt.setString(4, "발주준비");
+                result = psmt.execute();
+                if (result == false) {
+                    System.out.printf("발주마스터 생성에 실패하였습니다. 재생성합니다.");
+                    break;
+                }
+            }
+
+            // 발주마스터 id 가져오기
+            Statement statement = conn.createStatement();
+
+            String sqlQuery = "SELECT id FROM mgt_orders";
+            ResultSet resultSet = statement.executeQuery(sqlQuery);
+
+            while (resultSet.next()) {
+                id = resultSet.getInt("id");
+            }
+
+            resultSet.close();
+            statement.close();
+
+            // 발주 할 상품 입력 받기
+            while (!result) {
                 System.out.printf("발주할 상품 Id와 수량을 입력하세요. 입력이 완료되시면 exit를 입력하세요");
                 String tempProductId = bufferedReader.readLine();
                 if (tempProductId.equals("exit")) {
                     break;
                 }
-                Long productId = Long.parseLong(tempProductId);
-                Integer quantity = Integer.parseInt(bufferedReader.readLine());
+                productId = Integer.parseInt(tempProductId);
+                quantity = Integer.parseInt(bufferedReader.readLine());
 
-                String sql = "INSERT INTO mgt_orders VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO mgt_orders_products_relationship VALUES (?, ?, ?, ?)";
                 PreparedStatement psmt = conn.prepareStatement(sql);
-
-                psmt.setLong(1, id);
-                psmt.setString(2, createdAt);
-                psmt.setString(3, purChaser);
-                psmt.setLong(4, productId);
-                psmt.setInt(5, quantity);
-                psmt.setBoolean(6, false);
-                boolean result = psmt.execute();
+                psmt.setString(1, null);
+                psmt.setInt(2, quantity);
+                psmt.setInt(3, productId);
+                psmt.setInt(4, id);
+                result = psmt.execute();
                 if (result == false) {
-                    System.out.printf("발주 추가 실패하였습니다. 다시 입력 부탁드립니다.");
+                    System.out.printf("상품 입력에 실패하였습니다. 재입력해주세요.");
                     break;
                 }
-                mgtOrders.add(new MgtOrder(id, createdAt, purChaser, productId, quantity, false));
-                id++;
             }
+
+            mgtOrders.add(new MgtOrder(id, purChaser, "발주준비", createdAt));
 
         } catch (IOException ioE) {
             ioE.printStackTrace();
@@ -83,7 +96,7 @@ public class MgtOrderDao extends ObjectDBIO {
 
 
     // 발주등록(단건) 메뉴에서 발주된 주문을 확정
-    public boolean conmfirmOrder() {
+    public boolean confirmOrder() {
         try {
             String sql = "INSERT INTO mgt_orders VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement psmt = conn.prepareStatement(sql);
@@ -137,4 +150,6 @@ public class MgtOrderDao extends ObjectDBIO {
         }
         return true;
     }
+
+
 }
