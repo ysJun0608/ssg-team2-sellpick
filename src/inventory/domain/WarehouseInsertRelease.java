@@ -13,6 +13,7 @@ public class WarehouseInsertRelease {
     private Long amount;
     // 날짜(입고일, 출고일)
     private LocalDateTime createdAt;
+    // 총 가격
     private Long totalPrice;
     // 상품 id (FK)
     private Long productsId;

@@ -1,20 +1,16 @@
 package mgtOrders.domain;
 
 public class MgtOrder {
-    // 발주 id
-    private Long id;
-    // 매입 거래처
-    private String purchaser;
-    // 수량
-    private int amount;
-    // 발주 확정 여부
-    private boolean confirm;
-    // 발주 일자
-    private String createdAt;
-    // 상품 id
-    private Long productsId;
+    @Override
+    public String toString() {
+        return "MgtOrder{" +
+                "id=" + id +
+                ", purchaser='" + purchaser + '\'' +
+                ", confirm='" + confirm + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                '}';
+    }
 
-    // GETTER, SETTER
     public Long getId() {
         return id;
     }
@@ -31,19 +27,11 @@ public class MgtOrder {
         this.purchaser = purchaser;
     }
 
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public boolean isConfirm() {
+    public String getConfirm() {
         return confirm;
     }
 
-    public void setConfirm(boolean confirm) {
+    public void setConfirm(String confirm) {
         this.confirm = confirm;
     }
 
@@ -55,11 +43,12 @@ public class MgtOrder {
         this.createdAt = createdAt;
     }
 
-    public Long getProductsId() {
-        return productsId;
-    }
-
-    public void setProductsId(Long productsId) {
-        this.productsId = productsId;
-    }
+    // 발주 id
+    private Long id;
+    // 매입 거래처
+    private String purchaser;
+    // 발주 확정 여부
+    private String confirm;
+    // 발주 일자
+    private String createdAt;
 }
