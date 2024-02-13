@@ -1,5 +1,8 @@
 package inventory.domain;
 
+import lombok.Data;
+
+@Data
 public class WhSmRelationShip {
     // 창고-쇼핑몰 관계 id
     private Long id;

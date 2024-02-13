@@ -1,5 +1,8 @@
 package smOrders.domain;
 
+import lombok.Data;
+
+@Data
 public class SMOrders {
     // 주문 id
     private Long id;
