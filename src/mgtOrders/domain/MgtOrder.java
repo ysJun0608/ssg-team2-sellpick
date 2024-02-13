@@ -3,7 +3,7 @@ package mgtOrders.domain;
 
 import lombok.*;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 @Getter
 @Setter
@@ -19,5 +19,5 @@ public class MgtOrder {
     // 발주 상태
     private String status;
     // 발주 일자
-    private Date createdAt;
+    private Timestamp createdAt;
 }
