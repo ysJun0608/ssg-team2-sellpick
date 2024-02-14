@@ -3,7 +3,7 @@ package inventory.domain;
 import lombok.Data;
 
 @Data
-public class WhSmRelationShip {
+public class WhSmRelationship {
     // 창고-쇼핑몰 관계 id
     private Long id;
     // 창고 id (FK)
