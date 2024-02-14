@@ -1,7 +1,7 @@
 package smOrders;
 
-import smOrders.service.impl.SmOrderServiceImpl;
 import smOrders.service.SmOrdersService;
+import smOrders.service.impl.SmOrderServiceImpl;
 
 import java.util.Scanner;
 

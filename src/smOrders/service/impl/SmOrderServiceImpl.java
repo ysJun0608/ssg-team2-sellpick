@@ -13,21 +13,23 @@ public class SmOrderServiceImpl implements SmOrdersService {
     public SMOrdersDao smordersdao = new SMOrdersDao();
     static Scanner sc = new Scanner(System.in);
 
+    /**
+     * 주문을 생성하는 메서드입니다.
+     */
     @Override
     public void createOrder() {
         System.out.println("주문을 생성합니다.");
+        // 주문 객체 생성
+        smOrders smOrders = new smOrders();
 
-        smOrders smOrders = new smOrders(); // 객체를 생성해줍니다.
-
-        // SERVICE 로 빠져야해요 ==========
+        // 사용자로부터 주문 정보 입력 받기
         System.out.print("주문 ID: ");
         String order_id = sc.nextLine();
 
         System.out.print("주문 수량: ");
         String quantity = sc.nextLine();
-        //주문 일자 // 예상 배송일
-        System.out.print("판매자 발송 상태(배송준비중, 주문 취소, 배송완료): ");
-        //판매자 발송 상태
+
+        // 판매자 발송 상태 입력
         System.out.print("판매자 발송 상태 (1. PREPARING, 2. COMPLETE, 3. CANCEL) : ");
         String num = sc.nextLine();
 
@@ -48,7 +50,7 @@ public class SmOrderServiceImpl implements SmOrdersService {
         String products_id = sc.nextLine();
         // ======================
 
-//        smOrders.setSellerSendStatus(status);
+        // 주문 객체에 입력된 정보 설정
         smOrders.setId(Long.valueOf(order_id));
         smOrders.setQuantity(Integer.parseInt(quantity));
         smOrders.setQuantity(Integer.parseInt(quantity));
@@ -57,18 +59,22 @@ public class SmOrderServiceImpl implements SmOrdersService {
         smOrders.setShoppingMallId(Long.valueOf(shopping_mall_id));
         smOrders.setProductId(Long.valueOf(products_id));
 
+        // 주문 정보 저장
         smordersdao.insertSmOrdersStatus(smOrders);
         System.out.println("주문이 생성되었습니다.");
     }
 
-
+    /**
+     * 주문 상태를 업데이트하는 메서드입니다.
+     */
     @Override
     public void updateStatus() {
+        // 주문 정보 조회
         readOrder();
+        // 특정 주문 조회
         smOrders smOrders = readOne();
 
-        // SERVICE 로 빠져야해요 ==========
-        //판매자 발송 상태
+        // 판매자 발송 상태 입력 받기
         System.out.print("판매자 발송 상태 (1. PREPARING, 2. COMPLETE, 3. CANCEL) : ");
         String num = sc.nextLine();
 
@@ -78,30 +84,45 @@ public class SmOrderServiceImpl implements SmOrdersService {
             case "2" -> status = "COMPLETE";
             case "3" -> status = "CANCEL";
         }
-        // ======================
-        smOrders.setStatus(SellerSendStatus.valueOf(status));
-//        smOrders.setSellerSendStatus(status);
 
+        // 주문 객체의 상태 업데이트
+        smOrders.setStatus(SellerSendStatus.valueOf(status));
+
+        // 주문 상태 업데이트
         smordersdao.updateSmOrdersStatus(smOrders);
     }
 
+    /**
+     * 특정 주문을 조회하는 메서드입니다.
+     * @return 조회된 주문 객체
+     */
     @Override
     public smOrders readOne() {
+        // 주문 목록 출력
         readOrder();
-        System.out.println("선택");
+        // 사용자 선택 입력 받기
+        System.out.println();
+        System.out.println("사용자 선택");
         Long id = Long.valueOf(sc.nextLine());
 
+        // 주문 ID로 조회하여 해당 주문 객체 반환
         smOrders smOrders = smordersdao.findById(id);
 
         return smOrders;
     }
 
-    // 주문 하나 출력
+    /**
+     * 모든 주문을 조회하여 출력하는 메서드입니다.
+     */
     @Override
     public void readOrder() {
-        //주문 정보를 출력하는 부분
+        // 주문 정보를 출력하는 부분
         System.out.println("[주문을 조회합니다.]");
+
+        // 모든 주문 정보를 가져옴
         List<SmOrdersOutput> outputList = smordersdao.smOrdersReadAllCanCel();
+
+        // 각 주문 정보 출력
         for (SmOrdersOutput output : outputList) {
             // 배송 준비 중인 주문 정보 출력
             System.out.println("주문 ID: " + output.id());
@@ -125,18 +146,25 @@ public class SmOrderServiceImpl implements SmOrdersService {
             System.out.println("=".repeat(50));
         }
 
-        System.out.print("번호 선택");
+        System.out.print("번호 선택 : ");
         String num = null;
     }
-
-
-    //주문 취소 출력
+    /**
+     * 취소된 주문을 조회하여 출력하는 메서드입니다.
+     *
+     * @return 조회된 취소된 주문 목록
+     */
     @Override
     public List<smOrders> readAllCanceledOrders() {
+        // 취소된 주문 정보를 출력하는 부분
         System.out.println("취소된 주문을 조회합니다.");
+
+        // 취소된 주문 정보를 가져옴
         List<SmOrdersOutput> outputList = smordersdao.readAllCanceledOrders();
+
+        // 각 취소된 주문 정보 출력
         for (SmOrdersOutput output : outputList) {
-            // 배송 준비 중인 주문 정보 출력
+            // 취소된 주문 정보 출력
             System.out.println("주문 ID: " + output.id());
             System.out.println("주문 수량: " + output.quantity());
             System.out.println("주문 생성일: " + output.createdAt());
@@ -164,11 +192,20 @@ public class SmOrderServiceImpl implements SmOrdersService {
         return null;
     }
 
+    /**
+     * 배송 준비 중인 주문을 조회하여 출력하는 메서드입니다.
+     *
+     * @return 조회된 배송 준비 중인 주문 목록
+     */
     @Override
     public List<smOrders> readAllPreparedOrders() {
+        // 배송 준비 중인 주문 정보를 출력하는 부분
         System.out.println("배송준비중인 주문을 조회합니다.");
+
+        // 배송 준비 중인 주문 정보를 가져옴
         List<SmOrdersOutput> outputList = smordersdao.readAllPreparedOrders();
 
+        // 각 배송 준비 중인 주문 정보 출력
         for (SmOrdersOutput output : outputList) {
             // 배송 준비 중인 주문 정보 출력
             System.out.println("주문 ID: " + output.id());
