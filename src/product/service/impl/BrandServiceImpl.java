@@ -1,5 +1,6 @@
 package product.service.impl;
 
+import product.domain.Brand;
 import product.service.BrandService;
 
 import java.sql.Connection;
@@ -17,15 +18,18 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<String> getAllBrand() {
-        List<String> brandList = new ArrayList<>();
+    public List<Brand> getAllBrand() {
+        List<Brand> brandList = new ArrayList<>();
         try {
             String sql = "SELECT name FROM brand";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                brandList.add(rs.getString("name"));
+                Brand brand = new Brand();
+                brand.setId(rs.getLong("id"));
+                brand.setName(rs.getString("name"));
+                brandList.add(brand);
             }
 
             rs.close();

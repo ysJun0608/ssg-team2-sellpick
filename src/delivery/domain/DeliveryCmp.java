@@ -1,6 +1,8 @@
 package delivery.domain;
 
-// 더미 데이터 만들어서 사용
+import lombok.Data;
+
+@Data
 public class DeliveryCmp {
     // 택배사 id
     private Long id;

@@ -2,6 +2,7 @@ package product.dao;
 
 import DBIO.ObjectDBIO;
 import product.domain.Products;
+import product.enums.ProductsStatus;
 import product.service.ProductsService;
 import product.service.impl.ProductsServiceImpl;
 import java.sql.Connection;
@@ -37,19 +38,18 @@ public class ProductsDao extends ObjectDBIO {
                     String productStatus = rs.getString("status");
                     int productCost = rs.getInt("cost");
                     int productPrice = rs.getInt("price");
-                    int productQuantity = rs.getInt("quantity");
-                    String warehouseSectionName = rs.getString("warehouse_section_name");
-                    String warehouseLocation = rs.getString("warehouse_location");
+                    Long brandId = rs.getLong("brand_id");
+                    Long ownerId = rs.getLong("owner_id");
 
                     Products product = new Products();
                     product.setId(productId);
                     product.setName(productName);
-                    product.setStatus(product.isStatus());
+                    product.setStatus(ProductsStatus.valueOf(productStatus));
                     product.setCost(productCost);
                     product.setPrice(productPrice);
-                    product.setQuantity(productQuantity);
-                    product.setWarehouseSectionName(warehouseSectionName);
-                    product.setWarehouseLocation(warehouseLocation);
+                    product.setBrandId(brandId);
+                    product.setBusinessOwnerId(ownerId);
+
                     productList.add(product);
                 }
 
@@ -76,7 +76,7 @@ public class ProductsDao extends ObjectDBIO {
                 String sql = "INSERT INTO products (name, status, cost, price, brand_Id, owner_Id) VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                 pstmt.setString(1, product.getName());
-                pstmt.setBoolean(2, product.isStatus());
+                pstmt.setString(2, product.getStatus().name());
                 pstmt.setInt(3, product.getCost());
                 pstmt.setInt(4, product.getPrice());
                 pstmt.setLong(5, product.getBrandId());
@@ -128,22 +128,6 @@ public class ProductsDao extends ObjectDBIO {
         } else {
             System.out.println("데이터베이스 연결 실패");
         }
-    }
-    public static void main(String[] args) {
-        // ProductsServiceImpl 인스턴스 생성
-        ProductsService productService = new ProductsServiceImpl();
-
-       /*    // 상품 목록 조회
-           productService.productListInventory();
-
-       // 새 상품 생성
-   productService.createProduct();*/
-
-        // 업데이트할 상품 정보 입력 후 업데이트
-           productService.updateProduct();
-
-      /*      // 업데이트된 상품 목록 조회
-            productService.productListInventory();*/
     }
 }
 
