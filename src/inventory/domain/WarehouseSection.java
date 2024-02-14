@@ -1,5 +1,6 @@
 package inventory.domain;
 
+import inventory.enums.WhSectionType;
 import lombok.Data;
 
 @Data
@@ -10,4 +11,5 @@ public class WarehouseSection {
     private String name;
     // 창고 id (FK)
     private Long warehouseId;
+    private WhSectionType type;
 }

@@ -22,7 +22,7 @@ public class MainMenu {
         // WarehouseInsertReleaseServiceImpl warehouseInsertReleaseService = new WarehouseInsertReleaseServiceImpl();
         // ArrayList<MgtOrderProductsRelationship> statusDone = warehouseInsertReleaseService.findStatusDone();
         //insertReleaseDao.updateInsertStatus(statusDone);
-//        warehouseService.createWarehouse();
+      // warehouseService.createWarehouse();
         warehouseService.updateWarehouse();
     }
 }

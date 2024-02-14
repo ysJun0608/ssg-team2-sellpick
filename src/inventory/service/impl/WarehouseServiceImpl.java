@@ -43,12 +43,14 @@ public class WarehouseServiceImpl implements WarehouseService {
             warehouse.setLocation(location);
 
             System.out.println("창고 타입을 숫자로 입력해주세요");
-            System.out.println("1. WET | 2. DRY");
+            System.out.println("1. WET | 2. DRY | 3.BOTH ");
             int num = Integer.parseInt(input.readLine());
             if (num == 1) {
                 warehouse.setType(WhType.WET);
             } else if (num == 2) {
                 warehouse.setType(WhType.DRY);
+            } else if (num==3) {
+                warehouse.setType(WhType.BOTH);
             } else {
                 System.out.println("잘못된 번호를 입력하셨습니다.");
             }
@@ -72,6 +74,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         whSmRelationShip.setShoppingMallId(chooseDcId);
 
         whSmRelationShipService.createWhSmRelationShip(whSmRelationShip);
+
 
         warehouseSectionService.createWarehouseSection(warehouse);
 
@@ -101,8 +104,7 @@ public class WarehouseServiceImpl implements WarehouseService {
                     warehouse.setId(w.getId());
                 }
             }
-            Long chooseDcId = deliveryCmpService.chooseDeliveryCmp();
-            warehouse.setDelivery_id(chooseDcId);
+
             System.out.println("변경하고자 하는 창고의 세부사항을 입력해주세요");
             System.out.println("1. 택배사 변경 | 2. 전체변경");
             String menuNumber = input.readLine();
@@ -118,6 +120,8 @@ public class WarehouseServiceImpl implements WarehouseService {
         return warehouse;
     }@Override
     public Warehouse deliveryUpdateWarehouse(Warehouse warehouse) {
+        Long chooseDcId = deliveryCmpService.chooseDeliveryCmp();
+        warehouse.setDelivery_id(chooseDcId);
         warehouseDao.updateDeliveryCmpId(warehouse);
         return warehouse;
     }
@@ -125,6 +129,10 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public Warehouse allUpdateWarehouse(Warehouse warehouse) {
+        Long chooseDcId = deliveryCmpService.chooseDeliveryCmp();
+        warehouse.setDelivery_id(chooseDcId);
+        warehouseDao.updateDeliveryCmpId(warehouse);
+
 
         return warehouse ;
     }

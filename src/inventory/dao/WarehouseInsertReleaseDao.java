@@ -89,7 +89,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
             // 주문된 상품들을 처리하기 위해 Batch 처리를 수행합니다.
             for (MgtOrderProductsRelationship dto : allInsertProducts) {
                 pstmt.setLong(1, dto.getQuantity());
-                pstmt.setString(2, WhInOutType.INSERT_REQUEST.name());
+                pstmt.setString(2, WhInOutType.INSERT_WAIT.name());
                 pstmt.setLong(3, dto.getProductsId());
                 pstmt.setLong(4, dto.getQuantity());
                 pstmt.setLong(5, dto.getMgtOrdersId());
@@ -148,7 +148,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
                     .toString();
             // 창고를 파라미터로 받긴하는데 창고를 아직 사용하진 않는다.
 
-            warehouseInsertRelease.setType(WhInOutType.RELEASE_REQUEST);
+            warehouseInsertRelease.setType(WhInOutType.RELEASE_CONFIRM);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(4, warehouseInsertRelease.getType().toString());
             System.out.println("출고된 상품의 번호를 입력해주세요");
