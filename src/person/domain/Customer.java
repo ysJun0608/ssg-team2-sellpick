@@ -1,6 +1,8 @@
 package person.domain;
 
-    // 더미 데이터 만들어서 사용
+import lombok.Data;
+
+@Data
 public class Customer {
     // 고객 id
     private Long id;
@@ -11,9 +13,7 @@ public class Customer {
     // 비밀번호
     private String password;
     // 전화번호
-    private String homeTel;
-    // 휴대폰 번호
-    private String mobile;
+    private String phone;
     // 주소
     private String address;
 }

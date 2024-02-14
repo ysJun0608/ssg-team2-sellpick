@@ -1,16 +1,18 @@
 package mgtOrders.dao;
 
 import DBIO.ObjectDBIO;
-import mgtOrders.domain.MgtOrder;
+import mgtOrders.domain.MgtOrders;
+import mgtOrders.enums.MgtOrdersStatus;
 
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Map;
 
 public class MgtOrderDao extends ObjectDBIO {
     Connection conn = null;
 
-    public Long createOrder(String purChaser, Timestamp createdAt) throws SQLException {
+    public Long createOrder(String purChaser, LocalDateTime createdAt) throws SQLException {
         PreparedStatement pstmt = null;
         String sql = "";
         Long id = 0L;
@@ -20,7 +22,7 @@ public class MgtOrderDao extends ObjectDBIO {
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, purChaser);
         pstmt.setString(2, "READY");
-        pstmt.setTimestamp(3, createdAt);
+        pstmt.setTimestamp(3, Timestamp.valueOf(createdAt));
         pstmt.executeUpdate();
         sql = "SELECT MAX(id) AS ID FROM mgt_orders";
         pstmt = conn.prepareStatement(sql);
@@ -105,9 +107,9 @@ public class MgtOrderDao extends ObjectDBIO {
     }
 
 
-    public ArrayList<MgtOrder> selectAll(String startDate, String endDate) throws SQLException {
+    public ArrayList<MgtOrders> selectAll(String startDate, String endDate) throws SQLException {
         PreparedStatement pstmt = null;
-        ArrayList<MgtOrder> searchList = new ArrayList<>();
+        ArrayList<MgtOrders> searchList = new ArrayList<>();
         conn = open();
         String searchQuery = "SELECT * FROM mgt_orders " +
                 "WHERE CREATED_AT " +
@@ -121,9 +123,9 @@ public class MgtOrderDao extends ObjectDBIO {
         while (resultSet.next()) {
             Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
-            String tempStatus = resultSet.getString("STATUS");
+            MgtOrdersStatus tempStatus = MgtOrdersStatus.valueOf(resultSet.getString("STATUS"));
             Timestamp date = resultSet.getTimestamp("CREATED_AT");
-            MgtOrder mgtOrder = new MgtOrder(id, purchaser, tempStatus, date);
+            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, date.toLocalDateTime(), 0l);
             searchList.add(mgtOrder);
         }
 
@@ -136,22 +138,22 @@ public class MgtOrderDao extends ObjectDBIO {
     }
 
 
-    public ArrayList<MgtOrder> selectOrderList(String status) throws SQLException {
+    public ArrayList<MgtOrders> selectOrderList(MgtOrdersStatus status) throws SQLException {
         PreparedStatement pstmt = null;
-        ArrayList<MgtOrder> mgtOrders = new ArrayList<>();
+        ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
         conn = open();
         String sql = "SELECT * FROM mgt_orders WHERE STATUS = ?";
 
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, status);
+        pstmt.setString(1, status.name());
         ResultSet resultSet = pstmt.executeQuery();
 
         while (resultSet.next()) {
             Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
-            String tempStatus = resultSet.getString("STATUS");
+            MgtOrdersStatus tempStatus = MgtOrdersStatus.valueOf(resultSet.getString("STATUS"));
             Timestamp date = resultSet.getTimestamp("CREATED_AT");
-            MgtOrder mgtOrder = new MgtOrder(id, purchaser, tempStatus, date);
+            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, date.toLocalDateTime(), null);
             mgtOrders.add(mgtOrder);
         }
 
@@ -190,9 +192,9 @@ public class MgtOrderDao extends ObjectDBIO {
     }
 
 
-    public ArrayList<MgtOrder> searchForDate(String date) throws SQLException {
+    public ArrayList<MgtOrders> searchForDate(String date) throws SQLException {
         PreparedStatement pstmt = null;
-        ArrayList<MgtOrder> mgtOrders = new ArrayList<>();
+        ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
         conn = open();
         String sql = "SELECT * FROM mgt_orders " +
                 "WHERE STATUS != ? " +
@@ -208,9 +210,9 @@ public class MgtOrderDao extends ObjectDBIO {
         while (resultSet.next()) {
             Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
-            String tempStatus = resultSet.getString("STATUS");
+            MgtOrdersStatus tempStatus = MgtOrdersStatus.valueOf(resultSet.getString("STATUS"));
             Timestamp tempDate = resultSet.getTimestamp("CREATED_AT");
-            MgtOrder mgtOrder = new MgtOrder(id, purchaser, tempStatus, tempDate);
+            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, tempDate.toLocalDateTime(), null);
             mgtOrders.add(mgtOrder);
         }
 

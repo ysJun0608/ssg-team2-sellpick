@@ -1,7 +1,8 @@
 package mgtOrders.service.impl;
 
 import mgtOrders.dao.MgtOrderDao;
-import mgtOrders.domain.MgtOrder;
+import mgtOrders.domain.MgtOrders;
+import mgtOrders.enums.MgtOrdersStatus;
 import mgtOrders.service.MgtOrdersService;
 
 import java.io.BufferedReader;
@@ -36,7 +37,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             java.util.Date today = new java.util.Date();
             java.sql.Timestamp createdAt = new java.sql.Timestamp(today.getTime());
 
-            Long id = mgtOrderDao.createOrder(purChaser, createdAt);
+            Long id = mgtOrderDao.createOrder(purChaser, createdAt.toLocalDateTime());
 
             if (id <= 0L) {
                 System.out.println("발주마스터 생성에 실패하였습니다. 재생성합니다.");
@@ -75,7 +76,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     public void getAllOrders() {
 
         System.out.println("조회할 날짜를 입력하세요");
-        ArrayList<MgtOrder> searchList = new ArrayList<>();
+        ArrayList<MgtOrders> searchList = new ArrayList<>();
         try {
             System.out.print("시작일(예시 : 20240213) : ");
             String startDate = bufferedReader.readLine();
@@ -154,13 +155,13 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     @Override
     public void confirmList() {
         ArrayList<Long> sellectNum = new ArrayList<>();
-        ArrayList<MgtOrder> mgtOrders = new ArrayList<>();
+        ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
         try {
-            mgtOrders = mgtOrderDao.selectOrderList("READY");
+            mgtOrders = mgtOrderDao.selectOrderList(MgtOrdersStatus.READY);
 
             System.out.println("확정되지 않은 발주 목록입니다.");
 
-            for (MgtOrder mgtOrder : mgtOrders) {
+            for (MgtOrders mgtOrder : mgtOrders) {
                 print(mgtOrder);
             }
 
@@ -183,7 +184,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 
     @Override
     public void searchNonDelivered() {
-        ArrayList<MgtOrder> mgtOrders = new ArrayList<>();
+        ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
 
         try {
             System.out.print("조회할 날짜를 입력하세요(예시 : 20240213) : ");
@@ -225,13 +226,13 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     }
 
 
-    private void print(MgtOrder mgtOrder) {
+    private void print(MgtOrders mgtOrder) {
         System.out.println(mgtOrder.toString());
     }
 
 
-    private void printList(ArrayList<MgtOrder> mgtOrders) {
-        for (MgtOrder mgtOrder : mgtOrders) {
+    private void printList(ArrayList<MgtOrders> mgtOrders) {
+        for (MgtOrders mgtOrder : mgtOrders) {
             System.out.println(mgtOrder.toString());
         }
     }
