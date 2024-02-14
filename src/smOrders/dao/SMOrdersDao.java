@@ -1,679 +1,324 @@
 package smOrders.dao;
 
 import DBIO.ObjectDBIO;
-import delivery.domain.Waybill;
-import person.domain.BusinessOwner;
-import person.domain.Customer;
-import product.domain.Products;
-import smOrders.domain.SMOrders;
-import smOrders.domain.ShoppingMall;
+import smOrders.domain.SellerSendStatus;
+import smOrders.domain.smOrders;
+import smOrders.dto.SmOrdersOutput;
 
 import java.sql.*;
-import java.sql.Connection;
-import java.time.LocalDateTime;
-import java.util.Scanner;
+import java.util.*;
 
 public class SMOrdersDao extends ObjectDBIO {
+
     static Scanner sc = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        list();
-    }
-
-    //main 호출메소드
-    public static void MainMenu() {
-        SMOrdersDao dao = new SMOrdersDao();
-        System.out.println("====================================================");
-        System.out.println("메인메뉴: 1.Create  |  2.Read |  3.ReadAll(취소) |  4.ReadAll(배송준비중) |  5.Clear |  6.Exit   ");
-        System.out.print("메뉴선택: ");
-        String MainNum = sc.nextLine(); //메뉴 선택 입력 값
-        switch (MainNum) { //MainNum ""
-            case "1" -> dao.smOrdersInsert();
-            case "2" -> dao.smOrdersRead();
-            case "3" -> dao.smOrdersReadAllCanCel();
-            case "4" -> dao.smOrdersReadAllPrepare();
-            case "6" -> System.exit(0);
-//          default -> list();
-        }
-    }
-
-    //main 호출메소드
-    public static void list() {
-        MainMenu();
-    }
-
-    public void smOrdersUpdate(SMOrders smorders) {
+    //주문 전체 조회
+    public List<SmOrdersOutput> smOrdersReadAllCanCel() {
         Connection conn = null;
+        List<SmOrdersOutput> outputList = new ArrayList<>();
+
+        try {
+            conn = open(); // ObjectDBIO open메소드 호출
+
+            String sql = "SELECT \n" +
+                    "    SO.ID AS order_id,\n" +
+                    "    SO.QUANTITY,\n" +
+                    "    SO.PAYMENT_AMOUNT,\n" +
+                    "    SO.CREATED_AT,\n" +
+                    "    SO.EXPECTED_AT,\n" +
+                    "    SO.SELLER_SEND_STATUS,\n" +
+                    "    SO.CUSTOMER_ID,\n" +
+                    "    SO.SHOPPING_MALL_ID,\n" +
+                    "    SO.PRODUCTS_ID,\n" +
+                    "    SGM.NAME AS SHOPPING_NAME,\n" +
+                    "    PDS.NAME AS PRODUCTS_NAME,\n" +
+                    "    PDS.PRICE AS PRODUCTS_PRICE,\n" +
+                    "    PDS.OWNER_ID AS PRODUCTS_OWNER_ID,\n" +
+                    "    PDS.BRAND_ID AS PRODUCTS_BRAND_ID,\n" +
+                    "    BSOR.NAME AS OWNER_NAME,\n" +
+                    "    BSOR.PHONE AS OWNER_PHONE,\n" +
+                    "    CTR.NAME AS CUSTOMER_NAME,\n" +
+                    "    CTR.PHONE AS CUSTOMER_PHONE,\n" +
+                    "    WHE.LOCATION AS WAREHOUSE_LOCATION\n" +
+                    "FROM SM_ORDERS SO\n" +
+                    "JOIN SHOPPING_MALL SGM ON SO.SHOPPING_MALL_ID = SGM.ID\n" +
+                    "JOIN CUSTOMER CTR ON SO.CUSTOMER_ID = CTR.ID\n" +
+                    "JOIN PRODUCTS PDS ON SO.PRODUCTS_ID = PDS.ID\n" +
+                    "JOIN BUSINESS_OWNER BSOR ON PDS.OWNER_ID = BSOR.ID\n" +
+                    "JOIN WAREHOUSE_SHOPPING_MALL_RELATIONSHIP WSMR ON WSMR.ID = SO.SHOPPING_MALL_ID\n" +
+                    "JOIN WAREHOUSE WHE ON WSMR.WAREHOUSE_ID = WHE.ID\n" +
+                    "WHERE SO.SHOPPING_MALL_ID IN (SELECT ID FROM SHOPPING_MALL)";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                SmOrdersOutput output = new SmOrdersOutput(
+                        rs.getLong("order_id"),
+                        rs.getInt("quantity"),
+                        rs.getInt("payment_amount"),
+                        rs.getDate("created_at"),
+                        rs.getDate("expected_at"),
+                        rs.getString("seller_send_status"),
+                        rs.getLong("customer_id"),
+                        rs.getLong("shopping_mall_id"),
+                        rs.getString("shopping_name"),
+                        rs.getLong("products_id"),
+                        rs.getString("products_name"),
+                        rs.getInt("products_price"),
+                        rs.getString("products_owner_id"),
+                        rs.getLong("products_brand_id"),
+                        rs.getString("owner_name"),
+                        rs.getString("owner_phone"),
+                        rs.getString("customer_name"),
+                        rs.getString("customer_phone"),
+                        rs.getString("warehouse_location")
+                );
+
+                outputList.add(output);
+            }
+
+            close(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return outputList;
+    }
+
+    //주문 배송준비중 조회
+    public List<SmOrdersOutput> readAllPreparedOrders() {
+        Connection conn = null;
+        List<SmOrdersOutput> outputList = new ArrayList<>();
+
+        try {
+            conn = open(); // ObjectDBIO open메소드 호출
+
+            String sql = "SELECT \n" +
+                    "    SO.ID AS order_id,\n" +
+                    "    SO.QUANTITY,\n" +
+                    "    SO.PAYMENT_AMOUNT,\n" +
+                    "    SO.CREATED_AT,\n" +
+                    "    SO.EXPECTED_AT,\n" +
+                    "    SO.SELLER_SEND_STATUS,\n" +
+                    "    SO.CUSTOMER_ID,\n" +
+                    "    SO.SHOPPING_MALL_ID,\n" +
+                    "    SO.PRODUCTS_ID,\n" +
+                    "    SGM.NAME AS SHOPPING_NAME,\n" +
+                    "    PDS.NAME AS PRODUCTS_NAME,\n" +
+                    "    PDS.PRICE AS PRODUCTS_PRICE,\n" +
+                    "    PDS.OWNER_ID AS PRODUCTS_OWNER_ID,\n" +
+                    "    PDS.BRAND_ID AS PRODUCTS_BRAND_ID,\n" +
+                    "    BSOR.NAME AS OWNER_NAME,\n" +
+                    "    BSOR.PHONE AS OWNER_PHONE,\n" +
+                    "    CTR.NAME AS CUSTOMER_NAME,\n" +
+                    "    CTR.PHONE AS CUSTOMER_PHONE,\n" +
+                    "    WHE.LOCATION AS WAREHOUSE_LOCATION\n" +
+                    "FROM SM_ORDERS SO\n" +
+                    "JOIN SHOPPING_MALL SGM ON SO.SHOPPING_MALL_ID = SGM.ID\n" +
+                    "JOIN CUSTOMER CTR ON SO.CUSTOMER_ID = CTR.ID\n" +
+                    "JOIN PRODUCTS PDS ON SO.PRODUCTS_ID = PDS.ID\n" +
+                    "JOIN BUSINESS_OWNER BSOR ON PDS.OWNER_ID = BSOR.ID\n" +
+                    "JOIN WAREHOUSE_SHOPPING_MALL_RELATIONSHIP WSMR ON WSMR.ID = SO.SHOPPING_MALL_ID\n" +
+                    "JOIN WAREHOUSE WHE ON WSMR.WAREHOUSE_ID = WHE.ID\n" +
+                    "WHERE SO.SELLER_SEND_STATUS = 'PREPARING' \n" +
+                    "AND SO.SHOPPING_MALL_ID IN (SELECT ID FROM SHOPPING_MALL) ";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                SmOrdersOutput output = new SmOrdersOutput(
+                        rs.getLong("order_id"),
+                        rs.getInt("quantity"),
+                        rs.getInt("payment_amount"),
+                        rs.getDate("created_at"),
+                        rs.getDate("expected_at"),
+                        rs.getString("seller_send_status"),
+                        rs.getLong("customer_id"),
+                        rs.getLong("shopping_mall_id"),
+                        rs.getString("shopping_name"),
+                        rs.getLong("products_id"),
+                        rs.getString("products_name"),
+                        rs.getInt("products_price"),
+                        rs.getString("products_owner_id"),
+                        rs.getLong("products_brand_id"),
+                        rs.getString("owner_name"),
+                        rs.getString("owner_phone"),
+                        rs.getString("customer_name"),
+                        rs.getString("customer_phone"),
+                        rs.getString("warehouse_location")
+                );
+
+                outputList.add(output);
+            }
+
+            close(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return outputList;
+    }
+
+    //배송취소건 조회
+    public List<SmOrdersOutput> readAllCanceledOrders() {
+        Connection conn = null;
+        List<SmOrdersOutput> outputList = new ArrayList<>();
+
+        try {
+            conn = open(); // ObjectDBIO open메소드 호출
+
+            String sql = "SELECT \n" +
+                    "    SO.ID AS order_id,\n" +
+                    "    SO.QUANTITY,\n" +
+                    "    SO.PAYMENT_AMOUNT,\n" +
+                    "    SO.CREATED_AT,\n" +
+                    "    SO.EXPECTED_AT,\n" +
+                    "    SO.SELLER_SEND_STATUS,\n" +
+                    "    SO.CUSTOMER_ID,\n" +
+                    "    SO.SHOPPING_MALL_ID,\n" +
+                    "    SO.PRODUCTS_ID,\n" +
+                    "    SGM.NAME AS SHOPPING_NAME,\n" +
+                    "    PDS.NAME AS PRODUCTS_NAME,\n" +
+                    "    PDS.PRICE AS PRODUCTS_PRICE,\n" +
+                    "    PDS.OWNER_ID AS PRODUCTS_OWNER_ID,\n" +
+                    "    PDS.BRAND_ID AS PRODUCTS_BRAND_ID,\n" +
+                    "    BSOR.NAME AS OWNER_NAME,\n" +
+                    "    BSOR.PHONE AS OWNER_PHONE,\n" +
+                    "    CTR.NAME AS CUSTOMER_NAME,\n" +
+                    "    CTR.PHONE AS CUSTOMER_PHONE,\n" +
+                    "    WHE.LOCATION AS WAREHOUSE_LOCATION\n" +
+                    "FROM SM_ORDERS SO\n" +
+                    "JOIN SHOPPING_MALL SGM ON SO.SHOPPING_MALL_ID = SGM.ID\n" +
+                    "JOIN CUSTOMER CTR ON SO.CUSTOMER_ID = CTR.ID\n" +
+                    "JOIN PRODUCTS PDS ON SO.PRODUCTS_ID = PDS.ID\n" +
+                    "JOIN BUSINESS_OWNER BSOR ON PDS.OWNER_ID = BSOR.ID\n" +
+                    "JOIN WAREHOUSE_SHOPPING_MALL_RELATIONSHIP WSMR ON WSMR.ID = SO.SHOPPING_MALL_ID\n" +
+                    "JOIN WAREHOUSE WHE ON WSMR.WAREHOUSE_ID = WHE.ID\n" +
+                    "WHERE SO.SELLER_SEND_STATUS = 'CANCEL' \n" +
+                    "AND SO.SHOPPING_MALL_ID IN (SELECT ID FROM SHOPPING_MALL) ";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                SmOrdersOutput output = new SmOrdersOutput(
+                        rs.getLong("order_id"),
+                        rs.getInt("quantity"),
+                        rs.getInt("payment_amount"),
+                        rs.getDate("created_at"),
+                        rs.getDate("expected_at"),
+                        rs.getString("seller_send_status"),
+                        rs.getLong("customer_id"),
+                        rs.getLong("shopping_mall_id"),
+                        rs.getString("shopping_name"),
+                        rs.getLong("products_id"),
+                        rs.getString("products_name"),
+                        rs.getInt("products_price"),
+                        rs.getString("products_owner_id"),
+                        rs.getLong("products_brand_id"),
+                        rs.getString("owner_name"),
+                        rs.getString("owner_phone"),
+                        rs.getString("customer_name"),
+                        rs.getString("customer_phone"),
+                        rs.getString("warehouse_location")
+                );
+
+                outputList.add(output);
+            }
+
+            close(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return outputList;
+    }
+
+    public void updateSmOrdersStatus(smOrders smorders) {
+        Connection conn = null;
+        // 주문번호
         try {
             conn = open();
-
-            // 고객 업데이트
-            String sqlCustomer = "UPDATE CUSTOMER SET EMAIL = ?, PASSWORD = ?, NAME = ?, PHONE = ?, ADDRESS = ? WHERE ID = ?";
-            PreparedStatement pstmtCustomer = conn.prepareStatement(sqlCustomer);
-            pstmtCustomer.setString(1, "customer4@example.com");
-            pstmtCustomer.setString(2, "password4");
-            pstmtCustomer.setString(3, "Customer4");
-            pstmtCustomer.setString(4, "123-456-7890");
-            pstmtCustomer.setString(5, "Main St, City, Country");
-            pstmtCustomer.setInt(6, 6010); // 고객 ID
-            pstmtCustomer.executeUpdate();
-            pstmtCustomer.close();
-
-            // 쇼핑몰 업데이트
-            String sqlShoppingMall = "UPDATE SHOPPING_MALL SET NAME = ? WHERE ID = ?";
-            PreparedStatement pstmtShoppingMall = conn.prepareStatement(sqlShoppingMall);
-            pstmtShoppingMall.setString(1, "온라인몰1");
-            pstmtShoppingMall.setInt(2, 2010); // 쇼핑몰 ID
-            pstmtShoppingMall.executeUpdate();
-            pstmtShoppingMall.close();
-
-            // 상품 업데이트
-            String sqlProduct = "UPDATE PRODUCTS SET NAME = ?, STATUS = ?, COST = ?, PRICE = ?, BRAND_ID = ?, OWNER_ID = ?, WAREHOUSE_ID = ? WHERE ID = ?";
-            PreparedStatement pstmtProduct = conn.prepareStatement(sqlProduct);
-            pstmtProduct.setString(1, "상품1");
-            pstmtProduct.setBoolean(2, true);
-            pstmtProduct.setInt(3, 5000);
-            pstmtProduct.setInt(4, 10000);
-            pstmtProduct.setInt(5, 1); // 브랜드 ID
-            pstmtProduct.setInt(6, 1); // 사업자 ID
-            pstmtProduct.setInt(7, 1); // 창고 ID
-            pstmtProduct.setInt(8, 2000); // 상품 ID
-            pstmtProduct.executeUpdate();
-            pstmtProduct.close();
-
-            // 주문 업데이트
-//            String sqlOrder = "UPDATE sm_orders SET QUANTITY = ?, PAYMENT_AMOUNT = ?, CREATED_AT = now(), EXPECTED_AT = now(), SELLER_SEND_STATUS = 'Yes', CUSTOMER_ID = ?, SHOPPING_MALL_ID = ?, PRODUCTS_ID = ? WHERE ID = ?";
-//            PreparedStatement pstmtOrder = conn.prepareStatement(sqlOrder);
-//            pstmtOrder.setInt(1, 100);
-//            pstmtOrder.setInt(2, 1000);
-//            pstmtOrder.setInt(3, 6010); // 고객 ID
-//            pstmtOrder.setInt(4, 2010); // 쇼핑몰 ID
-//            pstmtOrder.setInt(5, 2000); // 상품 ID
-//            pstmtOrder.setInt(6, 1); // 주문 ID
-//            pstmtOrder.executeUpdate();
-//            pstmtOrder.close();
 
             //주문 업데이트
             String sqlOrder = "UPDATE sm_orders SET SELLER_SEND_STATUS = ?  WHERE ID = ?";
-            PreparedStatement pstmtOrder = conn.prepareStatement(sqlOrder);
+            PreparedStatement pstmt = conn.prepareStatement(sqlOrder);
 
-            //판매자 발송 상태
-            System.out.print("판매자 발송 상태 (배송준비중, 주문 취소, 배송완료) : ");
-            String seller_status = sc.nextLine();
-            pstmtOrder.setString(1, seller_status);
 
-            // 주문번호
-            System.out.print("주문번호 : ");
-            int order_id = Integer.parseInt(sc.nextLine());
-            pstmtOrder.setInt(2, order_id);
-            pstmtOrder.executeUpdate();
-            pstmtOrder.close();
+            pstmt.setString(1, String.valueOf(smorders.getStatus()));
+            pstmt.setLong(2, smorders.getId());
 
+            pstmt.executeUpdate();
+
+            pstmt.close();
+            close(conn);
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
         }
-        System.out.println("-------------------------------------------------------");
-        // 업데이트된 주문 조회 메소드 호출
-        //Sm_Orders_Read();
-        list();
+
     }//Sm_Orders_Update
 
-    public void smOrdersInsert() {
+    public smOrders findById(Long id) {
         Connection conn = null;
+        smOrders smOrders = null;
+        int orderId = 0;
         try {
-            conn = open();
-
-            // 고객 추가
-            String sqlCustomer = "INSERT INTO CUSTOMER (ID, EMAIL, PASSWORD, NAME, PHONE, ADDRESS)  VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmtCustomer = conn.prepareStatement(sqlCustomer);
-            pstmtCustomer.setInt(1, 7010);
-            pstmtCustomer.setString(2, "customer4@example.com");
-            pstmtCustomer.setString(3, "password4");
-            pstmtCustomer.setString(4, "Customer4");
-            pstmtCustomer.setString(5, "123-456-7890");
-            pstmtCustomer.setString(6, "Main St, City, Country");
-            pstmtCustomer.executeUpdate();
-            pstmtCustomer.close();
-
-            // 쇼핑몰 추가
-            String sqlShoppingMall = "INSERT INTO SHOPPING_MALL (ID, NAME) VALUES (?, ?)";
-            PreparedStatement pstmtShoppingMall = conn.prepareStatement(sqlShoppingMall);
-            pstmtShoppingMall.setInt(1, 3010);
-            pstmtShoppingMall.setString(2, "온라인몰1");
-            pstmtShoppingMall.executeUpdate();
-            pstmtShoppingMall.close();
-
-            // 상품 추가
-            String sqlProduct = "INSERT INTO PRODUCTS (ID, NAME, STATUS, COST, PRICE, BRAND_ID, OWNER_ID, WAREHOUSE_ID) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmtProduct = conn.prepareStatement(sqlProduct);
-            pstmtProduct.setInt(1, 3000);
-            pstmtProduct.setString(2, "상품1");
-            pstmtProduct.setBoolean(3, true);
-            pstmtProduct.setInt(4, 5000);
-            pstmtProduct.setInt(5, 10000);
-            pstmtProduct.setInt(6, 1);
-            pstmtProduct.setInt(7, 1);
-            pstmtProduct.setInt(8, 1);
-            pstmtProduct.executeUpdate();
-            pstmtProduct.close();
-
-//            // 주문 추가
-//            String sqlOrder = "INSERT INTO sm_orders (ID, QUANTITY, PAYMENT_AMOUNT, CREATED_AT, EXPECTED_AT, SELLER_SEND_STATUS, CUSTOMER_ID, SHOPPING_MALL_ID, PRODUCTS_ID ) VALUES (NULL, ?, ?, now(), now(), 'Yes', ?, ?, ?)";
-//            PreparedStatement pstmtOrder = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
-//            pstmtOrder.setInt(1, 100); //QUANTITY
-//            pstmtOrder.setInt(2, 1000);//PAYMENT_AMOUNT
-//            pstmtOrder.setInt(3, 7010);//CUSTOMER_ID
-//            pstmtOrder.setInt(4, 3010);//SHOPPING_MALL_ID
-//            pstmtOrder.setInt(5, 3000);//PRODUCTS_ID
-//            pstmtOrder.executeUpdate();
-//            pstmtOrder.close();
-
-            // 주문 추가
-            String sqlOrder = " INSERT INTO sm_orders (ID, QUANTITY, PAYMENT_AMOUNT, CREATED_AT,  EXPECTED_AT, SELLER_SEND_STATUS, CUSTOMER_ID, SHOPPING_MALL_ID, PRODUCTS_ID ) VALUES (NULL, ?, ?, now(), now(), ?, ?, ?, ? )";
-            PreparedStatement pstmtOrder = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
-            System.out.print("주문 ID: ");
-            String order_id = sc.nextLine();
-            pstmtOrder.setString(1, order_id);
-
-            System.out.print("주문 수량: ");
-            String quantity = sc.nextLine();
-            pstmtOrder.setString(2, quantity);
-            //주문 일자 // 예상 배송일
-            System.out.print("판매자 발송 상태(배송준비중, 주문 취소, 배송완료): ");
-            String seller_send_status = sc.nextLine();
-            pstmtOrder.setString(3, seller_send_status);
-
-            System.out.print("고객 ID(FK): ");
-            String customer_id = sc.nextLine();
-            pstmtOrder.setString(4, customer_id);
-
-            System.out.print("쇼핑몰 ID(FK): ");
-            String shopping_mall_id = sc.nextLine();
-            pstmtOrder.setString(5, shopping_mall_id);
-
-            System.out.print("상품 ID(FK): ");
-            String products_id = sc.nextLine();
-            pstmtOrder.setString(6, products_id);
-            pstmtOrder.executeUpdate();
-            pstmtOrder.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        System.out.println("-------------------------------------------------------");
-        // 추가한 주문 조회 메소드 호출
-        list();
-    }//smOrdersInsert
-
-    // SM_ORDERS 테이블 전체조회 메소드
-    public void smOrdersReadAll() {
-        Connection conn = null;
-        SMOrders smorders = null;
-        try {
-            conn = open(); // ObjectDBIO open메소드 호출
-
-            String sql = "SELECT " +
-                    "SOS.ID AS order_id, " +
-                    "SOS.QUANTITY, " +
-                    "SOS.PAYMENT_AMOUNT, " +
-                    "SOS.CREATED_AT, " +
-                    "SOS.EXPECTED_AT, " +
-                    "SOS.SELLER_SEND_STATUS, " +
-                    "SOS.CUSTOMER_ID, " +
-                    "SOS.SHOPPING_MALL_ID, " +
-                    "SOS.PRODUCTS_ID, " +
-                    "(SELECT SGM.NAME " +
-                    "FROM SHOPPING_MALL SGM " +
-                    "WHERE SOS.SHOPPING_MALL_ID = SGM.ID) AS SHOPPING_NAME, " +
-
-                    "(SELECT WBL.DELIVERY_AT  " +
-                    " FROM WAYBILL WBL " +
-                    " WHERE SOS.ID = WBL.ID 	" +
-                    " ) AS WAYBILL_DELIVERY_AT, " +
-
-                    "(SELECT PDS.NAME " +
-                    "FROM PRODUCTS PDS " +
-                    "WHERE SOS.PRODUCTS_ID = PDS.ID) AS PRODUCTS_NAME, " +
-                    "PDS.price AS PRODUCTS_PRICE, " +
-                    "PDS.OWNER_ID AS PRODUCTS_BRAND_ID, " +
-                    "PDS.BRAND_ID AS PRODUCTS_OWNER_ID, " +
-                    "BSOR.EMAIL AS OWNER_EMAIL, " +
-                    "BSOR.NAME AS OWNER_NAME, " +
-                    "BSOR.PHONE AS OWNER_PHONE, " +
-                    "(SELECT CTR.EMAIL " +
-                    "FROM CUSTOMER CTR " +
-                    "WHERE SOS.CUSTOMER_ID = CTR.ID) AS CUSTOMER_ID, " +
-                    "(SELECT CTR.NAME " +
-                    "FROM CUSTOMER CTR " +
-                    "WHERE SOS.CUSTOMER_ID = CTR.ID) AS CUSTOMER_NAME, " +
-                    "(SELECT CTR.PHONE " +
-                    "FROM CUSTOMER CTR " +
-                    "WHERE SOS.CUSTOMER_ID = CTR.ID) AS CUSTOMER_PHONE " +
-                    "FROM SM_ORDERS SOS " +
-                    "JOIN PRODUCTS PDS ON SOS.PRODUCTS_ID = PDS.ID " +
-                    "JOIN BUSINESS_OWNER BSOR ON PDS.OWNER_ID = BSOR.ID " +
-                    "WHERE SOS.SHOPPING_MALL_ID IN (SELECT ID FROM SHOPPING_MALL)" ;
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                // SM_ORDERS 주문 테이블
-                smorders = new SMOrders();
-                smorders.setId(rs.getInt("order_id")); // 주문 id
-                smorders.setQuantity(rs.getInt("quantity")); // 주문 수량
-                smorders.setPayment_amount(rs.getInt("payment_amount"));  //결제 금액
-                smorders.setCreated_at(rs.getDate("created_at"));  //주문 일자
-                smorders.setExpected_at(rs.getDate("expected_at"));  //예상 배송일
-                smorders.setSeller_send_status(rs.getString("seller_send_status"));  //판매자 발송 상태(배송준비중, 주문 취소, 배송완료)
-                smorders.setCustomer_id(rs.getInt("customer_id"));  //고객 ID(FK)
-                smorders.setShopping_mall_id(rs.getInt("shopping_mall_id"));  //쇼핑몰 ID(FK)
-                smorders.setProducts_id(rs.getInt("products_id")); //상품 ID(FK)
-
-                //SHOPPING_MALL 쇼핑 테이블
-                ShoppingMall shoppingmall = new ShoppingMall();
-                shoppingmall.setName(rs.getString("shopping_name")); //쇼핑몰이름
-
-                Waybill waybill = new Waybill();
-                Timestamp timestamp = rs.getTimestamp("waybill_delivery_at");
-                if (timestamp != null) {
-                    LocalDateTime localDateTime = timestamp.toLocalDateTime();
-                    waybill.setDeliveryAt(localDateTime);
-                } else {
-                    waybill.setDeliveryAt(null);
-                }
-
-                Products products = new Products();
-                products.setName(rs.getString("products_name"));
-                products.setPrice(rs.getInt("products_price"));
-                products.setBrandId(rs.getLong("products_brand_id"));
-                products.setBusinessOwnerId(rs.getLong("products_owner_id"));
-
-                BusinessOwner businessowner = new BusinessOwner();
-                businessowner.setEmail(rs.getString("owner_email"));
-                businessowner.setName(rs.getString("owner_name"));
-                businessowner.setPhone(rs.getString("owner_phone"));
-
-                Customer customer = new Customer();
-                customer.setId(rs.getLong("customer_id"));
-                customer.setName(rs.getString("customer_name"));
-                customer.setPhone(rs.getString("customer_phone"));
-
-                System.out.println();
-                System.out.println("[주문 관리]");
-                System.out.println("주문번호: " + smorders.getId()); // 주문 번호 출력
-                System.out.println("주문수량: " + smorders.getQuantity()); // 주문 수량
-                System.out.println("결제금액: " + smorders.getPayment_amount()); // 결제 금액
-                System.out.println("주문일자: " + smorders.getCreated_at()); // 주문 일자 출력
-                System.out.println("예상배송일: " + smorders.getExpected_at()); // 예상 배송일 출력
-                System.out.println("판매자 발송 상태: " + smorders.getSeller_send_status()); // 판매자 발송 상태 출력
-                System.out.println("고객 ID: " + smorders.getCustomer_id()); // 고객 ID 출력
-                System.out.println("쇼핑몰 ID: " + smorders.getShopping_mall_id()); // 쇼핑몰 ID 출력
-                System.out.println("상품 ID: " + smorders.getProducts_id()); // 상품 ID 출력
-                //[운송장 정보]
-                System.out.println("배송예정일: " + waybill.getDeliveryAt()); // 배송예정일 출력
-                //[쇼핑몰 정보]
-                System.out.println("쇼핑몰이름: " + shoppingmall.getName()); // 쇼핑몰이름 출력
-                //[상품 정보]
-                System.out.println("상품명: " + products.getName()); // 상품명 출력
-                System.out.println("상품가격: " + products.getPrice()); // 상품가격 출력
-                System.out.println("상품 브랜드 ID: " + products.getBrandId()); // 상품 브랜드 ID 출력
-                System.out.println("상품 소유자 ID: " + products.getBusinessOwnerId()); // 상품 소유자 ID 출력
-                //[상품 소유자 정보]
-                System.out.println("소유자 이메일: " + businessowner.getEmail()); // 소유자 이메일 출력
-                System.out.println("소유자 이름: " + businessowner.getName()); // 소유자 이름 출력
-                System.out.println("소유자 전화번호: " + businessowner.getPhone()); // 소유자 전화번호 출력
-                //[고객 정보]
-                System.out.println("고객 ID: " + customer.getId()); // 고객 ID 출력
-                System.out.println("고객 이름: " + customer.getName()); // 고객 이름 출력
-                System.out.println("고객 전화번호: " + customer.getPhone()); // 고객 전화번호 출력
-
-                close(conn);
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        list();
-    }//SmOrdersReadAll
-
-
-    // SM_ORDERS 테이블 주문취소건 전체조회 메소드
-    public void smOrdersReadAllCanCel() {
-        Connection conn = null;
-        SMOrders smorders = null;
-        try {
-            conn = open(); // ObjectDBIO open메소드 호출
-
-            String sql = "SELECT " +
-                    "SOS.ID AS order_id, " +
-                    "SOS.QUANTITY, " +
-                    "SOS.PAYMENT_AMOUNT, " +
-                    "SOS.CREATED_AT, " +
-                    "SOS.EXPECTED_AT, " +
-                    "SOS.SELLER_SEND_STATUS, " +
-                    "SOS.CUSTOMER_ID, " +
-                    "SOS.SHOPPING_MALL_ID, " +
-                    "SOS.PRODUCTS_ID, " +
-                    "(SELECT SGM.NAME " +
-                    "FROM SHOPPING_MALL SGM " +
-                    "WHERE SOS.SHOPPING_MALL_ID = SGM.ID) AS SHOPPING_NAME, " +
-
-                    "(SELECT WBL.DELIVERY_AT  " +
-                    " FROM WAYBILL WBL " +
-                    " WHERE SOS.ID = WBL.ID 	" +
-                    " ) AS WAYBILL_DELIVERY_AT, " +
-
-                    "(SELECT PDS.NAME " +
-                    "FROM PRODUCTS PDS " +
-                    "WHERE SOS.PRODUCTS_ID = PDS.ID) AS PRODUCTS_NAME, " +
-                    "PDS.price AS PRODUCTS_PRICE, " +
-                    "PDS.OWNER_ID AS PRODUCTS_BRAND_ID, " +
-                    "PDS.BRAND_ID AS PRODUCTS_OWNER_ID, " +
-                    "BSOR.EMAIL AS OWNER_EMAIL, " +
-                    "BSOR.NAME AS OWNER_NAME, " +
-                    "BSOR.PHONE AS OWNER_PHONE, " +
-                    "(SELECT CTR.EMAIL " +
-                    "FROM CUSTOMER CTR " +
-                    "WHERE SOS.CUSTOMER_ID = CTR.ID) AS CUSTOMER_ID, " +
-                    "(SELECT CTR.NAME " +
-                    "FROM CUSTOMER CTR " +
-                    "WHERE SOS.CUSTOMER_ID = CTR.ID) AS CUSTOMER_NAME, " +
-                    "(SELECT CTR.PHONE " +
-                    "FROM CUSTOMER CTR " +
-                    "WHERE SOS.CUSTOMER_ID = CTR.ID) AS CUSTOMER_PHONE " +
-                    "FROM SM_ORDERS SOS " +
-                    "JOIN PRODUCTS PDS ON SOS.PRODUCTS_ID = PDS.ID " +
-                    "JOIN BUSINESS_OWNER BSOR ON PDS.OWNER_ID = BSOR.ID " +
-                    "WHERE SOS.SHOPPING_MALL_ID IN (SELECT ID FROM SHOPPING_MALL)" +
-                    "AND SOS.SELLER_SEND_STATUS = '주문취소' ";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                // SM_ORDERS 주문 테이블
-                smorders = new SMOrders();
-                smorders.setId(rs.getInt("order_id")); // 주문 id
-                smorders.setQuantity(rs.getInt("quantity")); // 주문 수량
-                smorders.setPayment_amount(rs.getInt("payment_amount"));  //결제 금액
-                smorders.setCreated_at(rs.getDate("created_at"));  //주문 일자
-                smorders.setExpected_at(rs.getDate("expected_at"));  //예상 배송일
-                smorders.setSeller_send_status(rs.getString("seller_send_status"));  //판매자 발송 상태(배송준비중, 주문 취소, 배송완료)
-                smorders.setCustomer_id(rs.getInt("customer_id"));  //고객 ID(FK)
-                smorders.setShopping_mall_id(rs.getInt("shopping_mall_id"));  //쇼핑몰 ID(FK)
-                smorders.setProducts_id(rs.getInt("products_id")); //상품 ID(FK)
-
-                //SHOPPING_MALL 쇼핑 테이블
-                ShoppingMall shoppingmall = new ShoppingMall();
-                shoppingmall.setName(rs.getString("shopping_name")); //쇼핑몰이름
-
-                // 배송테이블 잘모르겠다 ~~~
-                Waybill waybill = new Waybill();
-                Timestamp timestamp = rs.getTimestamp("waybill_delivery_at");
-                //                waybill.setDeliveryAt(rs.getLocal("waybill_delivery_at")); //배송예정일 // 이것을보세요 ~
-                if (timestamp != null) {
-                    LocalDateTime localDateTime = timestamp.toLocalDateTime();
-                    waybill.setDeliveryAt(localDateTime);
-                } else {
-                    waybill.setDeliveryAt(null);
-                }
-
-                Products products = new Products();
-                products.setName(rs.getString("products_name"));
-                products.setPrice(rs.getInt("products_price"));
-                products.setBrandId(rs.getLong("products_brand_id"));
-                products.setBusinessOwnerId(rs.getLong("products_owner_id"));
-
-                BusinessOwner businessowner = new BusinessOwner();
-                businessowner.setEmail(rs.getString("owner_email"));
-                businessowner.setName(rs.getString("owner_name"));
-                businessowner.setPhone(rs.getString("owner_phone"));
-
-                Customer customer = new Customer();
-                customer.setId(rs.getLong("customer_id"));
-                customer.setName(rs.getString("customer_name"));
-                customer.setPhone(rs.getString("customer_phone"));
-
-                System.out.println();
-                System.out.println("[주문 관리]");
-                System.out.println("주문번호: " + smorders.getId()); // 주문 번호 출력
-                System.out.println("주문수량: " + smorders.getQuantity()); // 주문 수량
-                System.out.println("결제금액: " + smorders.getPayment_amount()); // 결제 금액
-                System.out.println("주문일자: " + smorders.getCreated_at()); // 주문 일자 출력
-                System.out.println("예상배송일: " + smorders.getExpected_at()); // 예상 배송일 출력
-                System.out.println("판매자 발송 상태: " + smorders.getSeller_send_status()); // 판매자 발송 상태 출력
-                System.out.println("고객 ID: " + smorders.getCustomer_id()); // 고객 ID 출력
-                System.out.println("쇼핑몰 ID: " + smorders.getShopping_mall_id()); // 쇼핑몰 ID 출력
-                System.out.println("상품 ID: " + smorders.getProducts_id()); // 상품 ID 출력
-                //[운송장 정보]
-                System.out.println("배송예정일: " + waybill.getDeliveryAt()); // 배송예정일 출력
-                //[쇼핑몰 정보]
-                System.out.println("쇼핑몰이름: " + shoppingmall.getName()); // 쇼핑몰이름 출력
-                //[상품 정보]
-                System.out.println("상품명: " + products.getName()); // 상품명 출력
-                System.out.println("상품가격: " + products.getPrice()); // 상품가격 출력
-                System.out.println("상품 브랜드 ID: " + products.getBrandId()); // 상품 브랜드 ID 출력
-                System.out.println("상품 소유자 ID: " + products.getBusinessOwnerId()); // 상품 소유자 ID 출력
-                //[상품 소유자 정보]
-                System.out.println("소유자 이메일: " + businessowner.getEmail()); // 소유자 이메일 출력
-                System.out.println("소유자 이름: " + businessowner.getName()); // 소유자 이름 출력
-                System.out.println("소유자 전화번호: " + businessowner.getPhone()); // 소유자 전화번호 출력
-                //[고객 정보]
-                System.out.println("고객 ID: " + customer.getId()); // 고객 ID 출력
-                System.out.println("고객 이름: " + customer.getName()); // 고객 이름 출력
-                System.out.println("고객 전화번호: " + customer.getPhone()); // 고객 전화번호 출력
-
-                close(conn);
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        list();
-    }//smOrdersReadAllCanCel
-
-    // SM_ORDERS 테이블 배송준비중인건 전체조회 메소드
-    public void smOrdersReadAllPrepare() {
-        Connection conn = null;
-        SMOrders smorders = null;
-        try {
-            conn = open(); // ObjectDBIO open메소드 호출
-
-            String sql = "SELECT " +
-                    "SOS.ID AS order_id, " +
-                    "SOS.QUANTITY, " +
-                    "SOS.PAYMENT_AMOUNT, " +
-                    "SOS.CREATED_AT, " +
-                    "SOS.EXPECTED_AT, " +
-                    "SOS.SELLER_SEND_STATUS, " +
-                    "SOS.CUSTOMER_ID, " +
-                    "SOS.SHOPPING_MALL_ID, " +
-                    "SOS.PRODUCTS_ID, " +
-                    "(SELECT SGM.NAME " +
-                    "FROM SHOPPING_MALL SGM " +
-                    "WHERE SOS.SHOPPING_MALL_ID = SGM.ID) AS SHOPPING_NAME, " +
-
-                    "(SELECT WBL.DELIVERY_AT  " +
-                    " FROM WAYBILL WBL " +
-                    " WHERE SOS.ID = WBL.ID 	" +
-                    " ) AS WAYBILL_DELIVERY_AT, " +
-
-                    "(SELECT PDS.NAME " +
-                    "FROM PRODUCTS PDS " +
-                    "WHERE SOS.PRODUCTS_ID = PDS.ID) AS PRODUCTS_NAME, " +
-                    "PDS.price AS PRODUCTS_PRICE, " +
-                    "PDS.OWNER_ID AS PRODUCTS_BRAND_ID, " +
-                    "PDS.BRAND_ID AS PRODUCTS_OWNER_ID, " +
-                    "BSOR.EMAIL AS OWNER_EMAIL, " +
-                    "BSOR.NAME AS OWNER_NAME, " +
-                    "BSOR.PHONE AS OWNER_PHONE, " +
-                    "(SELECT CTR.EMAIL " +
-                    "FROM CUSTOMER CTR " +
-                    "WHERE SOS.CUSTOMER_ID = CTR.ID) AS CUSTOMER_ID, " +
-                    "(SELECT CTR.NAME " +
-                    "FROM CUSTOMER CTR " +
-                    "WHERE SOS.CUSTOMER_ID = CTR.ID) AS CUSTOMER_NAME, " +
-                    "(SELECT CTR.PHONE " +
-                    "FROM CUSTOMER CTR " +
-                    "WHERE SOS.CUSTOMER_ID = CTR.ID) AS CUSTOMER_PHONE " +
-                    "FROM SM_ORDERS SOS " +
-                    "JOIN PRODUCTS PDS ON SOS.PRODUCTS_ID = PDS.ID " +
-                    "JOIN BUSINESS_OWNER BSOR ON PDS.OWNER_ID = BSOR.ID " +
-                    "WHERE SOS.SHOPPING_MALL_ID IN (SELECT ID FROM SHOPPING_MALL)" +
-                    "AND SOS.SELLER_SEND_STATUS = '배송준비중' ";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                // SM_ORDERS 주문 테이블
-                smorders = new SMOrders();
-                smorders.setId(rs.getInt("order_id")); // 주문 id
-                smorders.setQuantity(rs.getInt("quantity")); // 주문 수량
-                smorders.setPayment_amount(rs.getInt("payment_amount"));  //결제 금액
-                smorders.setCreated_at(rs.getDate("created_at"));  //주문 일자
-                smorders.setExpected_at(rs.getDate("expected_at"));  //예상 배송일
-                smorders.setSeller_send_status(rs.getString("seller_send_status"));  //판매자 발송 상태(배송준비중, 주문 취소, 배송완료)
-                smorders.setCustomer_id(rs.getInt("customer_id"));  //고객 ID(FK)
-                smorders.setShopping_mall_id(rs.getInt("shopping_mall_id"));  //쇼핑몰 ID(FK)
-                smorders.setProducts_id(rs.getInt("products_id")); //상품 ID(FK)
-
-                //SHOPPING_MALL 쇼핑 테이블
-                ShoppingMall shoppingmall = new ShoppingMall();
-                shoppingmall.setName(rs.getString("shopping_name")); //쇼핑몰이름
-
-
-                Waybill waybill = new Waybill();
-                Timestamp timestamp = rs.getTimestamp("waybill_delivery_at");
-                if (timestamp != null) {
-                    LocalDateTime localDateTime = timestamp.toLocalDateTime();
-                    waybill.setDeliveryAt(localDateTime);
-                } else {
-                    waybill.setDeliveryAt(null);
-                }
-
-                Products products = new Products();
-                products.setName(rs.getString("products_name"));
-                products.setPrice(rs.getInt("products_price"));
-                products.setBrandId(rs.getLong("products_brand_id"));
-                products.setBusinessOwnerId(rs.getLong("products_owner_id"));
-
-                BusinessOwner businessowner = new BusinessOwner();
-                businessowner.setEmail(rs.getString("owner_email"));
-                businessowner.setName(rs.getString("owner_name"));
-                businessowner.setPhone(rs.getString("owner_phone"));
-
-                Customer customer = new Customer();
-                customer.setId(rs.getLong("customer_id"));
-                customer.setName(rs.getString("customer_name"));
-                customer.setPhone(rs.getString("customer_phone"));
-
-                System.out.println();
-                System.out.println("[주문 관리]");
-                System.out.println("주문번호: " + smorders.getId()); // 주문 번호 출력
-                System.out.println("주문수량: " + smorders.getQuantity()); // 주문 수량
-                System.out.println("결제금액: " + smorders.getPayment_amount()); // 결제 금액
-                System.out.println("주문일자: " + smorders.getCreated_at()); // 주문 일자 출력
-                System.out.println("예상배송일: " + smorders.getExpected_at()); // 예상 배송일 출력
-                System.out.println("판매자 발송 상태: " + smorders.getSeller_send_status()); // 판매자 발송 상태 출력
-                System.out.println("고객 ID: " + smorders.getCustomer_id()); // 고객 ID 출력
-                System.out.println("쇼핑몰 ID: " + smorders.getShopping_mall_id()); // 쇼핑몰 ID 출력
-                System.out.println("상품 ID: " + smorders.getProducts_id()); // 상품 ID 출력
-                //[운송장 정보]
-                System.out.println("배송예정일: " + waybill.getDeliveryAt()); // 배송예정일 출력
-                //[쇼핑몰 정보]
-                System.out.println("쇼핑몰이름: " + shoppingmall.getName()); // 쇼핑몰이름 출력
-                //[상품 정보]
-                System.out.println("상품명: " + products.getName()); // 상품명 출력
-                System.out.println("상품가격: " + products.getPrice()); // 상품가격 출력
-                System.out.println("상품 브랜드 ID: " + products.getBrandId()); // 상품 브랜드 ID 출력
-                System.out.println("상품 소유자 ID: " + products.getBusinessOwnerId()); // 상품 소유자 ID 출력
-                //[상품 소유자 정보]
-                System.out.println("소유자 이메일: " + businessowner.getEmail()); // 소유자 이메일 출력
-                System.out.println("소유자 이름: " + businessowner.getName()); // 소유자 이름 출력
-                System.out.println("소유자 전화번호: " + businessowner.getPhone()); // 소유자 전화번호 출력
-                //[고객 정보]
-                System.out.println("고객 ID: " + customer.getId()); // 고객 ID 출력
-                System.out.println("고객 이름: " + customer.getName()); // 고객 이름 출력
-                System.out.println("고객 전화번호: " + customer.getPhone()); // 고객 전화번호 출력
-
-                close(conn);
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        list();
-    }//smOrdersReadAllPrepare
-
-    // SM_ORDERS 테이블 하나조회 메소드
-    public void smOrdersRead() {
-        Connection conn = null;
-        SMOrders smorders = null;
-        int order_id = 0;
-        try {
-            System.out.print("주문 번호를 입력해주세요 : ");
-            order_id = Integer.parseInt(sc.nextLine());
             conn = open(); // ObjectDBIO open메소드 호출
 
             String sql = "SELECT * FROM SM_ORDERS WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, order_id);
+            pstmt.setLong(1, id);
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                smorders = new SMOrders();
-                smorders.setId(order_id);// 주문 ID
-                smorders.setQuantity(rs.getInt("quantity")); // 주문 수량
-                smorders.setPayment_amount(rs.getInt("payment_amount"));  //결제 금액
-                smorders.setCreated_at(rs.getDate("created_at"));  //주문 일자
-                smorders.setExpected_at(rs.getDate("expected_at"));  //예상 배송일
-                smorders.setSeller_send_status(rs.getString("seller_send_status"));  //판매자 발송 상태(배송준비중, 주문 취소, 배송완료)
-                smorders.setCustomer_id(rs.getInt("customer_id"));  //고객 ID(FK)
-                smorders.setShopping_mall_id(rs.getInt("shopping_mall_id"));  //쇼핑몰 ID(FK)
-                smorders.setProducts_id(rs.getInt("products_id")); //상품 ID(FK)
-                System.out.println(smorders);
+                smOrders = new smOrders();
+                smOrders.setId(id);// 주문 ID
+                smOrders.setQuantity(rs.getInt("quantity")); // 주문 수량
+                smOrders.setPaymentAmount(rs.getInt("payment_amount"));  //결제 금액
+                smOrders.setCreatedAt(rs.getString("created_at"));  //주문 일자
+                smOrders.setExpectedAt(rs.getString("expected_at"));  //예상 배송일
+                String sellerSendStatusTemp = rs.getString("seller_send_status");
+                System.out.println(sellerSendStatusTemp);
+                smOrders.setStatus(SellerSendStatus.valueOf(sellerSendStatusTemp));  //판매자 발송 상태(배송준비중, 주문 취소, 배송완료)
+                smOrders.setCustomerId(rs.getLong("customer_id"));  //고객 ID(FK)
+                smOrders.setShoppingMallId(rs.getLong("shopping_mall_id"));  //쇼핑몰 ID(FK)
+                smOrders.setProductId(rs.getLong("products_id")); //상품 ID(FK)
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
-        if (smorders != null) {
+        return smOrders;
+    }
 
-            System.out.println("\n------------------------------------------------------\n");
-            System.out.println("보조 메뉴: 1. Update | 2. Delete | 3. List  | 4. 메인메뉴로 돌아가기");
-            System.out.print("메뉴 선택: ");
-            String subMenuNum = sc.nextLine();
 
-            switch (subMenuNum) {
-                case "1" -> smOrdersUpdate(smorders); //Read 선행이 필요함
-//                case "2" -> smOrdersUpdate(bno);
-                case "3" -> smOrdersReadAll();
-                case "4" -> list();
-            }
+    public void insertSmOrdersStatus(smOrders smorders) {
+        Connection conn = null;
+        // 주문번호
+        try {
+            //주문 업데이트
+            String sqlOrder = "INSERT INTO sm_orders (ID, QUANTITY, PAYMENT_AMOUNT, CREATED_AT,  EXPECTED_AT, SELLER_SEND_STATUS, CUSTOMER_ID, SHOPPING_MALL_ID, PRODUCTS_ID ) VALUES (?, ?, ?, now(), now(), ?, ?, ?, ? )";
+            PreparedStatement pstmt = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
+            // 주문 추가
+//            pstmt.setString(1, String.valueOf(smorders.getStatus()));
+            pstmt.setLong(1, smorders.getId());
+            pstmt.setInt(2, smorders.getQuantity());
+            pstmt.setInt(3, smorders.getPaymentAmount());
+            pstmt.setString(4, String.valueOf(smorders.getStatus()));
+            pstmt.setLong(5, smorders.getCustomerId());
+            pstmt.setLong(6, smorders.getShoppingMallId());
+            pstmt.setLong(7, smorders.getProductId());
+            pstmt.executeUpdate();
+
+            pstmt.close();
+            close(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        list();
-    }//smOrdersRead
+
+    }//Sm_Orders_Update
 
 
 }
