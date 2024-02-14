@@ -36,5 +36,4 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 
         return smNum;
     }
-    // TODO: implement service
 }

@@ -1,14 +1,10 @@
 package inventory.dao;
 
 import DBIO.ObjectDBIO;
-import inventory.domain.InsertReleaseType;
 import inventory.domain.Warehouse;
 import inventory.domain.WarehouseInsertRelease;
 import inventory.enums.WhInOutType;
-import inventory.service.WarehouseInsertReleaseService;
-import inventory.service.impl.WarehouseInsertReleaseServiceImpl;
 import mgtOrders.domain.MgtOrderProductsRelationship;
-import product.domain.Products;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

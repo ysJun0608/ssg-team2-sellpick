@@ -239,13 +239,8 @@ CREATE TABLE SM_ORDERS
 # 운송장
 CREATE TABLE WAYBILL
 (
-<<<<<<< HEAD
     ID              INT AUTO_INCREMENT NOT NULL                             COMMENT '운송장 ID',
     DELIVERY_AT   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP   COMMENT '배송 시작 일자',
-=======
-    ID              INT      AUTO_INCREMENT            NOT NULL COMMENT '운송장 ID',
-    DELIVERY_AT     DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '배송 시작 일자',
->>>>>>> d7923d15fbce84b184baf4ab0d1ca6c286f0abff
 
     ORDERS_ID       INT                                NOT NULL COMMENT '주문 ID(FK)',
 

@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 public class WhSmRelationshipDao extends ObjectDBIO {
     Connection conn = null;
-    public void saveWhSmRelationShip(WhSmRelationship whSmRelationShip) {
+    public void saveWhSmRelationship(WhSmRelationship whSmRelationShip) {
         conn = open();
         try {
             String insertToRelationshipsql = "insert into warehouse_shopping_mall_relationship(WAREHOUSE_ID,SM_ID) values (?,?)";
