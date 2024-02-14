@@ -16,4 +16,9 @@ public class BusinessOwner {
     private String phone;
     // 주소
     private String address;
-}
+
+    // TODO : 사업자 번호
+
+
+    }
+
