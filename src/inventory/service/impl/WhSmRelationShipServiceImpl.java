@@ -1,17 +1,13 @@
 package inventory.service.impl;
 
 import inventory.dao.WhSmRelationshipDao;
-import inventory.domain.WhSmRelationShip;
-import inventory.service.WarehouseService;
+import inventory.domain.WhSmRelationship;
 import inventory.service.WhSmRelationShipService;
-
-import java.sql.PreparedStatement;
-import java.sql.Statement;
 
 public class WhSmRelationShipServiceImpl implements WhSmRelationShipService {
     WhSmRelationshipDao whSmRelationshipDao = new WhSmRelationshipDao();
     @Override
-    public void createWhSmRelationShip(WhSmRelationShip whSmRelationShip) {
+    public void createWhSmRelationShip(WhSmRelationship whSmRelationShip) {
         whSmRelationshipDao.saveWhSmRelationShip(whSmRelationShip);
 
     }

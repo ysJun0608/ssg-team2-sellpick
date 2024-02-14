@@ -1,7 +1,7 @@
 package inventory.service;
 
-import inventory.domain.WhSmRelationShip;
+import inventory.domain.WhSmRelationship;
 
 public interface WhSmRelationShipService {
-    void createWhSmRelationShip(WhSmRelationShip whSmRelationShip);
+    void createWhSmRelationShip(WhSmRelationship whSmRelationShip);
 }
