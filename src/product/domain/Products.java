@@ -1,5 +1,8 @@
 package product.domain;
 
+import lombok.Data;
+
+@Data
 public class Products {
     // 상품 id
     private Long id;

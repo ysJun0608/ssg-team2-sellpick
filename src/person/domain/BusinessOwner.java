@@ -1,6 +1,8 @@
 package person.domain;
 
-    // 더미 데이터 만들어서 사용
+import lombok.Data;
+
+@Data
 public class BusinessOwner {
     // 사업자 id
     private Long id;

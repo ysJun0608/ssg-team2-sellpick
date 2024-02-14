@@ -1,5 +1,8 @@
 package inventory.domain;
 
+import lombok.Data;
+
+@Data
 public class WarehouseSection {
     // 창고 구역 id
     private Long id;
