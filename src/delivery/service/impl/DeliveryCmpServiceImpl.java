@@ -1,6 +1,6 @@
 package delivery.service.impl;
 
-import delivery.dao.DeliverCmpDao;
+import delivery.dao.DeliveryCmpDao;
 import delivery.domain.DeliveryCmp;
 import delivery.service.DeliveryCmpService;
 
@@ -12,7 +12,7 @@ import java.util.List;
 public class DeliveryCmpServiceImpl implements DeliveryCmpService {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
-    DeliverCmpDao dao = new DeliverCmpDao();
+    DeliveryCmpDao dao = new DeliveryCmpDao();
 
     @Override
     public Long chooseDeliveryCmp() {

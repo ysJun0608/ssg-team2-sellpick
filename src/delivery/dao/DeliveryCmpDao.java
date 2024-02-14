@@ -3,7 +3,6 @@ package delivery.dao;
 import DBIO.ObjectDBIO;
 import delivery.domain.DeliveryCmp;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,7 +10,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeliverCmpDao extends ObjectDBIO {
+public class DeliveryCmpDao extends ObjectDBIO {
 
     Connection conn = null;
 

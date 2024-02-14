@@ -13,7 +13,6 @@ public class WhSmRelationshipDao extends ObjectDBIO {
     public void saveWhSmRelationShip(WhSmRelationship whSmRelationShip) {
         conn = open();
         try {
-
             String insertToRelationshipsql = "insert into warehouse_shopping_mall_relationship(WAREHOUSE_ID,SM_ID) values (?,?)";
             PreparedStatement pstmt = conn.prepareStatement(insertToRelationshipsql, Statement.RETURN_GENERATED_KEYS);
             pstmt.setLong(1, whSmRelationShip.getWarehouseId());
