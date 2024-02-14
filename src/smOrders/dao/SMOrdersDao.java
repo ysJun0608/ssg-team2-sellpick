@@ -14,11 +14,11 @@ public class SMOrdersDao extends ObjectDBIO {
 
     //주문 전체 조회
     /**
-     * DB에서 취소된 주문 정보를 조회하여 반환합니다.
+     * DB에서 주문 정보를 전체조회하여 반환합니다.
      *
      * @return 취소된 주문 목록
      */
-    public List<SmOrdersOutput> smOrdersReadAllCanCel() {
+    public List<SmOrdersOutput> smOrdersReadAll() {
         Connection conn = null;
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
@@ -318,23 +318,23 @@ public class SMOrdersDao extends ObjectDBIO {
      *
      * @param smorders 삽입할 주문 정보
      */
-    public void insertSmOrdersStatus(smOrders smorders) {
+    public void insertSmOrders(smOrders smorders) {
         Connection conn = null;
 
         try {
             // Connection 연결 후 open 호출
             conn = open();
 
-            String sqlOrder = "INSERT INTO sm_orders (ID, QUANTITY, PAYMENT_AMOUNT, CREATED_AT,  EXPECTED_AT, SELLER_SEND_STATUS, CUSTOMER_ID, SHOPPING_MALL_ID, PRODUCTS_ID ) VALUES (?, ?, ?, now(), now(), ?, ?, ?, ? )";
-            PreparedStatement pstmt = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
+            String sqlOrder = "INSERT INTO sm_orders ( QUANTITY, PAYMENT_AMOUNT, CREATED_AT,  EXPECTED_AT, SELLER_SEND_STATUS, CUSTOMER_ID, SHOPPING_MALL_ID, PRODUCTS_ID ) VALUES ( ?, ?, now(), now(), ?, ?, ?, ? )";
+            PreparedStatement pstmt = conn.prepareStatement(sqlOrder);
 
-            pstmt.setLong(1, smorders.getId());
-            pstmt.setInt(2, smorders.getQuantity());
-            pstmt.setInt(3, smorders.getPaymentAmount());
-            pstmt.setString(4, String.valueOf(smorders.getStatus()));
-            pstmt.setLong(5, smorders.getCustomerId());
-            pstmt.setLong(6, smorders.getShoppingMallId());
-            pstmt.setLong(7, smorders.getProductId());
+//            pstmt.setLong(1, smorders.getId());
+            pstmt.setInt(1, smorders.getQuantity());
+            pstmt.setInt(2, smorders.getPaymentAmount());
+            pstmt.setString(3, String.valueOf(smorders.getStatus()));
+            pstmt.setLong(4, smorders.getCustomerId());
+            pstmt.setLong(5, smorders.getShoppingMallId());
+            pstmt.setLong(6, smorders.getProductId());
             pstmt.executeUpdate();
 
             pstmt.close();

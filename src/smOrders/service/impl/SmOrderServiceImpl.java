@@ -23,8 +23,8 @@ public class SmOrderServiceImpl implements SmOrdersService {
         smOrders smOrders = new smOrders();
 
         // 사용자로부터 주문 정보 입력 받기
-        System.out.print("주문 ID: ");
-        String order_id = sc.nextLine();
+//        System.out.print("주문 ID: ");
+//        String order_id = sc.nextLine();
 
         System.out.print("주문 수량: ");
         String quantity = sc.nextLine();
@@ -51,8 +51,7 @@ public class SmOrderServiceImpl implements SmOrdersService {
         // ======================
 
         // 주문 객체에 입력된 정보 설정
-        smOrders.setId(Long.valueOf(order_id));
-        smOrders.setQuantity(Integer.parseInt(quantity));
+//        smOrders.setId(Long.valueOf(order_id));
         smOrders.setQuantity(Integer.parseInt(quantity));
         smOrders.setStatus(SellerSendStatus.valueOf(status));
         smOrders.setCustomerId(Long.valueOf(customer_id));
@@ -60,7 +59,7 @@ public class SmOrderServiceImpl implements SmOrdersService {
         smOrders.setProductId(Long.valueOf(products_id));
 
         // 주문 정보 저장
-        smordersdao.insertSmOrdersStatus(smOrders);
+        smordersdao.insertSmOrders(smOrders);
         System.out.println("주문이 생성되었습니다.");
     }
 
@@ -120,7 +119,7 @@ public class SmOrderServiceImpl implements SmOrdersService {
         System.out.println("[주문을 조회합니다.]");
 
         // 모든 주문 정보를 가져옴
-        List<SmOrdersOutput> outputList = smordersdao.smOrdersReadAllCanCel();
+        List<SmOrdersOutput> outputList = smordersdao.smOrdersReadAll();
 
         // 각 주문 정보 출력
         for (SmOrdersOutput output : outputList) {
