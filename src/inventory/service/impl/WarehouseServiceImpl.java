@@ -41,10 +41,12 @@ public class WarehouseServiceImpl implements WarehouseService {
             System.out.println("창고가 있는 지역을 입력해주세요");
             String location = input.readLine();
             warehouse.setLocation(location);
+            System.out.println("=".repeat(50));
 
             System.out.println("창고 타입을 숫자로 입력해주세요");
             System.out.println("1. WET | 2. DRY | 3.BOTH ");
             int num = Integer.parseInt(input.readLine());
+            System.out.println("=".repeat(50));
             if (num == 1) {
                 warehouse.setType(WhType.WET);
             } else if (num == 2) {
@@ -54,7 +56,7 @@ public class WarehouseServiceImpl implements WarehouseService {
             } else {
                 System.out.println("잘못된 번호를 입력하셨습니다.");
             }
-
+            System.out.println("=".repeat(50));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,7 +97,7 @@ public class WarehouseServiceImpl implements WarehouseService {
                 System.out.printf("%-7d | %-7d | %-6s | %-4s\n", w.getId(), w.getDelivery_id(), w.getType(), w.getLocation());
             }
             System.out.println("=".repeat(50));
-            System.out.println("변경하고싶은 창고의 ID를 입력해주세요");
+            System.out.println("택배사를 변경하고싶은 창고의 ID를 입력해주세요");
             Long id = Long.parseLong(input.readLine());
             for (Warehouse w : warehouses) {
                 if (id == w.getId()) {
@@ -104,14 +106,15 @@ public class WarehouseServiceImpl implements WarehouseService {
                     warehouse.setId(w.getId());
                 }
             }
-
-            System.out.println("변경하고자 하는 창고의 세부사항을 입력해주세요");
-            System.out.println("1. 택배사 변경 | 2. 전체변경");
+            deliveryUpdateWarehouse(warehouse);
+           //System.out.println("변경하고자 하는 창고의 세부사항을 입력해주세요");
+            //System.out.println("1. 택배사 변경 | 2. 전체변경");
+         /*   System.out.println("택배사를 변경하고싶다면 1번을 입력해주세요");
             String menuNumber = input.readLine();
             switch (menuNumber) {
                 case "1" -> deliveryUpdateWarehouse(warehouse);
-                case "2" -> allUpdateWarehouse(warehouse);
-            }
+               case "2" -> allUpdateWarehouse(warehouse);
+            }*/
 
         } catch (IOException e) {
             e.printStackTrace();
