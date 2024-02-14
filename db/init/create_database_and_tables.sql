@@ -81,11 +81,11 @@ CREATE TABLE SETTLEMENT
 # 창고
 CREATE TABLE WAREHOUSE
 (
-    ID              INT                 AUTO_INCREMENT NOT NULL,
-    TYPE            ENUM('DRY', 'WET')                NOT NULL COMMENT '입고 OR 출고',
-    LOCATION        VARCHAR(50)                         NULL     COMMENT '창고 위치',
+    ID              INT                         AUTO_INCREMENT NOT NULL,
+    TYPE            ENUM('DRY', 'WET', 'BOTH')                 NOT NULL COMMENT '입고 OR 출고',
+    LOCATION        VARCHAR(50)                                NULL     COMMENT '창고 위치',
 
-    DELIVERY_CMP_ID INT                                NOT NULL COMMENT '택배사 ID(FK)',
+    DELIVERY_CMP_ID INT                                        NOT NULL COMMENT '택배사 ID(FK)',
 
     PRIMARY KEY (ID),
     CONSTRAINT FK_WAREHOUSE_DELIVERY_CMP_ID FOREIGN KEY (DELIVERY_CMP_ID) REFERENCES DELIVERY_CMP (ID)
@@ -110,10 +110,12 @@ CREATE TABLE MGT_ORDERS
 # 창고 구역
 CREATE TABLE WAREHOUSE_SECTION
 (
-    ID           INT            AUTO_INCREMENT NOT NULL,
-    NAME         VARCHAR(10)                   NOT NULL COMMENT '창고 구역 이름',
+    ID           INT AUTO_INCREMENT                                 NOT NULL,
+    NAME         VARCHAR(10)                                        NOT NULL COMMENT '창고 구역 이름',
+    # 냉장, 냉동, 건조, 가공 식품
+    TYPE         ENUM('REFRIGERATED', 'FROZEN', 'DRY', 'PROCESSED') NOT NULL COMMENT '창고 구역 타입(냉장, 냉동, 건조, 가공 식품)',
 
-    WAREHOUSE_ID INT                           NOT NULL COMMENT '창고 ID(FK)',
+    WAREHOUSE_ID INT                                                NOT NULL COMMENT '창고 ID(FK)',
 
     PRIMARY KEY (ID),
     CONSTRAINT FK_WAREHOUSE_SECTION_WAREHOUSE_ID FOREIGN KEY (WAREHOUSE_ID) REFERENCES WAREHOUSE (ID)
