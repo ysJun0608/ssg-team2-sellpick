@@ -11,44 +11,6 @@ public class WaybillDao extends ObjectDBIO {
 
     private Connection conn;
 
-    public Long saveWaybill(Long ordersNum) {
-        conn= open();
-        try {
-            String ordersidsql = "INSERT INTO WAYBILL (ORDERS_ID" +
-                    ") " +
-                    "values(?)";
-
-            //PreparedStatement 얻기 및 값 지정
-            PreparedStatement pstmt = conn.prepareStatement(ordersidsql);
-            //Statement 또는 PreparedStatement를 생성할 때 사용됩니다. 이 상수를 사용하면 데이터베이스에서 자동으로 생성된 키(예: 자동 증가하는 기본 키)를 검색할 수 있습니다.
-            //일반적으로 데이터베이스에서 행을 삽입할 때, 자동으로 생성된 키(Generated Key)를 얻고자 할 때 사용
-
-            // ? 주문번호
-            pstmt.setLong(1, ordersNum);
-
-
-            // sql문 실행
-            int rows = pstmt.executeUpdate();
-
-            // waybill_id(운송장 번호) 값 얻기  -> 이거 출고사용
-            if (rows == 1) {
-                System.out.println("주문번호가 담긴 운송장이 생성되었습니다.");
-                ResultSet rs = pstmt.getGeneratedKeys();
-                if (rs.next()) {
-                    return rs.getLong(1);
-                }
-                rs.close();
-                pstmt.close();
-                close(conn);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0l;
-    }
-
-
-
     public List<SelectWaybillOutPut> updateWaybill(Long ordersNum) {
         List<SelectWaybillOutPut> outputList = null;
         try {
