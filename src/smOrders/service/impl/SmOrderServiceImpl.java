@@ -26,6 +26,9 @@ public class SmOrderServiceImpl implements SmOrdersService {
 //        System.out.print("주문 ID: ");
 //        String order_id = sc.nextLine();
 
+        System.out.print("고객 ID(FK): ");
+        String customer_id = sc.nextLine();
+
         System.out.print("주문 수량: ");
         String quantity = sc.nextLine();
 
@@ -39,9 +42,6 @@ public class SmOrderServiceImpl implements SmOrdersService {
             case "2" -> status = "COMPLETE";
             case "3" -> status = "CANCEL";
         }
-
-        System.out.print("고객 ID(FK): ");
-        String customer_id = sc.nextLine();
 
         System.out.print("쇼핑몰 ID(FK): ");
         String shopping_mall_id = sc.nextLine();
@@ -144,9 +144,6 @@ public class SmOrderServiceImpl implements SmOrdersService {
             System.out.println("고객 전화번호: " + output.customerPhone());
             System.out.println("=".repeat(50));
         }
-
-        System.out.print("번호 선택 : ");
-        String num = null;
     }
     /**
      * 취소된 주문을 조회하여 출력하는 메서드입니다.
@@ -154,7 +151,7 @@ public class SmOrderServiceImpl implements SmOrdersService {
      * @return 조회된 취소된 주문 목록
      */
     @Override
-    public List<smOrders> readAllCanceledOrders() {
+    public void readAllCanceledOrders() {
         // 취소된 주문 정보를 출력하는 부분
         System.out.println("취소된 주문을 조회합니다.");
 
@@ -188,7 +185,6 @@ public class SmOrderServiceImpl implements SmOrdersService {
         System.out.println("번호 선택");
         String num = null;
 
-        return null;
     }
 
     /**
@@ -197,7 +193,7 @@ public class SmOrderServiceImpl implements SmOrdersService {
      * @return 조회된 배송 준비 중인 주문 목록
      */
     @Override
-    public List<smOrders> readAllPreparedOrders() {
+    public void readAllPreparedOrders() {
         // 배송 준비 중인 주문 정보를 출력하는 부분
         System.out.println("배송준비중인 주문을 조회합니다.");
 
@@ -228,6 +224,7 @@ public class SmOrderServiceImpl implements SmOrdersService {
             System.out.println("=".repeat(50));
         }
 
-        return null;
     }
+
+
 }

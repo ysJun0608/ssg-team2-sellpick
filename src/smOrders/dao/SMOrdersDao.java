@@ -9,8 +9,7 @@ import java.sql.*;
 import java.util.*;
 
 public class SMOrdersDao extends ObjectDBIO {
-
-    static Scanner sc = new Scanner(System.in);
+    static  Connection conn = null;
 
     //주문 전체 조회
     /**
@@ -19,7 +18,6 @@ public class SMOrdersDao extends ObjectDBIO {
      * @return 취소된 주문 목록
      */
     public List<SmOrdersOutput> smOrdersReadAll() {
-        Connection conn = null;
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
@@ -82,12 +80,10 @@ public class SMOrdersDao extends ObjectDBIO {
 
                 outputList.add(output);
             }
-
             close(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return outputList;
     }
 
@@ -97,7 +93,7 @@ public class SMOrdersDao extends ObjectDBIO {
      * @return 배송 준비 중인 주문 목록
      */
     public List<SmOrdersOutput> readAllPreparedOrders() {
-        Connection conn = null;
+
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
@@ -176,7 +172,6 @@ public class SMOrdersDao extends ObjectDBIO {
      * @return 취소된 주문 목록
      */
     public List<SmOrdersOutput> readAllCanceledOrders() {
-        Connection conn = null;
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
@@ -255,7 +250,6 @@ public class SMOrdersDao extends ObjectDBIO {
      * @param smorders 업데이트할 주문 정보
      */
     public void updateSmOrdersStatus(smOrders smorders) {
-        Connection conn = null;
 
         try {
             conn = open();
@@ -282,7 +276,6 @@ public class SMOrdersDao extends ObjectDBIO {
      * @return 조회된 주문 객체
      */
     public smOrders findById(Long id) {
-        Connection conn = null;
         smOrders smOrders = null;
 
         try {
@@ -319,7 +312,6 @@ public class SMOrdersDao extends ObjectDBIO {
      * @param smorders 삽입할 주문 정보
      */
     public void insertSmOrders(smOrders smorders) {
-        Connection conn = null;
 
         try {
             // Connection 연결 후 open 호출

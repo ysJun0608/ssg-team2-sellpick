@@ -22,14 +22,15 @@ public interface SmOrdersService {
      *
      * @return 취소된 주문 목록
      */
-    List<smOrders> readAllCanceledOrders();
-
+//    List<smOrders> readAllCanceledOrders();
+    void readAllCanceledOrders();
     /**
      * 배송준비중인 주문을 조회합니다.
      *
      * @return 배송준비중인 주문 목록
      */
-    List<smOrders> readAllPreparedOrders();
+//    List<smOrders> readAllPreparedOrders();
+    void readAllPreparedOrders();
 
     /**
      * 주문 상태를 업데이트합니다.
