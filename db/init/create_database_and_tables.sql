@@ -223,7 +223,7 @@ CREATE TABLE SM_ORDERS
     PAYMENT_AMOUNT        INT                                                               NOT NULL COMMENT '결제 금액',
     CREATED_AT            DATETIME                                DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '주문 일자',
     EXPECTED_AT           DATETIME                                                          NOT NULL COMMENT '예상 배송일',
-    SELLER_SEND_STATUS    ENUM('PREPARING', 'COMPLETE', 'CANCEL') DEFAULT '배송준비중'         NOT NULL COMMENT '판매자 발송 상태(배송준비중, 주문 취소, 배송완료)',
+    SELLER_SEND_STATUS    ENUM('PREPARING', 'COMPLETE', 'CANCEL')                           NOT NULL COMMENT '판매자 발송 상태(배송준비중, 주문 취소, 배송완료)',
 
     CUSTOMER_ID           INT                                                               NOT NULL COMMENT '고객 ID(FK)',
     SHOPPING_MALL_ID      INT                                                               NOT NULL COMMENT '쇼핑몰 ID(FK)',

@@ -6,53 +6,48 @@ import delivery.domain.DeliveryCmp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Scanner;
-/*
+import java.util.List;
+
 public class DeliveryCmpDao extends ObjectDBIO {
-    Scanner sc = new Scanner(System.in);
+
     Connection conn = null;
 
-    //택배사 리스트를 보여주고 택배사를 결정하게 하는 메소드
-    public DeliveryCmp chooseCompany() {
-        ArrayList<DeliveryCmp> deliveryCmpList = new ArrayList<>();
-        conn = open();
+    /**
+     * 데이터베이스에서 택배사 정보를 읽어오고, 사용자에게 선택할 수 있도록 출력한 후
+     * 선택한 택배사의 ID를 반환합니다.
+     *
+     * @return 선택한 택배사의 ID.
+     */
+    public List<DeliveryCmp> readDeliveryCmp() {
+        // 택배사 정보를 담을 리스트 생성
+        List<DeliveryCmp> deliveryCmps = new ArrayList<>();
+
         try {
-            System.out.println("현재 셀픽과 계약된 택배사 입니다.");
-            String companysql = "SELECT * FROM company";
+            conn = open();
 
-            PreparedStatement pstmt = conn.prepareStatement(companysql);
-            ResultSet resultSet = pstmt.executeQuery(companysql);
+            String selectDeliveryCmp = "SELECT id, name FROM delivery_cmp";
+            try (PreparedStatement pstmtD = conn.prepareStatement(selectDeliveryCmp)) {
+                ResultSet dcRs = pstmtD.executeQuery();
 
+                // 데이터베이스에서 가져온 택배사 정보를 리스트에 추가
+                while (dcRs.next()) {
+                    Long id = dcRs.getLong("id");
+                    String name = dcRs.getString("name");
+                    DeliveryCmp dc = new DeliveryCmp();
+                    dc.setId(id);
+                    dc.setName(name);
+                    deliveryCmps.add(dc);
+                }
 
-            while (resultSet.next()) {
-                DeliveryCmp deliveryCmp = new DeliveryCmp();
-                deliveryCmp.setId(resultSet.getLong("id"));
-                deliveryCmp.setName(resultSet.getString("name"));
-                deliveryCmpList.add(deliveryCmp);
+                // 리소스 정리
+                dcRs.close();
             }
-            resultSet.close();
-
-            pstmt.close();
-            close(conn);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        for (DeliveryCmp deliveryCmp : deliveryCmpList)
-            System.out.println(deliveryCmp.toString());
-
-        System.out.println("---------");
-        System.out.println("이용하실 택배사 번호를 입력해주세요");
-
-        int deliveryCompany = Integer.parseInt(sc.nextLine());
-        for (DeliveryCmp deliveryCmp : deliveryCmpList) {
-            if (deliveryCmp.getId() == deliveryCompany) {
-                return deliveryCmp;
-            }
-        }
-        System.out.println("없는 택배사 입니다.");
-        return null;
+        return deliveryCmps;
     }
 }
-*/

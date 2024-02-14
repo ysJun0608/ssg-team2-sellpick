@@ -14,13 +14,13 @@ public class WaybillServiceImpl implements WaybillService {
     WaybillDao waybillDao = new WaybillDao();
     Connection conn = null;
 
-    public void insertWaybill() {
-        System.out.println("주문 번호를 입력해주세요: ");
-        Long ordersNum = Long.parseLong(sc.nextLine());
-        Long waybillId = waybillDao.saveWaybill(ordersNum);
-
-        System.out.println("운송장 pk번호 : " + waybillId);
-    }
+//    public void insertWaybill() {
+//        System.out.println("주문 번호를 입력해주세요: ");
+//        Long ordersNum = Long.parseLong(sc.nextLine());
+//        Long waybillId = waybillDao.saveWaybill(ordersNum);
+//
+//        System.out.println("운송장 pk번호 : " + waybillId);
+//    }
 
     @Override
     public void selectWaybill(Long ordersNum) {

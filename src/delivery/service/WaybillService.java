@@ -4,6 +4,6 @@ import java.util.ArrayList;
 
 public interface WaybillService {
 
-    void insertWaybill();
+//    void insertWaybill();
     void selectWaybill(Long ordersNum);
 }
