@@ -1,14 +1,10 @@
 package inventory.dao;
 
 import DBIO.ObjectDBIO;
-import inventory.domain.InsertReleaseType;
 import inventory.domain.Warehouse;
 import inventory.domain.WarehouseInsertRelease;
 import inventory.enums.WhInOutType;
-import inventory.service.WarehouseInsertReleaseService;
-import inventory.service.impl.WarehouseInsertReleaseServiceImpl;
 import mgtOrders.domain.MgtOrderProductsRelationship;
-import product.domain.Products;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -44,7 +40,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
                     Long id = rs.getLong("ID");
                     Long mgtId = rs.getLong("MGT_ORDERS_ID");
                     Long productsId = rs.getLong("PRODUCTS_ID");
-                    Long amount = rs.getLong("QUANTITY");
+                    int amount = rs.getInt("QUANTITY");
                     // 객체에 값 설정
                     insertProduct.setProductsId(productsId);
                     insertProduct.setQuantity(amount);

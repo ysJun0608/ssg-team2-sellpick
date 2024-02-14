@@ -4,7 +4,7 @@ import lombok.Data;
 import smOrders.enums.SellerSendStatus;
 
 @Data
-public class SMOrders {
+public class smOrders {
     // 주문 id
     private Long id;
     // 상품 수량

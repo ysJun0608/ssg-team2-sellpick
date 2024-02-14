@@ -8,7 +8,7 @@ import inventory.domain.WhSmRelationship;
 import inventory.enums.WhType;
 import inventory.service.WarehouseSectionService;
 import inventory.service.WarehouseService;
-import inventory.service.WhSmRelationShipService;
+import inventory.service.WhSmRelationshipService;
 import smOrders.service.ShoppingMallService;
 import smOrders.service.impl.ShoppingMallServiceImpl;
 
@@ -22,7 +22,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     WarehouseDao warehouseDao = new WarehouseDao();
     DeliveryCmpService deliveryCmpService = new DeliveryCmpServiceImpl();
     ShoppingMallService shoppingMallService = new ShoppingMallServiceImpl();
-    WhSmRelationShipService whSmRelationShipService = new WhSmRelationShipServiceImpl();
+    WhSmRelationshipService whSmRelationShipService = new WhSmRelationshipServiceImpl();
     WarehouseSectionService warehouseSectionService = new WarehouseSectionServiceImpl();
 
     @Override
@@ -70,7 +70,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         whSmRelationShip.setWarehouseId(warehousePk);
         whSmRelationShip.setShoppingMallId(chooseDcId);
 
-        whSmRelationShipService.createWhSmRelationShip(whSmRelationShip);
+        whSmRelationShipService.createWhSmRelationship(whSmRelationShip);
 
 
         warehouseSectionService.createWarehouseSection(warehouse);

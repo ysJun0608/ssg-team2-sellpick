@@ -16,4 +16,5 @@ public class Customer {
     private String phone;
     // 주소
     private String address;
-}
+
+    }

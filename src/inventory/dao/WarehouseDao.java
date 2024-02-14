@@ -1,18 +1,14 @@
 package inventory.dao;
 
 import DBIO.ObjectDBIO;
-import delivery.domain.DeliveryCmp;
-import inventory.domain.WarehouseType;
 import inventory.domain.Warehouse;
 import inventory.enums.WhType;
-import smOrders.domain.ShoppingMall;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class WarehouseDao extends ObjectDBIO {
 
