@@ -1,7 +1,10 @@
 package inventory.domain;
 
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+@Data
 public class Settlement {
     // 마감 id
     private Long id;

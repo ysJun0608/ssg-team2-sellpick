@@ -1,5 +1,9 @@
 package smOrders.domain;
 
+import lombok.Data;
+import smOrders.enums.SellerSendStatus;
+
+@Data
 public class SMOrders {
     // 주문 id
     private Long id;
@@ -12,7 +16,7 @@ public class SMOrders {
     // 발송 예정일
     private String expectedAt;
     // 판매자 발송 상태(배송준비중, 주문 취소, 배송완료)
-    private String sellerSendStatus; // TODO : enum으로 변경
+    private SellerSendStatus status;
     // 주문자(고객) id
     private Long customerId;
     // 쇼핑몰 id

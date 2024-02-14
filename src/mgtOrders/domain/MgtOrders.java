@@ -2,6 +2,7 @@ package mgtOrders.domain;
 
 import lombok.Data;
 import mgtOrders.enums.MgtOrdersStatus;
+
 @Data
 public class MgtOrders {
     // 발주 id
@@ -12,6 +13,6 @@ public class MgtOrders {
     private MgtOrdersStatus status;
     // 발주 일자
     private String createdAt;
-    //창고 아이디(FK)
+    // 창고 id (FK)
     private Long warehouseId;
 }

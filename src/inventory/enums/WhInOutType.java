@@ -1,16 +1,12 @@
 package inventory.enums;
 
-import lombok.Data;
-
-
 public enum WhInOutType {
-    INSERT_REQUEST("입고대기"),
-    INSERT_CANCEL("입고취소"),
-    INSERT_CONFIRM("입고확인"),
-
-    RELEASE_REQUEST("출고대기"),
-    RELEASE_CANCEL("출고취소"),
-    RELEASE_CONFIRM("출고확인");
+    INSERT_WAIT("입고 대기"),
+    INSERT_CONFIRM("입고 확정"),
+    INSERT_CANCEL("입고 취소"),
+    RELEASE_WAIT("출고 대기"),
+    RELEASE_CONFIRM("출고 확정"),
+    RELEASE_CANCEL("출고 취소");
 
     private String desc;
 

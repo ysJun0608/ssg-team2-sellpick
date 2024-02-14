@@ -1,5 +1,8 @@
 package mgtOrders.domain;
 
+import lombok.Data;
+
+@Data
 public class MgtOrdersProductsRelationship {
     // 발주 상품 관계 id
     private Long id;
