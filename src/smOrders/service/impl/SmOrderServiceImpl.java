@@ -1,9 +1,9 @@
 package smOrders.service.impl;
 
 import smOrders.dao.SMOrdersDao;
-import smOrders.domain.SellerSendStatus;
 import smOrders.domain.smOrders;
 import smOrders.dto.SmOrdersOutput;
+import smOrders.enums.SellerSendStatus;
 import smOrders.service.SmOrdersService;
 
 import java.util.List;
