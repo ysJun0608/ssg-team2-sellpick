@@ -1,9 +1,9 @@
 package smOrders.dao;
 
 import DBIO.ObjectDBIO;
-import smOrders.domain.SellerSendStatus;
 import smOrders.domain.smOrders;
 import smOrders.dto.SmOrdersOutput;
+import smOrders.enums.SellerSendStatus;
 
 import java.sql.*;
 import java.util.*;

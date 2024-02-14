@@ -1,6 +1,7 @@
 package smOrders.domain;
 
 import lombok.Data;
+import smOrders.enums.SellerSendStatus;
 
 @Data
 public class smOrders {
