@@ -1,7 +1,7 @@
 package inventory.dao;
 
 import DBIO.ObjectDBIO;
-import inventory.domain.WhSmRelationShip;
+import inventory.domain.WhSmRelationship;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ import java.sql.Statement;
 
 public class WhSmRelationshipDao extends ObjectDBIO {
     Connection conn = null;
-    public void saveWhSmRelationShip(WhSmRelationShip whSmRelationShip) {
+    public void saveWhSmRelationShip(WhSmRelationship whSmRelationShip) {
         conn = open();
         try {
 
