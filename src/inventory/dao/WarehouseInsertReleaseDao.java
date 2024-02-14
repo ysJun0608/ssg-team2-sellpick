@@ -40,7 +40,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
                     Long id = rs.getLong("ID");
                     Long mgtId = rs.getLong("MGT_ORDERS_ID");
                     Long productsId = rs.getLong("PRODUCTS_ID");
-                    Long amount = rs.getLong("QUANTITY");
+                    int amount = rs.getInt("QUANTITY");
                     // 객체에 값 설정
                     insertProduct.setProductsId(productsId);
                     insertProduct.setQuantity(amount);
