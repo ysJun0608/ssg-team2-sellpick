@@ -2,7 +2,6 @@ package smOrders.domain;
 
 import lombok.Data;
 
-
 @Data
 public class smOrders {
     // 주문 id

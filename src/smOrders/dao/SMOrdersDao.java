@@ -13,12 +13,17 @@ public class SMOrdersDao extends ObjectDBIO {
     static Scanner sc = new Scanner(System.in);
 
     //주문 전체 조회
+    /**
+     * DB에서 취소된 주문 정보를 조회하여 반환합니다.
+     *
+     * @return 취소된 주문 목록
+     */
     public List<SmOrdersOutput> smOrdersReadAllCanCel() {
         Connection conn = null;
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
-            conn = open(); // ObjectDBIO open메소드 호출
+            conn = open(); // ObjectDBIO open 메소드 호출
 
             String sql = "SELECT \n" +
                     "    SO.ID AS order_id,\n" +
@@ -86,13 +91,17 @@ public class SMOrdersDao extends ObjectDBIO {
         return outputList;
     }
 
-    //주문 배송준비중 조회
+    /**
+     * DB에서 배송 준비 중인 주문 정보를 조회하여 반환합니다.
+     *
+     * @return 배송 준비 중인 주문 목록
+     */
     public List<SmOrdersOutput> readAllPreparedOrders() {
         Connection conn = null;
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
-            conn = open(); // ObjectDBIO open메소드 호출
+            conn = open(); // ObjectDBIO open 메소드 호출
 
             String sql = "SELECT \n" +
                     "    SO.ID AS order_id,\n" +
@@ -161,13 +170,17 @@ public class SMOrdersDao extends ObjectDBIO {
         return outputList;
     }
 
-    //배송취소건 조회
+    /**
+     * DB에서 취소된 주문 정보를 조회하여 반환합니다.
+     *
+     * @return 취소된 주문 목록
+     */
     public List<SmOrdersOutput> readAllCanceledOrders() {
         Connection conn = null;
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
-            conn = open(); // ObjectDBIO open메소드 호출
+            conn = open(); // ObjectDBIO open 메소드 호출
 
             String sql = "SELECT \n" +
                     "    SO.ID AS order_id,\n" +
@@ -236,16 +249,19 @@ public class SMOrdersDao extends ObjectDBIO {
         return outputList;
     }
 
+    /**
+     * 주문 상태를 업데이트합니다.
+     *
+     * @param smorders 업데이트할 주문 정보
+     */
     public void updateSmOrdersStatus(smOrders smorders) {
         Connection conn = null;
-        // 주문번호
+
         try {
             conn = open();
 
-            //주문 업데이트
             String sqlOrder = "UPDATE sm_orders SET SELLER_SEND_STATUS = ?  WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sqlOrder);
-
 
             pstmt.setString(1, String.valueOf(smorders.getStatus()));
             pstmt.setLong(2, smorders.getId());
@@ -257,15 +273,20 @@ public class SMOrdersDao extends ObjectDBIO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
-    }//Sm_Orders_Update
-
+    /**
+     * 주어진 ID에 해당하는 주문을 조회합니다.
+     *
+     * @param id 조회할 주문 ID
+     * @return 조회된 주문 객체
+     */
     public smOrders findById(Long id) {
         Connection conn = null;
         smOrders smOrders = null;
-        int orderId = 0;
+
         try {
-            conn = open(); // ObjectDBIO open메소드 호출
+            conn = open();
 
             String sql = "SELECT * FROM SM_ORDERS WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -274,17 +295,16 @@ public class SMOrdersDao extends ObjectDBIO {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 smOrders = new smOrders();
-                smOrders.setId(id);// 주문 ID
-                smOrders.setQuantity(rs.getInt("quantity")); // 주문 수량
-                smOrders.setPaymentAmount(rs.getInt("payment_amount"));  //결제 금액
-                smOrders.setCreatedAt(rs.getString("created_at"));  //주문 일자
-                smOrders.setExpectedAt(rs.getString("expected_at"));  //예상 배송일
+                smOrders.setId(id);
+                smOrders.setQuantity(rs.getInt("quantity"));
+                smOrders.setPaymentAmount(rs.getInt("payment_amount"));
+                smOrders.setCreatedAt(rs.getString("created_at"));
+                smOrders.setExpectedAt(rs.getString("expected_at"));
                 String sellerSendStatusTemp = rs.getString("seller_send_status");
-                System.out.println(sellerSendStatusTemp);
-                smOrders.setStatus(SellerSendStatus.valueOf(sellerSendStatusTemp));  //판매자 발송 상태(배송준비중, 주문 취소, 배송완료)
-                smOrders.setCustomerId(rs.getLong("customer_id"));  //고객 ID(FK)
-                smOrders.setShoppingMallId(rs.getLong("shopping_mall_id"));  //쇼핑몰 ID(FK)
-                smOrders.setProductId(rs.getLong("products_id")); //상품 ID(FK)
+                smOrders.setStatus(SellerSendStatus.valueOf(sellerSendStatusTemp));
+                smOrders.setCustomerId(rs.getLong("customer_id"));
+                smOrders.setShoppingMallId(rs.getLong("shopping_mall_id"));
+                smOrders.setProductId(rs.getLong("products_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -293,16 +313,21 @@ public class SMOrdersDao extends ObjectDBIO {
         return smOrders;
     }
 
-
+    /**
+     * 주문 정보를 삽입합니다.
+     *
+     * @param smorders 삽입할 주문 정보
+     */
     public void insertSmOrdersStatus(smOrders smorders) {
         Connection conn = null;
-        // 주문번호
+
         try {
-            //주문 업데이트
+            // Connection 연결 후 open 호출
+            conn = open();
+
             String sqlOrder = "INSERT INTO sm_orders (ID, QUANTITY, PAYMENT_AMOUNT, CREATED_AT,  EXPECTED_AT, SELLER_SEND_STATUS, CUSTOMER_ID, SHOPPING_MALL_ID, PRODUCTS_ID ) VALUES (?, ?, ?, now(), now(), ?, ?, ?, ? )";
             PreparedStatement pstmt = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
-            // 주문 추가
-//            pstmt.setString(1, String.valueOf(smorders.getStatus()));
+
             pstmt.setLong(1, smorders.getId());
             pstmt.setInt(2, smorders.getQuantity());
             pstmt.setInt(3, smorders.getPaymentAmount());
@@ -317,8 +342,7 @@ public class SMOrdersDao extends ObjectDBIO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    }//Sm_Orders_Update
+    }
 
 
 }

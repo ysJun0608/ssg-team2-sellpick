@@ -75,41 +75,47 @@ CREATE TABLE SETTLEMENT
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI
     COMMENT = '정산(일)';
 
-# 발주 관리
-CREATE TABLE MGT_ORDERS
-(
-    ID             INT                                AUTO_INCREMENT            NOT NULL,
-    PURCHASER      VARCHAR(10)                                                  NULL     COMMENT '매입 거래처',
-    STATUS         ENUM('READY', 'DONE', 'DELIVERED') DEFAULT 'READY'           NOT NULL COMMENT '발주 상태 (준비중, 완료, 배송완료)',
-    CREATED_AT     DATETIME                           DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '발주 일자',
-
-    PRIMARY KEY (ID)
-) ENGINE = INNODB DEFAULT CHARSET = UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI
-    COMMENT = '발주 관리';
 
 # ================================================================================================================================================================
 
 # 창고
 CREATE TABLE WAREHOUSE
 (
-    ID              INT                 AUTO_INCREMENT NOT NULL,
-    TYPE            ENUM ('DRY', 'WET')                NOT NULL COMMENT '입고 OR 출고',
-    LOCATION        VARCHAR(5)                         NULL     COMMENT '창고 위치',
+    ID              INT                         AUTO_INCREMENT NOT NULL,
+    TYPE            ENUM('DRY', 'WET', 'BOTH')                 NOT NULL COMMENT '입고 OR 출고',
+    LOCATION        VARCHAR(50)                                NULL     COMMENT '창고 위치',
 
-    DELIVERY_CMP_ID INT                                NOT NULL COMMENT '택배사 ID(FK)',
+    DELIVERY_CMP_ID INT                                        NOT NULL COMMENT '택배사 ID(FK)',
 
     PRIMARY KEY (ID),
     CONSTRAINT FK_WAREHOUSE_DELIVERY_CMP_ID FOREIGN KEY (DELIVERY_CMP_ID) REFERENCES DELIVERY_CMP (ID)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI
     COMMENT = '창고';
 
+# 발주 관리
+CREATE TABLE MGT_ORDERS
+(
+    ID             INT                                                    AUTO_INCREMENT            NOT NULL,
+    PURCHASER      VARCHAR(10)                                                                      NULL     COMMENT '매입 거래처',
+    STATUS         ENUM('READY', 'DONE', 'DELIVERED', 'CANCEL', 'RETURN') DEFAULT 'READY'           NOT NULL COMMENT '발주 상태 (준비중, 완료, 배송완료)',
+    CREATED_AT     DATETIME                                               DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '발주 일자',
+    WAREHOUSE_ID   INT                                                    NOT NULL COMMENT '창고 ID(FK)',
+
+    PRIMARY KEY (ID),
+    CONSTRAINT FK_MGT_ORDERS_WAREHOUSE_ID FOREIGN KEY (WAREHOUSE_ID) REFERENCES WAREHOUSE (ID)
+) ENGINE = INNODB DEFAULT CHARSET = UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI
+    COMMENT = '발주 관리';
+
+
 # 창고 구역
 CREATE TABLE WAREHOUSE_SECTION
 (
-    ID           INT            AUTO_INCREMENT NOT NULL,
-    NAME         VARCHAR(10)                   NOT NULL COMMENT '창고 구역 이름',
+    ID           INT AUTO_INCREMENT                                 NOT NULL,
+    NAME         VARCHAR(10)                                        NOT NULL COMMENT '창고 구역 이름',
+    # 냉장, 냉동, 건조, 가공 식품
+    TYPE         ENUM('REFRIGERATED', 'FROZEN', 'DRY', 'PROCESSED') NOT NULL COMMENT '창고 구역 타입(냉장, 냉동, 건조, 가공 식품)',
 
-    WAREHOUSE_ID INT                           NOT NULL COMMENT '창고 ID(FK)',
+    WAREHOUSE_ID INT                                                NOT NULL COMMENT '창고 ID(FK)',
 
     PRIMARY KEY (ID),
     CONSTRAINT FK_WAREHOUSE_SECTION_WAREHOUSE_ID FOREIGN KEY (WAREHOUSE_ID) REFERENCES WAREHOUSE (ID)
@@ -168,8 +174,9 @@ CREATE TABLE WAREHOUSE_INSERT_RELEASE
     ID              INT                       AUTO_INCREMENT             NOT NULL,
     QUANTITY        INT                       DEFAULT 0                  NOT NULL COMMENT '수량',
     CREATED_AT      DATETIME                  DEFAULT CURRENT_TIMESTAMP  NOT NULL COMMENT '입고 OR 출고 날짜',
-    TYPE            ENUM('INSERT', 'RELEASE')                            NOT NULL COMMENT '입고(INSERT) OR 출고(RELEASE)',
+    TYPE            ENUM('INSERT_REQUEST', 'INSERT_CANCEL', 'INSERT_CONFIRM', 'RELEASE_REQUEST', 'RELEASE_CANCEL', 'RELEASE_CONFIRM') NOT NULL COMMENT '입고(INSERT) OR 출고(RELEASE)',
     TOTAL_PRICE     INT                       DEFAULT 0                  NOT NULL COMMENT '총 금액',
+    FK_ID           INT                                                  NOT NULL COMMENT '임의의 외래키(TYPE이 INSERT_*일 경우 MGT_ORDERS_ID, RELEASE_*일 경우 SM_ORDERS_ID)',
 
     INVENTORY_ID    INT                                                  NOT NULL COMMENT '재고 ID(FK)',
 
@@ -177,6 +184,8 @@ CREATE TABLE WAREHOUSE_INSERT_RELEASE
     CONSTRAINT FK_WAREHOUSE_INSERT_RELEASE_INVENTORY_ID FOREIGN KEY (INVENTORY_ID) REFERENCES INVENTORY (ID)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI
     COMMENT = '창고 입출고';
+
+
 
 # 창고 입출고 정산 관계
 CREATE TABLE WH_INOUT_SETTLEMENT_RELATIONSHIP (
@@ -209,16 +218,16 @@ CREATE TABLE MGT_ORDERS_PRODUCTS_RELATIONSHIP
 # 쇼핑몰 주문
 CREATE TABLE SM_ORDERS
 (
-    ID                    INT                                 AUTO_INCREMENT            NOT NULL,
-    QUANTITY              INT                                                           NOT NULL COMMENT '주문 수량',
-    PAYMENT_AMOUNT        INT                                                           NOT NULL COMMENT '결제 금액',
-    CREATED_AT            DATETIME                            DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '주문 일자',
-    EXPECTED_AT           DATETIME                                                      NOT NULL COMMENT '예상 배송일',
-    SELLER_SEND_STATUS    ENUM('배송준비중', '배송완료', '주문취소') DEFAULT '배송준비중'         NOT NULL COMMENT '판매자 발송 상태(배송준비중, 주문 취소, 배송완료)',
+    ID                    INT                                     AUTO_INCREMENT            NOT NULL,
+    QUANTITY              INT                                                               NOT NULL COMMENT '주문 수량',
+    PAYMENT_AMOUNT        INT                                                               NOT NULL COMMENT '결제 금액',
+    CREATED_AT            DATETIME                                DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '주문 일자',
+    EXPECTED_AT           DATETIME                                                          NOT NULL COMMENT '예상 배송일',
+    SELLER_SEND_STATUS    ENUM('PREPARING', 'COMPLETE', 'CANCEL')                           NOT NULL COMMENT '판매자 발송 상태(배송준비중, 주문 취소, 배송완료)',
 
-    CUSTOMER_ID           INT                                                           NOT NULL COMMENT '고객 ID(FK)',
-    SHOPPING_MALL_ID      INT                                                           NOT NULL COMMENT '쇼핑몰 ID(FK)',
-    PRODUCTS_ID           INT                                                           NOT NULL COMMENT '상품 ID(FK)',
+    CUSTOMER_ID           INT                                                               NOT NULL COMMENT '고객 ID(FK)',
+    SHOPPING_MALL_ID      INT                                                               NOT NULL COMMENT '쇼핑몰 ID(FK)',
+    PRODUCTS_ID           INT                                                               NOT NULL COMMENT '상품 ID(FK)',
 
     PRIMARY KEY (ID),
     CONSTRAINT FK_SM_ORDERS_CUSTOMER_ID         FOREIGN KEY (CUSTOMER_ID)       REFERENCES CUSTOMER (ID),
@@ -230,8 +239,8 @@ CREATE TABLE SM_ORDERS
 # 운송장
 CREATE TABLE WAYBILL
 (
-    ID              INT      AUTO_INCREMENT            NOT NULL COMMENT '운송장 ID',
-    DELIVERY_AT     DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '배송 시작 일자',
+    ID              INT AUTO_INCREMENT NOT NULL                             COMMENT '운송장 ID',
+    DELIVERY_AT   DATETIME           NOT NULL DEFAULT CURRENT_TIMESTAMP   COMMENT '배송 시작 일자',
 
     ORDERS_ID       INT                                NOT NULL COMMENT '주문 ID(FK)',
 
