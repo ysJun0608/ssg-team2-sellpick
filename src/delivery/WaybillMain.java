@@ -1,15 +1,19 @@
 package delivery;
 
 import delivery.dao.WaybillDao;
+import delivery.service.WaybillService;
+import delivery.service.impl.WaybillServiceImpl;
 
 
 public class WaybillMain {
     public static void main(String[] args) {
-        WaybillDao waybillDao = new WaybillDao();
+        WaybillService waybillService = new WaybillServiceImpl();
+        waybillService.insertWaybill();
         System.out.println("insertWaybill======================");
-        Long ordersNum = waybillDao.insertWaybill();
 
         System.out.println("selectWaybill======================");
-        waybillDao.selectWaybill(ordersNum);
+
+        Long longTemp = 2l;
+        waybillService.selectWaybill(longTemp);
     }
 }

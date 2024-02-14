@@ -1,12 +1,12 @@
 package delivery.domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Waybill {
     // 운송장 번호
     private Long id;
     // 운송 시작 날짜
-    private LocalDate delivery_At;
+    private LocalDateTime delivery_At;
     // 주문 id
     private Long orders_id;
     // 고객 id
@@ -20,11 +20,11 @@ public class Waybill {
         this.id = id;
     }
 
-    public LocalDate getDelivery_At() {
+    public LocalDateTime getDelivery_At() {
         return delivery_At;
     }
 
-    public void setDelivery_At(LocalDate delivery_At) {
+    public void setDelivery_At(LocalDateTime delivery_At) {
         this.delivery_At = delivery_At;
     }
 

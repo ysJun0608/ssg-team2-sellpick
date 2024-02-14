@@ -1,6 +1,6 @@
 package delivery.domain;
 
-    // 더미 데이터 만들어서 사용
+// 더미 데이터 만들어서 사용
 public class DeliveryCmp {
     // 택배사 id
     private Long id;
@@ -31,5 +31,4 @@ public class DeliveryCmp {
                     ", name='" + name + '\'' +
                     '}';
         }
-
 }

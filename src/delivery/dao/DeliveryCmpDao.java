@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Scanner;
-
+/*
 public class DeliveryCmpDao extends ObjectDBIO {
     Scanner sc = new Scanner(System.in);
     Connection conn = null;
@@ -55,3 +55,4 @@ public class DeliveryCmpDao extends ObjectDBIO {
         return null;
     }
 }
+*/

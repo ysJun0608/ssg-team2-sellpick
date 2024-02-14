@@ -5,5 +5,4 @@ public class ShoppingMall {
     private Long id;
     // 쇼핑몰 명
     private String name;
-
 }

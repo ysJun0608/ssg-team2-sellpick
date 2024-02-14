@@ -5,6 +5,4 @@ public class Brand {
     private Long id;
     // 브랜드 이름
     private String name;
-    // 브랜드 코드
-    private String code;
 }

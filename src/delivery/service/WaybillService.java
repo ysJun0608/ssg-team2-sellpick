@@ -1,6 +1,9 @@
 package delivery.service;
 
+import java.util.ArrayList;
+
 public interface WaybillService {
-    void registerWaybill();
-    void modifyWaybill();
+
+    void insertWaybill();
+    void selectWaybill(Long ordersNum);
 }
