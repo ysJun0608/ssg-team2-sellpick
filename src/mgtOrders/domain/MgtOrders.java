@@ -13,4 +13,6 @@ public class MgtOrders {
     private MgtOrdersStatus status;
     // 발주 일자
     private String createdAt;
+    // 창고 id (FK)
+    private Long warehouseId;
 }
