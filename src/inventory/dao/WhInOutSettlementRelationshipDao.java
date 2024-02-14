@@ -1,4 +1,6 @@
 package inventory.dao;
 
-public class WhInOutSettlementRelationshipDao {
+import DBIO.ObjectDBIO;
+
+public class WhInOutSettlementRelationshipDao extends ObjectDBIO {
 }
