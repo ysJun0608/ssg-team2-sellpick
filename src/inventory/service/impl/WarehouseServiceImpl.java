@@ -4,23 +4,18 @@ import delivery.service.DeliveryCmpService;
 import delivery.service.impl.DeliveryCmpServiceImpl;
 import inventory.dao.WarehouseDao;
 import inventory.domain.Warehouse;
-import inventory.domain.WhSmRelationShip;
+import inventory.domain.WhSmRelationship;
 import inventory.enums.WhType;
 import inventory.service.WarehouseSectionService;
 import inventory.service.WarehouseService;
 import inventory.service.WhSmRelationShipService;
-import smOrders.domain.ShoppingMall;
 import smOrders.service.ShoppingMallService;
 import smOrders.service.impl.ShoppingMallServiceImpl;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class WarehouseServiceImpl implements WarehouseService {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
@@ -71,7 +66,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 
         Long smNum = shoppingMallService.chooseShoppingMall();
 
-        WhSmRelationShip whSmRelationShip = new WhSmRelationShip();
+        WhSmRelationship whSmRelationShip = new WhSmRelationship();
         whSmRelationShip.setWarehouseId(warehousePk);
         whSmRelationShip.setShoppingMallId(chooseDcId);
 
