@@ -9,6 +9,8 @@ import java.util.List;
 public class BrandDao extends ObjectDBIO {
 /*
     브랜드 코드 ID에 해당하는 브랜드 이름을 데이터베이스에서 조회합니다.
+
+
 */
     public String getBrandName(int brandCodeId) {
         Connection conn = open();
@@ -38,21 +40,7 @@ public class BrandDao extends ObjectDBIO {
         Connection conn = open();
         List<String> brand = new ArrayList<>();
 
-        try {
-            String sql = "SELECT name FROM brand";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()) {
-                brand.add(rs.getString("name"));
-            }
-
-            rs.close();
-            pstmt.close();
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
 
         return brand;
     }

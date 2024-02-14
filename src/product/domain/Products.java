@@ -1,5 +1,8 @@
 package product.domain;
 
+
+
+
 public class Products {
     // 상품 id
     private Long id;
@@ -16,9 +19,33 @@ public class Products {
     // 사업자 id
     private Long businessOwnerId;
     // 창고 id
-    private Long warehouseId;
+    private String warehouseSectionName;
+    private String warehouseLocation;
+    private int quantity;
 
-    // GETTER, SETTER
+    @Override
+    public String toString() {
+        return "Products{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", status=" + status +
+                ", price=" + price +
+                ", cost=" + cost +
+                ", brandId=" + brandId +
+                ", businessOwnerId=" + businessOwnerId +
+                ", warehouseSectionName='" + warehouseSectionName + '\'' +
+                ", warehouseLocation='" + warehouseLocation + '\'' +
+                '}';
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     public Long getId() {
         return id;
     }
@@ -75,11 +102,19 @@ public class Products {
         this.businessOwnerId = businessOwnerId;
     }
 
-    public Long getWarehouseId() {
-        return warehouseId;
+    public String getWarehouseSectionName() {
+        return warehouseSectionName;
     }
 
-    public void setWarehouseId(Long warehouseId) {
-        this.warehouseId = warehouseId;
+    public void setWarehouseSectionName(String warehouseSectionName) {
+        this.warehouseSectionName = warehouseSectionName;
+    }
+
+    public String getWarehouseLocation() {
+        return warehouseLocation;
+    }
+
+    public void setWarehouseLocation(String warehouseLocation) {
+        this.warehouseLocation = warehouseLocation;
     }
 }
