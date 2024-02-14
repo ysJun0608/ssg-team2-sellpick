@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @ToString
 public class MgtOrder {
     // 발주 id
-    private int id;
+    private Long id;
     // 매입 거래처
     private String purchaser;
     // 발주 상태

@@ -2,7 +2,7 @@ package mgtOrders.domain;
 
 public class MgtOrderProductsRelationship {
     // 발주 상품 관계 id
-    private int id;
+    private Long id;
 
     // 수량
     private int quantity;

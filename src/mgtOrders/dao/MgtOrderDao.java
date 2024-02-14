@@ -10,10 +10,10 @@ import java.util.Map;
 public class MgtOrderDao extends ObjectDBIO {
     Connection conn = null;
 
-    public int createOrder(String purChaser, Timestamp createdAt) throws SQLException {
+    public Long createOrder(String purChaser, Timestamp createdAt) throws SQLException {
         PreparedStatement pstmt = null;
         String sql = "";
-        int id = 0;
+        Long id = 0L;
         conn = open();
 
         sql = "INSERT INTO mgt_orders(PURCHASER, STATUS, CREATED_AT) VALUES (?, ?, ?)";
@@ -27,7 +27,7 @@ public class MgtOrderDao extends ObjectDBIO {
         ResultSet resultSet = pstmt.executeQuery();
 
         while (resultSet.next()) {
-            id = resultSet.getInt("ID");
+            id = resultSet.getLong("ID");
         }
 
         if (pstmt != null)
@@ -38,7 +38,7 @@ public class MgtOrderDao extends ObjectDBIO {
         return id;
     }
 
-    public boolean addItem(int id, Map<Integer, Integer> products) throws SQLException {
+    public boolean addItem(Long id, Map<Integer, Integer> products) throws SQLException {
         PreparedStatement pstmt = null;
         String sql = "";
         int flag = 0;
@@ -49,7 +49,7 @@ public class MgtOrderDao extends ObjectDBIO {
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, entry.getValue());
             pstmt.setInt(2, entry.getKey());
-            pstmt.setInt(3, id);
+            pstmt.setLong(3, id);
             flag = pstmt.executeUpdate();
             if (flag == 0) {
                 break;
@@ -65,7 +65,7 @@ public class MgtOrderDao extends ObjectDBIO {
     }
 
 
-    public boolean confirmOrder(int orderId) throws SQLException {
+    public boolean confirmOrder(Long orderId) throws SQLException {
         PreparedStatement pstmt = null;
         int flag = 0;
         conn = open();
@@ -73,7 +73,7 @@ public class MgtOrderDao extends ObjectDBIO {
 
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, "DONE");
-        pstmt.setInt(2, orderId);
+        pstmt.setLong(2, orderId);
         flag = pstmt.executeUpdate();
 
         if (pstmt != null)
@@ -85,7 +85,7 @@ public class MgtOrderDao extends ObjectDBIO {
     }
 
 
-    public boolean cancelOrder(int orderId) throws SQLException {
+    public boolean cancelOrder(Long orderId) throws SQLException {
         PreparedStatement pstmt = null;
         int flag = 0;
         conn = open();
@@ -93,7 +93,7 @@ public class MgtOrderDao extends ObjectDBIO {
 
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, "READY");
-        pstmt.setInt(2, orderId);
+        pstmt.setLong(2, orderId);
         flag = pstmt.executeUpdate();
 
         if (pstmt != null)
@@ -119,7 +119,7 @@ public class MgtOrderDao extends ObjectDBIO {
         ResultSet resultSet = pstmt.executeQuery();
 
         while (resultSet.next()) {
-            int id = resultSet.getInt("ID");
+            Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
             String tempStatus = resultSet.getString("STATUS");
             Timestamp date = resultSet.getTimestamp("CREATED_AT");
@@ -147,7 +147,7 @@ public class MgtOrderDao extends ObjectDBIO {
         ResultSet resultSet = pstmt.executeQuery();
 
         while (resultSet.next()) {
-            int id = resultSet.getInt("ID");
+            Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
             String tempStatus = resultSet.getString("STATUS");
             Timestamp date = resultSet.getTimestamp("CREATED_AT");
@@ -164,7 +164,7 @@ public class MgtOrderDao extends ObjectDBIO {
     }
 
 
-    public boolean insertList(ArrayList<Integer> sellectNum, String status) throws SQLException {
+    public boolean insertList(ArrayList<Long> sellectNum, String status) throws SQLException {
         PreparedStatement pstmt = null;
         int flag = 0;
         conn = open();
@@ -173,8 +173,8 @@ public class MgtOrderDao extends ObjectDBIO {
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, status);
 
-        for (int num : sellectNum) {
-            pstmt.setInt(2, num);
+        for (Long num : sellectNum) {
+            pstmt.setLong(2, num);
             pstmt.executeUpdate();
         }
 
@@ -206,7 +206,7 @@ public class MgtOrderDao extends ObjectDBIO {
         ResultSet resultSet = pstmt.executeQuery();
 
         while (resultSet.next()) {
-            int id = resultSet.getInt("ID");
+            Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
             String tempStatus = resultSet.getString("STATUS");
             Timestamp tempDate = resultSet.getTimestamp("CREATED_AT");
@@ -223,14 +223,14 @@ public class MgtOrderDao extends ObjectDBIO {
     }
 
 
-    public boolean delete(int orderId) throws SQLException {
+    public boolean delete(Long orderId) throws SQLException {
         PreparedStatement pstmt = null;
         int flag = 0;
         conn = open();
         String sql = "DELETE FROM mgt_orders WHERE ID = ?";
 
         pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, orderId);
+        pstmt.setLong(1, orderId);
         flag = pstmt.executeUpdate();
 
         if (pstmt != null)

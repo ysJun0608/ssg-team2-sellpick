@@ -36,9 +36,9 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             java.util.Date today = new java.util.Date();
             java.sql.Timestamp createdAt = new java.sql.Timestamp(today.getTime());
 
-            int id = mgtOrderDao.createOrder(purChaser, createdAt);
+            Long id = mgtOrderDao.createOrder(purChaser, createdAt);
 
-            if (id <= 0) {
+            if (id <= 0L) {
                 System.out.println("발주마스터 생성에 실패하였습니다. 재생성합니다.");
             }
 
@@ -97,7 +97,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         boolean flag = false;
         try {
             System.out.print("확정할 발주 ID를 입력하세요 : ");
-            int orderId = Integer.parseInt(bufferedReader.readLine());
+            Long orderId = Long.parseLong(bufferedReader.readLine());
 
             System.out.print("주문을 확정하시겠습니까 ? y/n : ");
             String temp = bufferedReader.readLine();
@@ -126,7 +126,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 
         try {
             System.out.print("확정 취소할 발주 ID를 입력하세요 : ");
-            int orderId = Integer.parseInt(bufferedReader.readLine());
+            Long orderId = Long.parseLong(bufferedReader.readLine());
 
             System.out.print("확정된 주문을 취소하시겠습니까 ? y/n : ");
             String temp = bufferedReader.readLine();
@@ -153,7 +153,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 
     @Override
     public void confirmList() {
-        ArrayList<Integer> sellectNum = new ArrayList<>();
+        ArrayList<Long> sellectNum = new ArrayList<>();
         ArrayList<MgtOrder> mgtOrders = new ArrayList<>();
         try {
             mgtOrders = mgtOrderDao.selectOrderList("READY");
@@ -168,7 +168,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             System.out.println("선택이 끝나면 0를 입력해주세요");
 
             while (true) {
-                int input = Integer.parseInt(bufferedReader.readLine());
+                Long input = Long.parseLong(bufferedReader.readLine());
                 if (input == 0) {
                     break;
                 }
@@ -209,7 +209,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         boolean flag = false;
         System.out.print("삭제할 발주 ID를 입력하세요 : ");
         try {
-            int orderId = Integer.parseInt(bufferedReader.readLine());
+            Long orderId = Long.parseLong(bufferedReader.readLine());
             flag = mgtOrderDao.delete(orderId);
         } catch (IOException e) {
             throw new RuntimeException(e);
