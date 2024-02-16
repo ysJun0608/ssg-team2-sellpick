@@ -3,10 +3,13 @@ package inventory.dao;
 import DBIO.ObjectDBIO;
 import inventory.domain.Warehouse;
 import inventory.domain.WarehouseSection;
+import inventory.enums.WhSectionType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class WarehouseSectionDao extends ObjectDBIO {
     Connection conn = null;
@@ -35,5 +38,27 @@ public class WarehouseSectionDao extends ObjectDBIO {
             e.printStackTrace(); // 실제 상황에 따라 로깅 등으로 변경
         }
         return result;
+    }
+
+
+    public ArrayList selectWarehouseSection(Long chooseScId) {
+        ArrayList<WarehouseSection> warehouseSections = new ArrayList<>();
+
+        try { conn = open();
+            String sql = "SELECT * FROM WAREHOUSE_SECTION WHERE WAREHOUSE_ID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, String.valueOf(chooseScId));
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                WarehouseSection warehouseSection = new WarehouseSection();
+                warehouseSection.setName(rs.getString("NAME"));
+                warehouseSection.setType(WhSectionType.valueOf(rs.getString("TYPE")));
+                warehouseSections.add(warehouseSection);
+            }
+            close(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return warehouseSections;
     }
 }

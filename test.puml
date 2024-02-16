@@ -1,0 +1,658 @@
+@startuml
+class inventory.domain.WarehouseSection {
+- Long id
+- String name
+- Long warehouseId
+- WhSectionType type
+}
+class person.dao.CustomerDao {
+~ Connection conn
+}
+class inventory.InventoryMain {
+~ InventoryService inventoryService
+~ WarehouseInsertReleaseService warehouseInsertReleaseService
+~ ProductsService productsService
+~ Scanner sc
++ void menu()
+}
+class inventory.service.impl.InventoryServiceImpl {
+~ InventoryDao inventoryDao
+~ {static} Scanner sc
++ void searchInventoryList()
++ void searchInventory()
++ void searchInventoryListByWarehouse()
+}
+interface inventory.service.WarehouseInsertReleaseService {
+~ ArrayList<WarehouseInsertRelease> findStatusDone()
+~ void updateReleaseStatus(WhInOutType)
+}
+enum inventory.enums.WhInOutType {
++  INSERT_WAIT
++  INSERT_CONFIRM
++  INSERT_CANCEL
++  RELEASE_WAIT
++  RELEASE_CONFIRM
++  RELEASE_CANCEL
+- String desc
+}
+class inventory.domain.Inventory {
+- Long id
+- int quantity
+- Long whSectionId
+- Long productId
+}
+class mgtOrders.domain.MgtOrders {
+- Long id
+- String purchaser
+- MgtOrdersStatus status
+- LocalDateTime createdAt
+- Long warehouseId
++ Long getId()
++ void setId(Long)
++ String getPurchaser()
++ void setPurchaser(String)
++ MgtOrdersStatus getStatus()
++ void setStatus(MgtOrdersStatus)
++ LocalDateTime getCreatedAt()
++ void setCreatedAt(LocalDateTime)
++ Long getWarehouseId()
++ void setWarehouseId(Long)
+}
+class person.domain.BusinessOwner {
+- Long id
+- String name
+- String email
+- String password
+- String phone
+- String address
+}
+class delivery.deliveryMain {
+~ WaybillService waybillService
+~ Scanner sc
++ void menu()
+}
+class smOrders.dto.SmOrdersOutput {
+- Long id
+- int quantity
+- int paymentAmount
+- Date createdAt
+- Date expectedAt
+- String sellerSendStatus
+- Long customerId
+- Long shoppingMallId
+- String shoppingMallName
+- Long productsId
+- String productName
+- int productPrice
+- String brandName
+- Long businessOwnerId
+- String ownerName
+- String ownerPhone
+- String location
+- String customerName
+- String customerPhone
++ Long shoppingMallId()
++ String location()
++ String customerName()
++ int productPrice()
++ Long businessOwnerId()
++ String ownerPhone()
++ int paymentAmount()
++ String brandName()
++ String productName()
++ int quantity()
++ Date createdAt()
++ String sellerSendStatus()
++ String ownerName()
++ String customerPhone()
++ Date expectedAt()
++ Long customerId()
++ String shoppingMallName()
++ Long productsId()
++ Long id()
+}
+class smOrders.domain.smOrders {
+- Long id
+- int quantity
+- int paymentAmount
+- String createdAt
+- String expectedAt
+- SellerSendStatus status
+- Long customerId
+- Long shoppingMallId
+- Long productId
+}
+class person.dao.BusinessOwnerDao {
+~ Connection conn
+}
+class product.dao.ProductsDao {
+~ Connection conn
++ List<ProductsOutput> productListInventory()
++ void createProduct(Products)
++ void updateProduct(Products)
+}
+class smOrders.domain.ShoppingMall {
+- Long id
+- String name
+}
+class product.domain.Products {
+- Long id
+- String name
+- ProductsStatus status
+- int price
+- int cost
+- Long brandId
+- Long businessOwnerId
+}
+class inventory.domain.WhInOutSettlementRelationship {
+- Long id
+- Long whInsertReleaseId
+- Long settlementId
+}
+class inventory.service.impl.WarehouseServiceImpl {
+~ BufferedReader input
+~ WarehouseDao warehouseDao
+~ DeliveryCmpService deliveryCmpService
+~ ShoppingMallService shoppingMallService
+~ WhSmRelationshipService whSmRelationShipService
+~ WarehouseSectionService warehouseSectionService
++ void createWarehouse()
++ Warehouse updateWarehouse()
++ Warehouse deliveryUpdateWarehouse(Warehouse)
++ void readAllWarehouse()
++ void readOneWarehouse()
++ Warehouse allUpdateWarehouse(Warehouse)
+}
+class inventory.service.impl.WarehouseSectionServiceImpl {
+~ BufferedReader input
+~ WarehouseSectionDao warehouseSectionDao
+~ WarehouseDao warehouseDao
++ void createWarehouseSection(Warehouse)
++ void readWarehouseSection()
+}
+interface inventory.service.WarehouseService {
+~ void createWarehouse()
+~ Warehouse updateWarehouse()
+~ Warehouse allUpdateWarehouse(Warehouse)
+~ Warehouse deliveryUpdateWarehouse(Warehouse)
+~ void readAllWarehouse()
+~ void readOneWarehouse()
+}
+class Main {
++ {static} void main(String[])
+}
+class delivery.dao.WaybillDao {
+- Connection conn
++ List<SelectWaybillOutPut> findByOrderId(Long)
++ List<SelectListWaybillOutput> readWaybill()
+}
+abstract class DBIO.ObjectDBIO {
+- String MYSQL_DRIVER
+- String MYSQL_URL
+- String MYSQL_ID
+- String MYSQL_PW
+# Connection open()
+# void close(Connection)
+}
+class delivery.dao.DeliveryCmpDao {
+~ Connection conn
++ List<DeliveryCmp> readDeliveryCmp()
+}
+class delivery.service.impl.DeliveryCmpServiceImpl {
+~ BufferedReader input
+~ DeliveryCmpDao dao
++ Long chooseDeliveryCmp()
+}
+class product.domain.Brand {
+- Long id
+- String name
+}
+interface inventory.service.SettlementService {
+~ void settlementList()
+~ void settlementByDate()
+}
+interface product.service.BrandService {
+~ List<Brand> getAllBrand()
+}
+class inventory.domain.Settlement {
+- Long id
+- Long insertQuantity
+- Long releaseQuantity
+- Long totalPrice
+- LocalDateTime createdAt
+- LocalDateTime modifiedAt
+}
+class inventory.dao.WhInOutSettlementRelationshipDao {
+}
+class inventory.WarehouseMain {
+~ WarehouseService warehouseService
+~ WarehouseSectionService warehouseSectionService
+~ Scanner sc
++ void menu()
+}
+class product.service.impl.BrandServiceImpl {
+- Connection conn
++ List<Brand> getAllBrand()
+}
+class mgtOrders.dao.MgtOrderDao {
+~ Connection conn
++ Long createOrder(String,LocalDateTime,Long)
++ boolean addItem(Long,Map<Integer,Integer>)
++ boolean confirmOrder(Long,MgtOrdersStatus)
++ boolean cancelOrder(Long)
++ ArrayList<MgtOrders> selectAll(String,String)
++ ArrayList<MgtOrders> selectOrderList(MgtOrdersStatus)
++ boolean insertList(ArrayList<Long>,String)
++ ArrayList<MgtOrders> searchForDate(String)
++ boolean delete(Long)
+}
+class main.WmsTraining {
++ {static} void logo()
+}
+class inventory.dao.InventoryDao {
+~ Connection conn
++ List<Inventory> findAll()
++ Inventory findById(Long)
++ List<InventoryOutput> findByWarehouseId(Long)
+}
+interface inventory.service.WarehouseSectionService {
+~ void createWarehouseSection(Warehouse)
+~ void readWarehouseSection()
+}
+enum smOrders.enums.SellerSendStatus {
++  PREPARING
++  COMPLETE
++  CANCEL
+- String desc
+}
+interface delivery.service.DeliveryCmpService {
+~ Long chooseDeliveryCmp()
+}
+enum mgtOrders.enums.MgtOrdersStatus {
++  READY
++  DONE
++  DELIVERED
++  CANCEL
++  RETURN
+- String desc
+}
+class person.domain.Customer {
+- Long id
+- String name
+- String email
+- String password
+- String phone
+- String address
+}
+class inventory.service.impl.SettlementServiceImpl {
+~ BufferedReader br
+- SettlementDao settlementDao
++ void settlementList()
++ void settlementByDate()
+}
+class inventory.domain.WarehouseInsertRelease {
+- Long id
+- Long quantity
+- LocalDateTime createdAt
+- WhInOutType type
+- Long totalPrice
+- Long inventoryId
+}
+interface person.service.BusinessOwnerService {
+}
+class delivery.service.impl.WaybillServiceImpl {
+~ Scanner sc
+~ WaybillDao waybillDao
++ void readOneWaybill()
++ void readAllWaybill()
+}
+class product.service.impl.ProductsServiceImpl {
+~ BufferedReader br
+- ProductsDao productsDao
++ void productListInventory()
+- ProductsStatus isProductOnSale()
++ void createProduct()
++ void updateProduct()
+}
+class inventory.domain.Warehouse {
+- Long id
+- WhType type
+- String location
+- Long delivery_id
+}
+class smOrders.dao.SMOrdersDao {
+~ {static} Scanner sc
+~ Connection conn
++ List<SmOrdersOutput> smOrdersReadAllCanCel()
++ List<SmOrdersOutput> readAllPreparedOrders()
++ List<SmOrdersOutput> readAllCanceledOrders()
++ void updateSmOrdersStatus(smOrders)
++ smOrders findById(Long)
++ void insertSmOrdersStatus(smOrders)
++ SmOrdersAllOutput readOneAlloutput(Long)
+}
+class inventory.dao.WarehouseSectionDao {
+~ Connection conn
++ boolean saveWarehouseSection(WarehouseSection)
++ ArrayList selectWarehouseSection(Long)
+}
+interface mgtOrders.service.MgtOrdersService {
+~ void add()
+~ void delete()
+~ void getAllOrders()
+~ boolean confirmOrder()
+~ boolean cancelOrder()
+~ void confirmList()
+~ void searchNonDelivered()
+~ void confirmArrival()
+}
+class inventory.service.impl.WarehouseInsertReleaseServiceImpl {
+~ WarehouseInsertReleaseDao whInOutDao
+~ Scanner sc
++ ArrayList<WarehouseInsertRelease> findStatusDone()
++ void updateReleaseStatus(WhInOutType)
+}
+class delivery.dto.SelectWaybillOutPut {
+- Long id
+- Long ordersId
+- String productName
+- String shoppingMallName
+- String warehouseLocation
+- String businessPhone
+- Long customerId
+- String customerName
+- String customerPhone
+- String customerAddress
++ String customerName()
++ String warehouseLocation()
++ String customerPhone()
++ String businessPhone()
++ Long ordersId()
++ Long customerId()
++ String productName()
++ String customerAddress()
++ Long id()
++ String shoppingMallName()
+}
+class main.MainMenu {
+~ {static} Scanner scanner
++ {static} void main(String[])
+- {static} void selectMenu()
+}
+class person.service.impl.BusinessOwnerServiceImpl {
+}
+interface smOrders.service.ShoppingMallService {
+~ Long chooseShoppingMall()
+}
+class inventory.service.impl.WhSmRelationshipServiceImpl {
+~ WhSmRelationshipDao whSmRelationshipDao
++ void createWhSmRelationship(WhSmRelationship)
+}
+class inventory.dao.WarehouseDao {
+~ BufferedReader input
+~ Connection conn
++ Long createWarehouse(Warehouse)
++ Warehouse createSection(Warehouse)
++ List<Warehouse> readWarehouse()
++ Warehouse selectMenu(Warehouse)
++ void updateDeliveryCmpId(Warehouse)
++ Warehouse updateWarehouse(Warehouse)
++ Warehouse findById(Long)
+}
+class delivery.domain.Waybill {
+- Long id
+- LocalDateTime delivery_At
+- Long orders_id
+- Long customer_id
+}
+class smOrders.service.impl.ShoppingMallServiceImpl {
+~ BufferedReader input
+~ ShoppingMallDao shoppingMallDao
+~ WhSmRelationshipDao whSmRelationshipDao
++ Long chooseShoppingMall()
+}
+interface delivery.service.WaybillService {
+~ void readOneWaybill()
+~ void readAllWaybill()
+}
+interface product.service.ProductsService {
+~ void productListInventory()
+~ void createProduct()
+~ void updateProduct()
+}
+class inventory.dao.WhSmRelationshipDao {
+~ Connection conn
++ void saveWhSmRelationship(WhSmRelationship)
+}
+class inventory.domain.WhSmRelationship {
+- Long id
+- Long warehouseId
+- Long shoppingMallId
+}
+class mgtOrders.MgtOrdersMain {
+~ MgtOrdersService mgtOrdersService
+~ Scanner sc
++ void menu()
+}
+class product.dto.ProductsOutput {
+- Long id
+- String name
+- ProductsStatus status
+- int price
+- int cost
+- Long brandId
+- Long businessOwnerId
+- String brandName
++ String name()
++ String brandName()
++ Long businessOwnerId()
++ int price()
++ Long id()
++ Long brandId()
++ ProductsStatus status()
++ int cost()
+}
+class mgtOrders.service.impl.MgtOrdersServiceImpl {
+~ BufferedReader bufferedReader
+- MgtOrderDao mgtOrderDao
++ void add()
++ void getAllOrders()
++ boolean confirmOrder()
++ boolean cancelOrder()
++ void confirmList()
++ void searchNonDelivered()
++ void confirmArrival()
++ void delete()
+- void print(MgtOrders)
+- void printList(ArrayList<MgtOrders>)
+}
+class inventory.SettlementMain {
+~ SettlementService settlementService
+~ Scanner sc
++ void menu()
+}
+class smOrders.dao.ShoppingMallDao {
+~ Connection conn
++ List<ShoppingMall> findAll()
+}
+class inventory.dao.WarehouseInsertReleaseDao {
+~ Connection conn
+~ BufferedReader input
+~ ArrayList<inventory.domain.WarehouseInsertRelease> warehouseInsertReleases
++ ArrayList<WarehouseInsertRelease> findAllInsertProducts()
++ inventory.domain.WarehouseInsertRelease updateInsertStatus(ArrayList<WarehouseInsertRelease>)
++ inventory.domain.WarehouseInsertRelease warehouserelease(Warehouse)
++ void updateWhInOutStatus(Long,WhInOutType)
++ ArrayList<WarehouseInsertRelease> findAllWhInOutList(WhInOutType)
+}
+class inventory.dto.InventoryOutput {
+- Long id
+- Long quantity
+- Long warehouseSectionId
+- Long productId
+- Long warehouseId
+- String location
+- String productName
+- String brandName
+- int productPrice
++ Long warehouseSectionId()
++ Long warehouseId()
++ int productPrice()
++ String brandName()
++ String location()
++ String productName()
++ Long productId()
++ Long id()
++ Long quantity()
+}
+interface inventory.service.WhSmRelationshipService {
+~ void createWhSmRelationship(WhSmRelationship)
+}
+interface smOrders.service.SmOrdersService {
+~ void createOrder()
+~ void readOrder()
+~ List<smOrders> readAllCanceledOrders()
+~ List<smOrders> readAllPreparedOrders()
+~ void updateStatus()
+~ smOrders readOne()
+~ SmOrdersAllOutput readOneSelect()
+}
+enum inventory.enums.WhSectionType {
++  REFRIGERATED
++  FROZEN
++  DRY
++  PROCESSED
+- String desc
+}
+class inventory.dao.SettlementDao {
+~ Connection conn
+~ BufferedReader input
++ Settlement SettlementCreate(WarehouseInsertRelease)
++ Optional<List<Settlement>> settlementList()
++ Optional<Settlement> settlementByDate(String)
+}
+interface inventory.service.InventoryService {
+~ void searchInventoryList()
+~ void searchInventory()
+~ void searchInventoryListByWarehouse()
+}
+enum product.enums.ProductsStatus {
++  ON_SALE
++  STOP_SALE
+- String desc
+}
+class mgtOrders.domain.WarehouseInsertRelease {
+- Long id
+- int quantity
+- Long productsId
+- Long mgtOrdersId
+- WhInOutType whInOutType
+- LocalDateTime createdAt
+- int totalPrice
+}
+class smOrders.service.impl.SmOrderServiceImpl {
++ SMOrdersDao smordersdao
+~ {static} Scanner sc
++ void createOrder()
++ void updateStatus()
++ SmOrdersAllOutput readOneSelect()
++ smOrders readOne()
++ void readOrder()
++ List<smOrders> readAllCanceledOrders()
++ List<smOrders> readAllPreparedOrders()
+}
+enum inventory.enums.WhType {
++  WET
++  DRY
++  BOTH
+- String desc
+}
+class smOrders.dto.SmOrdersAllOutput {
+- Long orderId
+- int quantity
+- int paymentAmount
+- LocalDateTime createdAt
+- LocalDateTime expectedAt
+- String sellerSendStatus
+- Long shoppingMallId
+- String shoppingMallName
+- Long productsId
+- String productName
+- String brandName
++ Long shoppingMallId()
++ String sellerSendStatus()
++ LocalDateTime createdAt()
++ int paymentAmount()
++ Long orderId()
++ LocalDateTime expectedAt()
++ String shoppingMallName()
++ String brandName()
++ String productName()
++ Long productsId()
++ int quantity()
+}
+class delivery.dto.SelectListWaybillOutput {
+- Long id
+- Long ordersId
+- String productName
+- String customerAddress
+- String warehouseLocation
+- String customerName
++ String customerName()
++ String warehouseLocation()
++ Long ordersId()
++ String productName()
++ String customerAddress()
++ Long id()
+}
+interface person.service.CustomerService {
+}
+class person.service.impl.CustomerServiceImpl {
+}
+class product.dao.BrandDao {
++ String getBrandName(int)
++ List<String> getAllBrands()
+}
+class delivery.domain.DeliveryCmp {
+- Long id
+- String name
+}
+class smOrders.SmOrdersMain {
+~ SmOrdersService smOrdersService
+~ Scanner sc
++ void menu()
+}
+
+
+DBIO.ObjectDBIO <|-- person.dao.CustomerDao
+inventory.service.InventoryService <|.. inventory.service.impl.InventoryServiceImpl
+DBIO.ObjectDBIO <|-- person.dao.BusinessOwnerDao
+DBIO.ObjectDBIO <|-- product.dao.ProductsDao
+inventory.service.WarehouseService <|.. inventory.service.impl.WarehouseServiceImpl
+inventory.service.WarehouseSectionService <|.. inventory.service.impl.WarehouseSectionServiceImpl
+DBIO.ObjectDBIO <|-- delivery.dao.WaybillDao
+DBIO.ObjectDBIO <|-- delivery.dao.DeliveryCmpDao
+delivery.service.DeliveryCmpService <|.. delivery.service.impl.DeliveryCmpServiceImpl
+DBIO.ObjectDBIO <|-- inventory.dao.WhInOutSettlementRelationshipDao
+product.service.BrandService <|.. product.service.impl.BrandServiceImpl
+DBIO.ObjectDBIO <|-- mgtOrders.dao.MgtOrderDao
+DBIO.ObjectDBIO <|-- inventory.dao.InventoryDao
+inventory.service.SettlementService <|.. inventory.service.impl.SettlementServiceImpl
+delivery.service.WaybillService <|.. delivery.service.impl.WaybillServiceImpl
+product.service.ProductsService <|.. product.service.impl.ProductsServiceImpl
+DBIO.ObjectDBIO <|-- smOrders.dao.SMOrdersDao
+DBIO.ObjectDBIO <|-- inventory.dao.WarehouseSectionDao
+inventory.service.WarehouseInsertReleaseService <|.. inventory.service.impl.WarehouseInsertReleaseServiceImpl
+person.service.BusinessOwnerService <|.. person.service.impl.BusinessOwnerServiceImpl
+inventory.service.WhSmRelationshipService <|.. inventory.service.impl.WhSmRelationshipServiceImpl
+DBIO.ObjectDBIO <|-- inventory.dao.WarehouseDao
+smOrders.service.ShoppingMallService <|.. smOrders.service.impl.ShoppingMallServiceImpl
+DBIO.ObjectDBIO <|-- inventory.dao.WhSmRelationshipDao
+mgtOrders.service.MgtOrdersService <|.. mgtOrders.service.impl.MgtOrdersServiceImpl
+DBIO.ObjectDBIO <|-- smOrders.dao.ShoppingMallDao
+DBIO.ObjectDBIO <|-- inventory.dao.WarehouseInsertReleaseDao
+DBIO.ObjectDBIO <|-- inventory.dao.SettlementDao
+smOrders.service.SmOrdersService <|.. smOrders.service.impl.SmOrderServiceImpl
+person.service.CustomerService <|.. person.service.impl.CustomerServiceImpl
+DBIO.ObjectDBIO <|-- product.dao.BrandDao
+@enduml

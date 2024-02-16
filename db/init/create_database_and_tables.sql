@@ -178,10 +178,10 @@ CREATE TABLE WAREHOUSE_INSERT_RELEASE
     TOTAL_PRICE     INT                       DEFAULT 0                  NOT NULL COMMENT '총 금액',
     FK_ID           INT                                                  NOT NULL COMMENT '임의의 외래키(TYPE이 INSERT_*일 경우 MGT_ORDERS_ID, RELEASE_*일 경우 SM_ORDERS_ID)',
 
-    INVENTORY_ID    INT                                                  NOT NULL COMMENT '재고 ID(FK)',
+    PRODUCTS_ID     INT                                                  NOT NULL COMMENT '상품 ID(FK)',
 
     PRIMARY KEY (ID),
-    CONSTRAINT FK_WAREHOUSE_INSERT_RELEASE_INVENTORY_ID FOREIGN KEY (INVENTORY_ID) REFERENCES INVENTORY (ID)
+    CONSTRAINT FK_WAREHOUSE_INSERT_RELEASE_PRODUCTS_ID FOREIGN KEY (PRODUCTS_ID) REFERENCES PRODUCTS (ID)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI
     COMMENT = '창고 입출고';
 
@@ -248,3 +248,170 @@ CREATE TABLE WAYBILL
     CONSTRAINT FK_WAYBILL_ORDERS_ID         FOREIGN KEY (ORDERS_ID)         REFERENCES SM_ORDERS (ID)
 ) ENGINE = INNODB DEFAULT CHARSET = UTF8MB4 COLLATE = UTF8MB4_0900_AI_CI
     COMMENT = '운송장';
+
+# ================================================================================================================================================================
+# TRIGGER
+# ================================================================================================================================================================
+# 발주 요청시 입고 테이블에 추가
+# CREATE TRIGGER orders_insert_trigger
+#     AFTER INSERT ON MGT_ORDERS
+#     FOR EACH ROW
+# BEGIN
+#     IF NEW.STATUS = 'READY' THEN
+#         INSERT INTO warehouse_insert_release (TYPE) VALUES ('INSERT_REQUEST');
+#     END IF;
+# END;
+
+# 입고 확정 또는 취소시 입고 테이블 상태 변경
+DELIMITER $$
+CREATE TRIGGER update_warehouse_insert_release_trigger AFTER UPDATE ON MGT_ORDERS
+    FOR EACH ROW
+BEGIN
+    IF OLD.STATUS <> NEW.STATUS THEN
+        IF NEW.STATUS = 'CANCEL' OR NEW.STATUS = 'RETURN' THEN
+            UPDATE WAREHOUSE_INSERT_RELEASE
+            SET TYPE = 'INSERT_CANCEL'
+            WHERE NEW.ID = FK_ID;
+        ELSEIF NEW.STATUS = 'DELIVERED' THEN
+            UPDATE WAREHOUSE_INSERT_RELEASE
+            SET TYPE = 'INSERT_CONFIRM'
+            WHERE NEW.ID = FK_ID;
+        END IF;
+    END IF;
+END$$
+DELIMITER ;
+
+# 발주 확정시 운송장 생성
+DELIMITER //
+CREATE TRIGGER RELEASE_CONFIRM_TRIGGER
+    AFTER UPDATE ON WAREHOUSE_INSERT_RELEASE
+    FOR EACH ROW
+BEGIN
+    IF OLD.TYPE = 'RELEASE_REQUEST' AND NEW.TYPE = 'RELEASE_CONFIRM' THEN
+        INSERT INTO WAYBILL (ORDERS_ID) VALUES (NEW.FK_ID);
+    END IF;
+END;
+//
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER orders_insert_trigger
+    AFTER INSERT ON MGT_ORDERS_PRODUCTS_RELATIONSHIP
+    FOR EACH ROW
+BEGIN
+    SELECT MGT_ORDERS_PRODUCTS_RELATIONSHIP.PRODUCTS_ID, MGT_ORDERS_PRODUCTS_RELATIONSHIP.QUANTITY, PRODUCTS.COST
+    INTO @products_id, @quantity, @cost
+    FROM MGT_ORDERS_PRODUCTS_RELATIONSHIP
+             JOIN PRODUCTS ON MGT_ORDERS_PRODUCTS_RELATIONSHIP.PRODUCTS_ID = PRODUCTS.ID
+    WHERE MGT_ORDERS_PRODUCTS_RELATIONSHIP.MGT_ORDERS_ID = NEW.MGT_ORDERS_ID
+    ORDER BY MGT_ORDERS_PRODUCTS_RELATIONSHIP.ID DESC
+    LIMIT 1;
+    -- WAREHOUSE_INSERT_RELEASE 테이블에 'INSERT_REQUEST'로 행 삽입
+    INSERT INTO WAREHOUSE_INSERT_RELEASE (QUANTITY, CREATED_AT, TYPE, TOTAL_PRICE, FK_ID, PRODUCTS_ID)
+    VALUES (@quantity, NOW(), 'INSERT_REQUEST', @quantity * @cost, NEW.MGT_ORDERS_ID, @products_id);
+END;
+//
+DELIMITER ;
+
+# 주문 생성시 Warehouse Insert Release 테이블에 'RELEASE_REQUEST'로 행 삽입하는데 products_id를 참조하여 price * quantity로 total_price를 계산하여 삽입
+DELIMITER //
+CREATE TRIGGER sm_orders_insert_trigger
+    AFTER INSERT ON SM_ORDERS
+    FOR EACH ROW
+BEGIN
+    SELECT SM_ORDERS.PRODUCTS_ID, SM_ORDERS.QUANTITY, PRODUCTS.PRICE
+    INTO @products_id, @quantity, @price
+    FROM SM_ORDERS
+             JOIN PRODUCTS ON SM_ORDERS.PRODUCTS_ID = PRODUCTS.ID
+    WHERE SM_ORDERS.ID = NEW.ID;
+    -- WAREHOUSE_INSERT_RELEASE 테이블에 'RELEASE_REQUEST'로 행 삽입
+    INSERT INTO WAREHOUSE_INSERT_RELEASE (QUANTITY, CREATED_AT, TYPE, TOTAL_PRICE, FK_ID, PRODUCTS_ID)
+    VALUES (@quantity, NOW(), 'RELEASE_REQUEST', @quantity * @price, NEW.ID, @products_id);
+END;
+//
+DELIMITER ;
+
+# Warehouse Insert Release 테이블 Release_Request 로 행 삽입시 waybill 테이블에 주문 ID를 참조하여 운송장 생성
+DELIMITER //
+CREATE TRIGGER warehouse_insert_release_insert_trigger
+    AFTER INSERT ON WAREHOUSE_INSERT_RELEASE
+    FOR EACH ROW
+BEGIN
+    IF NEW.TYPE = 'RELEASE_REQUEST' THEN
+        INSERT INTO WAYBILL (ORDERS_ID) VALUES (NEW.FK_ID);
+    END IF;
+END;
+//
+DELIMITER ;
+
+# sm_orders 테이블에 seller_send_status가 'COMPLETE'로 변경되면 warehouse_insert_release 테이블에 있는 release_request 행의 type을 release_confirm으로 변경 하고 inventory 테이블에 quantity를 sm_orders 테이블의 quantity만큼 감소
+DELIMITER //
+CREATE TRIGGER sm_orders_update_trigger
+    AFTER UPDATE ON SM_ORDERS
+    FOR EACH ROW
+BEGIN
+    IF OLD.SELLER_SEND_STATUS <> NEW.SELLER_SEND_STATUS THEN
+        IF NEW.SELLER_SEND_STATUS = 'COMPLETE' THEN
+            UPDATE WAREHOUSE_INSERT_RELEASE
+            SET TYPE = 'RELEASE_CONFIRM'
+            WHERE NEW.ID = FK_ID;
+            UPDATE INVENTORY
+            SET QUANTITY = QUANTITY - NEW.QUANTITY
+            WHERE PRODUCTS_ID = NEW.PRODUCTS_ID;
+        END IF;
+    END IF;
+END;
+//
+DELIMITER ;
+
+# warehouse_insert_release 테이블에 있는 insert_request 행의 type을 insert_confirm으로 변경되며 inventory 테이블에 quantity를 warehouse_insert_release 테이블의 quantity만큼 증가 만약 inventory에 없던 상품이면 새로운 행을 추가
+    DELIMITER //
+    CREATE TRIGGER warehouse_insert_release_update_trigger
+        AFTER UPDATE ON WAREHOUSE_INSERT_RELEASE
+        FOR EACH ROW
+    BEGIN
+        IF OLD.TYPE = 'INSERT_REQUEST' AND NEW.TYPE = 'INSERT_CONFIRM' THEN
+            UPDATE INVENTORY
+            SET QUANTITY = QUANTITY + NEW.QUANTITY
+            WHERE PRODUCTS_ID = NEW.PRODUCTS_ID;
+            IF ROW_COUNT() = 0 THEN
+                INSERT INTO INVENTORY (QUANTITY, WH_SECTION_ID, PRODUCTS_ID)
+                VALUES (NEW.QUANTITY, 1, NEW.PRODUCTS_ID);
+            END IF;
+        END IF;
+    END;
+    //
+    DELIMITER ;
+
+# 이벤트 스케쥴러를 이용하여 매일 00:00:00에 settlement 테이블에 날짜와 pk를 제외한 나머지가 0인 새로운 행을 추가
+DELIMITER //
+CREATE EVENT insert_settlement
+    ON SCHEDULE EVERY 1 DAY
+    STARTS '2021-06-01 00:00:00'
+    DO
+    BEGIN
+        INSERT INTO SETTLEMENT (IN_QUANTITY, OUT_QUANTITY, TOTAL_PRICE)
+        VALUES (0, 0, 0);
+    END;
+//
+DELIMITER ;
+
+# warehouse_insert_release 테이블에 insert_confirm 또는 release_confirm 으로 상태가 변경이 되면 wh_inout_settlement_relationship 테이블에 같은 날짜로 만들어진(가장 최근 맍들어진) settlement 테이블의 pk를 참조하여 새로운 행을 추가
+DELIMITER //
+CREATE TRIGGER warehouse_insert_release_update_trigger
+    AFTER UPDATE ON WAREHOUSE_INSERT_RELEASE
+    FOR EACH ROW
+BEGIN
+    IF OLD.TYPE <> NEW.TYPE THEN
+        IF NEW.TYPE = 'INSERT_CONFIRM' OR NEW.TYPE = 'RELEASE_CONFIRM' THEN
+            INSERT INTO WH_INOUT_SETTLEMENT_RELATIONSHIP (WH_IN_OUT_ID, SETTLEMENT_ID)
+            SELECT NEW.ID, ID
+            FROM SETTLEMENT
+            WHERE DATE(CREATED_AT) = DATE(NOW())
+            ORDER BY ID DESC
+            LIMIT 1;
+        END IF;
+    END IF;
+END;
+//
+DELIMITER ;

@@ -12,19 +12,20 @@ import java.util.Map;
 public class MgtOrderDao extends ObjectDBIO {
     Connection conn = null;
 
-    public Long createOrder(String purChaser, LocalDateTime createdAt) throws SQLException {
+    public Long createOrder(String purChaser, LocalDateTime createdAt, Long whId) throws SQLException {
         PreparedStatement pstmt = null;
         String sql = "";
         Long id = 0L;
         conn = open();
 
-        sql = "INSERT INTO mgt_orders(PURCHASER, STATUS, CREATED_AT) VALUES (?, ?, ?)";
+        sql = "INSERT INTO MGT_ORDERS(PURCHASER, STATUS, CREATED_AT, WAREHOUSE_ID) VALUES (?, ?, ?,?)";
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, purChaser);
         pstmt.setString(2, "READY");
         pstmt.setTimestamp(3, Timestamp.valueOf(createdAt));
+        pstmt.setLong(4, whId);
         pstmt.executeUpdate();
-        sql = "SELECT MAX(id) AS ID FROM mgt_orders";
+        sql = "SELECT MAX(id) AS ID FROM MGT_ORDERS";
         pstmt = conn.prepareStatement(sql);
         ResultSet resultSet = pstmt.executeQuery();
 
@@ -47,7 +48,7 @@ public class MgtOrderDao extends ObjectDBIO {
         conn = open();
 
         for (Map.Entry<Integer, Integer> entry : products.entrySet()) {
-            sql = "INSERT INTO mgt_orders_products_relationship(QUANTITY, PRODUCTS_ID, MGT_ORDERS_ID) VALUES (?, ?, ?)";
+            sql = "INSERT INTO MGT_ORDERS_PRODUCTS_RELATIONSHIP(QUANTITY, PRODUCTS_ID, MGT_ORDERS_ID) VALUES (?, ?, ?)";
             pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, entry.getValue());
             pstmt.setInt(2, entry.getKey());
@@ -67,14 +68,14 @@ public class MgtOrderDao extends ObjectDBIO {
     }
 
 
-    public boolean confirmOrder(Long orderId) throws SQLException {
+    public boolean confirmOrder(Long orderId, MgtOrdersStatus status) throws SQLException {
         PreparedStatement pstmt = null;
         int flag = 0;
         conn = open();
-        String sql = "UPDATE mgt_orders SET STATUS = ? WHERE id = ?";
+        String sql = "UPDATE MGT_ORDERS SET STATUS = ? WHERE ID = ?";
 
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, "DONE");
+        pstmt.setString(1, status.name());
         pstmt.setLong(2, orderId);
         flag = pstmt.executeUpdate();
 
@@ -91,10 +92,10 @@ public class MgtOrderDao extends ObjectDBIO {
         PreparedStatement pstmt = null;
         int flag = 0;
         conn = open();
-        String sql = "UPDATE mgt_orders SET STATUS = ? WHERE id = ?";
+        String sql = "UPDATE MGT_ORDERS SET STATUS = ? WHERE ID = ?";
 
         pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, "READY");
+        pstmt.setString(1, "CANCEL");
         pstmt.setLong(2, orderId);
         flag = pstmt.executeUpdate();
 
@@ -111,9 +112,9 @@ public class MgtOrderDao extends ObjectDBIO {
         PreparedStatement pstmt = null;
         ArrayList<MgtOrders> searchList = new ArrayList<>();
         conn = open();
-        String searchQuery = "SELECT * FROM mgt_orders " +
+        String searchQuery = "SELECT * FROM MGT_ORDERS " +
                 "WHERE CREATED_AT " +
-                "BETWEEN ? and ?+0.999999999";
+                "BETWEEN ? AND ?+0.999999999";
 
         pstmt = conn.prepareStatement(searchQuery);
         pstmt.setString(1, startDate);
@@ -124,8 +125,16 @@ public class MgtOrderDao extends ObjectDBIO {
             Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
             MgtOrdersStatus tempStatus = MgtOrdersStatus.valueOf(resultSet.getString("STATUS"));
-            Timestamp date = resultSet.getTimestamp("CREATED_AT");
-            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, date.toLocalDateTime(), 0l);
+            LocalDateTime date = resultSet.getTimestamp("CREATED_AT").toLocalDateTime();
+            Long warehouseId = resultSet.getLong("WAREHOUSE_ID");
+//            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, date, 1l);
+            MgtOrders mgtOrder = new MgtOrders();
+            mgtOrder.setId(id);
+            mgtOrder.setPurchaser(purchaser);
+            mgtOrder.setStatus(tempStatus);
+            mgtOrder.setCreatedAt(date);
+            mgtOrder.setWarehouseId(warehouseId);
+
             searchList.add(mgtOrder);
         }
 
@@ -142,7 +151,7 @@ public class MgtOrderDao extends ObjectDBIO {
         PreparedStatement pstmt = null;
         ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
         conn = open();
-        String sql = "SELECT * FROM mgt_orders WHERE STATUS = ?";
+        String sql = "SELECT * FROM MGT_ORDERS WHERE STATUS = ?";
 
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, status.name());
@@ -152,8 +161,16 @@ public class MgtOrderDao extends ObjectDBIO {
             Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
             MgtOrdersStatus tempStatus = MgtOrdersStatus.valueOf(resultSet.getString("STATUS"));
-            Timestamp date = resultSet.getTimestamp("CREATED_AT");
-            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, date.toLocalDateTime(), null);
+            LocalDateTime date = resultSet.getTimestamp("CREATED_AT").toLocalDateTime();
+            Long warehouseId = resultSet.getLong("WAREHOUSE_ID");
+//            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, date, 1l);
+            MgtOrders mgtOrder = new MgtOrders();
+            mgtOrder.setId(id);
+            mgtOrder.setPurchaser(purchaser);
+            mgtOrder.setStatus(tempStatus);
+            mgtOrder.setCreatedAt(date);
+            mgtOrder.setWarehouseId(warehouseId);
+
             mgtOrders.add(mgtOrder);
         }
 
@@ -170,7 +187,7 @@ public class MgtOrderDao extends ObjectDBIO {
         PreparedStatement pstmt = null;
         int flag = 0;
         conn = open();
-        String sql = "UPDATE mgt_orders SET STATUS = ? WHERE id = ?";
+        String sql = "UPDATE MGT_ORDERS SET STATUS = ? WHERE ID = ?";
 
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, status);
@@ -196,10 +213,10 @@ public class MgtOrderDao extends ObjectDBIO {
         PreparedStatement pstmt = null;
         ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
         conn = open();
-        String sql = "SELECT * FROM mgt_orders " +
+        String sql = "SELECT * FROM MGT_ORDERS " +
                 "WHERE STATUS != ? " +
                 "AND CREATED_AT " +
-                "BETWEEN ? and ?+0.999999999";
+                "BETWEEN ? AND ?+0.999999999";
 
         pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, "DELIVERED");
@@ -211,8 +228,16 @@ public class MgtOrderDao extends ObjectDBIO {
             Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
             MgtOrdersStatus tempStatus = MgtOrdersStatus.valueOf(resultSet.getString("STATUS"));
-            Timestamp tempDate = resultSet.getTimestamp("CREATED_AT");
-            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, tempDate.toLocalDateTime(), null);
+            LocalDateTime findDate = resultSet.getTimestamp("CREATED_AT").toLocalDateTime();
+            Long warehouseId = resultSet.getLong("WAREHOUSE_ID");
+//            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, date, 1l);
+            MgtOrders mgtOrder = new MgtOrders();
+            mgtOrder.setId(id);
+            mgtOrder.setPurchaser(purchaser);
+            mgtOrder.setStatus(tempStatus);
+            mgtOrder.setCreatedAt(findDate);
+            mgtOrder.setWarehouseId(warehouseId);
+
             mgtOrders.add(mgtOrder);
         }
 
@@ -242,4 +267,5 @@ public class MgtOrderDao extends ObjectDBIO {
 
         return flag > 0 ? true : false;
     }
+
 }

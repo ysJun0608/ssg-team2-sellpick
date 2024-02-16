@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class WarehouseDao extends ObjectDBIO {
 
@@ -35,7 +36,7 @@ public class WarehouseDao extends ObjectDBIO {
              * 창고 생성하는 기능
              * 추후 리펙토링 필요
              */
-            String insertsql = "insert into warehouse(type,location,DELIVERY_CMP_ID) values(?,?,?)";
+            String insertsql = "INSERT INTO WAREHOUSE(TYPE,LOCATION,DELIVERY_CMP_ID) VALUES(?,?,?)";
             PreparedStatement pstmt = conn.prepareStatement(insertsql, Statement.RETURN_GENERATED_KEYS);
 
             pstmt.setString(1, warehouse.getType().toString());
@@ -56,56 +57,6 @@ public class WarehouseDao extends ObjectDBIO {
             e.printStackTrace();
         }
             return warehousePk;
-//            /**
-//             * warehouse id set
-//             */
-//            warehouse.setId(warehousePk);
-//            pstmt.close();
-//            String selectShoppimallsql = "select id, name from shopping_mall";
-//            PreparedStatement pstmt3 = conn.prepareStatement(selectShoppimallsql);
-//            ResultSet smRs = pstmt3.executeQuery();
-//            List<ShoppingMall> smList = new ArrayList<>();
-//            while (smRs.next()) {
-//                Long id = smRs.getLong("id");
-//                String name = smRs.getString("name");
-//                ShoppingMall sm = new ShoppingMall();
-//                sm.setId(id);
-//                sm.setName(name);
-//                smList.add(sm);
-//            }
-//            smRs.close();
-//            pstmt3.close();
-//            for (ShoppingMall sm : smList) {
-//                System.out.println(sm.toString());
-//            }
-//            System.out.println("쇼핑몰 번호를 입력해주세요");
-//            Long chooseId = Long.valueOf(input.readLine());
-//
-//            /**
-//             *  가져온 warehousePk 관계table에 집어 넣기
-//             */
-//            String insertToRelationshipsql = "insert into warehouse_shopping_mall_relationship(WAREHOUSE_ID,SM_ID) values (?,?)";
-//            PreparedStatement pstmt2 = conn.prepareStatement(insertToRelationshipsql, Statement.RETURN_GENERATED_KEYS);
-//            pstmt2.setLong(1, warehousePk);
-//            pstmt2.setLong(2, chooseId);
-//            int row = pstmt2.executeUpdate();
-//            if (row == 1) {
-//                System.out.println("창고생성및 쇼핑몰과의 연동이 완료되었습니다.");
-//
-//            }
-//            pstmt2.close();
-//            close(conn);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        //System.out.println(warehouse.toString()); 실험해본다고 작성한것
-//        /**
-//         * createsection에 바로 연결하려고 작성
-//         */
-//        createSection(warehouse);
-//        return warehouse;
     }
 
     /**
@@ -167,15 +118,14 @@ public class WarehouseDao extends ObjectDBIO {
      * @return selectMenu 메소드 호출 (warehouse객체를 가지고간다)
      * 추후 리펙토링 필요
      */
-    public ArrayList readWarehouse() {
+    public List<Warehouse> readWarehouse() {
         // 데이터베이스 연결을 열고 Warehouse 객체 생성
-        ArrayList<Warehouse> warehouses = new ArrayList<>();
+        List<Warehouse> warehouseList = new ArrayList<>();
         conn = open();
-        Warehouse warehouse = new Warehouse();
 
         try {
             // 데이터베이스에서 모든 창고 정보를 조회하는 SQL 쿼리 실행
-            String selectAll = "SELECT * FROM warehouse";
+            String selectAll = "SELECT * FROM WAREHOUSE";
             PreparedStatement pstmt = conn.prepareStatement(selectAll);
             ResultSet rs = pstmt.executeQuery();
 
@@ -186,36 +136,17 @@ public class WarehouseDao extends ObjectDBIO {
                 rows.setDelivery_id(Long.valueOf(rs.getString("DELIVERY_CMP_ID")));
                 rows.setType(WhType.valueOf(rs.getString("TYPE")));
                 rows.setLocation(rs.getString("LOCATION"));
-                warehouses.add(rows);
+                warehouseList.add(rows);
             }
-
-        /*    사용자에게 입력 받은 창고의 ID로 해당 창고 정보를 찾아 설정
-           System.out.println("불러오고 싶은 창고의 ID를 입력해주세요");
-            Long id = Long.parseLong(input.readLine());
-            for (Warehouse w : warehouses) {
-                if (w.getId() == id) {
-                    warehouse.setId(w.getId());
-                    warehouse.setDelivery_id(w.getDelivery_id());
-                    warehouse.setType(w.getType());
-                    warehouse.setLocation(w.getLocation());
-                }
-            }*/
 
             // 리소스 정리
             rs.close();
             pstmt.close();
             close(conn);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        // 선택한 창고의 세부 정보를 출력하고 메뉴를 선택하도록 메서드 호출
-
-
-
-        // 선택한 Warehouse 객체 반환
-        return warehouses;
+        return warehouseList;
     }
 
 
@@ -258,7 +189,7 @@ public class WarehouseDao extends ObjectDBIO {
         try {
             // Warehouse 객체에서 ID를 얻어와 해당 창고의 택배사 ID를 업데이트
 
-            String sql = "UPDATE warehouse SET DELIVERY_CMP_ID = ? WHERE id = ?";
+            String sql = "UPDATE WAREHOUSE SET DELIVERY_CMP_ID = ? WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             Long id = warehouse.getId();
             Long chooseDcId = warehouse.getDelivery_id();
@@ -293,7 +224,7 @@ public class WarehouseDao extends ObjectDBIO {
         try {
             conn = open();
 //
-            String sql = "UPDATE warehouse SET type = ?, location = ?, DELIVERY_CMP_ID = ? WHERE id = ?";
+            String sql = "UPDATE WAREHOUSE SET TYPE = ?, LOCATION = ?, DELIVERY_CMP_ID = ? WHERE ID = ?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
                 Long id = warehouse.getId();
@@ -337,5 +268,29 @@ public class WarehouseDao extends ObjectDBIO {
     }
 
 
+    public Warehouse findById(Long id) {
+        conn = open();
+        Warehouse warehouse = null;
+        try {
+            String SQL = "SELECT * FROM WAREHOUSE WHERE ID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(SQL);
 
+            pstmt.setLong(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                warehouse = new Warehouse();
+                warehouse.setId(id);
+                warehouse.setType(WhType.valueOf(rs.getString("TYPE")));
+                warehouse.setLocation(rs.getString("LOCATION"));
+                warehouse.setDelivery_id(rs.getLong("DELIVERY_CMP_ID"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            return warehouse;
+        }
+
+    }
 }

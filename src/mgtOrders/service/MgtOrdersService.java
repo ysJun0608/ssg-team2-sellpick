@@ -8,4 +8,6 @@ public interface MgtOrdersService {
     boolean cancelOrder();
     void confirmList();
     void searchNonDelivered();
+
+    void confirmArrival();
 }

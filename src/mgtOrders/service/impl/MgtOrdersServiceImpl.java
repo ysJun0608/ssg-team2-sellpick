@@ -17,11 +17,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     // TODO: Implement the service
     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-    private final MgtOrderDao mgtOrderDao;
-
-    public MgtOrdersServiceImpl(MgtOrderDao mgtOrderDao) {
-        this.mgtOrderDao = mgtOrderDao;
-    }
+    private final MgtOrderDao mgtOrderDao = new MgtOrderDao();
 
     @Override
     public void add() {
@@ -33,11 +29,14 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             // 발주마스터 생성
             System.out.printf("발주마스터를 생성하기 위해 매입거래처를 입력해주세요 : ");
             String purChaser = bufferedReader.readLine();
+            System.out.println("창고 ID를 입력해주세요");
+            Long whId = Long.parseLong(bufferedReader.readLine());
 
             java.util.Date today = new java.util.Date();
             java.sql.Timestamp createdAt = new java.sql.Timestamp(today.getTime());
 
-            Long id = mgtOrderDao.createOrder(purChaser, createdAt.toLocalDateTime());
+
+            Long id = mgtOrderDao.createOrder(purChaser, createdAt.toLocalDateTime(), whId);
 
             if (id <= 0L) {
                 System.out.println("발주마스터 생성에 실패하였습니다. 재생성합니다.");
@@ -84,6 +83,12 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             String endDate = bufferedReader.readLine();
 
             searchList = mgtOrderDao.selectAll(startDate, endDate);
+
+            if (searchList.isEmpty()) {
+                System.out.println("조회된 발주목록이 없습니다.");
+                return;
+            }
+
             printList(searchList);
 
         } catch (IOException e) {
@@ -104,7 +109,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             String temp = bufferedReader.readLine();
 
             if (temp.equals("y") || temp.equals("Y")) {
-                flag = mgtOrderDao.confirmOrder(orderId);
+                flag = mgtOrderDao.confirmOrder(orderId, MgtOrdersStatus.DONE);
                 if (flag) {
                     System.out.println("발주가 확정되었습니다.");
                 } else {
@@ -116,7 +121,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         } catch (IOException Ie) {
             Ie.printStackTrace();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return flag;
     }
@@ -159,8 +164,12 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         try {
             mgtOrders = mgtOrderDao.selectOrderList(MgtOrdersStatus.READY);
 
-            System.out.println("확정되지 않은 발주 목록입니다.");
+            if (mgtOrders.isEmpty()) {
+                System.out.println("확정할 발주목록이 없습니다.");
+                return;
+            }
 
+            System.out.println("확정되지 않은 발주 목록입니다.");
             for (MgtOrders mgtOrder : mgtOrders) {
                 print(mgtOrder);
             }
@@ -194,6 +203,11 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 //            java.sql.Timestamp createdAt = new java.sql.Timestamp(temp.getTime());
             mgtOrders = mgtOrderDao.searchForDate(searchDate);
 
+            if (mgtOrders.isEmpty()) {
+                System.out.println("조회된 발주목록이 없습니다.");
+                return;
+            }
+
             printList(mgtOrders);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -203,6 +217,32 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 //        catch (ParseException e) {
 //            throw new RuntimeException(e);
 //        }
+    }
+
+    @Override
+    public void confirmArrival() {
+ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
+        try {
+            mgtOrders = mgtOrderDao.selectOrderList(MgtOrdersStatus.DONE);
+            if (mgtOrders.isEmpty()) {
+                System.out.println("도착확인할 발주목록이 없습니다.");
+                return;
+            }
+            printList(mgtOrders);
+            System.out.print("도착한 발주의 ID를 입력하세요 : ");
+            Long orderId = Long.parseLong(bufferedReader.readLine());
+            boolean flag = mgtOrderDao.confirmOrder(orderId, MgtOrdersStatus.DELIVERED);
+            if (flag) {
+                System.out.println("도착확인 완료");
+            } else {
+                System.out.println("도착확인 실패");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
