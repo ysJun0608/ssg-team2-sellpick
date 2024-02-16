@@ -2,6 +2,7 @@ package smOrders.service;
 
 
 import smOrders.domain.smOrders;
+import smOrders.dto.SmOrdersAllOutput;
 
 import java.util.List;
 
@@ -43,4 +44,9 @@ public interface SmOrdersService {
      */
     smOrders readOne();
 
+     /** 주문을 한 건 조회합니다.
+            *
+            * @return 조회된 주문 객체
+     */
+    SmOrdersAllOutput readOneSelect();
 }

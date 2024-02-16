@@ -1,5 +1,6 @@
 package inventory.service.impl;
 
+import inventory.dao.WarehouseDao;
 import inventory.dao.WarehouseSectionDao;
 import inventory.domain.Warehouse;
 import inventory.domain.WarehouseSection;
@@ -9,11 +10,14 @@ import inventory.service.WarehouseSectionService;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class WarehouseSectionServiceImpl implements WarehouseSectionService {
 
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     WarehouseSectionDao warehouseSectionDao = new WarehouseSectionDao();
+    WarehouseDao warehouseDao = new WarehouseDao();
 
     @Override
     public void createWarehouseSection(Warehouse warehouse) {
@@ -80,6 +84,37 @@ public class WarehouseSectionServiceImpl implements WarehouseSectionService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public void readWarehouseSection() {
+        ArrayList<WarehouseSection> warehouseSection = new ArrayList<>();
+        List<Warehouse> warehouses = warehouseDao.readWarehouse();
+        if (warehouses.isEmpty()) {
+            System.out.println("보유하고계신 창고가 없습니다. 창고를 먼저 생성해주세요");
+            return;
+        }
+        Long chooScId = null;
+        System.out.println("=".repeat(50));
+        System.out.printf("%-1s | %-4s | %-4s | %-4s\n", "창고번호", "택배사번호", "창고타입", "지역");
+        System.out.println("=".repeat(50));
+        for (Warehouse w : warehouses) {
+            System.out.printf("%-7d | %-7d | %-6s | %-4s\n", w.getId(), w.getDelivery_id(), w.getType(), w.getLocation());
+        }
+        try {
+            System.out.println("현재 보유중이신 창고구역을 조회해드리겠습니다.");
+            System.out.println("보유하고계신 창고번호를 입력해주세요");
+            chooScId = Long.parseLong(input.readLine());
+            warehouseSection = warehouseSectionDao.selectWarehouseSection(chooScId);
+            System.out.println("=".repeat(50));
+            System.out.printf("%s | %-10s \n", "구역이름", "구역타입");
+            for (WarehouseSection section : warehouseSection) {
 
+                System.out.printf("%s | %-10s\n", section.getName(), section.getType());
+
+            }
+            System.out.println("=".repeat(50));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

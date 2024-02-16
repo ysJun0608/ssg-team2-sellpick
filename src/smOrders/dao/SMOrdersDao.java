@@ -2,6 +2,7 @@ package smOrders.dao;
 
 import DBIO.ObjectDBIO;
 import smOrders.domain.smOrders;
+import smOrders.dto.SmOrdersAllOutput;
 import smOrders.dto.SmOrdersOutput;
 import smOrders.enums.SellerSendStatus;
 
@@ -12,6 +13,8 @@ public class SMOrdersDao extends ObjectDBIO {
 
     static Scanner sc = new Scanner(System.in);
 
+    Connection conn = null;
+
     //주문 전체 조회
     /**
      * DB에서 취소된 주문 정보를 조회하여 반환합니다.
@@ -19,7 +22,6 @@ public class SMOrdersDao extends ObjectDBIO {
      * @return 취소된 주문 목록
      */
     public List<SmOrdersOutput> smOrdersReadAllCanCel() {
-        Connection conn = null;
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
@@ -97,7 +99,7 @@ public class SMOrdersDao extends ObjectDBIO {
      * @return 배송 준비 중인 주문 목록
      */
     public List<SmOrdersOutput> readAllPreparedOrders() {
-        Connection conn = null;
+
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
@@ -176,7 +178,7 @@ public class SMOrdersDao extends ObjectDBIO {
      * @return 취소된 주문 목록
      */
     public List<SmOrdersOutput> readAllCanceledOrders() {
-        Connection conn = null;
+
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
@@ -255,12 +257,12 @@ public class SMOrdersDao extends ObjectDBIO {
      * @param smorders 업데이트할 주문 정보
      */
     public void updateSmOrdersStatus(smOrders smorders) {
-        Connection conn = null;
+
 
         try {
             conn = open();
 
-            String sqlOrder = "UPDATE sm_orders SET SELLER_SEND_STATUS = ?  WHERE ID = ?";
+            String sqlOrder = "UPDATE SM_ORDERS SET SELLER_SEND_STATUS = ?  WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sqlOrder);
 
             pstmt.setString(1, String.valueOf(smorders.getStatus()));
@@ -282,7 +284,6 @@ public class SMOrdersDao extends ObjectDBIO {
      * @return 조회된 주문 객체
      */
     public smOrders findById(Long id) {
-        Connection conn = null;
         smOrders smOrders = null;
 
         try {
@@ -319,22 +320,21 @@ public class SMOrdersDao extends ObjectDBIO {
      * @param smorders 삽입할 주문 정보
      */
     public void insertSmOrdersStatus(smOrders smorders) {
-        Connection conn = null;
 
         try {
             // Connection 연결 후 open 호출
             conn = open();
 
-            String sqlOrder = "INSERT INTO sm_orders (ID, QUANTITY, PAYMENT_AMOUNT, CREATED_AT,  EXPECTED_AT, SELLER_SEND_STATUS, CUSTOMER_ID, SHOPPING_MALL_ID, PRODUCTS_ID ) VALUES (?, ?, ?, now(), now(), ?, ?, ?, ? )";
+            String sqlOrder = "INSERT INTO SM_ORDERS (QUANTITY, PAYMENT_AMOUNT, CREATED_AT,  EXPECTED_AT, SELLER_SEND_STATUS, CUSTOMER_ID, SHOPPING_MALL_ID, PRODUCTS_ID ) VALUES (?, ?, now(), now(), ?, ?, ?, ? )";
             PreparedStatement pstmt = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
 
-            pstmt.setLong(1, smorders.getId());
-            pstmt.setInt(2, smorders.getQuantity());
-            pstmt.setInt(3, smorders.getPaymentAmount());
-            pstmt.setString(4, String.valueOf(smorders.getStatus()));
-            pstmt.setLong(5, smorders.getCustomerId());
-            pstmt.setLong(6, smorders.getShoppingMallId());
-            pstmt.setLong(7, smorders.getProductId());
+
+            pstmt.setInt(1, smorders.getQuantity());
+            pstmt.setInt(2, smorders.getPaymentAmount());
+            pstmt.setString(3, String.valueOf(smorders.getStatus()));
+            pstmt.setLong(4, smorders.getCustomerId());
+            pstmt.setLong(5, smorders.getShoppingMallId());
+            pstmt.setLong(6, smorders.getProductId());
             pstmt.executeUpdate();
 
             pstmt.close();
@@ -344,5 +344,61 @@ public class SMOrdersDao extends ObjectDBIO {
         }
     }
 
+    public SmOrdersAllOutput readOneAlloutput(Long id) {
+        SmOrdersAllOutput smordersalloutput = null;
 
+        SmOrdersAllOutput salloutput = null;
+        try {
+            conn = open(); // ObjectDBIO open 메소드 호출
+
+            String sql = "SELECT \n" +
+                    "    SO.ID as order_id,\n" +
+                    "    SO.QUANTITY,\n" +
+                    "    SO.PAYMENT_AMOUNT,\n" +
+                    "    SO.CREATED_AT ,\n" +
+                    "    SO.EXPECTED_AT ,\n" +
+                    "    SO.SELLER_SEND_STATUS,\n" +
+                    "    SO.SHOPPING_MALL_ID,\n" +
+                    "    SGM.NAME as SHOPPING_NAME,\n" +
+                    "    SO.PRODUCTS_ID,\n" +
+                    "    PDS.NAME as PRODUCTS_NAME,\n" +
+                    "    BAD.NAME as BRAND_NAME\n" +
+                    "FROM SM_ORDERS SO\n" +
+                    "JOIN SHOPPING_MALL SGM ON SO.SHOPPING_MALL_ID = SGM.ID\n" +
+                    "JOIN CUSTOMER CTR ON SO.CUSTOMER_ID = CTR.ID\n" +
+                    "JOIN PRODUCTS PDS ON SO.PRODUCTS_ID = PDS.ID\n" +
+                    "JOIN BUSINESS_OWNER BSOR ON PDS.OWNER_ID = BSOR.ID\n" +
+                    "JOIN WAREHOUSE_SHOPPING_MALL_RELATIONSHIP WSMR ON WSMR.ID = SO.SHOPPING_MALL_ID -- 창고\n" +
+                    "JOIN BRAND BAD ON BAD.ID = PDS.BRAND_ID\n" +
+                    "JOIN WAREHOUSE WHE ON WSMR.WAREHOUSE_ID = WHE.ID\n" +
+                    "AND SO.ID = ? \n" +
+                    "WHERE SO.SHOPPING_MALL_ID IN (SELECT ID FROM SHOPPING_MALL)";
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                salloutput = new SmOrdersAllOutput(
+                        rs.getLong("order_id"),
+                        rs.getInt("quantity"),
+                        rs.getInt("payment_amount"),
+                        rs.getTimestamp("created_at").toLocalDateTime(),
+                        rs.getTimestamp("expected_at").toLocalDateTime(),
+                        rs.getString("seller_send_status"),
+                        rs.getLong("shopping_mall_id"),
+                        rs.getString("shopping_name"),
+                        rs.getLong("products_id"),
+                        rs.getString("products_name"),
+                        rs.getString("brand_name")
+                );
+            }
+
+            close(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return salloutput;
+    }
 }

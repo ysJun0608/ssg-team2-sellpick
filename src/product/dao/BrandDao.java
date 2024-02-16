@@ -17,7 +17,7 @@ public class BrandDao extends ObjectDBIO {
         String brandName = null;
 
         try {
-            String sql = "SELECT name FROM brand WHERE id = ?";
+            String sql = "SELECT NAME FROM BRAND WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, brandCodeId);
             ResultSet rs = pstmt.executeQuery();

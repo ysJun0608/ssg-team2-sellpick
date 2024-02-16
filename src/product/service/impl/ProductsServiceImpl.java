@@ -2,8 +2,10 @@ package product.service.impl;
 
 import product.dao.ProductsDao;
 import product.domain.Products;
+import product.dto.ProductsOutput;
 import product.enums.ProductsStatus;
 import product.service.ProductsService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -21,20 +23,21 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public void productListInventory() {
-        List<Products> productList = productsDao.productListInventory();
+        List<ProductsOutput> productList = productsDao.productListInventory();
 
         if (!productList.isEmpty()) {
             System.out.println("상품 리스트:");
-            for (Products product : productList) {
-                System.out.println("상품 ID: " + product.getId());
-                System.out.println("상품 이름: " + product.getName());
-                System.out.println("판매 상태: " + product.getStatus().name());
-                System.out.println("상품 원가: " + product.getCost());
-                System.out.println("상품 판매가: " + product.getPrice());
-                System.out.println("브랜드 id : " + product.getBrandId());
-                System.out.println("사업자 id ; " + product.getBusinessOwnerId());
-                System.out.println("-----------------------------");
+            for (ProductsOutput product : productList) {
+                System.out.print("상품 ID: " + product.id());
+                System.out.print(", 상품 이름: " + product.name());
+                System.out.print(", 판매 상태: " + product.status().name());
+                System.out.print(", 상품 원가: " + product.cost());
+                System.out.print(", 상품 판매가: " + product.price());
+                System.out.print(", 브랜드 id : " + product.brandId());
+                System.out.print(", 브랜드 이름 : " + product.brandName());
+                System.out.println(", 사업자 id ; " + product.businessOwnerId());
             }
+            System.out.println("-".repeat(50));
         } else {
             System.out.println("상품이 없습니다.");
         }
@@ -62,8 +65,6 @@ public class ProductsServiceImpl implements ProductsService {
     public void createProduct() {
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            System.out.print("상품 id: ");
-            long id = parseInt(br.readLine());
 
             System.out.print("상품 이름: ");
             String name = br.readLine();
@@ -83,7 +84,6 @@ public class ProductsServiceImpl implements ProductsService {
             Long ownerId = Long.parseLong(br.readLine());
 
             Products product = new Products();
-            product.setId(id);
             product.setName(name);
             product.setStatus(status);
             product.setCost(cost);
@@ -93,7 +93,6 @@ public class ProductsServiceImpl implements ProductsService {
 
             productsDao.createProduct(product);
 
-            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -101,6 +100,7 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public void updateProduct() {
+        productListInventory();
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             System.out.print("업데이트할 상품의 id를 입력하세요: ");
@@ -122,9 +122,7 @@ public class ProductsServiceImpl implements ProductsService {
             product.setPrice(price);
             productsDao.updateProduct(product);
 
-            productListInventory();
 
-            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

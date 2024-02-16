@@ -27,7 +27,7 @@ public class DeliveryCmpDao extends ObjectDBIO {
         try {
             conn = open();
 
-            String selectDeliveryCmp = "SELECT id, name FROM delivery_cmp";
+            String selectDeliveryCmp = "SELECT ID, NAME FROM DELIVERY_CMP";
             try (PreparedStatement pstmtD = conn.prepareStatement(selectDeliveryCmp)) {
                 ResultSet dcRs = pstmtD.executeQuery();
 

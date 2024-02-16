@@ -2,6 +2,7 @@ package product.dao;
 
 import DBIO.ObjectDBIO;
 import product.domain.Products;
+import product.dto.ProductsOutput;
 import product.enums.ProductsStatus;
 import product.service.ProductsService;
 import product.service.impl.ProductsServiceImpl;
@@ -16,19 +17,18 @@ import java.util.List;
 public class ProductsDao extends ObjectDBIO {
     Connection conn = open();
 
-    public List<Products> productListInventory() {
+    public List<ProductsOutput> productListInventory() {
         open();
-        List<Products> productList = new ArrayList<>();
+        List<ProductsOutput> productList = new ArrayList<>();
 
         if (conn != null) {
             try {
-                String sql = "SELECT p.id, p.name, p.status, p.cost, p.price, i.quantity, ws.NAME AS warehouse_section_name, w.LOCATION AS warehouse_location " +
-                        "FROM products p " +
-                        "LEFT JOIN inventory i ON p.id = i.PRODUCTS_ID " +
-                        "LEFT JOIN warehouse_section ws ON i.WH_SECTION_ID = ws.ID " +
-                        "LEFT JOIN warehouse w ON ws.WAREHOUSE_ID = w.ID";
-
-                        ;
+                String sql = "SELECT P.ID, P.NAME, P.STATUS, P.PRICE, P.COST, P.BRAND_ID, P.OWNER_ID," +
+                        " B.NAME AS BRAND_NAME " +
+                        "FROM PRODUCTS P " +
+                        "JOIN BRAND B " +
+                        "ON P.BRAND_ID = B.ID " +
+                        "ORDER BY P.ID";
                 PreparedStatement pstmt = conn.prepareStatement(sql);
                 ResultSet rs = pstmt.executeQuery();
 
@@ -40,15 +40,18 @@ public class ProductsDao extends ObjectDBIO {
                     int productPrice = rs.getInt("price");
                     Long brandId = rs.getLong("brand_id");
                     Long ownerId = rs.getLong("owner_id");
+                    String brandName = rs.getString("brand_name");
 
-                    Products product = new Products();
-                    product.setId(productId);
-                    product.setName(productName);
-                    product.setStatus(ProductsStatus.valueOf(productStatus));
-                    product.setCost(productCost);
-                    product.setPrice(productPrice);
-                    product.setBrandId(brandId);
-                    product.setBusinessOwnerId(ownerId);
+                    ProductsOutput product = ProductsOutput.builder()
+                            .id(productId)
+                            .name(productName)
+                            .brandId(brandId)
+                            .brandName(brandName)
+                            .cost(productCost)
+                            .price(productPrice)
+                            .status(ProductsStatus.valueOf(productStatus))
+                            .businessOwnerId(ownerId)
+                            .build();
 
                     productList.add(product);
                 }
@@ -73,7 +76,7 @@ public class ProductsDao extends ObjectDBIO {
 
         if (conn != null) {
             try {
-                String sql = "INSERT INTO products (name, status, cost, price, brand_Id, owner_Id) VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO PRODUCTS (NAME, STATUS, COST, PRICE, BRAND_ID, OWNER_ID) VALUES (?, ?, ?, ?, ?, ?)";
                 PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
                 pstmt.setString(1, product.getName());
                 pstmt.setString(2, product.getStatus().name());
@@ -110,7 +113,7 @@ public class ProductsDao extends ObjectDBIO {
 
         if (conn != null) {
             try {
-                String sql = "UPDATE products SET name = ?, cost = ?, price = ? WHERE id = ?";
+                String sql = "UPDATE PRODUCTS SET NAME = ?, COST = ?, PRICE = ? WHERE ID = ?";
                 PreparedStatement pstmt = conn.prepareStatement(sql);
                 pstmt.setString(1, product.getName());
                 pstmt.setInt(2, product.getCost());

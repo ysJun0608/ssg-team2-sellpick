@@ -1,17 +1,20 @@
 package inventory.service;
 
-import delivery.domain.DeliveryCmp;
 import inventory.domain.Warehouse;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 public interface WarehouseService {
     void createWarehouse();
 
 
-Warehouse updateWarehouse();
+    Warehouse updateWarehouse();
 
-Warehouse allUpdateWarehouse(Warehouse warehouse);
-Warehouse deliveryUpdateWarehouse(Warehouse warehouse);
+    Warehouse allUpdateWarehouse(Warehouse warehouse);
 
+    Warehouse deliveryUpdateWarehouse(Warehouse warehouse);
+
+    void readAllWarehouse();
+
+    void readOneWarehouse();
 }
