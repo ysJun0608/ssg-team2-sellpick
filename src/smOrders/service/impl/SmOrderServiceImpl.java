@@ -147,7 +147,7 @@ public class SmOrderServiceImpl implements SmOrdersService {
         System.out.println("[주문을 조회합니다.]");
 
         // 모든 주문 정보를 가져옴
-        List<SmOrdersOutput> outputList = smordersdao.smOrdersReadAllCanCel();
+        List<SmOrdersOutput> outputList = smordersdao.smOrdersReadAll();
 
         if (outputList.isEmpty()) {
             System.out.println("주문이 없습니다.");

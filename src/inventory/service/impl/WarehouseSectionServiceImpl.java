@@ -26,7 +26,7 @@ public class WarehouseSectionServiceImpl implements WarehouseSectionService {
         try {
             Long countSection = null;
             while (true) {
-                System.out.println("창고 구역을 몇개 생성할지 정해주세요(최대 4개 / 중복불가)");
+                System.out.println("창고 구역을 몇개 생성할지 정해주세요(최대 4개)");
                 System.out.println("=".repeat(50));
                 countSection = Long.parseLong(input.readLine());
                 if (countSection > 4) {
