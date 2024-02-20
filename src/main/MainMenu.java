@@ -1,11 +1,12 @@
 package main;
 
-import java.io.IOException;
+import config.printWMSTraing.WmsTraining;
+
 import java.util.Scanner;
 
 public class MainMenu {
     public static void main(String[] args) {
-        new main.WmsTraining().logo();
+        new WmsTraining().logo();
         System.out.println("=".repeat(50));
         System.out.println("Welcome to 2커머스팀의 WMST 프로젝트");
         System.out.println("=".repeat(50));
@@ -13,7 +14,9 @@ public class MainMenu {
             selectMenu();
         }
     }
+
     static Scanner scanner = new Scanner(System.in);
+
     private static void selectMenu() {
         System.out.println("1. 창고관리");
         System.out.println("2. 재고관리");
@@ -33,7 +36,15 @@ public class MainMenu {
             case "5" -> new delivery.deliveryMain().menu();
             case "6" -> new inventory.SettlementMain().menu();
 
-            case "q" -> System.exit(0);
+            case "q" -> {
+                new config.printEndImage.ImageDisplay().printImage();
+                try {
+                    Thread.sleep(7500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.exit(0);
+            }
             default -> System.out.println("잘못된 입력값입니다.");
         }
     }

@@ -21,7 +21,7 @@ public class SMOrdersDao extends ObjectDBIO {
      *
      * @return 취소된 주문 목록
      */
-    public List<SmOrdersOutput> smOrdersReadAllCanCel() {
+    public List<SmOrdersOutput> smOrdersReadAll() {
         List<SmOrdersOutput> outputList = new ArrayList<>();
 
         try {
@@ -54,7 +54,8 @@ public class SMOrdersDao extends ObjectDBIO {
                     "JOIN BUSINESS_OWNER BSOR ON PDS.OWNER_ID = BSOR.ID\n" +
                     "JOIN WAREHOUSE_SHOPPING_MALL_RELATIONSHIP WSMR ON WSMR.ID = SO.SHOPPING_MALL_ID\n" +
                     "JOIN WAREHOUSE WHE ON WSMR.WAREHOUSE_ID = WHE.ID\n" +
-                    "WHERE SO.SHOPPING_MALL_ID IN (SELECT ID FROM SHOPPING_MALL)";
+                    "WHERE SO.SHOPPING_MALL_ID IN (SELECT ID FROM SHOPPING_MALL) " +
+                    "ORDER BY SO.ID DESC";
 
             PreparedStatement pstmt = conn.prepareStatement(sql);
             ResultSet rs = pstmt.executeQuery();
@@ -325,12 +326,22 @@ public class SMOrdersDao extends ObjectDBIO {
             // Connection 연결 후 open 호출
             conn = open();
 
+            // SQL문 작성
+            String ProductPrice = "SELECT PRICE FROM PRODUCTS WHERE ID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(ProductPrice);
+            pstmt.setLong(1, smorders.getProductId());
+            ResultSet rs = pstmt.executeQuery();
+            int price = 0;
+            while (rs.next()) {
+                price = rs.getInt("price");
+            }
+
             String sqlOrder = "INSERT INTO SM_ORDERS (QUANTITY, PAYMENT_AMOUNT, CREATED_AT,  EXPECTED_AT, SELLER_SEND_STATUS, CUSTOMER_ID, SHOPPING_MALL_ID, PRODUCTS_ID ) VALUES (?, ?, now(), now(), ?, ?, ?, ? )";
-            PreparedStatement pstmt = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
+            pstmt = conn.prepareStatement(sqlOrder, Statement.RETURN_GENERATED_KEYS);
 
 
             pstmt.setInt(1, smorders.getQuantity());
-            pstmt.setInt(2, smorders.getPaymentAmount());
+            pstmt.setInt(2, smorders.getQuantity() * price);
             pstmt.setString(3, String.valueOf(smorders.getStatus()));
             pstmt.setLong(4, smorders.getCustomerId());
             pstmt.setLong(5, smorders.getShoppingMallId());
