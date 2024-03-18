@@ -4,12 +4,14 @@ import com.ssg.wsmt.inventory.dao.WhSmRelationshipDao;
 import com.ssg.wsmt.smOrders.dao.ShoppingMallDao;
 import com.ssg.wsmt.smOrders.domain.ShoppingMall;
 import com.ssg.wsmt.smOrders.service.ShoppingMallService;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 
+@Service
 public class ShoppingMallServiceImpl implements ShoppingMallService {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
     ShoppingMallDao shoppingMallDao = new ShoppingMallDao();

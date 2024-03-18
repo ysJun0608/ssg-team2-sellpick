@@ -1,7 +1,7 @@
 package com.ssg.wsmt.inventory.dao;
 
 import com.ssg.wsmt.DBIO.ObjectDBIO;
-import com.ssg.wsmt.inventory.domain.WarehouseSection;
+import com.ssg.wsmt.inventory.domain.WarehouseSectionVO;
 import com.ssg.wsmt.inventory.enums.WhSectionType;
 
 import java.sql.Connection;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class WarehouseSectionDao extends ObjectDBIO {
     Connection conn = null;
 
-    public boolean saveWarehouseSection(WarehouseSection section) {
+    public boolean saveWarehouseSection(WarehouseSectionVO section) {
         boolean result = false;
         try {
             conn = open();
@@ -41,7 +41,7 @@ public class WarehouseSectionDao extends ObjectDBIO {
 
 
     public ArrayList selectWarehouseSection(Long chooseScId) {
-        ArrayList<WarehouseSection> warehouseSections = new ArrayList<>();
+        ArrayList<WarehouseSectionVO> warehouseSectionVOS = new ArrayList<>();
 
         try { conn = open();
             String sql = "SELECT * FROM WAREHOUSE_SECTION WHERE WAREHOUSE_ID = ?";
@@ -49,15 +49,15 @@ public class WarehouseSectionDao extends ObjectDBIO {
             pstmt.setString(1, String.valueOf(chooseScId));
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                WarehouseSection warehouseSection = new WarehouseSection();
-                warehouseSection.setName(rs.getString("NAME"));
-                warehouseSection.setType(WhSectionType.valueOf(rs.getString("TYPE")));
-                warehouseSections.add(warehouseSection);
+                WarehouseSectionVO warehouseSectionVO = new WarehouseSectionVO();
+                warehouseSectionVO.setName(rs.getString("NAME"));
+                warehouseSectionVO.setType(WhSectionType.valueOf(rs.getString("TYPE")));
+                warehouseSectionVOS.add(warehouseSectionVO);
             }
             close(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return warehouseSections;
+        return warehouseSectionVOS;
     }
 }

@@ -1,9 +1,13 @@
 package com.ssg.wsmt.inventory.domain;
 
-import lombok.Data;
+import lombok.*;
 
-@Data
-public class WhSmRelationship {
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
+public class WhSmRelationshipVO {
     // 창고-쇼핑몰 관계 id
     private Long id;
     // 창고 id (FK)

@@ -3,12 +3,13 @@ package com.ssg.wsmt.inventory.service.impl;
 import com.ssg.wsmt.inventory.dao.SettlementDao;
 import com.ssg.wsmt.inventory.domain.Settlement;
 import com.ssg.wsmt.inventory.service.SettlementService;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
-
+@Service
 public class SettlementServiceImpl implements SettlementService {
 
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

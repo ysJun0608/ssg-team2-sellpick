@@ -4,11 +4,12 @@ package com.ssg.wsmt.inventory.service.impl;
 import com.ssg.wsmt.inventory.dao.WarehouseInsertReleaseDao;
 import com.ssg.wsmt.inventory.enums.WhInOutType;
 import com.ssg.wsmt.inventory.service.WarehouseInsertReleaseService;
-import com.ssg.wsmt.mgtOrders.domain.WarehouseInsertRelease;
+import com.ssg.wsmt.inventory.dto.WarehouseInOutDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
+@Service
 public class WarehouseInsertReleaseServiceImpl implements WarehouseInsertReleaseService {
     WarehouseInsertReleaseDao whInOutDao = new WarehouseInsertReleaseDao();
     Scanner sc = new Scanner(System.in);
@@ -18,9 +19,9 @@ public class WarehouseInsertReleaseServiceImpl implements WarehouseInsertRelease
      * @return
      */
     @Override
-    public ArrayList<WarehouseInsertRelease> findStatusDone() {
+    public ArrayList<WarehouseInOutDTO> findStatusDone() {
         // 읽어온 상품들을 저장할 ArrayList 생성
-        ArrayList<WarehouseInsertRelease> allInsertProducts = whInOutDao.findAllInsertProducts();
+        ArrayList<WarehouseInOutDTO> allInsertProducts = whInOutDao.findAllInsertProducts();
         if (allInsertProducts.isEmpty()) {
             System.out.println("현재 입고중인 상품이 없습니다.");
             return null;
@@ -28,7 +29,7 @@ public class WarehouseInsertReleaseServiceImpl implements WarehouseInsertRelease
         System.out.println("현재로 입고중인 상품목록 출력");
         System.out.println("=".repeat(100));
         System.out.printf("%s  %10s","상품수량","상품 ID\n");
-        for (WarehouseInsertRelease insertProduct : allInsertProducts) {
+        for (WarehouseInOutDTO insertProduct : allInsertProducts) {
 
             System.out.printf("%s   %10s\n",
                     insertProduct.getQuantity(),insertProduct.getProductsId());
@@ -43,9 +44,9 @@ public class WarehouseInsertReleaseServiceImpl implements WarehouseInsertRelease
     public void updateReleaseStatus(WhInOutType whInOutType) {
         System.out.println("출고 준비중인 리스트 출력");
         System.out.println("=".repeat(100));
-        ArrayList<WarehouseInsertRelease> WhInOutList = whInOutDao.findAllInsertProducts();
+        ArrayList<WarehouseInOutDTO> WhInOutList = whInOutDao.findAllInsertProducts();
 
-        for (WarehouseInsertRelease whInOut : WhInOutList) {
+        for (WarehouseInOutDTO whInOut : WhInOutList) {
             System.out.println(whInOut);
         }
         System.out.println("=".repeat(100));

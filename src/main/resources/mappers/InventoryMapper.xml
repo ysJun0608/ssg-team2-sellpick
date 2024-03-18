@@ -8,7 +8,7 @@
         SELECT NOW()
     </select>
 
-    <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.Inventory">
+    <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">
         SELECT * FROM INVENTORY
     </select>
 </mapper>
