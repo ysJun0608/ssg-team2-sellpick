@@ -1,4 +1,4 @@
-package com.ssg.wsmt.mgtOrders.domain;
+package com.ssg.wsmt.inventory.dto;
 
 import com.ssg.wsmt.inventory.enums.WhInOutType;
 import lombok.Data;
@@ -6,7 +6,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class WarehouseInsertRelease {
+public class WarehouseInOutDTO {
     // 발주 상품 관계 id
     private Long id;
 

@@ -2,8 +2,9 @@ package com.ssg.wsmt.inventory.dao;
 
 import com.ssg.wsmt.DBIO.ObjectDBIO;
 import com.ssg.wsmt.inventory.domain.Warehouse;
+import com.ssg.wsmt.inventory.domain.WarehouseInsertRelease;
 import com.ssg.wsmt.inventory.enums.WhInOutType;
-import com.ssg.wsmt.mgtOrders.domain.WarehouseInsertRelease;
+import com.ssg.wsmt.inventory.dto.WarehouseInOutDTO;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,8 +18,6 @@ import java.util.ArrayList;
 public class WarehouseInsertReleaseDao extends ObjectDBIO {
     Connection conn = null;
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    // TODO : implement
-    ArrayList<WarehouseInsertRelease> warehouseInsertReleases = new ArrayList<>();
 
 
     /**
@@ -27,9 +26,9 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
      * @return 배송이 완료된 관리 주문에 속한 상품들의 정보를 담은 ArrayList.
      * 창고로 지금 현재 들어온 배송완료 처리가 된 상품들을 조회하는 메소드
      */
-    public ArrayList<WarehouseInsertRelease> findAllInsertProducts() {
+    public ArrayList<WarehouseInOutDTO> findAllInsertProducts() {
         // 읽어온 상품들을 저장할 ArrayList 생성
-        ArrayList<WarehouseInsertRelease> insertProducts = new ArrayList<>();
+        ArrayList<WarehouseInOutDTO> insertProducts = new ArrayList<>();
         try {
             conn = open();
             // 배송이 완료된 관리 주문에 속한 상품 정보를 조회하는 SQL 쿼리 실행
@@ -38,7 +37,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
                 ResultSet rs = pstmt.executeQuery();
                 // 조회한 상품 정보를 MgtOrderProductsRelationship 객체에 매핑하여 리스트에 추가
                 while (rs.next()) {
-                    WarehouseInsertRelease insertProduct = new WarehouseInsertRelease();
+                    WarehouseInOutDTO insertProduct = new WarehouseInOutDTO();
                     Long id = rs.getLong("ID");
                     Long mgtId = rs.getLong("MGT_ORDERS_ID");
                     Long productsId = rs.getLong("PRODUCTS_ID");
@@ -71,8 +70,8 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
      * @param allInsertProducts 주문된 상품들의 목록
      * @return WarehouseInsertRelease 객체
      */
-    public WarehouseInsertRelease updateInsertStatus(ArrayList<WarehouseInsertRelease> allInsertProducts) {
-        WarehouseInsertRelease warehouseInsertRelease = new WarehouseInsertRelease();
+    public WarehouseInOutDTO updateInsertStatus(ArrayList<WarehouseInOutDTO> allInsertProducts) {
+        WarehouseInOutDTO warehouseInOutDTO = new WarehouseInOutDTO();
         try {
             conn = open();
             // SQL 쿼리문을 미리 준비합니다.
@@ -85,7 +84,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
             // PreparedStatement 객체를 생성합니다.
             PreparedStatement pstmt = conn.prepareStatement(sql);
             // 주문된 상품들을 처리하기 위해 Batch 처리를 수행합니다.
-            for (WarehouseInsertRelease dto : allInsertProducts) {
+            for (WarehouseInOutDTO dto : allInsertProducts) {
                 pstmt.setLong(1, dto.getQuantity());
                 pstmt.setString(2, WhInOutType.INSERT_WAIT.name());
                 pstmt.setLong(3, dto.getProductsId());
@@ -103,7 +102,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return warehouseInsertRelease;
+        return warehouseInOutDTO;
     }
 
 
@@ -135,8 +134,8 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
      * @return WarehouseInsertRelease
      * 출고 데이터 생성하는 메소드
      */
-    public com.ssg.wsmt.inventory.domain.WarehouseInsertRelease warehouserelease(Warehouse warehouse) { // 창고를 가져오기
-        com.ssg.wsmt.inventory.domain.WarehouseInsertRelease warehouseInsertRelease = new com.ssg.wsmt.inventory.domain.WarehouseInsertRelease();
+    public WarehouseInsertRelease warehouserelease(Warehouse warehouse) { // 창고를 가져오기
+        WarehouseInsertRelease warehouseInsertRelease = new WarehouseInsertRelease();
         try {
             open();
             String sql = new StringBuilder()
@@ -181,7 +180,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
         PreparedStatement pstmt = null;
 
         try {
-            String SQL = "UPDATE WAREHOUSE_INSERTY_RELEASE SET STATUS = ? WHERE ID = ?";
+            String SQL = "UPDATE WAREHOUSE_INSERT_RELEASE SET TYPE = ? WHERE ID = ?";
             pstmt = conn.prepareStatement(SQL);
             pstmt.setString(1, whInOutType.name());
             pstmt.setLong(2, id);
@@ -192,9 +191,9 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
         }
     }
 
-    public ArrayList<WarehouseInsertRelease> findAllWhInOutList(WhInOutType whInOutType) {
+    public ArrayList<WarehouseInOutDTO> findAllWhInOutList(WhInOutType whInOutType) {
         // 읽어온 상품들을 저장할 ArrayList 생성
-        ArrayList<WarehouseInsertRelease> WhInOutList = new ArrayList<>();
+        ArrayList<WarehouseInOutDTO> WhInOutList = new ArrayList<>();
         try {
             conn = open();
             // 배송이 완료된 관리 주문에 속한 상품 정보를 조회하는 SQL 쿼리 실행
@@ -204,7 +203,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
                 ResultSet rs = pstmt.executeQuery();
                 // 조회한 상품 정보를 MgtOrderProductsRelationship 객체에 매핑하여 리스트에 추가
                 while (rs.next()) {
-                    WarehouseInsertRelease WhInOut = new WarehouseInsertRelease();
+                    WarehouseInOutDTO WhInOut = new WarehouseInOutDTO();
                     Long id = rs.getLong("ID");
                     int quantity = rs.getInt("QUANTITY");
                     Long smtOrdersId = rs.getLong("FK_ID");
