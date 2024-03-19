@@ -1,13 +1,13 @@
 package com.ssg.wsmt.mgtOrders.domain;
 
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class MgtOrders {
@@ -22,40 +22,20 @@ public class MgtOrders {
     // 창고 id (FK)
     private Long warehouseId;
 
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getPurchaser() {
-        return purchaser;
     }
 
     public void setPurchaser(String purchaser) {
         this.purchaser = purchaser;
     }
 
-    public MgtOrdersStatus getStatus() {
-        return status;
-    }
-
     public void setStatus(MgtOrdersStatus status) {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getWarehouseId() {
-        return warehouseId;
     }
 
     public void setWarehouseId(Long warehouseId) {
