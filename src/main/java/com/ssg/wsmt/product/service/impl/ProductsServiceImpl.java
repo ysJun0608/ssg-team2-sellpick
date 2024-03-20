@@ -4,7 +4,10 @@ import com.ssg.wsmt.product.dao.ProductsDao;
 import com.ssg.wsmt.product.domain.Products;
 import com.ssg.wsmt.product.dto.ProductsOutput;
 import com.ssg.wsmt.product.enums.ProductsStatus;
+import com.ssg.wsmt.product.mapper.ProductMapper;
 import com.ssg.wsmt.product.service.ProductsService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,17 +16,20 @@ import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
+@Service
+@RequiredArgsConstructor
 public class ProductsServiceImpl implements ProductsService {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    private ProductsDao productsDao;
+   // private ProductsDao productsDao;
 
-    public ProductsServiceImpl() {
-        this.productsDao = new ProductsDao();
-    }
+    private final ProductMapper productMapper;
+//    public ProductsServiceImpl() {
+//        this.productsDao = new ProductsDao();
+//    }
 
     @Override
     public void productListInventory() {
-        List<ProductsOutput> productList = productsDao.productListInventory();
+        List<ProductsOutput> productList = productMapper.productListInventory();
 
         if (!productList.isEmpty()) {
             System.out.println("상품 리스트:");
@@ -91,7 +97,7 @@ public class ProductsServiceImpl implements ProductsService {
             product.setBrandId(brandId);
             product.setBusinessOwnerId(ownerId);
 
-            productsDao.createProduct(product);
+            productMapper.createProduct(product);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,7 +126,7 @@ public class ProductsServiceImpl implements ProductsService {
             product.setName(name);
             product.setCost(cost);
             product.setPrice(price);
-            productsDao.updateProduct(product);
+            productMapper.updateProduct(product);
 
 
         } catch (IOException e) {

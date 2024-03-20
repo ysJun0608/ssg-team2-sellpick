@@ -1,14 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
+<!-- resources/mapper/InventoryMapper.xml -->
 <mapper namespace="com.ssg.wsmt.inventory.mapper.InventoryMapper">
-
-    <select id="getTime" resultType="string">
-        SELECT NOW()
+    <select id="findAll" resultType="com.ssg.wsmt.inventory.domain.Inventory">
+        SELECT * FROM INVENTORY
     </select>
 
-    <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.Inventory">
-        SELECT * FROM INVENTORY
+    <select id="findById" resultType="com.ssg.wsmt.inventory.domain.Inventory" parameterType="Long">
+        SELECT * FROM INVENTORY WHERE ID = #{id}
+    </select>
+
+    <select id="findByWarehouseId" resultType="com.ssg.wsmt.inventory.dto.InventoryOutput" parameterType="Long">
+        SELECT I.ID, I.QUANTITY, I.WH_SECTION_ID, I.PRODUCTS_ID,
+        W.ID AS WAREHOUSE_ID,
+        W.LOCATION,
+        P.NAME AS PRODUCT_NAME,
+        B.NAME AS BRAND_NAME,
+        P.PRICE AS PRODUCT_PRICE
+        FROM INVENTORY I
+        JOIN WAREHOUSE_SECTION WS ON I.WH_SECTION_ID = WS.ID
+        JOIN WAREHOUSE W ON WS.WAREHOUSE_ID = W.ID
+        JOIN PRODUCTS P ON I.PRODUCTS_ID = P.ID
+        JOIN BRAND B ON P.BRAND_ID = B.ID
+        WHERE W.ID = #{id}
     </select>
 </mapper>
