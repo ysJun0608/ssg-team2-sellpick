@@ -21,24 +21,4 @@ public class MgtOrders {
     private LocalDateTime createdAt;
     // 창고 id (FK)
     private Long warehouseId;
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setPurchaser(String purchaser) {
-        this.purchaser = purchaser;
-    }
-
-    public void setStatus(MgtOrdersStatus status) {
-        this.status = status;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setWarehouseId(Long warehouseId) {
-        this.warehouseId = warehouseId;
-    }
 }

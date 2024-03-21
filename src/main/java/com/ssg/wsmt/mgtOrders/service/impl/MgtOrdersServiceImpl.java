@@ -51,11 +51,11 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                     .createdAt(mgtOrdersDTO.getCreatedAt())
                     .warehouseId(mgtOrdersDTO.getWarehouseId())
                     .build();
-            Long result = mgtOrdersMapper.createOrder(mgtOrders);
+            mgtOrdersMapper.createOrder(mgtOrders);
 
-            if (result <= 0L) {
-                System.out.println("발주양식 생성에 실패하였습니다. 재생성합니다.");
-            }
+//            if (result <= 0L) {
+//                System.out.println("발주양식 생성에 실패하였습니다. 재생성합니다.");
+//            }
 
             // 발주 할 상품 입력 받기
 //            while (true) {

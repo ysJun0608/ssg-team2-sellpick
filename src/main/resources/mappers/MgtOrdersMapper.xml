@@ -4,22 +4,22 @@
 
 <mapper namespace="com.ssg.wsmt.mgtOrders.mapper.MgtOrdersMapper">
 
-    <select id="createOrder" resultType="java.lang.Long">
+    <insert id="createOrder">
         INSERT INTO MGT_ORDERS(PURCHASER, STATUS, CREATED_AT, WAREHOUSE_ID) VALUES (#{purchaser}, #{status}, #{createdAt}, #{warehouseId})
-    </select>
+    </insert>
 
-    <select id="addItem" resultType="java.lang.Boolean">
+    <insert id="addItem">
         INSERT INTO MGT_ORDERS_PRODUCTS_RELATIONSHIP(QUANTITY, PRODUCTS_ID, MGT_ORDERS_ID) VALUES (#{entry.getValue()}, #{entry.getKey()}, #{id})
-    </select>
+    </insert>
 
-    <select id="updateStatus" resultType="java.lang.Integer">
+    <update id="updateStatus">
         UPDATE MGT_ORDERS SET STATUS = #{status.name()} WHERE ID = #{orderId}
 
-    </select>
+    </update>
 
-    <select id="cancelOrder" resultType="java.lang.Integer">
+    <update id="cancelOrder">
         UPDATE MGT_ORDERS SET STATUS = 'CANCEL' WHERE ID = #{orderId}
-    </select>
+    </update>
 
     <select id="selectAllForDate" resultType="java.util.ArrayList">
         SELECT * FROM MGT_ORDERS WHERE CREATED_AT BETWEEN #{startDate} AND #{endDate} +0.999999999
@@ -29,17 +29,17 @@
         SELECT * FROM MGT_ORDERS WHERE STATUS = #{status.name()}
     </select>
 
-    <select id="insertList" resultType="java.lang.Boolean">
+    <update id="insertList">
         UPDATE MGT_ORDERS SET STATUS = #{status} WHERE ID = #{num}
-    </select>
+    </update>
 
     <select id="searchNoneDelived" resultType="java.util.ArrayList">
         SELECT * FROM MGT_ORDERS WHERE STATUS != 'DELIVERED' AND CREATED_AT BETWEEN #{date} AND #{date}+0.999999999
     </select>
 
-    <select id="delete" resultType="java.lang.Integer">
+    <delete id="delete">
         DELETE FROM MGT_ORDERS WHERE ID = #{orderId}
-    </select>
+    </delete>
 
     <select id="getOne" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
         SELECT * FROM MGT_ORDERS where ID =#{id}
