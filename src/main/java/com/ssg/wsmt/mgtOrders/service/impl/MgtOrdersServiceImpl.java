@@ -29,7 +29,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     //private final MgtOrderDao mgtOrderDao = new MgtOrderDao();
 
     @Override
-    public Long add(MgtOrdersDTO mgtOrdersDTO) {
+    public Long createForm(MgtOrdersDTO mgtOrdersDTO) {
 
         MgtOrders mgtOrders = MgtOrders.builder()
                 .purchaser(mgtOrdersDTO.getPurchaser())
@@ -40,6 +40,11 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         mgtOrdersMapper.createOrder(mgtOrders);
 
         return mgtOrders.getId();
+    }
+
+    @Override
+    public void addItems() {
+
     }
 
     @Override

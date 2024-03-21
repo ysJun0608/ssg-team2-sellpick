@@ -97,152 +97,192 @@
 <h1> 발주등록 </h1>
 <div class="section top-section">
     <form action="/MgtOrders/MgtOrderCreate" method="post">
-    <div class="row">
-        <div>
-            <label for="order-date-start">발주일자 * :</label>
-            <input type="date" id="order-date-start" name="createdAt">
+        <div class="row">
+            <div>
+                <label for="order-date-start">발주일자 * :</label>
+                <input type="date" id="order-date-start" name="createdAt">
+            </div>
+            <div>
+                <label for="order-id">발주번호 :</label>
+                <input type="text" id="order-id" th:value="${id}" readonly>
+            </div>
+            <div>
+                <label for="supplier">발주상태 :</label>
+                <input type="text" id="status" value="READY" name="status" readonly>
+            </div>
         </div>
-        <div>
-            <label for="order-id">발주번호 :</label>
-            <input type="text" id="order-id" th:value="${id}" readonly>
+        <div class="row">
+            <div>
+                <label for="supplier">매입거래처 :</label>
+                <input type="text" id="supplier" placeholder="Company" name="purchaser">
+            </div>
+            <div>
+                <label for="warehouse">창고ID :</label>
+                <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId">
+            </div>
+            <div></div>
         </div>
-        <div>
-            <label for="supplier">발주상태 :</label>
-            <input type="text" id="status" value="READY" name="status" readonly>
+        <div class="button-row">
+            <!-- Check if id is present -->
+            <button type="submit" th:if="${id == null}">Create</button>
+            <!-- Disable the button if id is present -->
+            <button type="submit" th:if="${id != null}" disabled>Create</button>
         </div>
-    </div>
-    <div class="row">
-        <div>
-            <label for="supplier">매입거래처 :</label>
-            <input type="text" id="supplier" placeholder="Company" name="purchaser">
-        </div>
-        <div>
-            <label for="warehouse">창고ID :</label>
-            <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId">
-        </div>
-        <div></div>
-    </div>
-    <div class="button-row">
-        <!-- Check if id is present -->
-        <button type="submit" th:if="${id == null}">Create</button>
-        <!-- Disable the button if id is present -->
-        <button type="submit" th:if="${id != null}" disabled>Create</button>
-    </div>
     </form>
 </div>
 <div class="section bottom-section">
-    <table>
-        <thead>
-        <tr>
-            <th>No.</th>
-            <th><input type="checkbox" checked></th>
-            <th>Item</th>
-            <th>Quantity</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td>1</td>
-            <td><input type="checkbox" checked></td>
-            <td>Item 1 (Description)</td>
-            <td>10</td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td><input type="checkbox"></td>
-            <td>Item 2 (Description)</td>
-            <td>5</td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td><input type="checkbox"></td>
-            <td>Item 3 (Description)</td>
-            <td>4</td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td><input type="checkbox"></td>
-            <td>Item 4 (Description)</td>
-            <td>1</td>
-        </tr>
-        </tbody>
-    </table>
-    <div></div>
-    <div class="button-row">
-        <div>
-            <button>Save</button>
+    <form id="addItems" action="/MgtOrders/AddItems" method="post">
+        <div class="input-fields">
+            <label for="item-name">상품이름:</label>
+            <input type="text" id="item-name" placeholder="상품이름 입력">
+            <label for="item-quantity">수량:</label>
+            <input type="number" id="item-quantity" placeholder="수량 입력">
+            <button type="button" id="addRowBtn">추가</button>
         </div>
-        <div>
-            <button>Delete</button>
+        <table>
+            <thead>
+            <tr>
+                <th>No.</th>
+                <th><input type="checkbox" checked></th>
+                <th>Item</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody id="table-body">
+            <tr>
+                <td>1</td>
+                <td><input type="checkbox" value="false"></td>
+                <td><input type="text" name="itemNames" value="Item 1 (Description)"></td>
+                <td><input type="number" name="quantities"></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td><input type="checkbox" value="false"></td>
+                <td><input type="text" name="itemNames" value="Item 2 (Description)"></td>
+                <td><input type="number" name="quantities"></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td><input type="checkbox" value="false"></td>
+                <td><input type="text" name="itemNames" value="Item 3 (Description)"></td>
+                <td><input type="number" name="quantities"></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td><input type="checkbox" value="false"></td>
+                <td><input type="text" name="itemNames" value="Item 4 (Description)"></td>
+                <td><input type="number" name="quantities"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div></div>
+        <div class="button-row">
+            <div>
+                <button type="submit">Save</button>
+            </div>
+            <div>
+                <button id="deleteBtn">Delete</button>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
 <!-- IONICONS -->
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 <!-- JS -->
 <script src="/js/main.js"></script>
-<!-- <script>
-    /* EXPANDER MENU */
-const showMenu = (toggleId, navbarId, bodyId) => {
-const toggle = document.getElementById(toggleId),
-navbar = document.getElementById(navbarId),
-bodypadding = document.getElementById(bodyId)
+<script>
+    let rowCount = document.querySelectorAll('#table-body tr').length; // 초기 행 개수
 
-if( toggle && navbar ) {
-    toggle.addEventListener('click', ()=>{
-        navbar.classList.toggle('expander');
-        bodypadding.classList.toggle('body-pd');
-        // 스크롤 내리는 기능 추가
-        if (navbar.classList.contains('expander')) {
-            // 사이드바가 열렸을 때 body의 overflow를 hidden으로 설정하여 스크롤을 막습니다.
-            document.body.style.overflow = 'hidden';
-        } else {
-            // 사이드바가 닫혔을 때 body의 overflow를 초기값으로 되돌립니다.
-            document.body.style.overflow = 'auto';
+    function addRow() {
+        const itemName = document.getElementById('item-name').value;
+        const itemQuantity = document.getElementById('item-quantity').value;
+
+        if (itemName && itemQuantity) {
+            const tableBody = document.getElementById('table-body');
+            if (tableBody) {
+                const newRow = document.createElement('tr');
+                const tdNo = document.createElement('td');
+                tdNo.textContent = ++rowCount;
+                const tdCheckbox = document.createElement('td');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = 'false';
+                tdCheckbox.appendChild(checkbox);
+                const tdItem = document.createElement('td');
+                const itemInput = document.createElement('input');
+                itemInput.type = 'text';
+                itemInput.name = 'itemNames';
+                itemInput.value = itemName;
+                tdItem.appendChild(itemInput);
+                const tdQuantity = document.createElement('td');
+                const quantityInput = document.createElement('input');
+                quantityInput.type = 'number';
+                quantityInput.name = 'quantities';
+                quantityInput.value = itemQuantity;
+                tdQuantity.appendChild(quantityInput);
+
+                newRow.appendChild(tdNo);
+                newRow.appendChild(tdCheckbox);
+                newRow.appendChild(tdItem);
+                newRow.appendChild(tdQuantity);
+
+                tableBody.appendChild(newRow);
+            }
+            document.getElementById('item-name').value = '';
+            document.getElementById('item-quantity').value = '';
         }
-    })
-}
-}
+    }
 
-showMenu('nav-toggle', 'navbar', 'body-pd')
+    function deleteCheckedItems() {
+        const tableBody = document.getElementById('table-body');
+        const rows = tableBody.querySelectorAll('tr');
 
-/* LINK ACTIVE */
-const linkColor = document.querySelectorAll('.nav__link')
-function colorLink() {
-linkColor.forEach(l=> l.classList.remove('active'))
-this.classList.add('active')
-}
-linkColor.forEach(l=> l.addEventListener('click', colorLink))
+        rows.forEach(row => {
+            const checkbox = row.querySelector('input[type="checkbox"]');
+            if (checkbox.checked) {
+                row.remove();
+            }
+        });
+    }
 
-/* COLLAPSE MENU */
-const linkCollapse = document.getElementsByClassName('collapse__link')
-var i
+    window.onload = function () {
+        // Get the id value
+        var idValue = [[${id}]];
 
-for(i=0;i<linkCollapse.length;i++) {
-linkCollapse[i].addEventListener('click', function(){
-    const collapseMenu = this.nextElementSibling
-    collapseMenu.classList.toggle('showCollapse')
+        // Add an event listener to the form submission
+        document.getElementById('addItems').addEventListener('submit', function (event) {
+            // Get the form action URL
+            var formAction = "/MgtOrders/AddItems";
+            console.log(idValue);
+            // Append the id parameter to the form action URL
+            formAction += "?id=" + idValue;
+            console.log(formAction);
+            // Update the form action
+            this.action = formAction;
+        });
 
-    const rotate = collapseMenu.previousElementSibling
-    rotate.classList.toggle('rotate')
-});
-}
+        // 추가 버튼 클릭 이벤트 바인딩
+        document.getElementById('addRowBtn').addEventListener('click', addRow);
 
-// 스크롤 내리는 기능 추가
-window.addEventListener('scroll', function() {
-const navbar = document.getElementById('navbar');
-const toggle = document.getElementById('nav-toggle');
-const bodypadding = document.getElementById('body-pd');
+        // Delete button click event binding
+        document.getElementById('deleteBtn').addEventListener('click', function() {
+            var idValue = [[${id}]];
 
-// 스크롤이 발생했을 때 사이드바가 열려있다면 닫습니다.
-if (navbar.classList.contains('expander')) {
-    navbar.classList.remove('expander');
-    bodypadding.classList.remove('body-pd');
-    document.body.style.overflow = 'auto';
-    toggle.classList.remove('toggle');
-}
-});
+            deleteCheckedItems();
 
-</script> -->
+            // Get the current URL
+            var currentUrl = window.location.href;
+            console.log(currentUrl);
+            // Update the URL with the id parameter
+            if (idValue) {
+                currentUrl += "?id=" + idValue;
+            }
+            console.log(currentUrl + " 2222");
+
+            // Redirect to the updated URL
+            window.location.href = currentUrl;
+        });
+    };
+</script>
 </body>
 </html>

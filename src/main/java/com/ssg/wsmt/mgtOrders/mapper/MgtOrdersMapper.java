@@ -14,7 +14,7 @@ import java.util.Map;
 public interface MgtOrdersMapper {
     public Long createOrder(MgtOrders mgtOrders);
 
-    public boolean addItem(Integer productId, Integer productQuantity, Long id);
+    public boolean addItems(Long id);
 
 
     public Integer updateStatus(MgtOrdersStatus status, Long orderId);

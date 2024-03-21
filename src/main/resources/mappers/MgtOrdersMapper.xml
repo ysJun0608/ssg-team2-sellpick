@@ -5,10 +5,10 @@
 <mapper namespace="com.ssg.wsmt.mgtOrders.mapper.MgtOrdersMapper">
 
     <insert id="createOrder" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO MGT_ORDERS(PURCHASER, STATUS) VALUES (#{purchaser}, #{status})
+        INSERT INTO MGT_ORDERS(PURCHASER, STATUS, WAREHOUSE_ID) VALUES (#{purchaser}, #{status}, #{warehouseId})
     </insert>
 
-    <insert id="addItem">
+    <insert id="addItems">
         INSERT INTO MGT_ORDERS_PRODUCTS_RELATIONSHIP(QUANTITY, PRODUCTS_ID, MGT_ORDERS_ID) VALUES (#{entry.getValue()}, #{entry.getKey()}, #{id})
     </insert>
 

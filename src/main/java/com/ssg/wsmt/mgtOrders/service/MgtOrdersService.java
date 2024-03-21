@@ -5,7 +5,8 @@ import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
 import java.util.List;
 
 public interface MgtOrdersService {
-    Long add(MgtOrdersDTO mgtOrdersDTO);
+    Long createForm(MgtOrdersDTO mgtOrdersDTO);
+    void addItems();
     void getAllOrders();
     boolean confirmOrder();
     boolean cancelOrder();
