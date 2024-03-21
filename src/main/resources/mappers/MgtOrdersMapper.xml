@@ -4,8 +4,8 @@
 
 <mapper namespace="com.ssg.wsmt.mgtOrders.mapper.MgtOrdersMapper">
 
-    <insert id="createOrder">
-        INSERT INTO MGT_ORDERS(PURCHASER, STATUS, CREATED_AT, WAREHOUSE_ID) VALUES (#{purchaser}, #{status}, #{createdAt}, #{warehouseId})
+    <insert id="createOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MGT_ORDERS(PURCHASER, STATUS) VALUES (#{purchaser}, #{status})
     </insert>
 
     <insert id="addItem">
@@ -29,9 +29,9 @@
         SELECT * FROM MGT_ORDERS WHERE STATUS = #{status.name()}
     </select>
 
-    <update id="insertList">
+    <delete id="insertList">
         UPDATE MGT_ORDERS SET STATUS = #{status} WHERE ID = #{num}
-    </update>
+    </delete>
 
     <select id="searchNoneDelived" resultType="java.util.ArrayList">
         SELECT * FROM MGT_ORDERS WHERE STATUS != 'DELIVERED' AND CREATED_AT BETWEEN #{date} AND #{date}+0.999999999

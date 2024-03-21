@@ -5,7 +5,7 @@ import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
 import java.util.List;
 
 public interface MgtOrdersService {
-    void add(MgtOrdersDTO mgtOrdersDTO);
+    Long add(MgtOrdersDTO mgtOrdersDTO);
     void getAllOrders();
     boolean confirmOrder();
     boolean cancelOrder();

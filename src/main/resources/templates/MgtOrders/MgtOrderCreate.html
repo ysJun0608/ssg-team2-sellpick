@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 
     <title>SideBar sub menus</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -95,76 +95,92 @@
 </div>
 
 <h1> 발주등록 </h1>
-    <div class="section top-section">
-        <div class="row">
-            <div>
-                <label for="order-date">발주일자 * :</label>
-                <input type="date" id="order-date-start">
-		~ 
-                <input type="date" id="order-date-end">
-            </div>
-            <div>
-                <label for="supplier">발주상태 :</label>
-                <input type="text" id="status" value="Confirmed" readonly>
-            </div>
+<div class="section top-section">
+    <form action="/MgtOrders/MgtOrderCreate" method="post">
+    <div class="row">
+        <div>
+            <label for="order-date-start">발주일자 * :</label>
+            <input type="date" id="order-date-start" name="createdAt">
         </div>
-        <div class="row">
-            <div>
-                <label for="supplier">매입거래처 :</label>
-                <input type="text" id="supplier" value="Company">
-            </div>
-            <div>
-                <label for="warehouse">창고ID :</label>
-                <input type="text" id="warehouse" value="Warehouse 1">
-            </div>
-            <div></div>
+        <div>
+            <label for="order-id">발주번호 :</label>
+            <input type="text" id="order-id" th:value="${id}" readonly>
         </div>
-        <div class="button-row">
-            <button>Search</button>
+        <div>
+            <label for="supplier">발주상태 :</label>
+            <input type="text" id="status" value="READY" name="status" readonly>
         </div>
     </div>
-    <div class="section bottom-section">
-        <table>
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th><input type="checkbox" checked></th>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1</td>
-                    <td><input type="checkbox" checked></td>
-                    <td>Item 1 (Description)</td>
-                    <td>10</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td><input type="checkbox"></td>
-                    <td>Item 2 (Description)</td>
-                    <td>5</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td><input type="checkbox"></td>
-                    <td>Item 3 (Description)</td>
-                    <td>4</td>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td><input type="checkbox"></td>
-                    <td>Item 4 (Description)</td>
-                    <td>1</td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="row">
+        <div>
+            <label for="supplier">매입거래처 :</label>
+            <input type="text" id="supplier" placeholder="Company" name="purchaser">
+        </div>
+        <div>
+            <label for="warehouse">창고ID :</label>
+            <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId">
+        </div>
+        <div></div>
     </div>
+    <div class="button-row">
+        <!-- Check if id is present -->
+        <button type="submit" th:if="${id == null}">Create</button>
+        <!-- Disable the button if id is present -->
+        <button type="submit" th:if="${id != null}" disabled>Create</button>
+    </div>
+    </form>
+</div>
+<div class="section bottom-section">
+    <table>
+        <thead>
+        <tr>
+            <th>No.</th>
+            <th><input type="checkbox" checked></th>
+            <th>Item</th>
+            <th>Quantity</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>1</td>
+            <td><input type="checkbox" checked></td>
+            <td>Item 1 (Description)</td>
+            <td>10</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td><input type="checkbox"></td>
+            <td>Item 2 (Description)</td>
+            <td>5</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td><input type="checkbox"></td>
+            <td>Item 3 (Description)</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td><input type="checkbox"></td>
+            <td>Item 4 (Description)</td>
+            <td>1</td>
+        </tr>
+        </tbody>
+    </table>
+    <div></div>
+    <div class="button-row">
+        <div>
+            <button>Save</button>
+        </div>
+        <div>
+            <button>Delete</button>
+        </div>
+    </div>
+</div>
 <!-- IONICONS -->
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 <!-- JS -->
-<script src="assets/js/main.js"></script>
+<script src="/js/main.js"></script>
 <!-- <script>
     /* EXPANDER MENU */
 const showMenu = (toggleId, navbarId, bodyId) => {

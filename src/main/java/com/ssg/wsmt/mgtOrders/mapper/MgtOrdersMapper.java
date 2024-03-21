@@ -12,7 +12,7 @@ import java.util.Map;
 
 @Mapper
 public interface MgtOrdersMapper {
-    public void createOrder(MgtOrders mgtOrders);
+    public Long createOrder(MgtOrders mgtOrders);
 
     public boolean addItem(Integer productId, Integer productQuantity, Long id);
 
