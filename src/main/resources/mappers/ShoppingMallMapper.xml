@@ -4,11 +4,11 @@
 
 <mapper namespace="com.ssg.wsmt.smOrders.mapper.ShoppingMallMapper">
 
-    <select id="selectAll" resultType="com.ssg.wsmt.smOrders.domain.ShoppingMall">
+    <select id="selectAll" resultType="com.ssg.wsmt.smOrders.domain.ShoppingMallVo">
         SELECT * FROM shopping_mall
     </select>
 
-    <select id="findAll" resultType="com.ssg.wsmt.smOrders.domain.ShoppingMall">
+    <select id="findAll" resultType="com.ssg.wsmt.smOrders.domain.ShoppingMallVo">
         SELECT * FROM shopping_mall
     </select>
 

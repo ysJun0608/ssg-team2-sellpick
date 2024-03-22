@@ -7,7 +7,7 @@
 <body>
 <h2>Shopping Malls</h2>
 <ul>
-    <li th:each="mall : ${shoppingMalls}">
+    <li th:each="mall : ${shoppingMallsList}">
         <p>ID: <span th:text="${mall.id}"></span>, Name: <span th:text="${mall.name}"></span></p>
     </li>
 </ul>

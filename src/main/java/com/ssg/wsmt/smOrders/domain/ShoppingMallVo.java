@@ -7,7 +7,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShoppingMall {
+public class ShoppingMallVo {
     // 쇼핑몰 id
     private Long id;
     // 쇼핑몰 명

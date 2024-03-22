@@ -1,7 +1,7 @@
 package com.ssg.wsmt.smOrders.dao;
 
 import com.ssg.wsmt.DBIO.ObjectDBIO;
-import com.ssg.wsmt.smOrders.domain.ShoppingMall;
+import com.ssg.wsmt.smOrders.domain.ShoppingMallVo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,9 +13,9 @@ import java.util.List;
 public class ShoppingMallDao extends ObjectDBIO {
     Connection conn = null;
 
-    public List<ShoppingMall> findAll() {
+    public List<ShoppingMallVo> findAll() {
         conn = open();
-        List<ShoppingMall> shoppingMallList = new ArrayList<>();
+        List<ShoppingMallVo> shoppingMallList = new ArrayList<>();
 
         try {
             String SQL = "SELECT * FROM SHOPPING_MALL";
@@ -23,7 +23,7 @@ public class ShoppingMallDao extends ObjectDBIO {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                ShoppingMall sm = new ShoppingMall();
+                ShoppingMallVo sm = new ShoppingMallVo();
                 sm.setId(rs.getLong("ID"));
                 sm.setName(rs.getString("NAME"));
 

@@ -14,9 +14,11 @@ class ShoppingMallMapperTest {
 
 
     @Test
-    public void test2() throws Exception {
+    public void shopselectAll() throws Exception {
         System.out.println( "쇼핑몰 리스트!!!!!! : "+ shoppingMallMapper.selectAll());
     }
+
+
 
 
 }
