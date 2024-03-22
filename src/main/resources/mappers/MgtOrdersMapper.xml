@@ -9,7 +9,7 @@
     </insert>
 
     <insert id="addItems">
-        INSERT INTO MGT_ORDERS_PRODUCTS_RELATIONSHIP(QUANTITY, PRODUCTS_ID, MGT_ORDERS_ID) VALUES (#{entry.getValue()}, #{entry.getKey()}, #{id})
+        INSERT INTO MGT_ORDERS_PRODUCTS_RELATIONSHIP(QUANTITY, PRODUCTS_ID, MGT_ORDERS_ID) VALUES (#{quantity}, #{productId}, #{mgtOrderId})
     </insert>
 
     <update id="updateStatus">

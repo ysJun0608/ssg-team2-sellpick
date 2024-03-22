@@ -6,18 +6,19 @@ import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import com.ssg.wsmt.mgtOrders.mapper.MgtOrdersMapper;
 import com.ssg.wsmt.mgtOrders.service.MgtOrdersService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class MgtOrdersServiceImpl implements MgtOrdersService {
     // TODO: Implement the service
@@ -42,9 +43,16 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         return mgtOrders.getId();
     }
 
-    @Override
-    public void addItems() {
-
+    public void addItems(Long[] quantities, Long[] productId, Long id) {
+        log.info(Arrays.stream(quantities).toList());
+        log.info(Arrays.stream(productId).toList());
+        log.info(id);
+        for (int i = 0; i < quantities.length; i++) {
+            if (quantities[i] != null){
+                log.info("if문 안쪽으로.........." + quantities[i]);
+                mgtOrdersMapper.addItems(quantities[i], productId[i], id);
+            }
+        }
     }
 
     @Override

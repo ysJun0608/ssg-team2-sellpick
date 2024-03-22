@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MgtOrdersService {
     Long createForm(MgtOrdersDTO mgtOrdersDTO);
-    void addItems();
+    void addItems(Long[] quantities, Long[] productId, Long id);
     void getAllOrders();
     boolean confirmOrder();
     boolean cancelOrder();

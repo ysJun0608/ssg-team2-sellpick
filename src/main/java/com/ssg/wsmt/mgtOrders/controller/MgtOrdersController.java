@@ -36,9 +36,9 @@ public class MgtOrdersController {
     }
 
     @PostMapping("/AddItems")
-    public String addItems(@RequestParam(value = "id", required = false) String id,
-                           @RequestParam(value = "itemNames", required = false) String[] itemNames,
-                           @RequestParam(value = "quantities", required = false) Integer[] quantities) {
+    public String addItems(@RequestParam(value = "id", required = false) Long id,
+                           @RequestParam(value = "itemNames", required = false) Long[] itemNames,
+                           @RequestParam(value = "quantities", required = false) Long[] quantities) {
         log.info(id + " " + itemNames + " " + quantities);
         System.out.println("Order ID: " + id);
         if (itemNames != null && quantities != null) {
@@ -46,6 +46,8 @@ public class MgtOrdersController {
                 System.out.println("Item: " + itemNames[i] + ", Quantity: " + quantities[i]);
             }
         }
+
+        mgtOrdersService.addItems(quantities, itemNames, id);
         return "redirect:/MgtOrders/MgtOrderCreate";
     }
 
@@ -67,5 +69,22 @@ public class MgtOrdersController {
     @GetMapping("/index")
     public void getIndex() {
         log.info("confirm....");
+    }
+
+    // Define the endpoint for deleting items
+    @ResponseBody
+    @PostMapping("/DeleteItems")
+    public String deleteItems(@RequestBody String formData) {
+        log.info(formData);
+        // Here, you'll implement the logic to parse the form data
+        // and delete the selected items from the database
+
+        // For demonstration purposes, let's assume formData contains the IDs of items to be deleted
+        // You would need to extract these IDs and perform the deletion operation
+
+        // Implement your logic here...
+
+        // Return a response indicating the success or failure of the operation
+        return "Items deleted successfully"; // You can customize the response message as needed
     }
 }

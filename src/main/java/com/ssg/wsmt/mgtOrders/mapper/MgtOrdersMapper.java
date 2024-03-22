@@ -12,30 +12,30 @@ import java.util.Map;
 
 @Mapper
 public interface MgtOrdersMapper {
-    public Long createOrder(MgtOrders mgtOrders);
+    Long createOrder(MgtOrders mgtOrders);
 
-    public boolean addItems(Long id);
-
-
-    public Integer updateStatus(MgtOrdersStatus status, Long orderId);
+    void addItems(Long quantity, Long productId, Long mgtOrderId);
 
 
-    public Integer cancelOrder(Long orderId);
+    Integer updateStatus(MgtOrdersStatus status, Long orderId);
 
 
-    public ArrayList<MgtOrders> selectAllForDate(String startDate, String endDate);
+    Integer cancelOrder(Long orderId);
 
 
-    public ArrayList<MgtOrders> searchForStatus(MgtOrdersStatus status);
+    ArrayList<MgtOrders> selectAllForDate(String startDate, String endDate);
 
 
-    public boolean insertList(String status, Long id);
+    ArrayList<MgtOrders> searchForStatus(MgtOrdersStatus status);
 
 
-    public ArrayList<MgtOrders> searchNoneDelived(String date);
+    boolean insertList(String status, Long id);
 
 
-    public Integer delete(Long orderId);
+    ArrayList<MgtOrders> searchNoneDelived(String date);
+
+
+    Integer delete(Long orderId);
 
 
     List<MgtOrders> selectAll();

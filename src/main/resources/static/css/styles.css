@@ -181,29 +181,28 @@ a {
     padding: .5rem 0;
 }
 
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+}
 .section {
     background-color: #e6e6e6;
     padding: 20px;
     margin-bottom: 20px;
 }
-
 .top-section .row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
     margin-bottom: 10px;
 }
-
 .top-section div {
     display: flex;
     align-items: center;
 }
-
 .top-section label {
     margin-right: 5px;
 }
-
-.top-section input[type="date"],
 .top-section input[type="text"],
 .top-section input[type="number"] {
     padding: 6px 12px;
@@ -211,7 +210,6 @@ a {
     border-radius: 4px;
     flex: 1;
 }
-
 .top-section button {
     padding: 6px 12px;
     margin: 4px 0;
@@ -221,12 +219,11 @@ a {
     color: white;
     cursor: pointer;
 }
-
 .button-row {
     display: flex;
     justify-content: center;
 }
-
+/* Style for disabled button */
 .button-row button:disabled {
     background-color: #ced4da; /* Your desired disabled background color */
     color: #6c757d; /* Disabled text color */
@@ -236,14 +233,12 @@ a {
 .bottom-section {
     text-align: center;
 }
-
 .bottom-section .search-bar {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 10px;
 }
-
 .bottom-section input[type="text"] {
     padding: 6px 12px;
     margin: 4px 0;
@@ -251,7 +246,6 @@ a {
     border-radius: 4px;
     flex: 1;
 }
-
 .bottom-section button {
     padding: 6px 12px;
     margin: 4px 0 4px 10px;
@@ -261,25 +255,28 @@ a {
     color: white;
     cursor: pointer;
 }
-
 table {
     border-collapse: collapse;
     width: 100%;
     border: 1px solid #ddd;
     margin: 0 auto;
 }
-
 th, td {
     padding: 8px;
     text-align: center;
     border-bottom: 1px solid #ddd;
     border-right: 1px solid #ddd;
 }
-
 th {
     background-color: #f2f2f2;
 }
 
+/* Style for readonly input */
+input[type="number"][readonly] {
+    background-color: #f2f2f2; /* Light gray background */
+    color: #555; /* Dark gray text color */
+    cursor: not-allowed; /* Show disabled cursor */
+}
 input[type="text"][readonly] {
     background-color: #f2f2f2; /* Light gray background */
     color: #555; /* Dark gray text color */

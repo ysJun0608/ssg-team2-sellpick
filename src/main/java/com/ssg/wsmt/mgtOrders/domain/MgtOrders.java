@@ -2,6 +2,7 @@ package com.ssg.wsmt.mgtOrders.domain;
 
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import lombok.*;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +19,7 @@ public class MgtOrders {
     // 발주 확정 여부 (발주 요청 / 발주 확정 / 배송 완료)
     private MgtOrdersStatus status;
     // 발주 일자
-    private String createdAt;
+    private LocalDateTime createdAt;
     // 창고 id (FK)
     private Long warehouseId;
 }

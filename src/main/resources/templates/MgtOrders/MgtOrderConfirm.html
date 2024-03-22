@@ -64,9 +64,10 @@
                     <span class="nav_name">발주관리</span>
                 </a>
                 <div class="collapse__menu">
-                    <a href="#" class="collapse__sublink">발주 항목1</a>
-                    <a href="#" class="collapse__sublink">발주 항목2</a>
-                    <a href="#" class="collapse__sublink">발주 항목3</a>
+                    <a href="/MgtOrders/MgtOrderCreate" class="collapse__sublink">발주 등록</a>
+                    <a href="/MgtOrders/MgtOrderConfirm" class="collapse__sublink">발주 확정</a>
+                    <a href="/MgtOrders/MgtOrderSearch" class="collapse__sublink">발주 조회</a>
+                    <a href="/MgtOrders/MgtOrderNondeliverd" class="collapse__sublink">발주대비미입고목록</a>
                 </div>
 
                 <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
@@ -81,6 +82,10 @@
 
                 <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
                     <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+
+
+
+
                     <span class="nav_name">주문관리</span>
                 </a>
                 <div class="collapse__menu">
@@ -165,7 +170,7 @@
 <!-- IONICONS -->
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 <!-- JS -->
-<script src="js/main.js"></script>
+<script src="/js/main.js"></script>
 <!-- <script>
     /* EXPANDER MENU */
 const showMenu = (toggleId, navbarId, bodyId) => {
