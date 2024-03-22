@@ -1,15 +1,25 @@
 package com.ssg.wsmt.inventory.mapper;
 
-import com.ssg.wsmt.inventory.domain.Inventory;
-import com.ssg.wsmt.inventory.dto.InventoryOutput;
-
+import com.ssg.wsmt.inventory.domain.InventoryVO;
+import com.ssg.wsmt.inventory.dto.InventoryDTO;
+import com.ssg.wsmt.product.dto.ProductsDTO;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 @Mapper
 public interface InventoryMapper {
-    List<Inventory> findAll();
-    Inventory findById(Long id);
-    List<InventoryOutput> findByWarehouseId(Long id);
+    List<ProductsDTO> findAllProducts();
+    ProductsDTO findProductById(Long id);
+    List<InventoryVO> findAll();
+    InventoryVO findById(Long id);
+    List<InventoryVO> findByWarehouseId(@Param("warehouseId") Long warehouseId);
+    List<InventoryVO> search(String keyword);
+
+
+
+
+
+
 }
