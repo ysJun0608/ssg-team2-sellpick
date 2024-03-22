@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Settlement List</title>
+</head>
+<body>
+<div class="Settlement-List">
+<h2>Settlement List</h2>
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Insert Quantity</th>
+        <th>Release Quantity</th>
+        <th>Total Price</th>
+        <th>Created At</th>
+        <th>Modified At</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="dto : ${dtoList}">
+        <td th:text="${dto.id}"></td>
+        <td th:text="${dto.insertQuantity}"></td>
+        <td th:text="${dto.releaseQuantity}"></td>
+        <td th:text="${dto.totalPrice}"></td>
+        <td th:text="${dto.createdAt}"></td>
+        <td th:text="${dto.modifiedAt}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+    .header {
+        background-color: #F2F2F2;
+    }
+    .button-container {
+        margin-bottom: 20px;
+    }
+    .button {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+</style>
+</div>
+</body>
+</html>
+
