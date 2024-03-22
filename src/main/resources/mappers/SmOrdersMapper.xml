@@ -44,16 +44,19 @@
 
     <select id="findAll" resultType="com.ssg.wsmt.smOrders.domain.SmOrdersVo">
         SELECT
-            id AS "id",
-            quantity AS "quantity",
-            payment_amount AS "paymentAmount",
-            seller_send_status as "seller_send_status",
-            created_at AS "createdAt",
-            expected_at AS "expectedAt",
-            customer_id AS "customerId",
-            shopping_mall_id AS "shoppingMallId",
-            products_id AS "productId"
-        FROM sm_orders
+            SO.ID AS "id",
+            SO.QUANTITY AS "quantity",
+            SO.PAYMENT_AMOUNT AS "paymentAmount",
+            SO.SELLER_SEND_STATUS AS "seller_send_status",
+            SO.CREATED_AT AS "createdAt",
+            SO.EXPECTED_AT AS "expectedAt",
+            SO.CUSTOMER_ID AS "customerId",
+            SO.SHOPPING_MALL_ID AS "shoppingMallId",
+            SO.PRODUCTS_ID AS "productId",
+            WSMR.NAME AS "shoppingMallName"
+        FROM
+            SM_ORDERS AS SO
+            JOIN SHOPPING_MALL AS WSMR ON WSMR.ID = SO.SHOPPING_MALL_ID;
     </select>
 
     <select id="selectOne" resultType="com.ssg.wsmt.smOrders.domain.SmOrdersVo" >

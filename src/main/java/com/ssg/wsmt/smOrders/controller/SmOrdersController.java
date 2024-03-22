@@ -12,11 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-//@RequestMapping("/smOrders")
+@RequestMapping("/smorder")
 @Log4j2
 @RequiredArgsConstructor
 public class SmOrdersController {
@@ -24,7 +25,7 @@ public class SmOrdersController {
     @Autowired
     private final SmOrdersService smOrdersService;
 
-    @PostMapping("/smorder/modify")
+    @PostMapping("/modify")
     public String modify(@Valid SmOrdersDTO smOrdersDTO,
                          BindingResult bindingResult,
                          RedirectAttributes redirectAttributes){
@@ -41,7 +42,7 @@ public class SmOrdersController {
     }
 
 
-    @GetMapping("/smorder/modify")
+    @GetMapping("/modify")
     public void modify( Model model, Long orderId2) {
         log.info(smOrdersService.getOne( orderId2));
         log.info(orderId2);
@@ -51,7 +52,7 @@ public class SmOrdersController {
 
         model.addAttribute("orders", smOrdersVo);
     }
-    @GetMapping("/smorder/allorder")
+    @GetMapping("/allorder")
     public String listOrders(Model model ,SmOrdersDTO smOrdersDTO ) {
 
         log.info( "~~~~~~~~~~~~~~~~~~~~~~~~~~"+ smOrdersService.findAllSmorders(smOrdersDTO));
@@ -60,17 +61,16 @@ public class SmOrdersController {
         return "/smorder/allorder";
 
     }
-    @GetMapping("/smorder/cancleorder")
+    @GetMapping("/cancleorder")
     public String listOrdersCancle(Model model ,SmOrdersDTO smOrdersDTO ) {
         model.addAttribute("orders", smOrdersService.readAllCanceledOrders());
         log.info(smOrdersService.readAllCanceledOrders());
         return "/smorder/cancleorder";
     }
-    @GetMapping("/smorder/prepareorder")
+    @GetMapping("/prepareorder")
     public String listOrdersPrepare(Model model ,SmOrdersDTO smOrdersDTO ) {
         model.addAttribute("orders", smOrdersService.readAllPreparedOrders());
         log.info(smOrdersService.readAllPreparedOrders());
-
         return "/smorder/prepareorder";
     }
 

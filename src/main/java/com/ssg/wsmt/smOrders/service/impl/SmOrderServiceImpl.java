@@ -6,10 +6,12 @@ import com.ssg.wsmt.smOrders.enums.SellerSendStatus;
 import com.ssg.wsmt.smOrders.mapper.SmOrdersMapper;
 import com.ssg.wsmt.smOrders.service.SmOrdersService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Log4j2
 @RequiredArgsConstructor
 public class SmOrderServiceImpl implements SmOrdersService {
 
@@ -42,13 +44,13 @@ public class SmOrderServiceImpl implements SmOrdersService {
                 .build();
 
         // 주문 상태 업데이트를 위한 로그 출력
-        System.out.println("업데이트 될 주문 정보: " + smOrdersVo);
+        log.info("업데이트 될 주문 정보:" + smOrdersVo);
 
         // 주문 상태 업데이트
         smOrdersMapper.updateSmOrdersStatus(smOrdersVo);
 
         // 업데이트 완료 로그 출력
-        System.out.println("주문 상태가 업데이트 되었습니다.");
+        log.info("주문 상태가 업데이트 되었습니다.");
     }
 
     @Override

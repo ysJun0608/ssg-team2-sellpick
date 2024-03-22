@@ -37,5 +37,8 @@ public class SmOrdersDTO {
     @Column(name = "product_ID")
     private Long productId;
 
+    @Column(name = "name")
+    private String shoppingMallName;
+
 
 }
