@@ -1,0 +1,77 @@
+package com.ssg.wsmt.member.config;
+
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+//인가 작업 커스텀하는 클래스
+//스프링 3점대라 WebSecurityConfigurerAdapter 상속 받지않음
+@Configuration //springBoot의 설정 클래스로 등록
+@EnableWebSecurity // 이 클래스가 스프링 시큐리티에서도 관리
+public class SecurityConfig {
+
+//    @Bean
+//    public RoleHierarchy roleHierarchy(){
+//        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+//        roleHierarchy
+//
+//    }
+
+
+
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        //특정 경로에 따른 로직 작성, 상 단부터 실행, 순서 잘짜야함 (추후 수정)
+        http
+                .authorizeHttpRequests((auth) -> auth //3.1점대라 람다로 표현해야함(필수)
+                        .requestMatchers("/", "/login/login", "/login/join", "/login/joinProc","/images/**","/assets/css/**","/assets/js/**")
+                                .permitAll() //루트 경로나 /login경로에 대한 작업 모든 사용자의 접근 허용
+                        .requestMatchers("static/**").permitAll()
+                        .requestMatchers("/login/admin").hasRole("ADMIN") //관리자 접근 가능
+                        .requestMatchers("/**").hasAnyRole("ADMIN", "USER")
+                        .anyRequest().authenticated() //위에서 처리 못한 경로에 대한 처리,로그인한 사용자만 접근 가능
+                );
+
+        http
+                .formLogin((auth) ->
+                        auth.loginPage("/login/login")
+                                .loginProcessingUrl("/login/loginProc")
+                                .defaultSuccessUrl("/")
+                                .failureUrl("/login/login")
+                                .permitAll()
+                );
+
+        http
+                .csrf((auth -> auth.disable()));
+
+        http
+                .logout((auth -> auth.logoutUrl("/logout").logoutSuccessUrl("/")));
+
+//        http
+//                .httpBasic(Customizer.withDefaults());
+
+        http
+                .sessionManagement((auth -> auth.maximumSessions(7).maxSessionsPreventsLogin(true)));
+
+        http
+                .sessionManagement((auth -> auth
+                        .sessionFixation().changeSessionId()));
+
+        return http.build();
+    }
+
+    //해쉬 암호화
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+}
