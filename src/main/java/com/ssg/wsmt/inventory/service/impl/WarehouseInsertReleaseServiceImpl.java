@@ -5,7 +5,10 @@ import com.ssg.wsmt.inventory.dao.WarehouseInsertReleaseDao;
 import com.ssg.wsmt.inventory.enums.WhInOutType;
 import com.ssg.wsmt.inventory.service.WarehouseInsertReleaseService;
 import com.ssg.wsmt.inventory.dto.WarehouseInOutDTO;
+<<<<<<< HEAD
 import org.springframework.stereotype.Service;
+=======
+>>>>>>> origin/CMS
 
 import java.util.ArrayList;
 import java.util.Scanner;

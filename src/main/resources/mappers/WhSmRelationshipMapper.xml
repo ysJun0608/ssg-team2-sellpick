@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssg.wsmt.inventory.mapper.WhSmRelationshipMapper">
+
+    <insert id="saveWhSmRelationship" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO WAREHOUSE_SHOPPING_MALL_RELATIONSHIP(WAREHOUSE_ID,SM_ID) VALUES (#{warehouseId},#{shoppingMallId})
+    </insert>
+
+</mapper>

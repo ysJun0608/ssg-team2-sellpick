@@ -1,8 +1,13 @@
 package com.ssg.wsmt.inventory.dao;
 
 import com.ssg.wsmt.DBIO.ObjectDBIO;
+<<<<<<< HEAD
 import com.ssg.wsmt.inventory.domain.WarehouseVO;
 import com.ssg.wsmt.inventory.domain.WarehouseInsertReleaseVO;
+=======
+import com.ssg.wsmt.inventory.domain.Warehouse;
+import com.ssg.wsmt.inventory.domain.WarehouseInsertRelease;
+>>>>>>> origin/CMS
 import com.ssg.wsmt.inventory.enums.WhInOutType;
 import com.ssg.wsmt.inventory.dto.WarehouseInOutDTO;
 
@@ -134,8 +139,13 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
      * @return WarehouseInsertRelease
      * 출고 데이터 생성하는 메소드
      */
+<<<<<<< HEAD
     public WarehouseInsertReleaseVO warehouserelease(WarehouseVO warehouseVO) { // 창고를 가져오기
         WarehouseInsertReleaseVO warehouseInsertReleaseVO = new WarehouseInsertReleaseVO();
+=======
+    public WarehouseInsertRelease warehouserelease(Warehouse warehouse) { // 창고를 가져오기
+        WarehouseInsertRelease warehouseInsertRelease = new WarehouseInsertRelease();
+>>>>>>> origin/CMS
         try {
             open();
             String sql = new StringBuilder()
