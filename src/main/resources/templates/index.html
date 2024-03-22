@@ -119,12 +119,11 @@
 <!--로그인하기전에는 로그인 버튼만 활성화 되어있고 로그인이 완료된 상태에서는 로그아웃 버튼과 이름과 역할이 출력됩니다.-->
 <button class="login-btn" sec:authorize="isAnonymous()" onclick="window.location.href='/login/login'">로그인</button>
 <button class="login-btn" sec:authorize="isAuthenticated()" onclick="window.location.href='/login/logout'">로그아웃</button>
-<div class="login-info">
-    <p th:if="${#authorization.expression('isAuthenticated()')}">
+<div class="login-info" th:if="${#authorization.expression('isAuthenticated()')}">
+    <p>
         안녕하세요, <span th:text="${id}"></span>님! 역할: <span th:text='${role.substring(5)}'></span>
     </p>
 </div>
-
 
 <!-- IONICONS -->
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>

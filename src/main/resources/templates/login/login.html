@@ -64,15 +64,20 @@
         <!-- 로고 이미지 추가 -->
         <img th:src="@{/images/TeamLogo.png}" alt="Logo">
     </div>
-    <h2>User Login</h2>
+    <h2>로그인</h2>
 <!--    <form action="/login/loginProc" method="post">-->
 <!--        <input type="text" placeholder="Username" name="username" required>-->
 <!--        <input type="password" placeholder="Password" name="password" required>-->
 <!--        <button type="submit">LOGIN</button>-->
-        <form action="/login/loginProc" method="post" th:name="loginForm">
-            <input id="username" type="text" th:name="username" placeholder="id"/>
-            <input id="password" type="password" th:name="password" placeholder="password"/>
+    <form action="/login/loginProc" method="post" name="login">
+        <input type="email" class="form-control mb-1 p-3" name="email" id="email" placeholder="이메일을 입력해주세요."/>
+        <input type="password" class="form-control mb-1 p-3" name="password" id="password" placeholder="비밀번호를 입력해주세요"/>
+        <div class="remember-box p-1">
+        <div class="middle d-flex flex-column">
+            <div class="message" th:if="${hasMessage}" th:text="${message}">
+            </div>
             <button type="submit">LOGIN</button>
+        </div>
     </form>
     <p class="signup-link">Don't have an account? <a th:href="@{/login/join}">Sign up</a></p>
 </div>
