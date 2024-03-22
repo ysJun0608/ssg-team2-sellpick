@@ -134,7 +134,7 @@
 .sidebar .navbar .navbar-nav .nav-link:hover,
 .sidebar .navbar .navbar-nav .nav-link.active {
     color: var(--primary);
-    background: #acd1ea;
+    background: #FFFFFF;
     border-color: var(--primary);
 }
 
@@ -144,7 +144,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #cfdaf0;
+    background: #FFFFFF;
     border-radius: 40px;
 }
 
@@ -223,6 +223,7 @@
 }
 
 .bootstrap-datetimepicker-widget .table * {
+    border-radius: 10px;
     border-bottom-width: 0px;
 }
 

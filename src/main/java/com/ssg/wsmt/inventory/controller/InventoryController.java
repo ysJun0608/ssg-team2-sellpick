@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class InventoryController {
     private final WarehouseService warehouseService;
-    @GetMapping("/main")
+    @GetMapping("/home")
     public void hello(Model model) {
         log.info("index hello");
     }
@@ -39,8 +39,15 @@ public class InventoryController {
         log.info("warehouse...");
     }
 
-    @GetMapping("/warehouseSearch")
+    @GetMapping("/warehouselist")
     public void warehouseCreate(@Valid Model model) {
+        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
+        log.info(warehouseService.readAllWarehouse());
+        log.info("warehouseCreate");
+
+    }
+    @PostMapping("/warehouselist")
+    public void warehousePost(@Valid Model model) {
         model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
         log.info(warehouseService.readAllWarehouse());
         log.info("warehouseCreate");
@@ -54,7 +61,5 @@ public class InventoryController {
 
     }
 
-    @GetMapping("/search")
-    public void wef() {
-    }
+
 }

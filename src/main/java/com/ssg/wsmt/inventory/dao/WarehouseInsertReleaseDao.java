@@ -1,13 +1,12 @@
 package com.ssg.wsmt.inventory.dao;
 
 import com.ssg.wsmt.DBIO.ObjectDBIO;
-<<<<<<< HEAD
+
 import com.ssg.wsmt.inventory.domain.WarehouseVO;
 import com.ssg.wsmt.inventory.domain.WarehouseInsertReleaseVO;
-=======
-import com.ssg.wsmt.inventory.domain.Warehouse;
-import com.ssg.wsmt.inventory.domain.WarehouseInsertRelease;
->>>>>>> origin/CMS
+
+
+
 import com.ssg.wsmt.inventory.enums.WhInOutType;
 import com.ssg.wsmt.inventory.dto.WarehouseInOutDTO;
 
@@ -139,49 +138,49 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
      * @return WarehouseInsertRelease
      * 출고 데이터 생성하는 메소드
      */
-<<<<<<< HEAD
+
     public WarehouseInsertReleaseVO warehouserelease(WarehouseVO warehouseVO) { // 창고를 가져오기
-        WarehouseInsertReleaseVO warehouseInsertReleaseVO = new WarehouseInsertReleaseVO();
-=======
-    public WarehouseInsertRelease warehouserelease(Warehouse warehouse) { // 창고를 가져오기
-        WarehouseInsertRelease warehouseInsertRelease = new WarehouseInsertRelease();
->>>>>>> origin/CMS
-        try {
-            open();
-            String sql = new StringBuilder()
-                    .append("INSERT INTO warehouse_insert_release ")
-                    .append("(AMOUNT, TOTAL_PRICE, CREATED_AT, TYPE, PRODUCTS_ID) ")
-                    .append("VALUES (?, ?, now(), ?, ?)")
-                    .toString();
-            // 창고를 파라미터로 받긴하는데 창고를 아직 사용하진 않는다.
+//        WarehouseInsertReleaseVO warehouseInsertReleaseVO = new WarehouseInsertReleaseVO();
+//
+//    public WarehouseInsertRelease warehouserelease(Warehouse warehouse) { // 창고를 가져오기
+//        WarehouseInsertRelease warehouseInsertRelease = new WarehouseInsertRelease();
+//
+//        try {
+//            open();
+//            String sql = new StringBuilder()
+//                    .append("INSERT INTO warehouse_insert_release ")
+//                    .append("(AMOUNT, TOTAL_PRICE, CREATED_AT, TYPE, PRODUCTS_ID) ")
+//                    .append("VALUES (?, ?, now(), ?, ?)")
+//                    .toString();
+//            // 창고를 파라미터로 받긴하는데 창고를 아직 사용하진 않는다.
+//
+//            warehouseInsertReleaseVO.setType(WhInOutType.RELEASE_CONFIRM);
+//            PreparedStatement pstmt = conn.prepareStatement(sql);
+//            pstmt.setString(4, warehouseInsertReleaseVO.getType().toString());
+//            System.out.println("출고된 상품의 번호를 입력해주세요");
+//            long productid = Long.parseLong(input.readLine());
+//            pstmt.setLong(5, productid);
+//            System.out.println("출고된 수량을 입력해주세요");
+//            long amount = Long.parseLong(input.readLine());
+//            pstmt.setLong(1, amount);
+//            System.out.println("출고된 물품의 총 가격을 입력해주세요");
+//            long totalprice = Long.parseLong(input.readLine());
+//            pstmt.setLong(2, totalprice);
+//            int rows = pstmt.executeUpdate();
+//            if (rows > 0) {
+//                System.out.println("출고기록이 생성되었습니다.");
+//            }
+//            warehouseInsertReleaseVO.setCreatedAt(LocalDateTime.now());
+//            warehouseInsertReleaseVO.setQuantity(amount);
+//            warehouseInsertReleaseVO.setTotalPrice(totalprice);
+//            warehouseInsertReleaseVO.setInventoryId(productid);
+//            pstmt.close();
+//            close(conn);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-            warehouseInsertReleaseVO.setType(WhInOutType.RELEASE_CONFIRM);
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(4, warehouseInsertReleaseVO.getType().toString());
-            System.out.println("출고된 상품의 번호를 입력해주세요");
-            long productid = Long.parseLong(input.readLine());
-            pstmt.setLong(5, productid);
-            System.out.println("출고된 수량을 입력해주세요");
-            long amount = Long.parseLong(input.readLine());
-            pstmt.setLong(1, amount);
-            System.out.println("출고된 물품의 총 가격을 입력해주세요");
-            long totalprice = Long.parseLong(input.readLine());
-            pstmt.setLong(2, totalprice);
-            int rows = pstmt.executeUpdate();
-            if (rows > 0) {
-                System.out.println("출고기록이 생성되었습니다.");
-            }
-            warehouseInsertReleaseVO.setCreatedAt(LocalDateTime.now());
-            warehouseInsertReleaseVO.setQuantity(amount);
-            warehouseInsertReleaseVO.setTotalPrice(totalprice);
-            warehouseInsertReleaseVO.setInventoryId(productid);
-            pstmt.close();
-            close(conn);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return warehouseInsertReleaseVO;
+        return null;
     }
 
     // RELEASE
