@@ -1,6 +1,7 @@
 package com.ssg.wsmt.product.mapper;
 
 import com.ssg.wsmt.product.domain.ProductVO;
+import com.ssg.wsmt.product.dto.ProductDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface ProductMapper {
     // 상품 검색
     //ProductVO search();
 
-    List<ProductsOutput> productListInventory();
-    void createProduct(Products product);
-    void updateProduct(Products product);
+    List<ProductDTO> productListInventory();
+    void createProduct(ProductVO product);
+    void updateProduct(ProductVO product);
 }

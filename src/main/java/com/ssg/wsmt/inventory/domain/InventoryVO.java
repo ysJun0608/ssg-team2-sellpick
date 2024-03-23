@@ -1,6 +1,6 @@
 package com.ssg.wsmt.inventory.domain;
 
-import com.ssg.wsmt.product.dto.ProductsDTO;
+import com.ssg.wsmt.product.dto.ProductDTO;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
@@ -18,6 +18,6 @@ public class InventoryVO {
     // 재고 상품 id (FK)
     @Column("product_id")
     private Long productId;
-    private ProductsDTO product;
+    private ProductDTO product;
 }
 

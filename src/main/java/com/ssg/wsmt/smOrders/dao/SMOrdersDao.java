@@ -1,7 +1,7 @@
 package com.ssg.wsmt.smOrders.dao;
 
 import com.ssg.wsmt.DBIO.ObjectDBIO;
-import com.ssg.wsmt.smOrders.domain.smOrders;
+import com.ssg.wsmt.smOrders.domain.SmOrdersVo;
 import com.ssg.wsmt.smOrders.dto.SmOrdersAllOutput;
 import com.ssg.wsmt.smOrders.dto.SmOrdersOutput;
 import com.ssg.wsmt.smOrders.enums.SellerSendStatus;
@@ -259,7 +259,7 @@ public class SMOrdersDao extends ObjectDBIO {
      *
      * @param smorders 업데이트할 주문 정보
      */
-    public void updateSmOrdersStatus(smOrders smorders) {
+    public void updateSmOrdersStatus(SmOrdersVo smorders) {
 
 
         try {
@@ -268,7 +268,7 @@ public class SMOrdersDao extends ObjectDBIO {
             String sqlOrder = "UPDATE SM_ORDERS SET SELLER_SEND_STATUS = ?  WHERE ID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sqlOrder);
 
-            pstmt.setString(1, String.valueOf(smorders.getStatus()));
+            pstmt.setString(1, String.valueOf(smorders.getSeller_send_status()));
             pstmt.setLong(2, smorders.getId());
 
             pstmt.executeUpdate();
@@ -286,8 +286,8 @@ public class SMOrdersDao extends ObjectDBIO {
      * @param id 조회할 주문 ID
      * @return 조회된 주문 객체
      */
-    public smOrders findById(Long id) {
-        smOrders smOrders = null;
+    public SmOrdersVo findById(Long id) {
+        SmOrdersVo smOrders = null;
 
         try {
             conn = open();
@@ -298,14 +298,14 @@ public class SMOrdersDao extends ObjectDBIO {
 
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                smOrders = new smOrders();
+                smOrders = new SmOrdersVo();
                 smOrders.setId(id);
                 smOrders.setQuantity(rs.getInt("quantity"));
                 smOrders.setPaymentAmount(rs.getInt("payment_amount"));
                 smOrders.setCreatedAt(rs.getString("created_at"));
                 smOrders.setExpectedAt(rs.getString("expected_at"));
                 String sellerSendStatusTemp = rs.getString("seller_send_status");
-                smOrders.setStatus(SellerSendStatus.valueOf(sellerSendStatusTemp));
+                smOrders.setSeller_send_status(SellerSendStatus.valueOf(sellerSendStatusTemp));
                 smOrders.setCustomerId(rs.getLong("customer_id"));
                 smOrders.setShoppingMallId(rs.getLong("shopping_mall_id"));
                 smOrders.setProductId(rs.getLong("products_id"));
@@ -322,7 +322,7 @@ public class SMOrdersDao extends ObjectDBIO {
      *
      * @param smorders 삽입할 주문 정보
      */
-    public void insertSmOrdersStatus(smOrders smorders) {
+    public void insertSmOrdersStatus(SmOrdersVo smorders) {
 
         try {
             // Connection 연결 후 open 호출
@@ -344,7 +344,7 @@ public class SMOrdersDao extends ObjectDBIO {
 
             pstmt.setInt(1, smorders.getQuantity());
             pstmt.setInt(2, smorders.getQuantity() * price);
-            pstmt.setString(3, String.valueOf(smorders.getStatus()));
+            pstmt.setString(3, String.valueOf(smorders.getSeller_send_status()));
             pstmt.setLong(4, smorders.getCustomerId());
             pstmt.setLong(5, smorders.getShoppingMallId());
             pstmt.setLong(6, smorders.getProductId());

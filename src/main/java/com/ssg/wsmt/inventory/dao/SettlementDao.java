@@ -2,7 +2,7 @@ package com.ssg.wsmt.inventory.dao;
 
 import com.ssg.wsmt.DBIO.ObjectDBIO;
 import com.ssg.wsmt.inventory.domain.SettlementVO;
-import com.ssg.wsmt.inventory.domain.WarehouseInsertRelease;
+import com.ssg.wsmt.inventory.domain.WarehouseInsertReleaseVO;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,7 +17,7 @@ import java.util.Optional;
 public class SettlementDao extends ObjectDBIO {
     Connection conn = null;
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    public Settlement SettlementCreate(WarehouseInsertReleaseVO warehouseInsertReleaseVO) {
+    public SettlementVO SettlementCreate(WarehouseInsertReleaseVO warehouseInsertReleaseVO) {
         // 입출고 테이블에서 가져와야됌
         SettlementVO settlement = new SettlementVO();
         try {

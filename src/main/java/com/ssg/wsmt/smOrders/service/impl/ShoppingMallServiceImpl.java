@@ -1,7 +1,6 @@
 package com.ssg.wsmt.smOrders.service.impl;
 
 import com.ssg.wsmt.smOrders.domain.ShoppingMallVo;
-import com.ssg.wsmt.smOrders.dto.ShoppingMallDTO;
 import com.ssg.wsmt.smOrders.mapper.ShoppingMallMapper;
 import com.ssg.wsmt.smOrders.service.ShoppingMallService;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +15,26 @@ public class ShoppingMallServiceImpl implements ShoppingMallService {
 
     private final ShoppingMallMapper shoppingMallMapper;
 
-    @Override
-    public List<ShoppingMallVo> findAllShoppingMalls(ShoppingMallDTO shoppingMallDTO) {
-        ShoppingMallVo shoppingMall = ShoppingMallVo.builder()
-                .id(shoppingMallDTO.getId()) // get 메서드로 필드 값에 접근, dto는 TodoDTO 타입의 인스턴스를 가정
-                .name(shoppingMallDTO.getName())
-                .build();
-
-        return shoppingMallMapper.findAll();
-    }
+//    @Override
+//    public List<ShoppingMallVo> findAllShoppingMalls(ShoppingMallDTO shoppingMallDTO) {
+//        ShoppingMallVo shoppingMall = ShoppingMallVo.builder()
+//                .id(shoppingMallDTO.getId()) // get 메서드로 필드 값에 접근, dto는 TodoDTO 타입의 인스턴스를 가정
+//                .name(shoppingMallDTO.getName())
+//                .build();
+//
+//        return shoppingMallMapper.findAll();
+//    }
 
 //    @Override
 //    public List<ShoppingMallVo> findAllShoppingMalls() {
 //        return shoppingMallMapper.findAll();
 //    }
 
-    @Override
-    public ShoppingMallDTO getShoppingMallDetails() {
+//    @Override
+//    public ShoppingMallDTO getShoppingMallDetails() {
 //        return shoppingMallMapper.findShoppingMallDetails();
-        return null;
-    }
+//        return null;
+//    }
 
 
 //    BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
