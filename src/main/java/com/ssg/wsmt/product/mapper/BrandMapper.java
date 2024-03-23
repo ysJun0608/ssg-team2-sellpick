@@ -1,10 +1,9 @@
 package com.ssg.wsmt.product.mapper;
 
+import com.ssg.wsmt.product.domain.BrandVO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.List;
 @Mapper
 public interface BrandMapper {
-    String getBrandName(int brandCodeId);
-    List<String> getAllBrands();
+    BrandVO selectBrandID(int id);
 }
