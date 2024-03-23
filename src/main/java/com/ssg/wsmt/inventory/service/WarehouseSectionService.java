@@ -1,8 +1,8 @@
 package com.ssg.wsmt.inventory.service;
 
-import com.ssg.wsmt.inventory.domain.Warehouse;
+import com.ssg.wsmt.inventory.domain.WarehouseVO;
 
 public interface WarehouseSectionService {
-    void createWarehouseSection(Warehouse warehouse);
+    void createWarehouseSection(WarehouseVO warehouseVO);
     void readWarehouseSection();
 }

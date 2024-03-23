@@ -20,6 +20,7 @@ import java.util.List;
 public class InventoryController {
 
     private final InventoryService inventoryService;
+    private final WarehouseService warehouseService;
 
     @GetMapping("/order/list")
     public String findAllProducts(Model model) {
@@ -61,5 +62,45 @@ public class InventoryController {
         List<InventoryVO> inventoryList = inventoryService.search(keyword);
         model.addAttribute("inventoryList", inventoryList);
         return "searchResult";
+
+    @PostMapping("/warehouseCreate")
+    public String postCreate(@ModelAttribute WarehouseCreateDTO warehouseDTO) {
+        log.info("생성이 제대로 되었나? ");
+        log.info(warehouseDTO);
+//        warehouseService.createWarehouse(warehouseDTO);
+
+
+        return "redirect:/inventory/main";
     }
+
+    @GetMapping("/warehouseCreate")
+    public void warehouse(Model model) {
+        log.info("warehouse...");
+    }
+
+    @GetMapping("/warehouselist")
+    public void warehouseCreate(@Valid Model model) {
+        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
+        log.info(warehouseService.readAllWarehouse());
+        log.info("warehouseCreate");
+
+    }
+    @PostMapping("/warehouselist")
+    public void warehousePost(@Valid Model model) {
+        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
+        log.info(warehouseService.readAllWarehouse());
+        log.info("warehouseCreate");
+
+    }
+
+    @GetMapping("/warehouseChange")
+    public void warehousesearch(@Valid BindingResult bindingResult, Model model) {
+        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
+        log.info("warehouseSearch");
+
+    }
+
+
 }
+
+   

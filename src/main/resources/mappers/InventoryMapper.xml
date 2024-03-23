@@ -23,6 +23,9 @@
     <select id="findProductById" resultType="com.ssg.wsmt.product.dto.ProductsDTO" parameterType="Long">
         SELECT * FROM products WHERE id = #{id}
     </select>
+    <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">
+        SELECT * FROM INVENTORY
+    </select>
     <select id="findAll" resultMap="InventoryResultMap">
         SELECT i.*, p.name as productName, p.price as productPrice
         FROM inventory i

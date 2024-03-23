@@ -17,9 +17,5 @@ public interface InventoryMapper {
     List<InventoryVO> findByWarehouseId(@Param("warehouseId") Long warehouseId);
     List<InventoryVO> search(String keyword);
 
-
-
-
-
-
+    List<InventoryVO> selectAll();
 }

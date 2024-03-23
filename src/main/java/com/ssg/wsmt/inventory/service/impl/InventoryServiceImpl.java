@@ -2,6 +2,7 @@ package com.ssg.wsmt.inventory.service.impl;
 
 import com.ssg.wsmt.inventory.domain.InventoryVO;
 import com.ssg.wsmt.inventory.mapper.InventoryMapper;
+import com.ssg.wsmt.inventory.dto.InventoryOutput;
 import com.ssg.wsmt.inventory.service.InventoryService;
 import com.ssg.wsmt.product.dto.ProductsDTO;
 import lombok.RequiredArgsConstructor;

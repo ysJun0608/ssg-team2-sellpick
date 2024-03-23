@@ -17,7 +17,7 @@ import java.util.Optional;
 public class SettlementDao extends ObjectDBIO {
     Connection conn = null;
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    public SettlementVO SettlementCreate(WarehouseInsertRelease warehouseInsertRelease) {
+    public Settlement SettlementCreate(WarehouseInsertReleaseVO warehouseInsertReleaseVO) {
         // 입출고 테이블에서 가져와야됌
         SettlementVO settlement = new SettlementVO();
         try {

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssg.wsmt.inventory.mapper.WarehouseSectionMapper">
+
+    <insert id="saveWarehouseSection" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO WAREHOUSE_SECTION (WAREHOUSE_ID, NAME, TYPE) VALUES (#{WAREHOUSE_ID}, #{NAME}, #{TYPE})
+    </insert>
+
+<select id="selectWarehouseSection" resultType="com.ssg.wsmt.inventory.domain.WarehouseSectionVO">
+    SELECT * FROM WAREHOUSE_SECTION WHERE WAREHOUSE_ID = #{chooseScId}
+</select>
+
+
+</mapper>

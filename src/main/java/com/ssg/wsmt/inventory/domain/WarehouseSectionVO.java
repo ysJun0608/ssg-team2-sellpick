@@ -1,10 +1,14 @@
 package com.ssg.wsmt.inventory.domain;
 
 import com.ssg.wsmt.inventory.enums.WhSectionType;
-import lombok.Data;
+import lombok.*;
 
 @Data
-public class WarehouseSection {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
+public class WarehouseSectionVO {
     // 창고 구역 id
     private Long id;
     // 창고 구역 이름

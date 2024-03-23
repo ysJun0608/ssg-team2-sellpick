@@ -3,12 +3,13 @@ package com.ssg.wsmt.delivery.service.impl;
 import com.ssg.wsmt.delivery.dao.DeliveryCmpDao;
 import com.ssg.wsmt.delivery.domain.DeliveryCmp;
 import com.ssg.wsmt.delivery.service.DeliveryCmpService;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
-
+@Service
 public class DeliveryCmpServiceImpl implements DeliveryCmpService {
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 
