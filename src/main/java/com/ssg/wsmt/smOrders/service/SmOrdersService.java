@@ -1,52 +1,30 @@
 package com.ssg.wsmt.smOrders.service;
 
 
-import com.ssg.wsmt.smOrders.domain.smOrders;
-import com.ssg.wsmt.smOrders.dto.SmOrdersAllOutput;
+import com.ssg.wsmt.smOrders.domain.SmOrdersVo;
+import com.ssg.wsmt.smOrders.dto.SmOrdersDTO;
+import com.ssg.wsmt.smOrders.enums.SellerSendStatus;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 public interface SmOrdersService {
-    /**
-     * 주문을 생성합니다.
-     */
-    void createOrder();
 
-    /**
-     * 주문을 조회합니다.
-     */
-    void readOrder();
-//void readOrder(SMOrders smorders); // SMOrders 객체를 이용하여 주문을 조회합니다.
+    //전체 조회
+    List<SmOrdersVo> findAllSmorders(SmOrdersDTO smOrdersDTO);
 
-    /**
-     * 취소된 주문을 조회합니다.
-     *
-     * @return 취소된 주문 목록
-     */
-    List<smOrders> readAllCanceledOrders();
+    //취소건 조회
+    List<SmOrdersVo> readAllCanceledOrders();
 
-    /**
-     * 배송준비중인 주문을 조회합니다.
-     *
-     * @return 배송준비중인 주문 목록
-     */
-    List<smOrders> readAllPreparedOrders();
+    //배송중 조회
+    List<SmOrdersVo> readAllPreparedOrders();
 
-    /**
-     * 주문 상태를 업데이트합니다.
-     */
-    void updateStatus();
+    //상태 enum 수정
+    void updateStatus(SmOrdersDTO smOrdersDTO);
 
-    /**
-     * 주문을 한 건 조회합니다.
-     *
-     * @return 조회된 주문 객체
-     */
-    smOrders readOne();
+    //한건조회
+    SmOrdersVo getOne(Long id);
 
-     /** 주문을 한 건 조회합니다.
-            *
-            * @return 조회된 주문 객체
-     */
-    SmOrdersAllOutput readOneSelect();
+
 }
