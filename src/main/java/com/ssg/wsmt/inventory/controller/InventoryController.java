@@ -1,8 +1,11 @@
 package com.ssg.wsmt.inventory.controller;
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
+import com.ssg.wsmt.inventory.dto.PageResponseDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseCreateDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseDTO;
 import com.ssg.wsmt.inventory.service.WarehouseService;
 import jakarta.validation.Valid;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -39,27 +42,33 @@ public class InventoryController {
         log.info("warehouse...");
     }
 
+//    @GetMapping("/warehouselist")
+//    public void warehouseCreate(@Valid Model model) {
+//        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
+//        log.info(warehouseService.readAllWarehouse());
+//        log.info("warehouseCreate");
+//
+//    }
+
     @GetMapping("/warehouselist")
-    public void warehouseCreate(@Valid Model model) {
-        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
-        log.info(warehouseService.readAllWarehouse());
+    public void warehouseCreate(@Valid PageRequestDTO pageRequestDTO, Model model) {
+        PageResponseDTO<WarehouseDTO> responseDTO = warehouseService.readAllWarehouse(pageRequestDTO);
+        model.addAttribute("responseDTO", responseDTO);
         log.info("warehouseCreate");
-
-    }
-    @PostMapping("/warehouselist")
-    public void warehousePost(@Valid Model model) {
-        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
-        log.info(warehouseService.readAllWarehouse());
-        log.info("warehouseCreate");
-
-    }
-
-    @GetMapping("/warehouseChange")
-    public void warehousesearch(@Valid BindingResult bindingResult, Model model) {
-        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
-        log.info("warehouseSearch");
-
-    }
+//    @PostMapping("/warehouselist")
+//    public void warehousePost(@Valid Model model) {
+//        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
+//        log.info(warehouseService.readAllWarehouse());
+//        log.info("warehouseCreate");
+//
+//    }
+//
+//    @GetMapping("/warehouseChange")
+//    public void warehousesearch(@Valid BindingResult bindingResult, Model model) {
+//        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
+//        log.info("warehouseSearch");
+//
+//    }
 
 
-}
+}}

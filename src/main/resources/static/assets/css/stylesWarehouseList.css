@@ -35,7 +35,7 @@
 }
 
 .btn.btn-primary {
-    margin-left: 0;
+
     color: #FFFFFF;
 }
 
@@ -135,7 +135,7 @@
 .sidebar .navbar .navbar-nav .nav-link:hover,
 .sidebar .navbar .navbar-nav .nav-link.active {
     color: var(--primary);
-    background: #FFFFFF;
+    background: #acd1ea;
     border-color: var(--primary);
 }
 
@@ -145,7 +145,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background: #FFFFFF;
+    background: #cfdaf0;
     border-radius: 40px;
 }
 
@@ -224,7 +224,6 @@
 }
 
 .bootstrap-datetimepicker-widget .table * {
-    border-radius: 10px;
     border-bottom-width: 0px;
 }
 

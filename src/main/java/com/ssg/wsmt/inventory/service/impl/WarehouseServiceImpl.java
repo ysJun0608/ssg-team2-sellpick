@@ -6,6 +6,8 @@ import com.ssg.wsmt.delivery.service.impl.DeliveryCmpServiceImpl;
 import com.ssg.wsmt.inventory.domain.WarehouseInsertReleaseVO;
 import com.ssg.wsmt.inventory.domain.WarehouseVO;
 import com.ssg.wsmt.inventory.domain.WhSmRelationshipVO;
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
+import com.ssg.wsmt.inventory.dto.PageResponseDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseDTO;
 import com.ssg.wsmt.inventory.enums.WhType;
 import com.ssg.wsmt.inventory.mapper.WarehouseMapper;
@@ -151,13 +153,31 @@ public class WarehouseServiceImpl implements WarehouseService {
         return null;
     }
 
-    @Override
-    public List<WarehouseDTO> readAllWarehouse() {
-        List<WarehouseVO> voList = warehouseMapper.readWarehouse();
-        //List<WarehouseVO> warehouseVOList = warehouseDao.readWarehouse();
-        List<WarehouseDTO> warehouseDTOS = voList.stream()
-                .map(vo->modelMapper.map(vo,WarehouseDTO.class))
-                .collect(Collectors.toList());
+//    @Override
+//    public List<WarehouseDTO> readAllWarehouse() {
+//        List<WarehouseVO> voList = warehouseMapper.readWarehouse();
+//        //List<WarehouseVO> warehouseVOList = warehouseDao.readWarehouse();
+//        List<WarehouseDTO> warehouseDTOS = voList.stream()
+//                .map(vo->modelMapper.map(vo,WarehouseDTO.class))
+//                .collect(Collectors.toList());
+//
+//        return warehouseDTOS;
+//
+//    }
+@Override
+public PageResponseDTO<WarehouseDTO> readAllWarehouse(PageRequestDTO pageRequestDTO) {
+    List<WarehouseVO> voList = warehouseMapper.readWarehouse(pageRequestDTO);
+    List<WarehouseDTO> warehouseDTOS = voList.stream()
+            .map(vo -> modelMapper.map(vo, WarehouseDTO.class))
+            .collect(Collectors.toList());
+    int total = warehouseMapper.getTotalCount(pageRequestDTO);
+    return PageResponseDTO.<WarehouseDTO>withAll()
+            .pageRequestDTO(pageRequestDTO)
+            .dtoList(warehouseDTOS)
+            .total(total)
+            .build();
+}
+
 //        if (warehouseVOList.isEmpty()) {
 //            System.out.println("창고가 존재하지 않습니다.");
 //            return;
@@ -169,9 +189,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 ////            System.out.printf("%-7d | %-7d | %-6s | %-4s\n", w.getId(), w.getDelivery_id(), w.getType(), w.getLocation());
 //        }
 //        System.out.println("=".repeat(50));
-        return warehouseDTOS;
 
-    }
+
 
 
     @Override

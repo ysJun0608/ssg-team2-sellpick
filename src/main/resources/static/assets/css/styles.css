@@ -34,8 +34,9 @@ body {
     transition: .5s;
 }
 
-h1 {
-    margin: 0;
+.btn.btn-primary {
+
+    color: #FFFFFF;
 }
 
 ul {
