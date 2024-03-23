@@ -5,7 +5,7 @@
 <mapper namespace="com.ssg.wsmt.product.mapper.BrandMapper">
 
         <select id="selectBrandID" resultType="com.ssg.wsmt.product.domain.BrandVO">
-            SELECT ID, NAME FROM brand WHERE id = #{id}
+            SELECT ID, NAME FROM BRAND WHERE id = #{id}
         </select>
 
 </mapper>

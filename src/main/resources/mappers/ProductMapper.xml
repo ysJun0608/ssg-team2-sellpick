@@ -16,28 +16,28 @@
 
 <!--    상품 조회-->
     <select id="select" resultMap="productResultMap" resultType="com.ssg.wsmt.product.domain.ProductVO">
-        select id,name, status, cost, price, BRAND_ID, OWNER_ID from products where id = #{id}
+        select id,name, status, cost, price, BRAND_ID, OWNER_ID from PRODUCTS where id = #{id}
     </select>
 
 <!--    상품 리스트 조회-->
     <select id="selectAll" resultMap="productResultMap" resultType="com.ssg.wsmt.product.domain.ProductVO">
-        select id,name, status, cost, price, BRAND_ID, OWNER_ID from products
+        select id,name, status, cost, price, BRAND_ID, OWNER_ID from PRODUCTS
     </select>
 
 
 <!--    상품 등록-->
     <insert id="insert" parameterType="com.ssg.wsmt.product.domain.ProductVO">
-        insert  into products(name, status, cost, price, BRAND_ID, OWNER_ID) values ( #{name}, #{status}, #{cost}, #{price}, #{brandId}, #{businessOwnerId})
+        insert  into PRODUCTS(name, status, cost, price, BRAND_ID, OWNER_ID) values ( #{name}, #{status}, #{cost}, #{price}, #{brandId}, #{businessOwnerId})
     </insert>
 
 <!--    상품 수정-->
     <update id="update" parameterType="com.ssg.wsmt.product.domain.ProductVO">
-        update products set name = #{name}, status = #{status}, cost = #{cost}, price =#{price}, BRAND_ID = #{brandId}, OWNER_ID = #{businessOwnerId} where id =#{id}
+        update PRODUCTS set name = #{name}, status = #{status}, cost = #{cost}, price =#{price}, BRAND_ID = #{brandId}, OWNER_ID = #{businessOwnerId} where id =#{id}
     </update>
 
 <!--    상품 삭제-->
     <delete id="delete" >
-        delete from products where id = #{id}
+        delete from PRODUCTS where id = #{id}
     </delete>
 
     <!--    이름 검색 -->
