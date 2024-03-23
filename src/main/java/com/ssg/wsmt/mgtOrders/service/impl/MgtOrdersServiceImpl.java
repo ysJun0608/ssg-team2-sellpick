@@ -1,75 +1,59 @@
 package com.ssg.wsmt.mgtOrders.service.impl;
 
-import com.ssg.wsmt.mgtOrders.dao.MgtOrderDao;
+import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
 import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
+import com.ssg.wsmt.mgtOrders.mapper.MgtOrdersMapper;
 import com.ssg.wsmt.mgtOrders.service.MgtOrdersService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
+@Service
+@Log4j2
+@RequiredArgsConstructor
 public class MgtOrdersServiceImpl implements MgtOrdersService {
     // TODO: Implement the service
+
+    private final MgtOrdersMapper mgtOrdersMapper;
+
     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
-    private final MgtOrderDao mgtOrderDao = new MgtOrderDao();
+    //private final MgtOrderDao mgtOrderDao = new MgtOrderDao();
 
     @Override
-    public void add() {
-        Map<Integer, Integer> products = new HashMap<>();
+    public Long createForm(MgtOrdersDTO mgtOrdersDTO) {
 
-        try {
-            int productId = 0;
-            int quantity = 0;
-            // 발주마스터 생성
-            System.out.printf("발주마스터를 생성하기 위해 매입거래처를 입력해주세요 : ");
-            String purChaser = bufferedReader.readLine();
-            System.out.println("창고 ID를 입력해주세요");
-            Long whId = Long.parseLong(bufferedReader.readLine());
+        MgtOrders mgtOrders = MgtOrders.builder()
+                .purchaser(mgtOrdersDTO.getPurchaser())
+                .status(MgtOrdersStatus.valueOf(mgtOrdersDTO.getStatus()))
+                .warehouseId(mgtOrdersDTO.getWarehouseId())
+                .build();
 
-            java.util.Date today = new java.util.Date();
-            java.sql.Timestamp createdAt = new java.sql.Timestamp(today.getTime());
+        mgtOrdersMapper.createOrder(mgtOrders);
 
-
-            Long id = mgtOrderDao.createOrder(purChaser, createdAt.toLocalDateTime(), whId);
-
-            if (id <= 0L) {
-                System.out.println("발주마스터 생성에 실패하였습니다. 재생성합니다.");
-            }
-
-            // 발주 할 상품 입력 받기
-            while (true) {
-                System.out.println("상품을 입력하겠습니다. 입력이 완료되시면 상품 Id에 exit를 입력하세요.");
-                System.out.printf("발주할 상품 Id를 입력하세요. : ");
-                String tempProductId = bufferedReader.readLine();
-                if (tempProductId.equals("exit")) {
-                    break;
-                }
-                System.out.printf("수량를 입력하세요. : ");
-                productId = Integer.parseInt(tempProductId);
-                quantity = Integer.parseInt(bufferedReader.readLine());
-                products.put(productId, quantity);
-            }
-
-            boolean result = mgtOrderDao.addItem(id, products);
-            if (result) {
-                System.out.println("발주마스터 생성 성공");
-            } else {
-                System.out.println("발주마스터 생성 실패");
-            }
-        } catch (IOException ioE) {
-            ioE.printStackTrace();
-        } catch (SQLException sqlE) {
-            sqlE.printStackTrace();
-        }
+        return mgtOrders.getId();
     }
 
-
+    public void addItems(Long[] quantities, Long[] productId, Long id) {
+        log.info(Arrays.stream(quantities).toList());
+        log.info(Arrays.stream(productId).toList());
+        log.info(id);
+        for (int i = 0; i < quantities.length; i++) {
+            if (quantities[i] != null){
+                log.info("if문 안쪽으로.........." + quantities[i]);
+                mgtOrdersMapper.addItems(quantities[i], productId[i], id);
+            }
+        }
+    }
 
     @Override
     public void getAllOrders() {
@@ -82,7 +66,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             System.out.print("종료일(예시 : 20240213) : ");
             String endDate = bufferedReader.readLine();
 
-            searchList = mgtOrderDao.selectAll(startDate, endDate);
+            searchList = mgtOrdersMapper.selectAllForDate(startDate, endDate);
 
             if (searchList.isEmpty()) {
                 System.out.println("조회된 발주목록이 없습니다.");
@@ -93,14 +77,12 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (SQLException Se) {
-            Se.printStackTrace();
         }
     }
 
     @Override
     public boolean confirmOrder() {
-        boolean flag = false;
+        Integer flag = 0;
         try {
             System.out.print("확정할 발주 ID를 입력하세요 : ");
             Long orderId = Long.parseLong(bufferedReader.readLine());
@@ -109,8 +91,8 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             String temp = bufferedReader.readLine();
 
             if (temp.equals("y") || temp.equals("Y")) {
-                flag = mgtOrderDao.confirmOrder(orderId, MgtOrdersStatus.DONE);
-                if (flag) {
+                flag = mgtOrdersMapper.updateStatus(MgtOrdersStatus.DONE, orderId);
+                if (flag > 0) {
                     System.out.println("발주가 확정되었습니다.");
                 } else {
                     System.out.println("등록된 발주가 없습니다.");
@@ -120,15 +102,13 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             }
         } catch (IOException Ie) {
             Ie.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return flag;
+        return flag > 0 ? true : false;
     }
 
     @Override
     public boolean cancelOrder() {
-        boolean flag = false;
+        Integer flag = 0;
 
         try {
             System.out.print("확정 취소할 발주 ID를 입력하세요 : ");
@@ -138,8 +118,8 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             String temp = bufferedReader.readLine();
 
             if (temp.equals("y") || temp.equals("Y")) {
-                flag = mgtOrderDao.cancelOrder(orderId);
-                if (flag) {
+                flag = mgtOrdersMapper.cancelOrder(orderId);
+                if (flag > 0) {
                     System.out.println("확정된 발주를 취소했습니다.");
                 } else {
                     System.out.println("발주 확정이 실패했습니다.");
@@ -150,11 +130,9 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 
         } catch (IOException Ie) {
             Ie.printStackTrace();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         }
 
-        return flag;
+        return flag > 0 ? true : false;
     }
 
     @Override
@@ -162,7 +140,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         ArrayList<Long> sellectNum = new ArrayList<>();
         ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
         try {
-            mgtOrders = mgtOrderDao.selectOrderList(MgtOrdersStatus.READY);
+            mgtOrders = mgtOrdersMapper.searchForStatus(MgtOrdersStatus.READY);
 
             if (mgtOrders.isEmpty()) {
                 System.out.println("확정할 발주목록이 없습니다.");
@@ -184,9 +162,12 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                 }
                 sellectNum.add(input);
             }
-            mgtOrderDao.insertList(sellectNum, "DONE");
+
+            for (Long num : sellectNum) {
+                mgtOrdersMapper.insertList("DONE", num);
+            }
             System.out.println("선택하신 발주목록을 확정처리합니다.");
-        } catch (SQLException | IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -201,7 +182,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 //            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 //            Date temp = dateFormat.parse(searchDate);
 //            java.sql.Timestamp createdAt = new java.sql.Timestamp(temp.getTime());
-            mgtOrders = mgtOrderDao.searchForDate(searchDate);
+            mgtOrders = mgtOrdersMapper.searchNoneDelived(searchDate);
 
             if (mgtOrders.isEmpty()) {
                 System.out.println("조회된 발주목록이 없습니다.");
@@ -211,19 +192,15 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
             printList(mgtOrders);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (SQLException Se) {
-            Se.printStackTrace();
         }
-//        catch (ParseException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 
     @Override
     public void confirmArrival() {
-ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
+        Integer flag = 0;
+        ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
         try {
-            mgtOrders = mgtOrderDao.selectOrderList(MgtOrdersStatus.DONE);
+            mgtOrders = mgtOrdersMapper.searchForStatus(MgtOrdersStatus.DONE);
             if (mgtOrders.isEmpty()) {
                 System.out.println("도착확인할 발주목록이 없습니다.");
                 return;
@@ -231,15 +208,13 @@ ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
             printList(mgtOrders);
             System.out.print("도착한 발주의 ID를 입력하세요 : ");
             Long orderId = Long.parseLong(bufferedReader.readLine());
-            boolean flag = mgtOrderDao.confirmOrder(orderId, MgtOrdersStatus.DELIVERED);
-            if (flag) {
+            flag = mgtOrdersMapper.updateStatus(MgtOrdersStatus.DELIVERED, orderId);
+            if (flag > 0) {
                 System.out.println("도착확인 완료");
             } else {
                 System.out.println("도착확인 실패");
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 
@@ -247,22 +222,48 @@ ArrayList<MgtOrders> mgtOrders = new ArrayList<>();
 
     @Override
     public void delete() {
-        boolean flag = false;
+        Integer flag = 0;
         System.out.print("삭제할 발주 ID를 입력하세요 : ");
         try {
             Long orderId = Long.parseLong(bufferedReader.readLine());
-            flag = mgtOrderDao.delete(orderId);
+            flag = mgtOrdersMapper.delete(orderId);
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
         } finally {
-            if (flag) {
+            if (flag > 0) {
                 System.out.println("삭제 성공");
             } else {
                 System.out.println("삭제 실패");
             }
         }
+    }
+
+    @Override
+    public List<MgtOrdersDTO> selectAll() {
+        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersMapper.selectAll().stream()
+                .map(o ->
+                        MgtOrdersDTO.builder()
+                                .id(o.getId())
+                                .purchaser(o.getPurchaser())
+                                .status(String.valueOf(o.getStatus()))
+                                .createdAt(o.getCreatedAt())
+                                .warehouseId(o.getWarehouseId())
+                                .build()
+                ).collect(Collectors.toList());
+        return mgtOrdersDTOList;
+    }
+
+    @Override
+    public MgtOrdersDTO getOne(Long id) {
+        MgtOrders mgtOrders = mgtOrdersMapper.getOne(id);
+        MgtOrdersDTO mgtOrdersDTO = MgtOrdersDTO.builder()
+                .id(mgtOrders.getId())
+                .purchaser(mgtOrders.getPurchaser())
+                .status(String.valueOf(mgtOrders.getStatus()))
+                .createdAt(mgtOrders.getCreatedAt())
+                .warehouseId(mgtOrders.getWarehouseId())
+                .build();
+        return mgtOrdersDTO;
     }
 
 
