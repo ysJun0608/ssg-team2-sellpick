@@ -3,7 +3,7 @@ package com.ssg.wsmt.inventory.domain;
 import lombok.Data;
 
 @Data
-public class WhInOutSettlementRelationship {
+public class WhInOutSettlementRelationshipVO {
     // 입출고 정산 관계 id
     private Long id;
     // 입출고 id (FK)

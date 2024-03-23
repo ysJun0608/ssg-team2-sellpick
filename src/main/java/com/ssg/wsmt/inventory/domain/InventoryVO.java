@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.data.relational.core.mapping.Column;
 
 @Data
-public class Inventory {
+public class InventoryVO {
     // 재고 id
     private Long id;
     // 재고 수량

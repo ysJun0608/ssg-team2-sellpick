@@ -1,182 +1,277 @@
-/* GOOGLE FONTS */
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
-
-/* VARIABLES CSS */
+/********** Template CSS **********/
 :root {
-    --nav--width: 92px;
-
-    /* Colores */
-    --first-color: #0c5df4;
-    --bg-color: #d4a1e3;
-    --sub-color: #b6cefc;
-    --white-color: #fff;
-
-    /* Fuente y tipografia */
-    --body-font: 'Poppins', sans-serif;
-    --normal-font-size: 1rem;
-    --small-font-size: .875rem;
-
-    /* z index */
-    --z-fixed: 100;
+    --primary: #009CFF;
+    --light: #F3F6F9;
+    --dark: #191C24;
 }
 
-/* BASE */
-*, ::before, ::after {
-    box-sizing: border-box;
+.back-to-top {
+    position: fixed;
+    display: none;
+    right: 45px;
+    bottom: 45px;
+    z-index: 99;
 }
 
-body {
-    position: relative;
-    margin: 0;
-    padding: 2rem 0 0 6.75rem;
-    font-family: var(--body-font);
-    font-size: var(--normal-font-size);
+
+/*** Spinner ***/
+#spinner {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .5s ease-out, visibility 0s linear .5s;
+    z-index: 99999;
+}
+
+#spinner.show {
+    transition: opacity .5s ease-out, visibility 0s linear 0s;
+    visibility: visible;
+    opacity: 1;
+}
+
+
+/*** Button ***/
+.btn {
     transition: .5s;
 }
 
-h1 {
-    margin: 0;
+.btn.btn-primary {
+    color: #FFFFFF;
 }
 
-ul {
-    margin: 0;
+.btn-square {
+    width: 38px;
+    height: 38px;
+}
+
+.btn-sm-square {
+    width: 32px;
+    height: 32px;
+}
+
+.btn-lg-square {
+    width: 48px;
+    height: 48px;
+}
+
+.btn-square,
+.btn-sm-square,
+.btn-lg-square {
     padding: 0;
-    list-style: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: normal;
+    border-radius: 50px;
 }
 
-a {
-    text-decoration: none;
-}
 
-/* l NAV */
-.l-navbar {
+/*** Layout ***/
+.sidebar {
     position: fixed;
     top: 0;
     left: 0;
-    width: var(--nav--width);
+    bottom: 0;
+    width: 250px;
     height: 100vh;
-    background-color: var(--bg-color);
-    color: var(--white-color);
-    padding: 1.5rem 1.5rem 2rem;
-    transition: .5s;
-    z-index: var(--z-fixed);
+    overflow-y: auto;
+    background: var(--light);
+    transition: 0.5s;
+    z-index: 999;
 }
 
-/* NAV */
-.nav {
-    height: 100%;
+.content {
+    margin-left: 250px;
+    min-height: 100vh;
+    background: #FFFFFF;
+    transition: 0.5s;
+}
+
+@media (min-width: 992px) {
+    .sidebar {
+        margin-left: 0;
+    }
+
+    .sidebar.open {
+        margin-left: -250px;
+    }
+
+    .content {
+        width: calc(100% - 250px);
+    }
+
+    .content.open {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .sidebar {
+        margin-left: -250px;
+    }
+
+    .sidebar.open {
+        margin-left: 0;
+    }
+
+    .content {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+
+/*** Navbar ***/
+.sidebar .navbar .navbar-nav .nav-link {
+    padding: 7px 20px;
+    color: var(--dark);
+    font-weight: 500;
+    border-left: 3px solid var(--light);
+    border-radius: 0 30px 30px 0;
+    outline: none;
+}
+
+.sidebar .navbar .navbar-nav .nav-link:hover,
+.sidebar .navbar .navbar-nav .nav-link.active {
+    color: var(--primary);
+    background: #acd1ea;
+    border-color: var(--primary);
+}
+
+.sidebar .navbar .navbar-nav .nav-link i {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #cfdaf0;
+    border-radius: 40px;
+}
+
+.sidebar .navbar .navbar-nav .nav-link:hover i,
+.sidebar .navbar .navbar-nav .nav-link.active i {
+    background: var(--light);
+}
+
+.sidebar .navbar .dropdown-toggle::after {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    transition: .5s;
+}
+
+.sidebar .navbar .dropdown-toggle[aria-expanded=true]::after {
+    transform: rotate(-180deg);
+}
+
+.sidebar .navbar .dropdown-item {
+    padding-left: 25px;
+    border-radius: 0 30px 30px 0;
+}
+
+.content .navbar .navbar-nav .nav-link {
+    margin-left: 25px;
+    padding: 12px 0;
+    color: var(--dark);
+    outline: none;
+}
+
+.content .navbar .navbar-nav .nav-link:hover,
+.content .navbar .navbar-nav .nav-link.active {
+    color: var(--primary);
+}
+
+.content .navbar .sidebar-toggler,
+.content .navbar .navbar-nav .nav-link i {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border-radius: 40px;
+}
+
+.content .navbar .dropdown-toggle::after {
+    margin-left: 6px;
+    vertical-align: middle;
+    border: none;
+    content: "\f107";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    transition: .5s;
+}
+
+.content .navbar .dropdown-toggle[aria-expanded=true]::after {
+    transform: rotate(-180deg);
+}
+
+@media (max-width: 575.98px) {
+    .content .navbar .navbar-nav .nav-link {
+        margin-left: 15px;
+    }
+}
+
+
+/*** Date Picker ***/
+.bootstrap-datetimepicker-widget.bottom {
+    top: auto !important;
+}
+
+.bootstrap-datetimepicker-widget .table * {
+    border-bottom-width: 0px;
+}
+
+.bootstrap-datetimepicker-widget .table th {
+    font-weight: 500;
+}
+
+.bootstrap-datetimepicker-widget.dropdown-menu {
+    padding: 10px;
+    border-radius: 2px;
+}
+
+.bootstrap-datetimepicker-widget table td.active,
+.bootstrap-datetimepicker-widget table td.active:hover {
+    background: var(--primary);
+}
+
+.bootstrap-datetimepicker-widget table td.today::before {
+    border-bottom-color: var(--primary);
+}
+
+
+/*** Testimonial ***/
+.progress .progress-bar {
+    width: 0px;
+    transition: 2s;
+}
+
+
+/*** Testimonial ***/
+.testimonial-carousel .owl-dots {
+    margin-top: 24px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    overflow: hidden;
+    align-items: flex-end;
+    justify-content: center;
 }
 
-.nav__brand {
-    display: grid;
-    grid-template-columns: max-content max-content;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-}
-
-.nav__toggle {
-    font-size: 1.25rem;
-    padding: .75rem;
-    cursor: pointer;
-}
-
-.nav__logo {
-    color: var(--white-color);
-    font-weight: 600;
-}
-
-.nav__link {
-    display: grid;
-    grid-template-columns: max-content max-content;
-    align-items: center;
-    column-gap: .75rem;
-    padding: .75rem;
-    color: var(--white-color);
-    border-radius: .5rem;
-    margin-bottom: 1rem;
-    transition: .3s;
-    cursor: pointer;
-}
-
-.nav__link:hover {
-    background-color: var(--first-color);
-}
-
-.nav__icon {
-    font-size: 1.25rem;
-}
-
-.nav_name {
-    font-size: var(--small-font-size);
-    margin-left: 10px;
-}
-
-/* Expander menu */
-.expander {
-    width: calc(var(--nav--width) + 9.25rem);
-}
-
-/* Add padding body*/
-.body-pd {
-    padding: 2rem 0 0 16rem;
-}
-
-/* Active links menu */
-.active {
-    background-color: var(--first-color);
-}
-
-/* COLLAPSE */
-.collapse {
-    grid-template-columns: 20px max-content 1fr;
-}
-
-.collapse__link {
-    justify-self: flex-end;
+.testimonial-carousel .owl-dot {
+    position: relative;
+    display: inline-block;
+    margin: 0 5px;
+    width: 15px;
+    height: 15px;
+    border: 5px solid var(--primary);
+    border-radius: 15px;
     transition: .5s;
 }
 
-.collapse__menu {
-    display: none;
-    padding: .75rem 2.25rem;
-}
-
-.collapse__sublink {
-    color: var(--sub-color);
-    font-size: var(--small-font-size);
-}
-
-.collapse__sublink:hover {
-    color: var(--white-color);
-}
-
-/* Show collapse */
-.showCollapse {
-    display: block;
-}
-
-/* Rotate icon */
-.rotate {
-    transform: rotate(180deg);
-    transition: .5s;
-}
-
-/* 하위메뉴 수직정렬 */
-.collapse__menu {
-    display: none; /* 기본적으로는 숨겨짐 */
-}
-
-.collapse__menu.show {
-    display: block; /* 마우스를 올렸을 때 보이도록 함 */
-}
-
-.collapse__sublink {
-    display: flex;
-    align-items: center;
-    padding: .5rem 0;
+.testimonial-carousel .owl-dot.active {
+    background: var(--dark);
+    border-color: var(--primary);
 }

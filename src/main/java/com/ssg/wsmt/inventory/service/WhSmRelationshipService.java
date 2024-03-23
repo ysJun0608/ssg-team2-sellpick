@@ -1,7 +1,7 @@
 package com.ssg.wsmt.inventory.service;
 
-import com.ssg.wsmt.inventory.domain.WhSmRelationship;
+import com.ssg.wsmt.inventory.domain.WhSmRelationshipVO;
 
 public interface WhSmRelationshipService {
-    void createWhSmRelationship(WhSmRelationship whSmRelationShip);
+    void createWhSmRelationship(WhSmRelationshipVO whSmRelationShipVO);
 }

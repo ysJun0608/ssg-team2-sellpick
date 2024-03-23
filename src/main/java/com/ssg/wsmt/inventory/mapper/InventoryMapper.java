@@ -1,6 +1,6 @@
 package com.ssg.wsmt.inventory.mapper;
 
-import com.ssg.wsmt.inventory.domain.Inventory;
+import com.ssg.wsmt.inventory.domain.InventoryVO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -9,5 +9,5 @@ import java.util.List;
 public interface InventoryMapper {
     String getTime();
 
-    List<Inventory> selectAll();
+    List<InventoryVO> selectAll();
 }

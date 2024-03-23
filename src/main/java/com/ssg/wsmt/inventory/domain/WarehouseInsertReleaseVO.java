@@ -1,12 +1,16 @@
 package com.ssg.wsmt.inventory.domain;
 
 import com.ssg.wsmt.inventory.enums.WhInOutType;
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Data
-public class WarehouseInsertRelease {
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@ToString
+public class WarehouseInsertReleaseVO {
     // 입출고 id
     private Long id;
     // 수량

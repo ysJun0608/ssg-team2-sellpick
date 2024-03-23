@@ -1,26 +1,27 @@
 package com.ssg.wsmt.inventory.service.impl;
 
 import com.ssg.wsmt.inventory.dao.InventoryDao;
-import com.ssg.wsmt.inventory.domain.Inventory;
+import com.ssg.wsmt.inventory.domain.InventoryVO;
 import com.ssg.wsmt.inventory.dto.InventoryOutput;
 import com.ssg.wsmt.inventory.service.InventoryService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Scanner;
-
+@Service
 public class InventoryServiceImpl implements InventoryService {
     InventoryDao inventoryDao = new InventoryDao();
     static Scanner sc = new Scanner(System.in);
 
     @Override
     public void searchInventoryList() {
-        List<Inventory> inventoryList = inventoryDao.findAll();
+        List<InventoryVO> inventoryList = inventoryDao.findAll();
 
         if (inventoryList.isEmpty()) {
             System.out.println("재고가 존재하지 않습니다.");
             return;
         }
-        for (Inventory i : inventoryList) {
+        for (InventoryVO i : inventoryList) {
             System.out.println(i);
         }
     }
@@ -29,7 +30,7 @@ public class InventoryServiceImpl implements InventoryService {
     public void searchInventory() {
         System.out.println("찾고자 하는 재고의 id를 입력해주세요 : ");
         Long id = Long.parseLong(sc.nextLine());
-        Inventory inventory = inventoryDao.findById(id);
+        InventoryVO inventory = inventoryDao.findById(id);
 
         if (inventory == null) {
             System.out.println("해당 id의 재고가 존재하지 않습니다.");
