@@ -1,6 +1,7 @@
 package com.ssg.wsmt.product.domain;
 
 import com.ssg.wsmt.product.enums.ProductsStatus;
+
 import lombok.Data;
 
 @Data
