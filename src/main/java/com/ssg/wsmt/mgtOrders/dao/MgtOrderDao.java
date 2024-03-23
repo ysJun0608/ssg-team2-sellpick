@@ -125,14 +125,14 @@ public class MgtOrderDao extends ObjectDBIO {
             Long id = resultSet.getLong("ID");
             String purchaser = resultSet.getString("PURCHASER");
             MgtOrdersStatus tempStatus = MgtOrdersStatus.valueOf(resultSet.getString("STATUS"));
-            LocalDateTime date = resultSet.getTimestamp("CREATED_AT").toLocalDateTime();
+            //LocalDateTime date = resultSet.getTimestamp("CREATED_AT").toLocalDateTime();
             Long warehouseId = resultSet.getLong("WAREHOUSE_ID");
 //            MgtOrders mgtOrder = new MgtOrders(id, purchaser, tempStatus, date, 1l);
             MgtOrders mgtOrder = new MgtOrders();
             mgtOrder.setId(id);
             mgtOrder.setPurchaser(purchaser);
             mgtOrder.setStatus(tempStatus);
-            mgtOrder.setCreatedAt(date);
+            //mgtOrder.setCreatedAt(date);
             mgtOrder.setWarehouseId(warehouseId);
 
             searchList.add(mgtOrder);
@@ -168,7 +168,7 @@ public class MgtOrderDao extends ObjectDBIO {
             mgtOrder.setId(id);
             mgtOrder.setPurchaser(purchaser);
             mgtOrder.setStatus(tempStatus);
-            mgtOrder.setCreatedAt(date);
+            //mgtOrder.setCreatedAt(date);
             mgtOrder.setWarehouseId(warehouseId);
 
             mgtOrders.add(mgtOrder);
@@ -235,7 +235,7 @@ public class MgtOrderDao extends ObjectDBIO {
             mgtOrder.setId(id);
             mgtOrder.setPurchaser(purchaser);
             mgtOrder.setStatus(tempStatus);
-            mgtOrder.setCreatedAt(findDate);
+            //mgtOrder.setCreatedAt(findDate);
             mgtOrder.setWarehouseId(warehouseId);
 
             mgtOrders.add(mgtOrder);

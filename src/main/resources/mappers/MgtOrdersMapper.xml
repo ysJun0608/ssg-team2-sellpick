@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssg.wsmt.mgtOrders.mapper.MgtOrdersMapper">
+
+    <insert id="createOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MGT_ORDERS(PURCHASER, STATUS, WAREHOUSE_ID) VALUES (#{purchaser}, #{status}, #{warehouseId})
+    </insert>
+
+    <insert id="addItems">
+        INSERT INTO MGT_ORDERS_PRODUCTS_RELATIONSHIP(QUANTITY, PRODUCTS_ID, MGT_ORDERS_ID) VALUES (#{quantity}, #{productId}, #{mgtOrderId})
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE MGT_ORDERS SET STATUS = #{status.name()} WHERE ID = #{orderId}
+
+    </update>
+
+    <update id="cancelOrder">
+        UPDATE MGT_ORDERS SET STATUS = 'CANCEL' WHERE ID = #{orderId}
+    </update>
+
+    <select id="selectAllForDate" resultType="java.util.ArrayList">
+        SELECT * FROM MGT_ORDERS WHERE CREATED_AT BETWEEN #{startDate} AND #{endDate} +0.999999999
+    </select>
+
+    <select id="searchForStatus" resultType="java.util.ArrayList">
+        SELECT * FROM MGT_ORDERS WHERE STATUS = #{status.name()}
+    </select>
+
+    <delete id="insertList">
+        UPDATE MGT_ORDERS SET STATUS = #{status} WHERE ID = #{num}
+    </delete>
+
+    <select id="searchNoneDelived" resultType="java.util.ArrayList">
+        SELECT * FROM MGT_ORDERS WHERE STATUS != 'DELIVERED' AND CREATED_AT BETWEEN #{date} AND #{date}+0.999999999
+    </select>
+
+    <delete id="delete">
+        DELETE FROM MGT_ORDERS WHERE ID = #{orderId}
+    </delete>
+
+    <select id="getOne" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
+        SELECT * FROM MGT_ORDERS where ID =#{id}
+    </select>
+
+    <select id="selectAll" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
+        SELECT * FROM MGT_ORDERS
+    </select>
+</mapper>
