@@ -1,5 +1,6 @@
 package com.ssg.wsmt.inventory.mapper;
 
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,9 @@ class WarehouseMapperTest {
     @Test
     public void testRead() {
 
-        log.info(warehouseMapper.readWarehouse());
+
+
+        log.info( warehouseMapper.readWarehouse(PageRequestDTO.builder().build()));
 
     }
 }
