@@ -5,7 +5,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class Settlement {
+public class SettlementVO {
     // 마감 id
     private Long id;
     // 입고 수량
