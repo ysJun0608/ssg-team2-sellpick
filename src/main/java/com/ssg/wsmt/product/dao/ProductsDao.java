@@ -1,8 +1,7 @@
 package com.ssg.wsmt.product.dao;
-
+/*
 import com.ssg.wsmt.DBIO.ObjectDBIO;
-import com.ssg.wsmt.product.domain.Products;
-import com.ssg.wsmt.product.dto.ProductsOutput;
+import com.ssg.wsmt.product.domain.ProductVO;
 import com.ssg.wsmt.product.enums.ProductsStatus;
 
 import java.sql.Connection;
@@ -15,9 +14,9 @@ import java.util.List;
 public class ProductsDao extends ObjectDBIO {
     Connection conn = open();
 
-    public List<ProductsOutput> productListInventory() {
+    public List<ProductDTO> productListInventory() {
         open();
-        List<ProductsOutput> productList = new ArrayList<>();
+        List<ProductDTO> productList = new ArrayList<>();
 
         if (conn != null) {
             try {
@@ -40,7 +39,7 @@ public class ProductsDao extends ObjectDBIO {
                     Long ownerId = rs.getLong("owner_id");
                     String brandName = rs.getString("brand_name");
 
-                    ProductsOutput product = ProductsOutput.builder()
+                    ProductDTO product = ProductDTO.builder()
                             .id(productId)
                             .name(productName)
                             .brandId(brandId)
@@ -69,7 +68,7 @@ public class ProductsDao extends ObjectDBIO {
     }
 
 
-    public void createProduct(Products product) {
+    public void createProduct(ProductVO product) {
         open();
 
         if (conn != null) {
@@ -106,7 +105,7 @@ public class ProductsDao extends ObjectDBIO {
             System.out.println("데이터베이스 연결 실패");
         }
     }
-    public void updateProduct(Products product) {
+    public void updateProduct(ProductVO product) {
         open();
 
         if (conn != null) {
@@ -132,7 +131,4 @@ public class ProductsDao extends ObjectDBIO {
     }
 }
 
-
-
-
-
+*/

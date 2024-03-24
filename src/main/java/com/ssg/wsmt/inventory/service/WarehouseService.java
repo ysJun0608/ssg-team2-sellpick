@@ -1,18 +1,23 @@
 package com.ssg.wsmt.inventory.service;
 
-import com.ssg.wsmt.inventory.domain.Warehouse;
+import com.ssg.wsmt.inventory.domain.WarehouseVO;
+import com.ssg.wsmt.inventory.dto.WarehouseDTO;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
 public interface WarehouseService {
-    void createWarehouse();
+    void createWarehouse(WarehouseDTO warehouseDTO);
 
 
-    Warehouse updateWarehouse();
+    WarehouseVO updateWarehouse();
 
-    Warehouse allUpdateWarehouse(Warehouse warehouse);
+    WarehouseVO allUpdateWarehouse(WarehouseVO warehouseVO);
 
-    Warehouse deliveryUpdateWarehouse(Warehouse warehouse);
+    WarehouseVO deliveryUpdateWarehouse(WarehouseVO warehouseVO);
 
-    void readAllWarehouse();
+    List<WarehouseDTO> readAllWarehouse();
 
     void readOneWarehouse();
 }

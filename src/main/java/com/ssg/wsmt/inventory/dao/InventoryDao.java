@@ -1,7 +1,7 @@
 package com.ssg.wsmt.inventory.dao;
 
 import com.ssg.wsmt.DBIO.ObjectDBIO;
-import com.ssg.wsmt.inventory.domain.Inventory;
+import com.ssg.wsmt.inventory.domain.InventoryVO;
 import com.ssg.wsmt.inventory.dto.InventoryOutput;
 
 import java.sql.Connection;
@@ -14,15 +14,15 @@ import java.util.List;
 public class InventoryDao extends ObjectDBIO {
     Connection conn = null;
 
-    public List<Inventory> findAll() {
+    public List<InventoryVO> findAll() {
         conn = open();
-        List<Inventory> inventoryList = new ArrayList<>();
+        List<InventoryVO> inventoryList = new ArrayList<>();
         try {
             String SQL = "SELECT * FROM INVENTORY";
             PreparedStatement pstmt = conn.prepareStatement(SQL);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Inventory inventory = new Inventory();
+                InventoryVO inventory = new InventoryVO();
                 inventory.setId(rs.getLong("ID"));
                 inventory.setQuantity(rs.getInt("QUANTITY"));
                 inventory.setProductId(rs.getLong("PRODUCTS_ID"));
@@ -36,12 +36,12 @@ public class InventoryDao extends ObjectDBIO {
         return inventoryList;
     }
 
-    public Inventory findById(Long id) {
+    public InventoryVO findById(Long id) {
         conn = open();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
-                Inventory inventory = new Inventory();
+                InventoryVO inventory = new InventoryVO();
 
         try {
             String SQL = "SELECT * FROM INVENTORY WHERE ID = ?";

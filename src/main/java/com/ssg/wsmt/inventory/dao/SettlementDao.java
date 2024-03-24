@@ -1,8 +1,8 @@
 package com.ssg.wsmt.inventory.dao;
 
 import com.ssg.wsmt.DBIO.ObjectDBIO;
-import com.ssg.wsmt.inventory.domain.Settlement;
-import com.ssg.wsmt.inventory.domain.WarehouseInsertRelease;
+import com.ssg.wsmt.inventory.domain.SettlementVO;
+import com.ssg.wsmt.inventory.domain.WarehouseInsertReleaseVO;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -17,9 +17,9 @@ import java.util.Optional;
 public class SettlementDao extends ObjectDBIO {
     Connection conn = null;
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-    public Settlement SettlementCreate(WarehouseInsertRelease warehouseInsertRelease) {
+    public SettlementVO SettlementCreate(WarehouseInsertReleaseVO warehouseInsertReleaseVO) {
         // 입출고 테이블에서 가져와야됌
-        Settlement settlement = new Settlement();
+        SettlementVO settlement = new SettlementVO();
         try {
             conn = open();
             String sql = "INSERT INTO SETTLEMENT (IN_QUANTITY,OUT_QUANTITY,TOTAL_PRICE,CREATED_AT,MODIFIED_AT) " +
@@ -39,8 +39,8 @@ public class SettlementDao extends ObjectDBIO {
         return settlement;
     }
 
-    public Optional<List<Settlement>> settlementList() {
-        List<Settlement> settlementList = new ArrayList<>();
+    public Optional<List<SettlementVO>> settlementList() {
+        List<SettlementVO> settlementList = new ArrayList<>();
         try {
             conn = open();
             String sql = "SELECT * FROM SETTLEMENT";
@@ -48,7 +48,7 @@ public class SettlementDao extends ObjectDBIO {
             ResultSet rs = pstmt.executeQuery();
 
             while(rs.next()) {
-                Settlement settlement = new Settlement();
+                SettlementVO settlement = new SettlementVO();
                 settlement.setId(rs.getLong("id"));
                 settlement.setInsertQuantity(rs.getLong("in_quantity"));
                 settlement.setReleaseQuantity(rs.getLong("out_quantity"));
@@ -63,8 +63,8 @@ public class SettlementDao extends ObjectDBIO {
         return Optional.of(settlementList);
     }
 
-    public Optional<Settlement> settlementByDate(String date) {
-        Settlement settlement = new Settlement();
+    public Optional<SettlementVO> settlementByDate(String date) {
+        SettlementVO settlement = new SettlementVO();
         try {
             conn = open();
             // 입력받은 날짜(년, 월, 일) 같은 지 체크

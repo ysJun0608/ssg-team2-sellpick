@@ -6,9 +6,13 @@ import com.ssg.wsmt.inventory.enums.WhInOutType;
 import com.ssg.wsmt.inventory.service.WarehouseInsertReleaseService;
 import com.ssg.wsmt.inventory.dto.WarehouseInOutDTO;
 
+import org.springframework.stereotype.Service;
+
+
+
 import java.util.ArrayList;
 import java.util.Scanner;
-
+@Service
 public class WarehouseInsertReleaseServiceImpl implements WarehouseInsertReleaseService {
     WarehouseInsertReleaseDao whInOutDao = new WarehouseInsertReleaseDao();
     Scanner sc = new Scanner(System.in);
