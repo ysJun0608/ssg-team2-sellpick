@@ -8,4 +8,14 @@
             SELECT ID, NAME FROM BRAND WHERE id = #{id}
         </select>
 
+    <!-- getBrandName SELECT 쿼리 -->
+    <select id="getBrandName" resultType="java.lang.String" parameterType="int">
+        SELECT NAME FROM BRAND WHERE ID = #{brandCodeId}
+    </select>
+
+    <!-- getAllBrands SELECT 쿼리 -->
+    <select id="getAllBrands" resultType="java.lang.String">
+        SELECT NAME FROM BRAND
+    </select>
+
 </mapper>

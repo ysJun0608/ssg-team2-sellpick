@@ -1,8 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssg.wsmt.inventory.mapper.WarehouseInsertReleaseMapper">
+    <insert id="createWarehouse" parameterType="com.ssg.wsmt.inventory.domain.Warehouse" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO WAREHOUSE(TYPE, LOCATION, DELIVERY_CMP_ID)
+        VALUES(#{type}, #{location}, #{delivery_id})
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.ssg.wsmt.inventory.domain.Warehouse">
+        SELECT * FROM WAREHOUSE WHERE ID = #{id}
+    </select>
+
+    <select id="readWarehouse" resultType="com.ssg.wsmt.inventory.domain.Warehouse">
+        SELECT * FROM WAREHOUSE
+    </select>
+
+    <!-- Your other SQL queries go here -->
 
     <select id="findAllInsertProducts" resultType="com.ssg.wsmt.mgtOrders.MgtOrdersProductsRelationshipDTO">
         SELECT

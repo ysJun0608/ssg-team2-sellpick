@@ -25,4 +25,6 @@ public interface ProductMapper {
 
     // 상품 검색
     //ProductVO search();
+
+    List<ProductsDTO> productListInventory();
 }

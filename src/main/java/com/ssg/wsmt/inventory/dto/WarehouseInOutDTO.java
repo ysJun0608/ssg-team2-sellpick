@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 @Data
-public class WarehouseInOutDTO {
+public class                                                                                                                                                                                                                                                                                                                                              WarehouseInOutDTO {
     // 발주 상품 관계 id
     private Long id;
 

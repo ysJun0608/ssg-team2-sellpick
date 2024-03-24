@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class InventoryController {
     private final WarehouseService warehouseService;
+    private final InventoryService inventoryService;
     @GetMapping("/home")
     public void hello(Model model) {
         log.info("index hello");
@@ -67,8 +68,47 @@ public class InventoryController {
 //    public void warehousesearch(@Valid BindingResult bindingResult, Model model) {
 //        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
 //        log.info("warehouseSearch");
-//
 //    }
 
+    @GetMapping("/order/list")
+    public String findAllProducts(Model model) {
+        List<ProductsDTO> productList = inventoryService.findAllProducts();
+        model.addAttribute("productList", productList);
+        return "productList";
+    }
 
-}}
+    @GetMapping("/order/{id}")
+    public String findProductById(@PathVariable Long id, Model model) {
+        ProductsDTO product = inventoryService.findProductById(id);
+        model.addAttribute("product", product);
+        return "productDetail";
+    }
+
+    @GetMapping("/list")
+    public String findAllInventory(Model model) {
+        List<InventoryVO> inventoryList = inventoryService.findAllInventory();
+        model.addAttribute("inventoryList", inventoryList);
+        return "/inventory/inventoryList";
+    }
+
+    @GetMapping("/{id}")
+    public String findInventoryById(@PathVariable Long id, Model model) {
+        InventoryVO inventory = inventoryService.findInventoryById(id);
+        model.addAttribute("inventory", inventory);
+        return "inventoryDetail";
+    }
+
+    @GetMapping("/warehouse/{warehouseId}")
+    public String findInventoryByWarehouseId(@PathVariable Long warehouseId, Model model) {
+        List<InventoryVO> inventoryList = inventoryService.findInventoryByWarehouseId(warehouseId);
+        model.addAttribute("inventoryList", inventoryList);
+        return "warehouseInventory";
+    }
+
+    @GetMapping("/search")
+    public String searchInventory(@RequestParam("keyword") String keyword, Model model) {
+        List<InventoryVO> inventoryList = inventoryService.search(keyword);
+        model.addAttribute("inventoryList", inventoryList);
+        return "searchResult";
+    }
+}

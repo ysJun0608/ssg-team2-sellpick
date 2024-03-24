@@ -17,7 +17,6 @@ public class WarehouseSectionDao extends ObjectDBIO {
         boolean result = false;
         try {
             conn = open();
-
             // SQL 쿼리문 정의
             String sql = "INSERT INTO WAREHOUSE_SECTION (WAREHOUSE_ID, NAME, TYPE) VALUES (?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);

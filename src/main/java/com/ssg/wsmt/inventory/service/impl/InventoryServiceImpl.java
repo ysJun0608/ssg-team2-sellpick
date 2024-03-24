@@ -1,59 +1,52 @@
 package com.ssg.wsmt.inventory.service.impl;
 
-import com.ssg.wsmt.inventory.dao.InventoryDao;
 import com.ssg.wsmt.inventory.domain.InventoryVO;
-import com.ssg.wsmt.inventory.dto.InventoryOutput;
+import com.ssg.wsmt.inventory.mapper.InventoryMapper;
 import com.ssg.wsmt.inventory.service.InventoryService;
+import com.ssg.wsmt.product.dto.ProductsDTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Scanner;
 @Service
+@RequiredArgsConstructor
+@Log4j2
 public class InventoryServiceImpl implements InventoryService {
-    InventoryDao inventoryDao = new InventoryDao();
-    static Scanner sc = new Scanner(System.in);
+    private final InventoryMapper inventoryMapper;
 
     @Override
-    public void searchInventoryList() {
-        List<InventoryVO> inventoryList = inventoryDao.findAll();
+    public List<ProductsDTO> findAllProducts() {
+        return inventoryMapper.findAllProducts();
+    }
 
-        if (inventoryList.isEmpty()) {
-            System.out.println("재고가 존재하지 않습니다.");
-            return;
-        }
-        for (InventoryVO i : inventoryList) {
-            System.out.println(i);
-        }
+    @Override
+    public ProductsDTO findProductById(Long id) {
+        return inventoryMapper.findProductById(id);
     }
 
     @Override
     public void searchInventory() {
         System.out.println("찾고자 하는 재고의 id를 입력해주세요 : ");
         Long id = Long.parseLong(sc.nextLine());
-        InventoryVO inventory = inventoryDao.findById(id);
-
-        if (inventory == null) {
-            System.out.println("해당 id의 재고가 존재하지 않습니다.");
-            return;
-        }
-        System.out.println(inventory);
+        Inventory inventory = inventoryDao.findById(id);
+    }
+    
+    public List<InventoryVO> findAllInventory() {
+        return inventoryMapper.findAll();
+    }
+    @Override
+    public InventoryVO findInventoryById(Long id) {
+        return inventoryMapper.findById(id);
     }
 
     @Override
-    public void searchInventoryListByWarehouse() {
-        System.out.println("=".repeat(50));
-        System.out.println("창고별 재고 조회");
-        System.out.println("=".repeat(50));
-        System.out.println("찾고자 하는 창고의 id를 입력해주세요 : ");
-        Long id = Long.parseLong(sc.nextLine());
-        List<InventoryOutput> inventoryList = inventoryDao.findByWarehouseId(id);
+    public List<InventoryVO> findInventoryByWarehouseId(Long warehouseId) {
+        return inventoryMapper.findByWarehouseId(warehouseId);
+    }
 
-        if (inventoryList.isEmpty()) {
-            System.out.println("해당 창고에 재고가 존재하지 않습니다.");
-            return;
-        }
-        for (InventoryOutput inventory : inventoryList) {
-            System.out.println(inventory);
-        }
+    @Override
+    public List<InventoryVO> search(String keyword) {
+        return inventoryMapper.search(keyword);
     }
 }
