@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="../assets/css/styles.css">
+
+    <title>SideBar sub menus</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body id="body-pd">
+    <div class="l-navbar" id="navbar">
+        <nav class="nav">
+            <div>
+                <div class="nav__brand">
+                    <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+                    <a href="#" class="nav__logo"><img src="/img/TeamLogo.png" style="width: 100px; height: 80px;">
+                    </a>
+                </div>
+                <div class="nav__list">
+                    <a href="#" class="nav__link active">
+                        <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+                        <span class="nav_name">창고관리</span>
+                    </a>
+                    <a href="#" class="nav__link">
+                        <i class="bi bi-boxes"></i>
+                        <span class="nav_name">배송관리</span>
+                    </a>
+
+                    <a href="#" class="nav__link">
+                        <i class="bi bi-box-arrow-in-down"></i>
+                        <span class="nav_name">입고관리</span>
+                    </a>
+                    <a href="#" class="nav__link">
+                        <i class="bi bi-box-arrow-down"></i>
+                        <span class="nav_name">출고관리</span>
+                    </a>
+                    <a href="#" class="nav__link">
+                        <i class="bi bi-wallet-fill"></i>
+                        <span class="nav_name">정산관리</span>
+                    </a>
+                   
+                    <a href="#" class="nav__link">
+                        <ion-icon name="pie-chart-outline" class="nav__icon"></ion-icon>
+                        <span class="nav_name">발주관리</span>
+                    </a>
+
+                    <!-- <div href="#" class="nav__link collapse">
+                        <ion-icon name="people-outline" class="nav__icon"></ion-icon>
+                        <span class="nav_name">Team</span>
+
+                        <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                        <ul class="collapse__menu">
+                            <a href="#" class="collapse__sublink">Data</a>
+                            <a href="#" class="collapse__sublink">Group</a>
+                            <a href="#" class="collapse__sublink">Members</a>
+                        </ul>
+                    </div> -->
+
+                    <a href="#" class="nav__link">
+                        <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+                        <span class="nav_name">재고관리</span>
+                    </a>
+                </div>
+                <a href="#" class="nav__link">
+                    <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">주문관리</span>
+                </a>
+            </div>
+        </nav>
+    </div>
+
+    <h1>컨텐츠 영역 </h1>
+    <!-- IONICONS -->
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+    <!-- JS -->
+    <script src="../assets/js/main.js"></script>
+    <!-- <script>
+        /* EXPANDER MENU */
+const showMenu = (toggleId, navbarId, bodyId) => {
+    const toggle = document.getElementById(toggleId),
+    navbar = document.getElementById(navbarId),
+    bodypadding = document.getElementById(bodyId)
+
+    if( toggle && navbar ) {
+        toggle.addEventListener('click', ()=>{
+            navbar.classList.toggle('expander');
+            bodypadding.classList.toggle('body-pd');
+            // 스크롤 내리는 기능 추가
+            if (navbar.classList.contains('expander')) {
+                // 사이드바가 열렸을 때 body의 overflow를 hidden으로 설정하여 스크롤을 막습니다.
+                document.body.style.overflow = 'hidden';
+            } else {
+                // 사이드바가 닫혔을 때 body의 overflow를 초기값으로 되돌립니다.
+                document.body.style.overflow = 'auto';
+            }
+        })
+    }
+}
+
+showMenu('nav-toggle', 'navbar', 'body-pd')
+
+/* LINK ACTIVE */
+const linkColor = document.querySelectorAll('.nav__link')
+function colorLink() {
+    linkColor.forEach(l=> l.classList.remove('active'))
+    this.classList.add('active')
+}
+linkColor.forEach(l=> l.addEventListener('click', colorLink))
+
+/* COLLAPSE MENU */
+const linkCollapse = document.getElementsByClassName('collapse__link')
+var i
+
+for(i=0;i<linkCollapse.length;i++) {
+    linkCollapse[i].addEventListener('click', function(){
+        const collapseMenu = this.nextElementSibling
+        collapseMenu.classList.toggle('showCollapse')
+
+        const rotate = collapseMenu.previousElementSibling
+        rotate.classList.toggle('rotate')
+    });
+}
+
+// 스크롤 내리는 기능 추가
+window.addEventListener('scroll', function() {
+    const navbar = document.getElementById('navbar');
+    const toggle = document.getElementById('nav-toggle');
+    const bodypadding = document.getElementById('body-pd');
+
+    // 스크롤이 발생했을 때 사이드바가 열려있다면 닫습니다.
+    if (navbar.classList.contains('expander')) {
+        navbar.classList.remove('expander');
+        bodypadding.classList.remove('body-pd');
+        document.body.style.overflow = 'auto';
+        toggle.classList.remove('toggle');
+    }
+});
+
+    </script> -->
+</body>
+</html>

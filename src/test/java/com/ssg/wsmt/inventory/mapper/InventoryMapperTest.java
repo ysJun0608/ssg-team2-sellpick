@@ -1,25 +1,29 @@
 package com.ssg.wsmt.inventory.mapper;
 
+import com.ssg.wsmt.WsmtApplication;
+import com.ssg.wsmt.inventory.domain.InventoryVO;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
 
-@SpringBootTest
+@SpringBootTest(classes = WsmtApplication.class)
 class InventoryMapperTest {
 
     @Autowired
     private InventoryMapper inventoryMapper;
-
     @Test
-    public void test() throws Exception {
-        System.out.println(inventoryMapper.getTime());
+    public void test() {
+        List<InventoryVO> all = inventoryMapper.findAll();
+        Assertions.assertThat(all).isNotNull();
+
     }
     @Test
-    public void test2() throws Exception {
-        System.out.println(inventoryMapper.selectAll());
-    }
+    public void test2(){
+        List<InventoryVO> mapperAll = inventoryMapper.findAll();
 
+    }
 
 }

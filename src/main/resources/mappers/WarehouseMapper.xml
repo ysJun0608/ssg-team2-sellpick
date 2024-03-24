@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.wsmt.inventory.mapper.WarehouseMapper">
+    <insert id="createWarehouse" parameterType="com.ssg.wsmt.inventory.domain.Warehouse">
+        INSERT INTO WAREHOUSE(TYPE, LOCATION, DELIVERY_CMP_ID) VALUES (#{type}, #{location}, #{delivery_id})
+    </insert>
+
+    <insert id="createSection" parameterType="com.ssg.wsmt.inventory.domain.Warehouse">
+        <!-- Add your SQL statement here for creating sections -->
+        <!-- Example: -->
+        <!-- INSERT INTO WAREHOUSE_SECTION (WAREHOUSE_ID, NAME) VALUES (#{id}, '냉동식품') -->
+        <!-- Repeat for other sections -->
+    </insert>
+
+    <select id="readWarehouse" resultType="com.ssg.wsmt.inventory.domain.Warehouse">
+        SELECT * FROM WAREHOUSE
+    </select>
+
+    <update id="updateDeliveryCmpId">
+        UPDATE WAREHOUSE SET DELIVERY_CMP_ID = #{delivery_id} WHERE ID = #{id}
+    </update>
+
+    <update id="updateWarehouse" parameterType="com.ssg.wsmt.inventory.domain.Warehouse">
+        <!-- Add your SQL statement here for updating warehouse -->
+    </update>
+
+    <select id="findById" resultType="com.ssg.wsmt.inventory.domain.Warehouse" parameterType="long">
+        SELECT * FROM WAREHOUSE WHERE ID = #{id}
+    </select>
+</mapper>

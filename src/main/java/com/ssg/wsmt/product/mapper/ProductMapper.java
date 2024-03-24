@@ -1,14 +1,14 @@
 package com.ssg.wsmt.product.mapper;
 
-import com.ssg.wsmt.product.domain.Products;
-import com.ssg.wsmt.product.dto.ProductsOutput;
+import com.ssg.wsmt.product.domain.ProductsVO;
+import com.ssg.wsmt.product.dto.ProductsDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 @Mapper
 public interface ProductMapper {
-    List<ProductsOutput> productListInventory();
-    void createProduct(Products product);
-    void updateProduct(Products product);
+    List<ProductsDTO> productListInventory();
+    void insert(ProductsVO productsVO);
+    void update(ProductsVO productsVO);
 }

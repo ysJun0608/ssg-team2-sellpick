@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--&lt;!&ndash; resources/mapper/SettlementMapper.xml &ndash;&gt;-->
+<mapper namespace="com.ssg.wsmt.inventory.mapper.SettlementMapper">
+<!--    <insert id="insertSettlement" parameterType="com.ssg.wsmt.inventory.domain.Settlement">-->
+<!--        INSERT INTO SETTLEMENT (IN_QUANTITY, OUT_QUANTITY, TOTAL_PRICE, CREATED_AT, MODIFIED_AT)-->
+<!--        VALUES (#{insertQuantity}, #{releaseQuantity}, #{totalPrice}, #{createdAt}, #{modifiedAt})-->
+<!--    </insert>-->
+
+<!--    <select id="findAllSettlements" resultType="com.ssg.wsmt.inventory.domain.Settlement">-->
+<!--        SELECT * FROM SETTLEMENT-->
+<!--    </select>-->
+
+<!--    <select id="findSettlementByDate" resultType="com.ssg.wsmt.inventory.domain.Settlement" parameterType="String">-->
+<!--        SELECT * FROM SETTLEMENT WHERE CREATED_AT = #{date}-->
+<!--    </select>-->
+</mapper>

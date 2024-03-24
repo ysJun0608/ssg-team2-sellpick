@@ -1,0 +1,159 @@
+<!-- register.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품 등록</title>
+</head>
+<body>
+<h2>제품 등록</h2>
+<form action="/product/test" >
+    <label for="name">상품 이름:</label>
+    <input type="text" id="name" name="name"><br><br>
+
+    <label for="status">판매 상태:</label>
+    <select id="status" name="status">
+        <option value="ON_SALE">판매 중</option>
+        <option value="STOP_SALE">판매 중지</option>
+    </select><br><br>
+
+    <label for="cost">원가:</label>
+    <input type="number" id="cost" name="cost"><br><br>
+
+    <label for="price">판매가:</label>
+    <input type="number" id="price" name="price"><br><br>
+
+    <label for="quantity">상품 수량:</label>
+    <input type="number" id="quantity" name="quantity"><br><br>
+
+    <label for="brandId">브랜드 ID:</label>
+    <input type="number" id="brandId" name="brandId"><br><br>
+
+    <label for="ownerId">사업자 ID:</label>
+    <input type="number" id="ownerId" name="ownerId"><br><br>
+
+    <input type="submit" value="등록">
+</form>
+</body>
+</html>
+
+
+
+
+
+<!--<div style="display: flex; height: 100vh;">-->
+<!--    <div style="flex: 0 0 auto; padding: 10px; border: 1px solid #ccc;">-->
+<!--        <h3>상품등록 조건</h3>-->
+<!--        <label>-->
+<!--            상품 ID:-->
+<!--            <input type="text" id="productId">-->
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            상품 이름:-->
+<!--            <input type="text" id="productName">-->
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            상품 판매 상태:-->
+<!--            <select id="productStatus">-->
+<!--                <option value="판매중">판매중</option>-->
+<!--                <option value="품절">품절</option>-->
+<!--            </select>-->
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            판매가:-->
+<!--            <input type="number" id="sellingPrice">-->
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            원가:-->
+<!--            <input type="number" id="costPrice">-->
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            브랜드 ID:-->
+<!--            <input type="text" id="brandId">-->
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            사업자 ID:-->
+<!--            <input type="text" id="supplierId">-->
+<!--        </label><br>-->
+<!--        <button onclick="addProduct()">등록</button>-->
+<!--    </div>-->
+
+<!--    <div style="flex: 1 1 auto; padding: 10px; overflow: auto;">-->
+<!--        <table id="productTable" style="width: 100%; border-collapse: collapse;">-->
+<!--            <tr>-->
+<!--                <th>No.</th>-->
+<!--                <th>상품 ID</th>-->
+<!--                <th>상품 이름</th>-->
+<!--                <th>상품 판매 상태</th>-->
+<!--                <th>판매가</th>-->
+<!--                <th>원가</th>-->
+<!--                <th>브랜드 ID</th>-->
+<!--                <th>사업자 ID</th>-->
+<!--            </tr>-->
+<!--        </table>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<script>-->
+<!--    let products = [];-->
+
+<!--    function addProduct() {-->
+<!--        const productId = document.getElementById('productId').value;-->
+<!--        const productName = document.getElementById('productName').value;-->
+<!--        const productStatus = document.getElementById('productStatus').value;-->
+<!--        const sellingPrice = document.getElementById('sellingPrice').value;-->
+<!--        const costPrice = document.getElementById('costPrice').value;-->
+<!--        const brandId = document.getElementById('brandId').value;-->
+<!--        const supplierId = document.getElementById('supplierId').value;-->
+
+<!--        const products = {-->
+<!--            id: productId,-->
+<!--            name: productName,-->
+<!--            status: productStatus,-->
+<!--            sellingPrice: sellingPrice,-->
+<!--            costPrice: costPrice,-->
+<!--            brandId: brandId,-->
+<!--            supplierId: supplierId-->
+<!--        };-->
+
+<!--        products.push(product);-->
+<!--        renderProducts();-->
+<!--    }-->
+
+<!--    function renderProducts() {-->
+<!--        const table = document.getElementById('productTable');-->
+<!--        const tableBody = table.getElementsByTagName('tbody')[0] || table.createElement('tbody');-->
+<!--        table.innerHTML = `-->
+<!--      <tr>-->
+<!--        <th>No.</th>-->
+<!--        <th>상품 ID</th>-->
+<!--        <th>상품 이름</th>-->
+<!--        <th>상품 판매 상태</th>-->
+<!--        <th>판매가</th>-->
+<!--        <th>원가</th>-->
+<!--        <th>브랜드 ID</th>-->
+<!--        <th>사업자 ID</th>-->
+<!--      </tr>-->
+<!--    `;-->
+<!--        tableBody.innerHTML = '';-->
+
+<!--        products.forEach((products, index) => {-->
+<!--            const row = document.createElement('tr');-->
+<!--            row.innerHTML = `-->
+<!--        <td>${index + 1}</td>-->
+<!--        <td>${products.id}</td>-->
+<!--        <td>${products.name}</td>-->
+<!--        <td>${products.status}</td>-->
+<!--        <td>${products.price}</td>-->
+<!--        <td>${products.cost}</td>-->
+<!--        <td>${products.brandId}</td>-->
+<!--        <td>${products.supplierId}</td>-->
+<!--      `;-->
+<!--            tableBody.appendChild(row);-->
+<!--        });-->
+
+<!--        table.appendChild(tableBody);-->
+<!--    }-->
+<!--</script>-->
