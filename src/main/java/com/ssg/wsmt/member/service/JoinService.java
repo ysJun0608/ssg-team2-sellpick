@@ -31,9 +31,13 @@ public class JoinService {
         if(ExistUser){
             return;
         }
+
+        String password = passwordEncoder.encode(userDTO.getPassword());
+
         UserEntity userEntity = UserEntity.builder()
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
+                .password(password)
                 .role(UserRole.ADMIN)
                 .phone(userDTO.getPhone())
                 .address(userDTO.getAddress())

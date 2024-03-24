@@ -4,6 +4,24 @@
     <meta charset="UTF-8">
     <title>Login Page</title>
     <style>
+        #email {
+            margin-bottom: 10px; /* 이메일 입력란 아래 여백 조절 */
+        }
+
+        #password {
+            margin-top: 10px; /* 비밀번호 입력란 위쪽 여백 조절 */
+        }
+
+        .input-field {
+            width: 100%;
+            box-sizing: border-box; /* 입력란의 크기에 padding과 border를 포함시킴 */
+            margin-bottom: 10px; /* 입력란 간의 간격 설정 */
+        }
+
+        .login-form {
+            width: 300px; /* 로그인 폼 전체의 너비 */
+            margin: 0 auto; /* 가운데 정렬 */
+        }
         .logo img {
             max-width: 200px; /* 최대 너비 200px로 제한 */
             height: auto; /* 높이는 비율에 맞춰 자동 조정 */
@@ -65,19 +83,14 @@
         <img th:src="@{/images/TeamLogo.png}" alt="Logo">
     </div>
     <h2>로그인</h2>
-<!--    <form action="/login/loginProc" method="post">-->
-<!--        <input type="text" placeholder="Username" name="username" required>-->
-<!--        <input type="password" placeholder="Password" name="password" required>-->
-<!--        <button type="submit">LOGIN</button>-->
-    <form action="/login/loginProc" method="post" name="login">
-        <input type="email" class="form-control mb-1 p-3" name="email" id="email" placeholder="이메일을 입력해주세요."/>
-        <input type="password" class="form-control mb-1 p-3" name="password" id="password" placeholder="비밀번호를 입력해주세요"/>
-        <div class="remember-box p-1">
-        <div class="middle d-flex flex-column">
-            <div class="message" th:if="${hasMessage}" th:text="${message}">
-            </div>
-            <button type="submit">LOGIN</button>
-        </div>
+    <!--    <form action="/login/loginProc" method="post">-->
+    <!--        <input type="text" placeholder="Username" name="username" required>-->
+    <!--        <input type="password" placeholder="Password" name="password" required>-->
+    <!--        <button type="submit">LOGIN</button>-->
+    <form action="/login/loginProc" method="post" th:name="loginForm" CLASS="login-form">
+        <input id="email" type="email" name="username" placeholder="Email" class="input-field"/>
+        <input id="password" type="password" th:name="password" placeholder="password" class="input-field"/>
+        <button type="submit">LOGIN</button>
     </form>
     <p class="signup-link">Don't have an account? <a th:href="@{/login/join}">Sign up</a></p>
 </div>
