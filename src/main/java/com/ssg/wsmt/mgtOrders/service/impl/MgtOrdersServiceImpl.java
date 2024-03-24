@@ -43,16 +43,15 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         return mgtOrders.getId();
     }
 
-    public void addItems(Long[] quantities, Long[] productId, Long id) {
-        log.info(Arrays.stream(quantities).toList());
-        log.info(Arrays.stream(productId).toList());
+    public void addItems(Long quantities, Long productId, Long id) {
+        mgtOrdersMapper.addItems(quantities, productId, id);
         log.info(id);
-        for (int i = 0; i < quantities.length; i++) {
-            if (quantities[i] != null){
-                log.info("if문 안쪽으로.........." + quantities[i]);
-                mgtOrdersMapper.addItems(quantities[i], productId[i], id);
-            }
-        }
+//        for (int i = 0; i < quantities.length; i++) {
+//            if (quantities[i] != null){
+//                log.info("if문 안쪽으로.........." + quantities[i]);
+//                mgtOrdersMapper.addItems(quantities[i], productId[i], id);
+//            }
+//        }
     }
 
     @Override
@@ -246,7 +245,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                                 .id(o.getId())
                                 .purchaser(o.getPurchaser())
                                 .status(String.valueOf(o.getStatus()))
-                                .createdAt(o.getCreatedAt())
+                                .createdAt(String.valueOf(o.getCreatedAt()))
                                 .warehouseId(o.getWarehouseId())
                                 .build()
                 ).collect(Collectors.toList());
@@ -260,7 +259,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                 .id(mgtOrders.getId())
                 .purchaser(mgtOrders.getPurchaser())
                 .status(String.valueOf(mgtOrders.getStatus()))
-                .createdAt(mgtOrders.getCreatedAt())
+                .createdAt(String.valueOf(mgtOrders.getCreatedAt()))
                 .warehouseId(mgtOrders.getWarehouseId())
                 .build();
         return mgtOrdersDTO;

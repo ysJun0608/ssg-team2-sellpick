@@ -150,37 +150,15 @@
                 <th>Quantity</th>
             </tr>
             </thead>
+<!--            아이템 테이블 리스트-->
             <tbody id="table-body">
-            <tr>
-                <td>1</td>
-                <td><input type="checkbox" value="false"></td>
-                <td><input type="number" name="itemNames" value="1234"></td>
-                <td><input type="number" name="quantities"></td>
-            </tr>
-            <tr>
-                <td>2</td>
-                <td><input type="checkbox" value="false"></td>
-                <td><input type="number" name="itemNames" value="23433"></td>
-                <td><input type="number" name="quantities"></td>
-            </tr>
-            <tr>
-                <td>3</td>
-                <td><input type="checkbox" value="false"></td>
-                <td><input type="number" name="itemNames" value="123213"></td>
-                <td><input type="number" name="quantities"></td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td><input type="checkbox" value="false"></td>
-                <td><input type="number" name="itemNames" value="53423"></td>
-                <td><input type="number" name="quantities"></td>
-            </tr>
+
             </tbody>
         </table>
         <div></div>
         <div class="button-row">
             <div>
-                <button type="submit">Save</button>
+                <button type="submit" onclick="showAlert()">Save</button>
             </div>
             <div>
                 <button type="button" id="deleteBtn">Delete</button>
@@ -192,8 +170,48 @@
 <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
 <!-- JS -->
 <script src="/js/main.js"></script>
-<script>
+<script th:inline="javascript">
     let rowCount = document.querySelectorAll('#table-body tr').length; // 초기 행 개수
+
+    // function addRow() {
+    //     const itemName = document.getElementById('item-name').value;
+    //     const itemQuantity = document.getElementById('item-quantity').value;
+    //
+    //     if (itemName && itemQuantity) {
+    //         const tableBody = document.getElementById('table-body');
+    //         if (tableBody) {
+    //             const newRow = document.createElement('tr');
+    //             const tdNo = document.createElement('td');
+    //             tdNo.textContent = ++rowCount;
+    //             const tdCheckbox = document.createElement('td');
+    //             const checkbox = document.createElement('input');
+    //             checkbox.type = 'checkbox';
+    //             checkbox.value = 'false';
+    //             tdCheckbox.appendChild(checkbox);
+    //             const tdItem = document.createElement('td');
+    //             const itemInput = document.createElement('input');
+    //             itemInput.type = 'text';
+    //             itemInput.name = 'itemNames';
+    //             itemInput.value = itemName;
+    //             tdItem.appendChild(itemInput);
+    //             const tdQuantity = document.createElement('td');
+    //             const quantityInput = document.createElement('input');
+    //             quantityInput.type = 'number';
+    //             quantityInput.name = 'quantities';
+    //             quantityInput.value = itemQuantity;
+    //             tdQuantity.appendChild(quantityInput);
+    //
+    //             newRow.appendChild(tdNo);
+    //             newRow.appendChild(tdCheckbox);
+    //             newRow.appendChild(tdItem);
+    //             newRow.appendChild(tdQuantity);
+    //
+    //             tableBody.appendChild(newRow);
+    //         }
+    //         document.getElementById('item-name').value = '';
+    //         document.getElementById('item-quantity').value = '';
+    //     }
+    // }
 
     function addRow() {
         const itemName = document.getElementById('item-name').value;
@@ -205,23 +223,19 @@
                 const newRow = document.createElement('tr');
                 const tdNo = document.createElement('td');
                 tdNo.textContent = ++rowCount;
+
                 const tdCheckbox = document.createElement('td');
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.value = 'false';
+                checkbox.name = 'checkedItems'; // Set the name for each checkbox
+                checkbox.value = itemName + ',' + itemQuantity; // Set a value to identify the checked item
                 tdCheckbox.appendChild(checkbox);
+
                 const tdItem = document.createElement('td');
-                const itemInput = document.createElement('input');
-                itemInput.type = 'text';
-                itemInput.name = 'itemNames';
-                itemInput.value = itemName;
-                tdItem.appendChild(itemInput);
+                tdItem.textContent = itemName;
+
                 const tdQuantity = document.createElement('td');
-                const quantityInput = document.createElement('input');
-                quantityInput.type = 'number';
-                quantityInput.name = 'quantities';
-                quantityInput.value = itemQuantity;
-                tdQuantity.appendChild(quantityInput);
+                tdQuantity.textContent = itemQuantity;
 
                 newRow.appendChild(tdNo);
                 newRow.appendChild(tdCheckbox);
@@ -234,6 +248,7 @@
             document.getElementById('item-quantity').value = '';
         }
     }
+
 
     function deleteCheckedItems() {
         // Serialize the form data containing the checked checkboxes
@@ -272,27 +287,127 @@
         });
     }
 
+    $('#addItems').submit(function(event) {
+        event.preventDefault(); // Prevent the default form submission
 
-    window.onload = function () {
-        // Get the id value
-        var idValue = [[${id}]];
+        var checkedItems = [];
 
-        // Add an event listener to the form submission
-        document.getElementById('addItems').addEventListener('submit', function (event) {
-            // Get the form action URL
-            var formAction = "/MgtOrders/AddItems";
-            console.log(idValue);
-            // Append the id parameter to the form action URL
-            formAction += "?id=" + idValue;
-            console.log(formAction);
-            // Update the form action
-            this.action = formAction;
+        $('#table-body tr').each(function(index, row) {
+            var checkbox = $(row).find('input[type="checkbox"]');
+            if (checkbox.is(':checked')) {
+                var values = checkbox.val().split(','); // Split value into itemName and quantity
+                var itemName = values[0];
+                var quantity = values[1];
+
+                checkedItems.push({ itemName: itemName, quantity: quantity });
+            }
         });
 
-        // 추가 버튼 클릭 이벤트 바인딩
-        document.getElementById('addRowBtn').addEventListener('click', addRow);
+        var idValue = [[${id}]];
 
-    };
+        var requestData = {
+            checkedItems: checkedItems,
+            id: idValue
+        };
+
+        // Send JSON data to server using Ajax
+        $.ajax({
+            url: '/MgtOrders/AddItems',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(requestData),
+            success: function(response) {
+                // Handle response from server
+                if (response.ok) {
+                    console.log('Data submitted successfully');
+                } else {
+                    console.error('Failed to submit data');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    // $('#addItems').submit(function(event) {
+    //     event.preventDefault(); // Prevent the default form submission
+    //
+    //     // Initialize an array to store the checked item names and quantities
+    //     var checkedItems = [];
+    //
+    //     // Loop through each table row in the tbody
+    //     $('#table-body tr').each(function(index, row) {
+    //         // Check if the checkbox in the current row is checked
+    //         if ($(row).find('input[type="checkbox"]').is(':checked')) {
+    //             // If checked, get the item name and quantity from the row
+    //             var itemName = $(row).find('.item-name').text();
+    //             var quantity = $(row).find('.item-quantity').text();
+    //
+    //             // Add the checked item to the checkedItems array
+    //             checkedItems.push({ itemName: itemName, quantity: quantity });
+    //         }
+    //     });
+    //
+    //     // Serialize form data
+    //     var formData = $(this).serialize();
+    //
+    //     // Get the id value from the HTML element
+    //     var idValue = [[${id}]];
+    //
+    //     // Append the id value to the form data
+    //     formData += '&id=' + idValue;
+    //
+    //     // Convert the checkedItems array to JSON and append it to the form data
+    //     formData += '&checkedItems=' + JSON.stringify(checkedItems);
+    //
+    //     // Send form data to server using Ajax
+    //     $.ajax({
+    //         url: '/MgtOrders/AddItems',
+    //         method: 'POST',
+    //         data: formData,
+    //         success: function(response) {
+    //             // Handle response from server
+    //             if (response.ok) {
+    //                 // Server response was successful
+    //                 console.log('Data submitted successfully');
+    //                 // Optionally, reset the form
+    //                 // $('#yourFormId').trigger('reset');
+    //             } else {
+    //                 // Server response was not successful
+    //                 console.error('Failed to submit data');
+    //             }
+    //         },
+    //         error: function(xhr, status, error) {
+    //             // Handle errors
+    //             console.error('Error:', error);
+    //         }
+    //     });
+    // });
+
+    //
+    // window.onload = function () {
+    //     // Get the id value
+    //     var idValue = [[${id}]];
+    //
+    //     // Add an event listener to the form submission
+    //     document.getElementById('addItems').addEventListener('submit', function (event) {
+    //         // Get the form action URL
+    //         var formAction = "/MgtOrders/AddItems";
+    //         console.log(idValue);
+    //         // Append the id parameter to the form action URL
+    //         formAction += "?id=" + idValue;
+    //         console.log(formAction);
+    //         // Update the form action
+    //         this.action = formAction;
+    //     });
+    //
+    //
+    //
+    // };
+
+    // 추가 버튼 클릭 이벤트 바인딩
+    document.getElementById('addRowBtn').addEventListener('click', addRow);
 
     document.getElementById('deleteBtn').addEventListener('click', function(event) {
         // Prevent the default click behavior
@@ -302,6 +417,9 @@
         deleteCheckedItems();
     });
 
+    function showAlert() {
+        alert("저장되었습니다!");
+    }
 </script>
 </body>
 </html>
