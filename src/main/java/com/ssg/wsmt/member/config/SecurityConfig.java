@@ -33,19 +33,19 @@ public class SecurityConfig {
         //특정 경로에 따른 로직 작성, 상 단부터 실행, 순서 잘짜야함 (추후 수정)
         http
                 .authorizeHttpRequests((auth) -> auth //3.1점대라 람다로 표현해야함(필수)
-                                .requestMatchers("/", "/login/login", "/login/join","/login/loginProc", "/login/joinProc", "/images/**", "/assets/css/**", "/assets/js/**")
-                                .permitAll() //루트 경로나 /login경로 또는 정적 파일들에 대한 작업 모든 사용자의 접근 허용
-                                .requestMatchers("static/**").permitAll()
+                        .requestMatchers("/", "/login/login", "/login/join","/login/loginProc", "/login/joinProc", "/images/**", "/assets/css/**", "/assets/js/**")
+                        .permitAll() //루트 경로나 /login경로 또는 정적 파일들에 대한 작업 모든 사용자의 접근 허용
+                        .requestMatchers("static/**").permitAll()
                         .requestMatchers("/login/admin").hasRole("ADMIN") //관리자 접근 가능
                         .requestMatchers("/**").hasAnyRole("ADMIN", "USER")
-                                .anyRequest().authenticated() //위에서 처리 못한 경로에 대한 처리,로그인한 사용자만 접근 가능
+                        .anyRequest().authenticated() //위에서 처리 못한 경로에 대한 처리,로그인한 사용자만 접근 가능
                 );
 
         http
                 .formLogin((auth) ->
                         auth.loginPage("/login/login")
+                                .loginProcessingUrl("/login/loginProc")
                                 .defaultSuccessUrl("/") //로그인 성공 후 이동 페이지
-
                                 .failureUrl("/login/login?error=true")// 로그인 실패 후 다시 로그인 페이지로 이동
                                 .permitAll() //로그인 페이지는 인증 없이 접근 가능
                 );
@@ -75,9 +75,9 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
-    }
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+//        return authenticationConfiguration.getAuthenticationManager();
+//    }
 
 }
