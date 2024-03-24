@@ -10,4 +10,9 @@ public enum SellerSendStatus {
     SellerSendStatus(String desc) {
         this.desc = desc;
     }
+
+
+    public String getDesc() {
+        return desc;
+    }
 }
