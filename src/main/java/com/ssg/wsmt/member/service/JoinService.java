@@ -17,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Log4j2
 public class JoinService {
 
-    @Autowired
     private final UserRepository userRepository;
 
     //비밀번호 암호화
