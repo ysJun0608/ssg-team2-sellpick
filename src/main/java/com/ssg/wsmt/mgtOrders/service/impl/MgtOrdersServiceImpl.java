@@ -245,7 +245,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                                 .id(o.getId())
                                 .purchaser(o.getPurchaser())
                                 .status(String.valueOf(o.getStatus()))
-                                .createdAt(String.valueOf(o.getCreatedAt()))
+                                .createdAt(o.getCreatedAt())
                                 .warehouseId(o.getWarehouseId())
                                 .build()
                 ).collect(Collectors.toList());
@@ -259,7 +259,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                 .id(mgtOrders.getId())
                 .purchaser(mgtOrders.getPurchaser())
                 .status(String.valueOf(mgtOrders.getStatus()))
-                .createdAt(String.valueOf(mgtOrders.getCreatedAt()))
+                .createdAt(mgtOrders.getCreatedAt())
                 .warehouseId(mgtOrders.getWarehouseId())
                 .build();
         return mgtOrdersDTO;

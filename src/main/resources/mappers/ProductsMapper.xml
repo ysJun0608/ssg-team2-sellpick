@@ -1,7 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.wsmt.product.mapper.ProductsMapper">
 
     <!-- productListInventory SELECT 쿼리 -->
-    <select id="productListInventory" resultType="com.ssg.wsmt.product.dto.ProductsOutput">
+    <select id="productListInventory" resultType="com.ssg.wsmt.product.dto.ProductDTO">
         SELECT
         P.ID,
         P.NAME,
@@ -18,13 +21,13 @@
     </select>
 
     <!-- createProduct INSERT 쿼리 -->
-    <insert id="createProduct" parameterType="com.ssg.wsmt.product.domain.Products">
+    <insert id="createProduct" parameterType="com.ssg.wsmt.product.domain.ProductVO">
         INSERT INTO PRODUCTS (NAME, STATUS, COST, PRICE, BRAND_ID, OWNER_ID)
         VALUES (#{name}, #{status.name()}, #{cost}, #{price}, #{brandId}, #{businessOwnerId})
     </insert>
 
     <!-- updateProduct UPDATE 쿼리 -->
-    <update id="updateProduct" parameterType="com.ssg.wsmt.product.domain.Products">
+    <update id="updateProduct" parameterType="com.ssg.wsmt.product.domain.ProductVO">
         UPDATE PRODUCTS
         SET NAME = #{name}, COST = #{cost}, PRICE = #{price}
         WHERE ID = #{id}
