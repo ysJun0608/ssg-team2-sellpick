@@ -1,5 +1,6 @@
 package com.ssg.wsmt.product.service.impl;
 
+import com.ssg.wsmt.product.domain.ProductVO;
 import com.ssg.wsmt.product.domain.ProductsVO;
 import com.ssg.wsmt.product.dto.ProductsDTO;
 import com.ssg.wsmt.product.enums.ProductsStatus;
@@ -26,12 +27,12 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public void register(ProductsDTO productsDTO) {
-        ProductsVO productVO = new ProductsVO();
+        ProductVO productVO = new ProductVO();
         productVO.setName(productsDTO.getName());
         productVO.setStatus(productsDTO.getStatus());
         productVO.setCost(productsDTO.getCost());
         productVO.setPrice(productsDTO.getPrice());
-        productVO.setBrandId(productsDTO.getBrandId());
+        productVO.setBrandId(Math.toIntExact(productsDTO.getBrandId()));
         productVO.setBusinessOwnerId(productsDTO.getBusinessOwnerId());
 
 
@@ -40,7 +41,7 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public void modify(ProductsDTO productsDTO) {
-        ProductsVO productVO = new ProductsVO();
+        ProductVO productVO = new ProductVO();
         productVO.setStatus(productsDTO.getStatus());
         productVO.setPrice(productsDTO.getPrice());
         productVO.setPrice(productsDTO.getPrice());

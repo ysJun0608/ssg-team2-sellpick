@@ -13,9 +13,9 @@ public interface WarehouseMapper {
     Long createWarehouse(WarehouseVO warehouseVO);
     Long saveWarehouseSection(WarehouseSectionVO section);
 //    List<WarehouseVO> readWarehouse();
-List<WarehouseVO> readWarehouse(PageRequestDTO pageRequestDTO);
+    List<WarehouseVO> readWarehouse(PageRequestDTO pageRequestDTO);
+    int getTotalCount(PageRequestDTO pageRequestDTO);
     void updateDeliveryCmpId(WarehouseVO warehouseVO);
     void updateWarehouse(WarehouseVO warehouseVO);
     WarehouseVO findById(Long id);
-    int getTotalCount(PageRequestDTO pageRequestDTO);
 }

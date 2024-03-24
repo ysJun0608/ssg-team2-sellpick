@@ -4,16 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssg.wsmt.inventory.mapper.WarehouseInsertReleaseMapper">
-    <insert id="createWarehouse" parameterType="com.ssg.wsmt.inventory.domain.Warehouse" useGeneratedKeys="true" keyProperty="id">
+    <insert id="createWarehouse" parameterType="com.ssg.wsmt.inventory.domain.WarehouseVO" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO WAREHOUSE(TYPE, LOCATION, DELIVERY_CMP_ID)
         VALUES(#{type}, #{location}, #{delivery_id})
     </insert>
 
-    <select id="findById" parameterType="Long" resultType="com.ssg.wsmt.inventory.domain.Warehouse">
+    <select id="findById" parameterType="Long" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
         SELECT * FROM WAREHOUSE WHERE ID = #{id}
     </select>
 
-    <select id="readWarehouse" resultType="com.ssg.wsmt.inventory.domain.Warehouse">
+    <select id="readWarehouse" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
         SELECT * FROM WAREHOUSE
     </select>
 

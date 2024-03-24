@@ -69,24 +69,12 @@
     </update>
 
     <update id="updateWarehouse">
-        UPDATE WAREHOUSE SET TYPE = {type}, LOCATION = {location}, DELIVERY_CMP_ID = {delivery_id} WHERE ID = {id}
+        UPDATE WAREHOUSE SET TYPE = #{type}, LOCATION = #{location}, DELIVERY_CMP_ID = #{delivery_id} WHERE ID = #{id}
     </update>
 
     <select id="findById" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
         SELECT * FROM WAREHOUSE WHERE ID = #{id}
     </select>
 
-    
-
-    <insert id="createSection" parameterType="com.ssg.wsmt.inventory.domain.Warehouse">
-        <!-- Add your SQL statement here for creating sections -->
-        <!-- Example: -->
-        <!-- INSERT INTO WAREHOUSE_SECTION (WAREHOUSE_ID, NAME) VALUES (#{id}, '냉동식품') -->
-        <!-- Repeat for other sections -->
-    </insert>
-
-    <select id="readWarehouse" resultType="com.ssg.wsmt.inventory.domain.Warehouse">
-        SELECT * FROM WAREHOUSE
-    </select>
 
 </mapper>

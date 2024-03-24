@@ -25,11 +25,10 @@ public class InventoryServiceImpl implements InventoryService {
         return inventoryMapper.findProductById(id);
     }
 
-    @Override
     public void searchInventory() {
-        System.out.println("찾고자 하는 재고의 id를 입력해주세요 : ");
-        Long id = Long.parseLong(sc.nextLine());
-        Inventory inventory = inventoryDao.findById(id);
+//        System.out.println("찾고자 하는 재고의 id를 입력해주세요 : ");
+//        Long id = Long.parseLong(sc.nextLine());
+//        Inventory inventory = inventoryDao.findById(id);
     }
     
     public List<InventoryVO> findAllInventory() {
