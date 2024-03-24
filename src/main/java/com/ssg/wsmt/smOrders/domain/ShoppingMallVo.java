@@ -1,9 +1,13 @@
 package com.ssg.wsmt.smOrders.domain;
 
-import lombok.Data;
+import lombok.*;
 
+@ToString
 @Data
-public class ShoppingMall {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ShoppingMallVo {
     // 쇼핑몰 id
     private Long id;
     // 쇼핑몰 명

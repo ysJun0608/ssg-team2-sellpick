@@ -6,7 +6,7 @@ import com.ssg.wsmt.smOrders.service.impl.SmOrderServiceImpl;
 import java.util.Scanner;
 
 public class SmOrdersMain {
-    SmOrdersService smOrdersService = new SmOrderServiceImpl();
+//    SmOrdersService smOrdersService = new SmOrderServiceImpl();
     Scanner sc = new Scanner(System.in);
     public void menu() {
         System.out.println("SmOrdersMain");
@@ -23,12 +23,12 @@ public class SmOrdersMain {
             String menuNum = sc.nextLine();
 
             switch (menuNum) {
-                case "1" -> smOrdersService.readOne();
-                case "2" -> smOrdersService.readOrder();
-                case "3" -> smOrdersService.readAllCanceledOrders();
-                case "4" -> smOrdersService.readAllPreparedOrders();
-                case "5" -> smOrdersService.updateStatus();
-                case "6" -> smOrdersService.createOrder();
+//                case "1" -> smOrdersService.readOne();
+//                case "2" -> smOrdersService.readOrder();
+//                case "3" -> smOrdersService.readAllCanceledOrders();
+//                case "4" -> smOrdersService.readAllPreparedOrders();
+//                case "5" -> smOrdersService.updateStatus();
+//                case "6" -> smOrdersService.createOrder();
 
                 case "q" -> bool = false;
                 default -> System.out.println("잘못된 입력값입니다.");

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order List</title>
+    <!-- 필요한 CSS 및 JavaScript 파일 추가 -->
+</head>
+<body>
+<h1>Orders</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Quantity</th>
+        <th>Payment Amount</th>
+        <th>Order Date</th>
+        <th>Expected Date</th>
+        <th>Status</th>
+        <th>Customer ID</th>
+        <th>Shopping Mall ID</th>
+        <th>Product ID</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="order : ${orders}">
+        <td th:text="${order.id}">ID 아이디 | </td>
+        <td th:text="${order.quantity}">Quantity 수량 | </td>
+        <td th:text="${order.paymentAmount}">Payment Amount 금액 |</td>
+        <td th:text="${order.createdAt}">Order Date | </td>
+        <td th:text="${order.expectedAt}">Expected Date |</td>
+        <td th:text="${order.seller_send_status}"> seller_send_status |</td>|
+        <td th:text="${order.customerId}">Customer ID |</td>|
+        <td th:text="${order.shoppingMallId}">Shopping Mall ID |</td>|
+        <td th:text="${order.productId}">Product ID |</td>|
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
