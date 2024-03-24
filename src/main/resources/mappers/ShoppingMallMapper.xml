@@ -5,11 +5,11 @@
 <mapper namespace="com.ssg.wsmt.smOrders.mapper.ShoppingMallMapper">
 
     <select id="selectAll" resultType="com.ssg.wsmt.smOrders.domain.ShoppingMallVo">
-        SELECT * FROM shopping_mall
+        SELECT * FROM SHOPPING_MALL
     </select>
 
     <select id="findAll" resultType="com.ssg.wsmt.smOrders.domain.ShoppingMallVo">
-        SELECT * FROM shopping_mall
+        SELECT * FROM SHOPPING_MALL
     </select>
 
 </mapper>
