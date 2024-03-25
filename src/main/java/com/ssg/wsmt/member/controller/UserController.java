@@ -18,9 +18,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @Log4j2
@@ -29,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class UserController {
 
     private final JoinService joinService;
-//    private final AuthenticationManager authenticationManager;
     private final CustomUserDetailsService customUserDetailsService;
 
     //관리자 페이지 라우팅
