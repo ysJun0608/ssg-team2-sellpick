@@ -1,140 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Favicon -->
+    <link href="/img/favicon.ico" rel="icon">
+    <!-- Template Stylesheet -->
+    <link href="/assets/css/styles.css" rel="stylesheet">
 
-    <title>SideBar sub menus</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet
+    <link href="assets/css/style.css" rel="stylesheet"> -->
 </head>
+
 <body id="body-pd">
-<div class="l-navbar" id="navbar">
-    <nav class="nav">
-        <div>
-            <div class="nav__brand">
-                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
-                <a href="#" class="nav__logo"><img src="/TeamLogo.png" style="width: 100px; height: 80px;">
-                </a>
-            </div>
-            <div class="nav__list">
-                <a href="#" class="nav__link">
-                    <ion-icon name="home-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">창고관리</span>
-                </a>
+<div class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Spinner Start -->
+    <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+      <span class="sr-only">Loading...</span>
+  </div>
+</div> -->
 
-                <a href="#" class="nav__link">
-                    <i class="bi bi-boxes"></i>
-                    <span class="nav_name">배송관리</span>
-                </a>
-                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
-                    <i class="bi bi-box-arrow-down"></i>
-                    <span class="nav_name">출고관리</span>
-                </a>
-                <div class="collapse__menu">
-                    <a href="#" class="collapse__sublink">출고 신청</a>
-                    <a href="#" class="collapse__sublink">배송 준비</a>
-                    <a href="#" class="collapse__sublink">배송 완료</a>
+
+    <!-- Sidebar Start -->
+    <div class="sidebar pe-4 pb-3">
+        <nav class="navbar bg-light navbar-light">
+            <a href="../Inventory/home.html" class="navbar-brand mx-4 mb-3">
+                <h3 class="text-primary"><i class="fa fa-truck me-2"></i>2Commerce</h3>
+            </a>
+            <div class="d-flex align-items-center ms-4 mb-4">
+                <div class="position-relative">
+                    <img class="rounded-circle" src="/assets/TeamLogo.png" alt="" style="width: 40px; height: 40px;">
+                    <div
+                            class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
+                    </div>
                 </div>
-
-                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
-                    <i class="bi bi-box-arrow-in-down"></i>
-                    <span class="nav_name">입고관리</span>
-                </a>
-                <div class="collapse__menu">
-                    <a href="#" class="collapse__sublink">입고 접수</a>
-                    <a href="#" class="collapse__sublink">입고 처리</a>
-                    <a href="#" class="collapse__sublink">반품 처리</a>
-                </div>
-
-                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
-                    <i class="bi bi-wallet-fill"></i>
-                    <span class="nav_name">정산관리</span>
-                </a>
-                <div class="collapse__menu">
-                    <a href="#" class="collapse__sublink">정산 항목1</a>
-                    <a href="#" class="collapse__sublink">정산 항목2</a>
-                    <a href="#" class="collapse__sublink">정산 항목3</a>
-                </div>
-
-                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
-                    <ion-icon name="pie-chart-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">발주관리</span>
-                </a>
-                <div class="collapse__menu">
-                    <a href="/MgtOrders/MgtOrderCreate" class="collapse__sublink">발주 등록</a>
-                    <a href="/MgtOrders/MgtOrderConfirm" class="collapse__sublink">발주 확정</a>
-                    <a href="/MgtOrders/MgtOrderSearch" class="collapse__sublink">발주 조회</a>
-                    <a href="/MgtOrders/MgtOrderNondeliverd" class="collapse__sublink">발주대비미입고목록</a>
-                </div>
-
-                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
-                    <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">재고관리</span>
-                </a>
-                <div class="collapse__menu">
-                    <a href="#" class="collapse__sublink">재고 항목1</a>
-                    <a href="#" class="collapse__sublink">재고 항목2</a>
-                    <a href="#" class="collapse__sublink">재고 항목3</a>
-                </div>
-
-                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
-                    <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
-
-
-
-
-                    <span class="nav_name">주문관리</span>
-                </a>
-                <div class="collapse__menu">
-                    <a href="#" class="collapse__sublink">주문 항목1</a>
-                    <a href="#" class="collapse__sublink">주문 항목2</a>
-                    <a href="#" class="collapse__sublink">주문 항목3</a>
+                <div class="ms-3">
+                    <h6 class="mb-0">관리자</h6>
+                    <span>Admin</span>
                 </div>
             </div>
+            <div class="navbar-nav w-100">
+                <a href="../Inventory/home.html" class="nav-item nav-link active"><i
+                        class="fa fa-tachometer-alt me-2"></i>Home</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-warehouse me-2"></i>창고관리</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="button.html" class="dropdown-item">창고조회</a>
+                        <a href="typography.html" class="dropdown-item">창고등록</a>
+                        <a href="element.html" class="dropdown-item">빼도됌</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-calculator me-2"></i>발주관리</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="button.html" class="dropdown-item">발주등록</a>
+                        <a href="typography.html" class="dropdown-item">발주확정</a>
+                        <a href="element.html" class="dropdown-item">발주조회</a>
+                        <a href="element.html" class="dropdown-item">발주대비미입고목록</a>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                class="fa fa-cubes me-2"></i></i>재고관리</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="button.html" class="dropdown-item">재고조회</a>
+                            <a href="typography.html" class="dropdown-item">미사용</a>
+                            <a href="element.html" class="dropdown-item">미사용</a>
+                        </div>
 
-        </div>
-    </nav>
-</div>
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                    class="fa fa-plus me-2"></i>입고관리</a>
+                            <div class="dropdown-menu bg-transparent border-0">
+                                <a href="signin.html" class="dropdown-item">입고조회</a>
+                                <a href="signup.html" class="dropdown-item">미사용</a>
+                                <a href="404.html" class="dropdown-item">미사용</a>
+                                <a href="blank.html" class="dropdown-item">미사용</a>
+                            </div>
 
-<h1> 발주확정 </h1>
-    <div class="section top-section">
-        <div class="row">
-            <div>
-                <label for="order-date-start">발주일자 * :</label>
-                <input type="date" id="order-date-start">
-		~ 
-                <input type="date" id="order-date-end">
-            </div>
-        </div>
-        <div class="row">
-            <div>
-                <label for="supplier">매입거래처 :</label>
-                <input type="text" id="supplier" value="Company">
-            </div>
-            <div>
-                <label for="warehouse">창고ID :</label>
-                <input type="text" id="warehouse" value="Warehouse 1">
-            </div>
-            <div></div>
-        </div>
-        <div class="button-row">
-            <button>Search</button>
-        </div>
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                        class="fa fa-minus me-2"></i>출고관리</a>
+                                <div class="dropdown-menu bg-transparent border-0">
+                                    <a href="signin.html" class="dropdown-item">출고조회</a>
+                                    <a href="signup.html" class="dropdown-item">미사용</a>
+                                    <a href="404.html" class="dropdown-item">미사용</a>
+                                    <a href="blank.html" class="dropdown-item">미사용</a>
+                                </div>
+                            </div>
+
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                        class="fa fa-credit-card me-2"></i>주문관리</a>
+                                <div class="dropdown-menu bg-transparent border-0">
+                                    <a href="signin.html" class="dropdown-item">주문조회</a>
+                                    <a href="signup.html" class="dropdown-item">주문수정</a>
+                                    <a href="404.html" class="dropdown-item">주문최소</a>
+                                    <a href="blank.html" class="dropdown-item">미사용</a>
+                                </div>
+                            </div>
+
+                        </div>
+        </nav>
     </div>
-    <div class="section bottom-section">
-        <table>
-            <thead>
+    <!-- Sidebar End -->
+
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+            </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+                <i class="fa fa-bars"></i>
+            </a>
+            <form class="d-none d-md-flex ms-4">
+                <input class="form-control border-0" type="search" placeholder="Search">
+            </form>
+            <div class="navbar-nav align-items-center ms-auto">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-envelope me-lg-2"></i>
+                        <span class="d-none d-lg-inline-flex">Message</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" src="img/user.jpg" alt=""
+                                     style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" src="img/user.jpg" alt=""
+                                     style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" src="img/user.jpg" alt=""
+                                     style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item text-center">See all message</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-bell me-lg-2"></i>
+                        <span class="d-none d-lg-inline-flex">Notificatin</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">
+                            <h6 class="fw-normal mb-0">Profile updated</h6>
+                            <small>15 minutes ago</small>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <h6 class="fw-normal mb-0">New user added</h6>
+                            <small>15 minutes ago</small>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <h6 class="fw-normal mb-0">Password changed</h6>
+                            <small>15 minutes ago</small>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item text-center">See all notifications</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <img class="rounded-circle me-lg-2" src="/assets/TeamLogo.png" alt=""
+                             style="width: 40px; height: 40px;">
+                        <span class="d-none d-lg-inline-flex">John Doe</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">My Profile</a>
+                        <a href="#" class="dropdown-item">Settings</a>
+                        <a href="#" class="dropdown-item">Log Out</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar End -->
+
+        <div class="l-navbar" id="navbar">
+            <nav class="nav">
+                <div>
+                    <div class="nav__brand">
+                        <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+                        <a href="#" class="nav__logo"><img src="/TeamLogo.png" style="width: 100px; height: 80px;">
+                        </a>
+                    </div>
+                    <div class="nav__list">
+                        <a href="#" class="nav__link">
+                            <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+                            <span class="nav_name">창고관리</span>
+                        </a>
+
+                        <a href="#" class="nav__link">
+                            <i class="bi bi-boxes"></i>
+                            <span class="nav_name">배송관리</span>
+                        </a>
+                        <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
+                            <i class="bi bi-box-arrow-down"></i>
+                            <span class="nav_name">출고관리</span>
+                        </a>
+                        <div class="collapse__menu">
+                            <a href="#" class="collapse__sublink">출고 신청</a>
+                            <a href="#" class="collapse__sublink">배송 준비</a>
+                            <a href="#" class="collapse__sublink">배송 완료</a>
+                        </div>
+
+                        <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
+                            <i class="bi bi-box-arrow-in-down"></i>
+                            <span class="nav_name">입고관리</span>
+                        </a>
+                        <div class="collapse__menu">
+                            <a href="#" class="collapse__sublink">입고 접수</a>
+                            <a href="#" class="collapse__sublink">입고 처리</a>
+                            <a href="#" class="collapse__sublink">반품 처리</a>
+                        </div>
+
+                        <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
+                            <i class="bi bi-wallet-fill"></i>
+                            <span class="nav_name">정산관리</span>
+                        </a>
+                        <div class="collapse__menu">
+                            <a href="#" class="collapse__sublink">정산 항목1</a>
+                            <a href="#" class="collapse__sublink">정산 항목2</a>
+                            <a href="#" class="collapse__sublink">정산 항목3</a>
+                        </div>
+
+                        <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
+                            <ion-icon name="pie-chart-outline" class="nav__icon"></ion-icon>
+                            <span class="nav_name">발주관리</span>
+                        </a>
+                        <div class="collapse__menu">
+                            <a href="/MgtOrders/MgtOrderCreate" class="collapse__sublink">발주 등록</a>
+                            <a href="/MgtOrders/MgtOrderConfirm" class="collapse__sublink">발주 확정</a>
+                            <a href="/MgtOrders/MgtOrderSearch" class="collapse__sublink">발주 조회</a>
+                            <a href="/MgtOrders/MgtOrderNondeliverd" class="collapse__sublink">발주대비미입고목록</a>
+                        </div>
+
+                        <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
+                            <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+                            <span class="nav_name">재고관리</span>
+                        </a>
+                        <div class="collapse__menu">
+                            <a href="#" class="collapse__sublink">재고 항목1</a>
+                            <a href="#" class="collapse__sublink">재고 항목2</a>
+                            <a href="#" class="collapse__sublink">재고 항목3</a>
+                        </div>
+
+                        <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">
+                            <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+
+
+
+
+                            <span class="nav_name">주문관리</span>
+                        </a>
+                        <div class="collapse__menu">
+                            <a href="#" class="collapse__sublink">주문 항목1</a>
+                            <a href="#" class="collapse__sublink">주문 항목2</a>
+                            <a href="#" class="collapse__sublink">주문 항목3</a>
+                        </div>
+                    </div>
+
+                </div>
+            </nav>
+        </div>
+
+        <h1> 발주확정 </h1>
+        <div class="section top-section">
+            <div class="row">
+                <div>
+                    <label for="order-date-start">발주일자 * :</label>
+                    <input type="date" id="order-date-start">
+                    ~
+                    <input type="date" id="order-date-end">
+                </div>
+            </div>
+            <div class="row">
+                <div>
+                    <label for="supplier">매입거래처 :</label>
+                    <input type="text" id="supplier" value="Company">
+                </div>
+                <div>
+                    <label for="warehouse">창고ID :</label>
+                    <input type="text" id="warehouse" value="Warehouse 1">
+                </div>
+                <div></div>
+            </div>
+            <div class="button-row">
+                <button>Search</button>
+            </div>
+        </div>
+        <div class="section bottom-section">
+            <table>
+                <thead>
                 <tr>
                     <th>No.</th>
                     <th><input type="checkbox" checked></th>
                     <th>Item</th>
                     <th>Quantity</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td>1</td>
                     <td><input type="checkbox" checked></td>
@@ -159,80 +371,58 @@
                     <td>Item 4 (Description)</td>
                     <td>1</td>
                 </tr>
-            </tbody>
-        </table>
-        <div class="button-row">
-            <button>Confirm</button>
-            <button>Cancel</button>
+                </tbody>
+            </table>
+            <div class="button-row">
+                <button>Confirm</button>
+                <button>Cancel</button>
+            </div>
         </div>
+
+        <!-- Footer Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="bg-light rounded-top p-4">
+                <div class="row">
+                    <div class="col-12 col-sm-6 text-center text-sm-start">
+                        &copy; <a href="#">2Commerce-Traning-Project by.2Commerce</a>, All Right Reserved.
+                    </div>
+                    <div class="col-12 col-sm-6 text-center text-sm-end">
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a href="https://htmlcodex.com">2Commerce</a>
+                        </br>
+                        Distributed By <a class="border-bottom" href="https://themewagon.com"
+                                          target="_blank">2Commerce</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
     </div>
+    <!-- Content End -->
 
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/lib/chart/chart.min.js"></script>
+<script src="/assets/lib/easing/easing.min.js"></script>
+<script src="/assets/lib/waypoints/waypoints.min.js"></script>
+<script src="/assets/lib/owlcarousel/owl.carousel.min.js"></script>
+<script src="/assets/lib/tempusdominus/js/moment.min.js"></script>
+<script src="/assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
+<script src="/assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 <!-- IONICONS -->
-<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
-<!-- JS -->
-<script src="/js/main.js"></script>
-<!-- <script>
-    /* EXPANDER MENU */
-const showMenu = (toggleId, navbarId, bodyId) => {
-const toggle = document.getElementById(toggleId),
-navbar = document.getElementById(navbarId),
-bodypadding = document.getElementById(bodyId)
+<!--<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>-->
+<!--&lt;!&ndash; JS &ndash;&gt;-->
+<script src="assets/js/main.js"></script>
 
-if( toggle && navbar ) {
-    toggle.addEventListener('click', ()=>{
-        navbar.classList.toggle('expander');
-        bodypadding.classList.toggle('body-pd');
-        // 스크롤 내리는 기능 추가
-        if (navbar.classList.contains('expander')) {
-            // 사이드바가 열렸을 때 body의 overflow를 hidden으로 설정하여 스크롤을 막습니다.
-            document.body.style.overflow = 'hidden';
-        } else {
-            // 사이드바가 닫혔을 때 body의 overflow를 초기값으로 되돌립니다.
-            document.body.style.overflow = 'auto';
-        }
-    })
-}
-}
-
-showMenu('nav-toggle', 'navbar', 'body-pd')
-
-/* LINK ACTIVE */
-const linkColor = document.querySelectorAll('.nav__link')
-function colorLink() {
-linkColor.forEach(l=> l.classList.remove('active'))
-this.classList.add('active')
-}
-linkColor.forEach(l=> l.addEventListener('click', colorLink))
-
-/* COLLAPSE MENU */
-const linkCollapse = document.getElementsByClassName('collapse__link')
-var i
-
-for(i=0;i<linkCollapse.length;i++) {
-linkCollapse[i].addEventListener('click', function(){
-    const collapseMenu = this.nextElementSibling
-    collapseMenu.classList.toggle('showCollapse')
-
-    const rotate = collapseMenu.previousElementSibling
-    rotate.classList.toggle('rotate')
-});
-}
-
-// 스크롤 내리는 기능 추가
-window.addEventListener('scroll', function() {
-const navbar = document.getElementById('navbar');
-const toggle = document.getElementById('nav-toggle');
-const bodypadding = document.getElementById('body-pd');
-
-// 스크롤이 발생했을 때 사이드바가 열려있다면 닫습니다.
-if (navbar.classList.contains('expander')) {
-    navbar.classList.remove('expander');
-    bodypadding.classList.remove('body-pd');
-    document.body.style.overflow = 'auto';
-    toggle.classList.remove('toggle');
-}
-});
-
-</script> -->
+<!-- Template Javascript -->
+<script src="/assets/jsReal/main.js"></script>
 </body>
+
 </html>

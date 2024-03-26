@@ -186,7 +186,6 @@ body {
     margin: 20px;
 }
 .section {
-    background-color: #e6e6e6;
     padding: 20px;
     margin-bottom: 20px;
 }
@@ -196,6 +195,26 @@ body {
     grid-gap: 10px;
     margin-bottom: 10px;
 }
+
+.top-section .element-one {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 10px;
+}
+
+.top-section .element-two {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 10px;
+} {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 10px;
+}
+
 .top-section div {
     display: flex;
     align-items: center;
@@ -210,18 +229,23 @@ body {
     border-radius: 4px;
     flex: 1;
 }
-.top-section button {
-    padding: 6px 12px;
-    margin: 4px 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-}
+/*.top-section button {*/
+/*    padding: 6px 12px;*/
+/*    margin: 4px 0;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 4px;*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*    cursor: pointer;*/
+/*}*/
 .button-row {
+    padding: 10px 20px;
     display: flex;
     justify-content: center;
+}
+
+.button-row > div{
+    padding: 0px 20px;
 }
 /* Style for disabled button */
 .button-row button:disabled {
@@ -246,15 +270,15 @@ body {
     border-radius: 4px;
     flex: 1;
 }
-.bottom-section button {
-    padding: 6px 12px;
-    margin: 4px 0 4px 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-}
+/*.bottom-section button {*/
+/*    padding: 6px 12px;*/
+/*    margin: 4px 0 4px 10px;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 4px;*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*    cursor: pointer;*/
+/*}*/
 table {
     border-collapse: collapse;
     width: 100%;
