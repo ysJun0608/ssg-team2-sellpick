@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <style>
+        .logo img {
+            max-width: 200px; /* 최대 너비 200px로 제한 */
+            height: auto; /* 높이는 비율에 맞춰 자동 조정 */
+            margin-bottom: 20px;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .signup-link {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <div class="logo">
+        <!-- 로고 이미지 추가 -->
+        <img th:src="@{/images/TeamLogo.png}" alt="Logo">
+    </div>
+    <h2>로그인</h2>
+<!--    <form action="/login/loginProc" method="post">-->
+<!--        <input type="text" placeholder="Username" name="username" required>-->
+<!--        <input type="password" placeholder="Password" name="password" required>-->
+<!--        <button type="submit">LOGIN</button>-->
+    <form action="/login/loginProc" method="post" name="login">
+        <input type="email" class="form-control mb-1 p-3" name="username" id="email" placeholder="이메일을 입력해주세요."/>
+        <input type="password" class="form-control mb-1 p-3" name="password" id="password" placeholder="비밀번호를 입력해주세요"/>
+        <div class="remember-box p-1">
+        <div class="middle d-flex flex-column">
+            <div class="message" th:if="${hasMessage}" th:text="${message}">
+            </div>
+            <button type="submit">LOGIN</button>
+        </div>
+    </form>
+    <p class="signup-link">Don't have an account? <a th:href="@{/login/join}">Sign up</a></p>
+</div>
+</body>
+</html>
