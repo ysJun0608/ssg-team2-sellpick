@@ -27,8 +27,9 @@ public class IndexController {
         String role = authority.getAuthority();
 
         model.addAttribute("role", role);
-        return "index";
+        return "home";
     }
 
 
 }
+
