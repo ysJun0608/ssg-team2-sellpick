@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssg.wsmt.inventory.mapper.WarehouseInsertReleaseMapper">
+    <insert id="createWarehouse" parameterType="com.ssg.wsmt.inventory.domain.WarehouseVO" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO WAREHOUSE(TYPE, LOCATION, DELIVERY_CMP_ID)
+        VALUES(#{type}, #{location}, #{delivery_id})
+    </insert>
+
+    <select id="findById" parameterType="Long" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
+        SELECT * FROM WAREHOUSE WHERE ID = #{id}
+    </select>
+
+    <select id="readWarehouse" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
+        SELECT * FROM WAREHOUSE
+    </select>
+
+    <!-- Your other SQL queries go here -->
+
+    <select id="findAllInsertProducts" resultType="com.ssg.wsmt.mgtOrders.MgtOrdersProductsRelationshipDTO">
+        SELECT
+            m.id as id,
+            m.quantity as quantity,
+            m.products_id as productsId,
+            m.mgt_orders_id as mgtOrdersId
+            FROM MGT_ORDERS_PRODUCTS_RELATIONSHIP as m WHERE MGT_ORDERS_ID IN (SELECT ID FROM MGT_ORDERS WHERE STATUS = 'DONE')
+    </select>
+
+<!--    <insert id="updateInsertStatus">-->
+<!--        INSERT INTO WAREHOUSE_INSERT_RELEASE-->
+<!--                (QUANTITY, TYPE, TOTAL_PRICE, INVENTORY_ID, FK_ID) VALUES (#{quantity}, #{whInOutType}, (SELECT COST FROM PRODUCTS WHERE ID = #{productsId}) * #{quantity}, (SELECT WAREHOUSE_ID FROM MGT_ORDERS WHERE ID = #{mgtOrdersId}), #{mgtOrdersId})-->
+<!--    </insert>-->
+
+<!--    <insert id="warehouserelease" useGeneratedKeys="true" keyProperty="id">-->
+<!--        INSERT INTO warehouse_insert_release -->
+<!--                    (AMOUNT, TOTAL_PRICE, CREATED_AT, TYPE, PRODUCTS_ID) -->
+<!--                    VALUES (#{amount}, #{totalPrice}, now(), #{type}, ?)-->
+<!--    </insert>-->
+
+    <update id="updateWhInOutStatus">
+        UPDATE WAREHOUSE_INSERT_RELEASE SET TYPE = #{whInOutType} WHERE ID = #{id}
+    </update>
+
+</mapper>
