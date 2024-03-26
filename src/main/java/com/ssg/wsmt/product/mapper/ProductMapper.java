@@ -1,7 +1,7 @@
 package com.ssg.wsmt.product.mapper;
 
 import com.ssg.wsmt.product.domain.ProductVO;
->>>>>>>>> Temporary merge branch 2
+import com.ssg.wsmt.product.dto.ProductDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

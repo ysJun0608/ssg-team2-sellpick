@@ -17,21 +17,21 @@
     </resultMap>
 
     <select id="findAllProducts" resultType="com.ssg.wsmt.product.dto.ProductsDTO">
-        SELECT * FROM products
+        SELECT * FROM PRODUCTS
     </select>
 
-<<<<<<<<< Temporary merge branch 1
     <select id="findProductById" resultType="com.ssg.wsmt.product.dto.ProductsDTO" parameterType="Long">
-        SELECT * FROM products WHERE id = #{id}
-=========
+        SELECT * FROM PRODUCTS WHERE id = #{id}
+    </select>
+
     <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">
         SELECT * FROM INVENTORY
->>>>>>>>> Temporary merge branch 2
     </select>
+
     <select id="findAll" resultMap="InventoryResultMap">
         SELECT i.*, p.name as productName, p.price as productPrice
-        FROM inventory i
-                 LEFT JOIN products p ON i.products_id = p.id
+        FROM INVENTORY i
+                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
     </select>
 
 
@@ -41,22 +41,22 @@
 <!--    </select>-->
 
     <select id="findById" resultType="com.ssg.wsmt.inventory.domain.InventoryVO" parameterType="Long">
-        SELECT i.*, p.* FROM inventory i
-                                 LEFT JOIN products p ON i.products_id = p.id
+        SELECT i.*, p.* FROM INVENTORY i
+                                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
         WHERE i.id = #{id}
     </select>
 
     <select id="findByWarehouseId" resultType="com.ssg.wsmt.inventory.domain.InventoryVO" parameterType="Long">
-        SELECT i.*, p.* FROM inventory i
-                                 LEFT JOIN products p ON i.products_id = p.id
-                                 JOIN warehouse_section ws ON i.wh_section_id = ws.id
-                                 JOIN warehouse w ON ws.warehouse_id = w.id
+        SELECT i.*, p.* FROM INVENTORY i
+                                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
+                                 JOIN WAREHOUSE_SECTION ws ON i.wh_section_id = ws.id
+                                 JOIN WAREHOUSE w ON ws.warehouse_id = w.id
         WHERE w.id = #{warehouseId}
     </select>
 
     <select id="search" resultType="com.ssg.wsmt.inventory.domain.InventoryVO" parameterType="String">
-        SELECT i.*, p.* FROM inventory i
-                                 LEFT JOIN products p ON i.products_id = p.id
+        SELECT i.*, p.* FROM INVENTORY i
+                                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
         WHERE i.id LIKE CONCAT('%', #{keyword}, '%')
            OR p.name LIKE CONCAT('%', #{keyword}, '%')
     </select>

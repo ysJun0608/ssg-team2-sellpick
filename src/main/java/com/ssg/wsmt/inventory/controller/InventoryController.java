@@ -1,4 +1,5 @@
 package com.ssg.wsmt.inventory.controller;
+
 import com.ssg.wsmt.inventory.domain.InventoryVO;
 import com.ssg.wsmt.inventory.dto.PageRequestDTO;
 import com.ssg.wsmt.inventory.dto.PageResponseDTO;
@@ -6,15 +7,12 @@ import com.ssg.wsmt.inventory.dto.WarehouseCreateDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseDTO;
 import com.ssg.wsmt.inventory.service.InventoryService;
 import com.ssg.wsmt.inventory.service.WarehouseService;
-import com.ssg.wsmt.product.dto.ProductsDTO;
+import com.ssg.wsmt.product.dto.ProductDTO;
 import jakarta.validation.Valid;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +24,6 @@ import java.util.List;
 public class InventoryController {
     private final WarehouseService warehouseService;
     private final InventoryService inventoryService;
-    private final WarehouseService warehouseService;
 
 
 

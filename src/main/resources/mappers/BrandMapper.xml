@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<<<<<<<<< Temporary merge branch 1
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -15,15 +14,5 @@
     <select id="getAllBrands" resultType="java.lang.String">
         SELECT NAME FROM BRAND
     </select>
-=========
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
-<mapper namespace="com.ssg.wsmt.product.mapper.BrandMapper">
-
-        <select id="selectBrandID" resultType="com.ssg.wsmt.product.domain.BrandVO">
-            SELECT ID, NAME FROM brand WHERE id = #{id}
-        </select>
->>>>>>>>> Temporary merge branch 2
 
 </mapper>

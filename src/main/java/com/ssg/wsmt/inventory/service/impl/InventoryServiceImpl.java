@@ -6,6 +6,7 @@ import com.ssg.wsmt.inventory.dto.InventoryOutput;
 import com.ssg.wsmt.inventory.service.InventoryService;
 import com.ssg.wsmt.product.dto.ProductDTO;
 import com.ssg.wsmt.product.dto.ProductDTO;
+import com.ssg.wsmt.product.dto.ProductsDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class InventoryServiceImpl implements InventoryService {
     private final InventoryMapper inventoryMapper;
 
     @Override
-    public List<ProductsDTO> findAllProducts() {
+    public List<ProductDTO> findAllProducts() {
         return inventoryMapper.findAllProducts();
     }
 
