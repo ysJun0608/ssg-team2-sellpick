@@ -28,7 +28,6 @@ import java.util.Collections;
                     userEntity.getUsername(),
                     userEntity.getPassword(),
                     // 권한 설정 (예: ROLE_USER)
-//                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
                     Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
             );
         }

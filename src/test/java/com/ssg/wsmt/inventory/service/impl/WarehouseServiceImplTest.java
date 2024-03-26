@@ -21,5 +21,10 @@ class WarehouseServiceImplTest {
 
     }
 
+    @Test
+    public void testWarehouseSection() {
+        log.info(warehouseService.readAllWarehouseWithSection(PageRequestDTO.builder().build()));
+    }
+
 
 }

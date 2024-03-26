@@ -21,4 +21,8 @@ public class WarehouseDTO {
     //택배사
     @Column("DELIVERY_CMP_ID")
     private Long deliveryId;
+    @Column("TYPE")
+    private String sectionType;
+    private String deliveryCompanyName;
+
 }

@@ -23,4 +23,5 @@ public interface WarehouseService {
 
     PageResponseDTO<WarehouseDTO> readAllWarehouse(PageRequestDTO pageRequestDTO);
     void readOneWarehouse();
+    PageResponseDTO<WarehouseDTO> readAllWarehouseWithSection(PageRequestDTO pageRequestDTO);
 }

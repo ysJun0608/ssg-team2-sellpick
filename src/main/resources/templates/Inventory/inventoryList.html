@@ -7,49 +7,19 @@
     <title>Home2</title>
 </head>
 
-<body>
-<div layout:fragment="content">
-    <h1> 여기 div 태그에 코드를 넣으시면 됩니다.</h1>
-    <div class="col-sm-12 col-xl-6">
-        <form class="bg-light rounded h-100 p-4">
-            <input class="form-control border-0" type="search" placeholder="Search">
-            <br>
-            <button type="submit" class="btn btn-primary m-2">Search</button>
-        </form>
-    </div>
-    <!--        <div id="map" style="width:530px;height:400px;"></div>-->
-    <!--        <script>-->
-    <!--            var container = document.getElementById('map');-->
-    <!--            var options = {-->
-    <!--                center: new kakao.maps.LatLng(33.450701, 126.570667),-->
-    <!--                level: 3-->
-    <!--            };-->
-    <!--            var map = new kakao.maps.Map(container, options);-->
-    <!--        </script>-->
-    <div class="row">
-        <div class="col-sm-12 col-xl-6" style="padding-right: 0">
-            <div class="bg-light rounded h-100 p-4">
-                <h6 class="mb-4">창고조회</h6>
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th scope="col" style="background-color: #acd1ea;">창고타입</th>
-                        <th scope="col" style="background-color: #acd1ea;">창고번호</th>
-                        <th scope="col" style="background-color: #acd1ea;">택배사</th>
-                        <th scope="col" style="background-color: #acd1ea;">창고주소</th>
-                    </tr>
-                    </thead>
-                    <tbody id="warehouse-data">
-                    <tr th:each="w : ${responseDTO.dtoList}" th:data-location="${w.location}" onclick="showWarehouseMap(this)">
-                        <td th:text="${w.type}"></td>
-                        <td th:text="${w.id}"></td>
-                        <td th:text="${w.deliveryId}"></td>
-                        <td th:text="${w.location}"></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<div class="l-navbar" id="navbar">
+    <nav class="nav">
+        <div>
+            <a href="/" class="nav__logo">
+                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+                <img src="/images/TeamLogo.png" style="width: 100px; height: 80px;">
+            </a>
+            <div class="nav__list">
+                <!-- 사이드바 항목 -->
+                <a href="#" class="nav__link active">
+                    <ion-icon name="add-circle-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">상품등록</span>
+                </a>
 
         <div class="col-sm-12 col-xl-6" style="padding-left: 0;">
             <div id="map" class="bg-light rounded h-100 p-4">
