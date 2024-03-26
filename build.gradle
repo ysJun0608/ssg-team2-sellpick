@@ -49,7 +49,6 @@ dependencies {
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.3'
     implementation 'org.springframework.boot:spring-boot-devtools'
     implementation "org.springframework.boot:spring-boot-starter-security"
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 
