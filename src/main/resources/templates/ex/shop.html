@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Shopping Malls List</title>
+</head>
+<body>
+<h2>Shopping Malls</h2>
+<ul>
+    <li th:each="mall : ${shoppingMallsList}">
+        <p>ID: <span th:text="${mall.id}"></span>, Name: <span th:text="${mall.name}"></span></p>
+    </li>
+</ul>
+</body>
+</html>

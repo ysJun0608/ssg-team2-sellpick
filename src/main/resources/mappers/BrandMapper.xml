@@ -15,8 +15,4 @@
         SELECT NAME FROM BRAND
     </select>
 
-    <select id="selectBrandID" resultType="com.ssg.wsmt.product.domain.BrandVO">
-        SELECT ID, NAME FROM brand WHERE id = #{id}
-    </select>
-
 </mapper>

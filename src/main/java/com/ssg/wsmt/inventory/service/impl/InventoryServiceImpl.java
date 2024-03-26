@@ -1,6 +1,7 @@
 package com.ssg.wsmt.inventory.service.impl;
 
 
+import com.ssg.wsmt.inventory.domain.InventoryVO;
 import com.ssg.wsmt.inventory.dto.InventoryDTO;
 import com.ssg.wsmt.inventory.dto.PageRequestDTO;
 import com.ssg.wsmt.inventory.dto.PageResponseDTO;
@@ -25,7 +26,6 @@ public class InventoryServiceImpl implements InventoryService {
         return inventoryMapper.findAllProducts();
     }
 
-    @Override
     public ProductDTO findProductById(Long id) {
         return inventoryMapper.findProductById(id);
     }
@@ -36,9 +36,15 @@ public class InventoryServiceImpl implements InventoryService {
 //        Inventory inventory = inventoryDao.findById(id);
     }
     
-    public List<InventoryVO> findAllInventory() {
+    public List<InventoryDTO> findAllInventory() {
         return inventoryMapper.findAll();
     }
+
+    @Override
+    public List<InventoryDTO> findAll() {
+        return inventoryMapper.findAll();
+    }
+
     @Override
     public List<InventoryDTO> findByWarehouseId(Long warehouseId) {
         return inventoryMapper.findByWarehouseId(warehouseId);

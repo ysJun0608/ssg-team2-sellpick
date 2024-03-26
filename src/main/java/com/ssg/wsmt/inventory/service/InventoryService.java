@@ -11,4 +11,5 @@ public interface InventoryService {
     List<InventoryDTO> findAll();
     List<InventoryDTO> findByWarehouseId(Long warehouseId);
 
+    List<ProductDTO> findAllProducts();
 }

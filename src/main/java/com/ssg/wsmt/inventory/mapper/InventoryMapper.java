@@ -13,5 +13,9 @@ import java.util.List;
 public interface InventoryMapper {
     List<InventoryDTO> findAll();
     List<InventoryDTO> findByWarehouseId(Long warehouseId);
+
+    ProductDTO findProductById(Long id);
+
+    List<ProductDTO> findAllProducts();
 }
 

@@ -3,7 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.wsmt.inventory.mapper.InventoryMapper">
-
     <resultMap id="InventoryResultMap" type="com.ssg.wsmt.inventory.dto.InventoryDTO">
         <id property="id" column="ID"/>
         <result property="quantity" column="quantity"/>
@@ -14,29 +13,32 @@
         <result property="productName" column="name"/>
         <result property="brandName" column="name"/>
         <result property="productPrice" column="price"/>
+
     </resultMap>
 
-    <select id="findAllProducts" resultType="com.ssg.wsmt.product.dto.ProductDTO">
+    <select id="findAllProducts" resultType="com.ssg.wsmt.product.dto.ProductsDTO">
         SELECT * FROM PRODUCTS
     </select>
 
-    <select id="findProductById" resultType="com.ssg.wsmt.product.dto.ProductDTO" parameterType="Long">
+    <select id="findProductById" resultType="com.ssg.wsmt.product.dto.ProductsDTO" parameterType="Long">
         SELECT * FROM PRODUCTS WHERE id = #{id}
     </select>
+
     <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">
         SELECT * FROM INVENTORY
     </select>
-<!--    <select id="findAll" resultMap="InventoryResultMap">-->
-<!--        SELECT i.*, p.name as productName, p.price as productPrice-->
-<!--        FROM INVENTORY i-->
-<!--                 LEFT JOIN PRODUCTS p ON i.products_id = p.id-->
-<!--    </select>-->
 
-
-    <select id="findAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">
-        SELECT i.*, p.* FROM INVENTORY i
-                                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
+    <select id="findAll" resultMap="InventoryResultMap">
+        SELECT i.*, p.name as productName, p.price as productPrice
+        FROM INVENTORY i
+                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
     </select>
+
+
+<!--    <select id="findAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">-->
+<!--        SELECT i.*, p.* FROM inventory i-->
+<!--                                 LEFT JOIN products p ON i.products_id = p.id-->
+<!--    </select>-->
 
     <select id="findById" resultType="com.ssg.wsmt.inventory.domain.InventoryVO" parameterType="Long">
         SELECT i.*, p.* FROM INVENTORY i
