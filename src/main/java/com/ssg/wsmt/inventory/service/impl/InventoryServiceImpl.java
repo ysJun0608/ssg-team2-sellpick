@@ -1,11 +1,11 @@
 package com.ssg.wsmt.inventory.service.impl;
 
-import com.ssg.wsmt.inventory.domain.InventoryVO;
+
+import com.ssg.wsmt.inventory.dto.InventoryDTO;
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
+import com.ssg.wsmt.inventory.dto.PageResponseDTO;
 import com.ssg.wsmt.inventory.mapper.InventoryMapper;
-import com.ssg.wsmt.inventory.dto.InventoryOutput;
 import com.ssg.wsmt.inventory.service.InventoryService;
-import com.ssg.wsmt.product.dto.ProductDTO;
-import com.ssg.wsmt.product.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -19,32 +19,22 @@ public class InventoryServiceImpl implements InventoryService {
     private final InventoryMapper inventoryMapper;
 
     @Override
-    public List<ProductDTO> findAllProducts() {
-        return inventoryMapper.findAllProducts();
-    }
-
-    @Override
-    public ProductDTO findProductById(Long id) {
-        return inventoryMapper.findProductById(id);
-    }
-
-    @Override
-    public List<InventoryVO> findAllInventory() {
+    public List<InventoryDTO> findAll() {
         return inventoryMapper.findAll();
     }
 
     @Override
-    public InventoryVO findInventoryById(Long id) {
-        return inventoryMapper.findById(id);
-    }
-
-    @Override
-    public List<InventoryVO> findInventoryByWarehouseId(Long warehouseId) {
+    public List<InventoryDTO> findByWarehouseId(Long warehouseId) {
         return inventoryMapper.findByWarehouseId(warehouseId);
     }
 
-    @Override
-    public List<InventoryVO> search(String keyword) {
-        return inventoryMapper.search(keyword);
-    }
+//    @Override
+//    public PageResponseDTO<InventoryDTO> findWithPagination(PageRequestDTO pageRequestDTO) {
+//        return null;
+//    }
+//
+//    @Override
+//    public PageResponseDTO<InventoryDTO> findByWarehouseIdWithPagination(Long warehouseId, PageRequestDTO pageRequestDTO) {
+//        return null;
+//    }
 }

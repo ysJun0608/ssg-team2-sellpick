@@ -21,9 +21,22 @@
         UPDATE MGT_ORDERS SET STATUS = 'CANCEL' WHERE ID = #{orderId}
     </update>
 
-    <select id="selectAllForDate" resultType="java.util.ArrayList">
-        SELECT * FROM MGT_ORDERS WHERE CREATED_AT BETWEEN #{startDate} AND #{endDate} +0.999999999
+    <select id="searchOrders" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
+        SELECT
+        id, purchaser, status, created_at as createdAt, warehouse_id as warehouseId
+        FROM MGT_ORDERS
+        WHERE 1=1
+        <if test="startDate != null and endDate != null">
+            AND CREATED_AT BETWEEN #{startDate} AND #{endDate} + INTERVAL 1 DAY
+        </if>
+        <if test="purchaser != null and !purchaser.isEmpty()">
+            AND PURCHASER = #{purchaser}
+        </if>
+        <if test="warehouseId != null and warehouseId != 0">
+            AND WAREHOUSE_ID = #{warehouseId}
+        </if>
     </select>
+
 
     <select id="searchForStatus" resultType="java.util.ArrayList">
         SELECT * FROM MGT_ORDERS WHERE STATUS = #{status.name()}
@@ -41,11 +54,20 @@
         DELETE FROM MGT_ORDERS WHERE ID = #{orderId}
     </delete>
 
+    <delete id="deleteItems">
+    DELETE FROM MGT_ORDERS_products_relationship
+        WHERE MGT_ORDERS_ID = #{orderId}
+          AND EXISTS (SELECT 1 FROM MGT_ORDERS WHERE ID = #{orderId})
+</delete>
+
     <select id="getOne" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
         SELECT * FROM MGT_ORDERS where ID =#{id}
     </select>
 
     <select id="selectAll" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
-        SELECT * FROM MGT_ORDERS
+        SELECT
+            id, purchaser, status, created_at as createdAt, warehouse_id as warehouseId
+
+            FROM MGT_ORDERS
     </select>
 </mapper>

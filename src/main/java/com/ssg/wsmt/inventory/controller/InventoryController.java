@@ -1,6 +1,7 @@
 package com.ssg.wsmt.inventory.controller;
 
 import com.ssg.wsmt.inventory.domain.InventoryVO;
+import com.ssg.wsmt.inventory.dto.InventoryDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseCreateDTO;
 import com.ssg.wsmt.inventory.service.InventoryService;
 import com.ssg.wsmt.inventory.service.WarehouseService;
@@ -23,46 +24,35 @@ public class InventoryController {
     private final InventoryService inventoryService;
     private final WarehouseService warehouseService;
 
-    @GetMapping("/order/list")
-    public String findAllProducts(Model model) {
-        List<ProductDTO> productList = inventoryService.findAllProducts();
-        model.addAttribute("productList", productList);
-        return "productList";
-    }
 
-    @GetMapping("/order/{id}")
-    public String findProductById(@PathVariable Long id, Model model) {
-        ProductDTO product = inventoryService.findProductById(id);
-        model.addAttribute("product", product);
-        return "productDetail";
-    }
 
     @GetMapping("/list")
-    public String findAllInventory(Model model) {
-        List<InventoryVO> inventoryList = inventoryService.findAllInventory();
+    public String listInventory(@RequestParam(value = "warehouseId", required = false) Long warehouseId, Model model) {
+        log.info(inventoryService.findAll());
+        List<InventoryDTO> inventoryList;
+
+        if (warehouseId == null) {
+            inventoryList = inventoryService.findAll();
+        } else {
+            inventoryList = inventoryService.findByWarehouseId(warehouseId);
+        }
         model.addAttribute("inventoryList", inventoryList);
-        return "/inventory/inventoryList";
+        return "inventory/inventoryList";
     }
 
-    @GetMapping("/{id}")
-    public String findInventoryById(@PathVariable Long id, Model model) {
-        InventoryVO inventory = inventoryService.findInventoryById(id);
-        model.addAttribute("inventory", inventory);
-        return "inventoryDetail";
-    }
-
-    @GetMapping("/warehouse/{warehouseId}")
-    public String findInventoryByWarehouseId(@PathVariable Long warehouseId, Model model) {
-        List<InventoryVO> inventoryList = inventoryService.findInventoryByWarehouseId(warehouseId);
+    @GetMapping("/list/{warehouseId}")
+    public String listInventoryById(@PathVariable Long warehouseId, Model model) {
+        log.info(inventoryService.findByWarehouseId(warehouseId));
+        List<InventoryDTO> inventoryList;
+        log.info("getmapping method");
+        inventoryList = inventoryService.findByWarehouseId(warehouseId);
         model.addAttribute("inventoryList", inventoryList);
-        return "warehouseInventory";
+        return "inventory/inventoryList";
     }
+    @GetMapping("/inventory/list")
+    public String showInventoryListPage(){
 
-    @GetMapping("/search")
-    public String searchInventory(@RequestParam("keyword") String keyword, Model model) {
-        List<InventoryVO> inventoryList = inventoryService.search(keyword);
-        model.addAttribute("inventoryList", inventoryList);
-        return "searchResult";
+        return "inventoryList";
     }
 
     @PostMapping("/warehouseCreate")

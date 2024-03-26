@@ -8,12 +8,12 @@ import com.ssg.wsmt.mgtOrders.service.MgtOrdersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,8 +30,9 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     //private final MgtOrderDao mgtOrderDao = new MgtOrderDao();
 
     @Override
+    @Transactional
     public Long createForm(MgtOrdersDTO mgtOrdersDTO) {
-
+        // Insert the new row into the mgt_Orders table
         MgtOrders mgtOrders = MgtOrders.builder()
                 .purchaser(mgtOrdersDTO.getPurchaser())
                 .status(MgtOrdersStatus.valueOf(mgtOrdersDTO.getStatus()))
@@ -40,8 +41,13 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 
         mgtOrdersMapper.createOrder(mgtOrders);
 
-        return mgtOrders.getId();
+        // Retrieve the generated ID value from the database
+        Long generatedId = mgtOrders.getId(); // Assuming getId() retrieves the generated ID
+
+        // Return the generated ID value
+        return generatedId;
     }
+
 
     public void addItems(Long quantities, Long productId, Long id) {
         mgtOrdersMapper.addItems(quantities, productId, id);
@@ -54,29 +60,29 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 //        }
     }
 
-    @Override
+//    @Override
     public void getAllOrders() {
-
-        System.out.println("조회할 날짜를 입력하세요");
-        ArrayList<MgtOrders> searchList = new ArrayList<>();
-        try {
-            System.out.print("시작일(예시 : 20240213) : ");
-            String startDate = bufferedReader.readLine();
-            System.out.print("종료일(예시 : 20240213) : ");
-            String endDate = bufferedReader.readLine();
-
-            searchList = mgtOrdersMapper.selectAllForDate(startDate, endDate);
-
-            if (searchList.isEmpty()) {
-                System.out.println("조회된 발주목록이 없습니다.");
-                return;
-            }
-
-            printList(searchList);
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//
+//        System.out.println("조회할 날짜를 입력하세요");
+//        ArrayList<MgtOrders> searchList = new ArrayList<>();
+//        try {
+//            System.out.print("시작일(예시 : 20240213) : ");
+//            String startDate = bufferedReader.readLine();
+//            System.out.print("종료일(예시 : 20240213) : ");
+//            String endDate = bufferedReader.readLine();
+//
+//            searchList = mgtOrdersMapper.selectAllForDate(startDate, endDate);
+//
+//            if (searchList.isEmpty()) {
+//                System.out.println("조회된 발주목록이 없습니다.");
+//                return;
+//            }
+//
+//            printList(searchList);
+//
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     @Override
@@ -220,21 +226,31 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     }
 
     @Override
-    public void delete() {
-        Integer flag = 0;
-        System.out.print("삭제할 발주 ID를 입력하세요 : ");
-        try {
-            Long orderId = Long.parseLong(bufferedReader.readLine());
-            flag = mgtOrdersMapper.delete(orderId);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-            if (flag > 0) {
-                System.out.println("삭제 성공");
-            } else {
-                System.out.println("삭제 실패");
-            }
-        }
+    public void delete(Long id) {
+        log.info(id);
+        mgtOrdersMapper.delete(id);
+    }
+
+    @Override
+    public void deleteItems(Long id) {
+        log.info("delete Id : " + id);
+        mgtOrdersMapper.deleteItems(id);
+    }
+
+    @Override
+    public List<MgtOrdersDTO> searchOrders(String startDate, String endDate, String purchaser, String warehouseId) {
+        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersMapper.searchOrders(startDate, endDate, purchaser, warehouseId).stream()
+                .map(o ->
+                        MgtOrdersDTO.builder()
+                                .id(o.getId())
+                                .purchaser(o.getPurchaser())
+                                .status(String.valueOf(o.getStatus()))
+                                .createdAt(o.getCreatedAt())
+                                .warehouseId(o.getWarehouseId())
+                                .build()
+                ).collect(Collectors.toList());
+
+        return  mgtOrdersDTOList;
     }
 
     @Override

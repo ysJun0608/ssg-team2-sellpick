@@ -11,12 +11,7 @@ import java.util.List;
 
 @Mapper
 public interface InventoryMapper {
-    List<ProductDTO> findAllProducts();
-    ProductDTO findProductById(Long id);
-    List<InventoryVO> findAll();
-    InventoryVO findById(Long id);
-    List<InventoryVO> findByWarehouseId(@Param("warehouseId") Long warehouseId);
-    List<InventoryVO> search(String keyword);
-
-    List<InventoryVO> selectAll();
+    List<InventoryDTO> findAll();
+    List<InventoryDTO> findByWarehouseId(Long warehouseId);
 }
+
