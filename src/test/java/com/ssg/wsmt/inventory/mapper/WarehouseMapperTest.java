@@ -12,20 +12,30 @@ import static org.junit.jupiter.api.Assertions.*;
 class WarehouseMapperTest {
     @Autowired
     private WarehouseMapper warehouseMapper;
-    @Test
-    public void test() {
-        Assertions.assertThat(all).isNotNull();
-        List<InventoryVO> all = inventoryMapper.findAll();
-    }
-
-    @Test
-    public void testRead() {
-        List<InventoryVO> mapperAll = inventoryMapper.findAll();
-    }
+//    @Test
+//    public void test() {
+//        Assertions.assertThat(all).isNotNull();
+//        List<InventoryVO> all = inventoryMapper.findAll();
+//    }
+//
+//    @Test
+//    public void testRead() {
+//        List<InventoryVO> mapperAll = inventoryMapper.findAll();
+//    }
 
     @Test
     public void test2(){
             log.info( warehouseMapper.readWarehouse(PageRequestDTO.builder().build()));
 
+    }
+
+    @Test
+    public void testReadWarehouseWithSection() {
+        log.info(warehouseMapper.readWarehouseSection(PageRequestDTO.builder().build()));
+    }
+
+    @Test
+    public void testgetcount() {
+        log.info(warehouseMapper.getTotalCount(PageRequestDTO.builder().build()));
     }
 }

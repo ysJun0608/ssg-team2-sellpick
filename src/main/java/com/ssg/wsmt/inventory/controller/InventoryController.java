@@ -9,6 +9,7 @@ import com.ssg.wsmt.inventory.service.WarehouseService;
 import com.ssg.wsmt.product.dto.ProductsDTO;
 import jakarta.validation.Valid;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,10 +26,8 @@ import java.util.List;
 public class InventoryController {
     private final WarehouseService warehouseService;
     private final InventoryService inventoryService;
-    @GetMapping("/home")
-    public void hello(Model model) {
-        log.info("index hello");
-    }
+
+
 
     @PostMapping("/warehouseCreate")
     public String postCreate(@ModelAttribute WarehouseCreateDTO warehouseDTO) {
@@ -45,20 +44,18 @@ public class InventoryController {
         log.info("warehouse...");
     }
 
-//    @GetMapping("/warehouselist")
-//    public void warehouseCreate(@Valid Model model) {
-//        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
-//        log.info(warehouseService.readAllWarehouse());
-//        log.info("warehouseCreate");
-//
-//    }
+
 
     @GetMapping("/warehouselist")
     public void warehouseCreate(@Valid PageRequestDTO pageRequestDTO, Model model) {
-        PageResponseDTO<WarehouseDTO> responseDTO = warehouseService.readAllWarehouse(pageRequestDTO);
+        PageResponseDTO<WarehouseDTO> responseDTO = warehouseService.readAllWarehouseWithSection(pageRequestDTO);
         model.addAttribute("responseDTO", responseDTO);
-        log.info("warehouseCreate");
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
+        log.info("warehouseList SUCESS");
+        log.info(responseDTO.getDtoList());
+        log.info(pageRequestDTO.toString());
     }
+
 //    @PostMapping("/warehouselist")
 //    public void warehousePost(@Valid Model model) {
 //        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());

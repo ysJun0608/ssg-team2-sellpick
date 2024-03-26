@@ -276,3 +276,47 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+
+#detail{
+    padding-top: 0!important;
+    display: none;
+    width: 100%;
+    /* 가로폭을 부모 요소의 100%로 설정하여 반응형으로 만듭니다. */
+    height: 60vh;
+    /* 화면의 높이의 60%로 설정하여 반응형으로 만듭니다. */
+}
+
+#map {
+    display: none;
+    width: 100%;
+    /* 가로폭을 부모 요소의 100%로 설정하여 반응형으로 만듭니다. */
+    height: 60vh;
+    /* 화면의 높이의 60%로 설정하여 반응형으로 만듭니다. */
+}
+
+.selected {
+    background-color: #acd1ea;
+}
+
+#detailpage {
+    text-align: center;
+    color: #5c5e61;
+    border: 2px solid #5c5e61;
+    background-color: #acd1ea;
+    display: block;
+    margin: 20px auto 0; /* 위쪽 여백을 20px으로 설정 */
+    width: fit-content;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+#detailUl{
+
+    margin-top: 40px;!important;
+    background-color: #acd1ea;
+
+}
+#detailUl li {
+    font-weight: bold; /* 텍스트를 굵게 설정 */
+}

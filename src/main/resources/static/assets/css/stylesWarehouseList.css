@@ -276,3 +276,24 @@
     background: var(--dark);
     border-color: var(--primary);
 }
+
+#detail{
+    display: none;
+    width: 100%;
+    /* 가로폭을 부모 요소의 100%로 설정하여 반응형으로 만듭니다. */
+    height: 60vh;
+    /* 화면의 높이의 60%로 설정하여 반응형으로 만듭니다. */
+}
+
+#map {
+    display: none;
+    width: 100%;
+    /* 가로폭을 부모 요소의 100%로 설정하여 반응형으로 만듭니다. */
+    height: 60vh;
+    /* 화면의 높이의 60%로 설정하여 반응형으로 만듭니다. */
+}
+
+.selected {
+    background-color: #acd1ea;
+}
+

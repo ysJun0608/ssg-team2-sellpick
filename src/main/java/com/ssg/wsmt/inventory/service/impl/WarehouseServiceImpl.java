@@ -33,6 +33,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     private  final WarehouseMapper warehouseMapper;
     private final ModelMapper modelMapper;
 
+
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 //    WarehouseDao warehouseDao = new WarehouseDao();
     private final DeliveryCmpService deliveryCmpService;
@@ -165,6 +166,25 @@ public class WarehouseServiceImpl implements WarehouseService {
 //
 //    }
 @Override
+public PageResponseDTO<WarehouseDTO> readAllWarehouseWithSection(PageRequestDTO pageRequestDTO) {
+    // WarehouseMapper를 사용하여 페이지 요청에 따른 창고 정보 및 섹션 정보를 조회하는 메서드입니다.
+    List<WarehouseDTO> dtoList = warehouseMapper.readWarehouseSection(pageRequestDTO);
+
+    // 페이지 요청에 따른 전체 창고 수를 조회하는 메서드를 호출합니다.
+    int total = warehouseMapper.getTotalCount(pageRequestDTO);
+
+    // 페이지 응답 DTO를 생성하여 반환합니다.
+    return PageResponseDTO.<WarehouseDTO>withAll()
+            // 페이지 요청 DTO를 설정합니다.
+            .pageRequestDTO(pageRequestDTO)
+            // 조회된 창고 및 섹션 정보 DTO 리스트를 설정합니다.
+            .dtoList(dtoList)
+            // 전체 창고 수를 설정합니다.
+            .total(total).build();
+}
+
+
+    @Override
 public PageResponseDTO<WarehouseDTO> readAllWarehouse(PageRequestDTO pageRequestDTO) {
     List<WarehouseVO> voList = warehouseMapper.readWarehouse(pageRequestDTO);
     List<WarehouseDTO> warehouseDTOS = voList.stream()
