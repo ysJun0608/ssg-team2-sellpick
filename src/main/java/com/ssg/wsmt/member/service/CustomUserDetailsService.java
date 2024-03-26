@@ -14,21 +14,22 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
-    @Service
-    @RequiredArgsConstructor
-    public class CustomUserDetailsService implements UserDetailsService {
+@Service
+@RequiredArgsConstructor
+public class CustomUserDetailsService implements UserDetailsService {
 
-        private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-        @Override
-        public UserDetails loadUserByUsername(String email) {
-            UserEntity userEntity = userRepository.findByEmail(email)
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
-            return new User(
-                    userEntity.getUsername(),
-                    userEntity.getPassword(),
-                    // 권한 설정 (예: ROLE_USER)
-                    Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
-            );
-        }
+    @Override
+    public UserDetails loadUserByUsername(String email) {
+        UserEntity userEntity = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        return new User(
+                userEntity.getUsername(),
+                userEntity.getPassword(),
+                // 권한 설정 (예: ROLE_USER)
+                Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"))
+        );
     }
+
+}

@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <title>Login Page</title>
     <style>
-        .logo img {
-            max-width: 200px; /* 최대 너비 200px로 제한 */
-            height: auto; /* 높이는 비율에 맞춰 자동 조정 */
-            margin-bottom: 20px;
-        }
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
@@ -25,11 +20,19 @@
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
+            max-width: 400px;
+            width: 100%;
         }
 
-        input[type="text"],
+        .logo img {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        input[type="email"],
         input[type="password"] {
-            width: 100%;
+            width: calc(100% - 40px);
             padding: 12px 20px;
             margin: 8px 0;
             box-sizing: border-box;
@@ -38,14 +41,14 @@
         }
 
         button {
-            background-color: #4CAF50;
+            background-color: #009CFF;
             color: white;
             padding: 14px 20px;
             margin: 8px 0;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            width: 100%;
+            width: calc(100% - 40px);
         }
 
         button:hover {
@@ -56,30 +59,77 @@
             margin-top: 20px;
             font-size: 14px;
         }
+        .login-find{
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
 <div class="login-container">
     <div class="logo">
-        <!-- 로고 이미지 추가 -->
         <img th:src="@{/images/TeamLogo.png}" alt="Logo">
     </div>
     <h2>로그인</h2>
-<!--    <form action="/login/loginProc" method="post">-->
-<!--        <input type="text" placeholder="Username" name="username" required>-->
-<!--        <input type="password" placeholder="Password" name="password" required>-->
-<!--        <button type="submit">LOGIN</button>-->
-    <form action="/login/loginProc" method="post" name="login">
-        <input type="email" class="form-control mb-1 p-3" name="username" id="email" placeholder="이메일을 입력해주세요."/>
-        <input type="password" class="form-control mb-1 p-3" name="password" id="password" placeholder="비밀번호를 입력해주세요"/>
-        <div class="remember-box p-1">
-        <div class="middle d-flex flex-column">
-            <div class="message" th:if="${hasMessage}" th:text="${message}">
-            </div>
-            <button type="submit">LOGIN</button>
-        </div>
+    <form id="loginForm" action="/login/loginProc" method="post">
+        <input id="email" type="email" name="username" placeholder="Email"/>
+        <input id="password" type="password" name="password" placeholder="Password"/>
+        <button type="button" onclick="submitForm()">LOGIN</button>
     </form>
+    <p class="find-id">Forget ID?<a th:href="@{/login/findId}">Click here</a></p>
     <p class="signup-link">Don't have an account? <a th:href="@{/login/join}">Sign up</a></p>
 </div>
+
+<script>
+    function submitForm() {
+        var email = document.getElementById("email").value;
+        var password = document.getElementById("password").value;
+
+        if (email.trim() === "" || password.trim() === "") {
+            alert("Please enter both email and password.");
+            return;
+        }
+
+        document.getElementById("loginForm").submit();
+    }
+    window.onload = function() {
+        // 에러 메시지가 있다면 showErrorAlert 함수 호출
+        var errorCode = getUrlParameter("exception");
+        if (errorCode) {
+            var errorMessage = getErrorMessage(errorCode);
+            showErrorAlert(errorMessage);
+        }
+    };
+
+    function getErrorMessage(errorCode) {
+        switch (errorCode) {
+            case "700":
+                return "ID나 패스워드가 틀렸습니다.";
+            case "701":
+                return "해당 유저를 찾지 못했습니다.";
+            case "702":
+                return "인증되지 않은 유저입니다.";
+            case "703":
+                return "권한이 없는 유저입니다.";
+            case "506":
+                return "시스템 오류로 인해 유저를 찾지 못했습니다.";
+            case "666":
+                return "알 수 없는 오류가 발생했습니다.";
+            default:
+                return "알 수 없는 오류가 발생했습니다.";
+        }
+    }
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    function showErrorAlert(errorMessage) {
+        alert(errorMessage);
+    }
+
+</script>
+
 </body>
 </html>
