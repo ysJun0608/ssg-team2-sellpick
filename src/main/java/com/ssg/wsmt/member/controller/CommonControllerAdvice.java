@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 @ControllerAdvice
 public class CommonControllerAdvice {
-
     @ModelAttribute
     public void addCommonAttributes(Model model) {
         String id = SecurityContextHolder.getContext().getAuthentication().getName();
