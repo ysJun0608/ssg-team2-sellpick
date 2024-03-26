@@ -1,7 +1,11 @@
 package com.ssg.wsmt.inventory.controller;
 
 import com.ssg.wsmt.inventory.domain.InventoryVO;
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
+import com.ssg.wsmt.inventory.dto.PageResponseDTO;
+import com.ssg.wsmt.inventory.dto.InventoryDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseCreateDTO;
+import com.ssg.wsmt.inventory.dto.WarehouseDTO;
 import com.ssg.wsmt.inventory.service.InventoryService;
 import com.ssg.wsmt.inventory.service.WarehouseService;
 import com.ssg.wsmt.product.dto.ProductDTO;
@@ -10,66 +14,27 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RequestMapping("/inventory")
+
 @Log4j2
 @Controller
+@RequestMapping("/inventory")
 @RequiredArgsConstructor
 public class InventoryController {
-
-    private final InventoryService inventoryService;
     private final WarehouseService warehouseService;
+    private final InventoryService inventoryService;
 
-    @GetMapping("/order/list")
-    public String findAllProducts(Model model) {
-        List<ProductDTO> productList = inventoryService.findAllProducts();
-        model.addAttribute("productList", productList);
-        return "productList";
-    }
 
-    @GetMapping("/order/{id}")
-    public String findProductById(@PathVariable Long id, Model model) {
-        ProductDTO product = inventoryService.findProductById(id);
-        model.addAttribute("product", product);
-        return "productDetail";
-    }
-
-    @GetMapping("/list")
-    public String findAllInventory(Model model) {
-        List<InventoryVO> inventoryList = inventoryService.findAllInventory();
-        model.addAttribute("inventoryList", inventoryList);
-        return "/inventory/inventoryList";
-    }
-
-    @GetMapping("/{id}")
-    public String findInventoryById(@PathVariable Long id, Model model) {
-        InventoryVO inventory = inventoryService.findInventoryById(id);
-        model.addAttribute("inventory", inventory);
-        return "inventoryDetail";
-    }
-
-    @GetMapping("/warehouse/{warehouseId}")
-    public String findInventoryByWarehouseId(@PathVariable Long warehouseId, Model model) {
-        List<InventoryVO> inventoryList = inventoryService.findInventoryByWarehouseId(warehouseId);
-        model.addAttribute("inventoryList", inventoryList);
-        return "warehouseInventory";
-    }
-
-    @GetMapping("/search")
-    public String searchInventory(@RequestParam("keyword") String keyword, Model model) {
-        List<InventoryVO> inventoryList = inventoryService.search(keyword);
-        model.addAttribute("inventoryList", inventoryList);
-        return "searchResult";
-    }
 
     @PostMapping("/warehouseCreate")
     public String postCreate(@ModelAttribute WarehouseCreateDTO warehouseDTO) {
         log.info("생성이 제대로 되었나? ");
         log.info(warehouseDTO);
 //        warehouseService.createWarehouse(warehouseDTO);
+
+
         return "redirect:/inventory/main";
     }
 
@@ -78,25 +43,66 @@ public class InventoryController {
         log.info("warehouse...");
     }
 
+
+
     @GetMapping("/warehouselist")
-    public void warehouseCreate(@Valid Model model) {
-        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
-        log.info(warehouseService.readAllWarehouse());
-        log.info("warehouseCreate");
-
-    }
-    @PostMapping("/warehouselist")
-    public void warehousePost(@Valid Model model) {
-        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
-        log.info(warehouseService.readAllWarehouse());
-        log.info("warehouseCreate");
-
+    public void warehouseCreate(@Valid PageRequestDTO pageRequestDTO, Model model) {
+        PageResponseDTO<WarehouseDTO> responseDTO = warehouseService.readAllWarehouseWithSection(pageRequestDTO);
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
+        log.info("warehouseList SUCESS");
+        log.info(responseDTO.getDtoList());
+        log.info(pageRequestDTO.toString());
     }
 
-    @GetMapping("/warehouseChange")
-    public void warehousesearch(@Valid BindingResult bindingResult, Model model) {
-        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
-        log.info("warehouseSearch");
+//    @PostMapping("/warehouselist")
+//    public void warehousePost(@Valid Model model) {
+//        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
+//        log.info(warehouseService.readAllWarehouse());
+//        log.info("warehouseCreate");
+//
+//    }
+//
+//    @GetMapping("/warehouseChange")
+//    public void warehousesearch(@Valid BindingResult bindingResult, Model model) {
+//        model.addAttribute("responseDTO",warehouseService.readAllWarehouse());
+//        log.info("warehouseSearch");
+//    }
 
+    @GetMapping("/order/list")
+    public String findAllProducts(Model model) {
+        List<ProductDTO> productList = inventoryService.findAllProducts();
+        model.addAttribute("productList", productList);
+        return "productList";
+    }
+
+
+    @GetMapping("/list")
+    public String listInventory(@RequestParam(value = "warehouseId", required = false) Long warehouseId, Model model) {
+        log.info(inventoryService.findAll());
+        List<InventoryDTO> inventoryList;
+
+        if (warehouseId == null) {
+            inventoryList = inventoryService.findAll();
+        } else {
+            inventoryList = inventoryService.findByWarehouseId(warehouseId);
+        }
+        model.addAttribute("inventoryList", inventoryList);
+        return "inventory/inventoryList";
+    }
+
+    @GetMapping("/list/{warehouseId}")
+    public String listInventoryById(@PathVariable Long warehouseId, Model model) {
+        log.info(inventoryService.findByWarehouseId(warehouseId));
+        List<InventoryDTO> inventoryList;
+        log.info("getmapping method");
+        inventoryList = inventoryService.findByWarehouseId(warehouseId);
+        model.addAttribute("inventoryList", inventoryList);
+        return "inventory/inventoryList";
+    }
+    @GetMapping("/inventory/list")
+    public String showInventoryListPage(){
+
+        return "inventoryList";
     }
 }

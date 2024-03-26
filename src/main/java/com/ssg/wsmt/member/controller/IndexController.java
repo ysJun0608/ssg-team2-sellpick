@@ -5,6 +5,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Collection;
@@ -14,7 +15,13 @@ import java.util.Iterator;
 public class IndexController {
 
     @GetMapping({"", "/"})
-    public String indexPage(Model model) {
+    public String indexPage() {
+
+        return "home";
+    }
+
+    @GetMapping("/2")
+    public String indexPage2(Model model) {
 
         String id = SecurityContextHolder.getContext().getAuthentication().getName();
         model.addAttribute("id", id);
@@ -27,9 +34,8 @@ public class IndexController {
         String role = authority.getAuthority();
 
         model.addAttribute("role", role);
-        return "home";
+        return "example";
     }
-
 
 }
 

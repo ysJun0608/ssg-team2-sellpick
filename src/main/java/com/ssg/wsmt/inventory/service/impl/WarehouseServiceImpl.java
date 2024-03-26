@@ -6,6 +6,8 @@ import com.ssg.wsmt.delivery.service.impl.DeliveryCmpServiceImpl;
 import com.ssg.wsmt.inventory.domain.WarehouseInsertReleaseVO;
 import com.ssg.wsmt.inventory.domain.WarehouseVO;
 import com.ssg.wsmt.inventory.domain.WhSmRelationshipVO;
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
+import com.ssg.wsmt.inventory.dto.PageResponseDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseDTO;
 import com.ssg.wsmt.inventory.enums.WhType;
 import com.ssg.wsmt.inventory.mapper.WarehouseMapper;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 public class WarehouseServiceImpl implements WarehouseService {
     private  final WarehouseMapper warehouseMapper;
     private final ModelMapper modelMapper;
+
 
     BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
 //    WarehouseDao warehouseDao = new WarehouseDao();
@@ -151,13 +154,50 @@ public class WarehouseServiceImpl implements WarehouseService {
         return null;
     }
 
+//    @Override
+//    public List<WarehouseDTO> readAllWarehouse() {
+//        List<WarehouseVO> voList = warehouseMapper.readWarehouse();
+//        //List<WarehouseVO> warehouseVOList = warehouseDao.readWarehouse();
+//        List<WarehouseDTO> warehouseDTOS = voList.stream()
+//                .map(vo->modelMapper.map(vo,WarehouseDTO.class))
+//                .collect(Collectors.toList());
+//
+//        return warehouseDTOS;
+//
+//    }
+@Override
+public PageResponseDTO<WarehouseDTO> readAllWarehouseWithSection(PageRequestDTO pageRequestDTO) {
+    // WarehouseMapper를 사용하여 페이지 요청에 따른 창고 정보 및 섹션 정보를 조회하는 메서드입니다.
+    List<WarehouseDTO> dtoList = warehouseMapper.readWarehouseSection(pageRequestDTO);
+
+    // 페이지 요청에 따른 전체 창고 수를 조회하는 메서드를 호출합니다.
+    int total = warehouseMapper.getTotalCount(pageRequestDTO);
+
+    // 페이지 응답 DTO를 생성하여 반환합니다.
+    return PageResponseDTO.<WarehouseDTO>withAll()
+            // 페이지 요청 DTO를 설정합니다.
+            .pageRequestDTO(pageRequestDTO)
+            // 조회된 창고 및 섹션 정보 DTO 리스트를 설정합니다.
+            .dtoList(dtoList)
+            // 전체 창고 수를 설정합니다.
+            .total(total).build();
+}
+
+
     @Override
-    public List<WarehouseDTO> readAllWarehouse() {
-        List<WarehouseVO> voList = warehouseMapper.readWarehouse();
-        //List<WarehouseVO> warehouseVOList = warehouseDao.readWarehouse();
-        List<WarehouseDTO> warehouseDTOS = voList.stream()
-                .map(vo->modelMapper.map(vo,WarehouseDTO.class))
-                .collect(Collectors.toList());
+public PageResponseDTO<WarehouseDTO> readAllWarehouse(PageRequestDTO pageRequestDTO) {
+    List<WarehouseVO> voList = warehouseMapper.readWarehouse(pageRequestDTO);
+    List<WarehouseDTO> warehouseDTOS = voList.stream()
+            .map(vo -> modelMapper.map(vo, WarehouseDTO.class))
+            .collect(Collectors.toList());
+    int total = warehouseMapper.getTotalCount(pageRequestDTO);
+    return PageResponseDTO.<WarehouseDTO>withAll()
+            .pageRequestDTO(pageRequestDTO)
+            .dtoList(warehouseDTOS)
+            .total(total)
+            .build();
+}
+
 //        if (warehouseVOList.isEmpty()) {
 //            System.out.println("창고가 존재하지 않습니다.");
 //            return;
@@ -169,9 +209,8 @@ public class WarehouseServiceImpl implements WarehouseService {
 ////            System.out.printf("%-7d | %-7d | %-6s | %-4s\n", w.getId(), w.getDelivery_id(), w.getType(), w.getLocation());
 //        }
 //        System.out.println("=".repeat(50));
-        return warehouseDTOS;
 
-    }
+
 
 
     @Override

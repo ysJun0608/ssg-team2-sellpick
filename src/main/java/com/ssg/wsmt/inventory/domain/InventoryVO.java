@@ -18,6 +18,6 @@ public class InventoryVO {
     // 재고 상품 id (FK)
     @Column("product_id")
     private Long productId;
-    private ProductDTO product;
+
 }
 

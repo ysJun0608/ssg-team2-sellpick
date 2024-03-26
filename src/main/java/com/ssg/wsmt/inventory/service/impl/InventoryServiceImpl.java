@@ -1,19 +1,22 @@
 package com.ssg.wsmt.inventory.service.impl;
 
+
 import com.ssg.wsmt.inventory.domain.InventoryVO;
+import com.ssg.wsmt.inventory.dto.InventoryDTO;
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
+import com.ssg.wsmt.inventory.dto.PageResponseDTO;
 import com.ssg.wsmt.inventory.mapper.InventoryMapper;
-import com.ssg.wsmt.inventory.dto.InventoryOutput;
 import com.ssg.wsmt.inventory.service.InventoryService;
 import com.ssg.wsmt.product.dto.ProductDTO;
 import com.ssg.wsmt.product.dto.ProductDTO;
+import com.ssg.wsmt.product.dto.ProductsDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-@RequiredArgsConstructor
 @Service
+@RequiredArgsConstructor
 @Log4j2
 public class InventoryServiceImpl implements InventoryService {
     private final InventoryMapper inventoryMapper;
@@ -23,28 +26,37 @@ public class InventoryServiceImpl implements InventoryService {
         return inventoryMapper.findAllProducts();
     }
 
-    @Override
     public ProductDTO findProductById(Long id) {
         return inventoryMapper.findProductById(id);
     }
 
-    @Override
-    public List<InventoryVO> findAllInventory() {
+    public void searchInventory() {
+//        System.out.println("찾고자 하는 재고의 id를 입력해주세요 : ");
+//        Long id = Long.parseLong(sc.nextLine());
+//        Inventory inventory = inventoryDao.findById(id);
+    }
+    
+    public List<InventoryDTO> findAllInventory() {
         return inventoryMapper.findAll();
     }
 
     @Override
-    public InventoryVO findInventoryById(Long id) {
-        return inventoryMapper.findById(id);
+    public List<InventoryDTO> findAll() {
+        return inventoryMapper.findAll();
     }
 
     @Override
-    public List<InventoryVO> findInventoryByWarehouseId(Long warehouseId) {
+    public List<InventoryDTO> findByWarehouseId(Long warehouseId) {
         return inventoryMapper.findByWarehouseId(warehouseId);
     }
 
-    @Override
-    public List<InventoryVO> search(String keyword) {
-        return inventoryMapper.search(keyword);
-    }
+//    @Override
+//    public PageResponseDTO<InventoryDTO> findWithPagination(PageRequestDTO pageRequestDTO) {
+//        return null;
+//    }
+//
+//    @Override
+//    public PageResponseDTO<InventoryDTO> findByWarehouseIdWithPagination(Long warehouseId, PageRequestDTO pageRequestDTO) {
+//        return null;
+//    }
 }

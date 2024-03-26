@@ -5,7 +5,7 @@ import lombok.*;
 
 @ToString
 @Builder
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductVO {

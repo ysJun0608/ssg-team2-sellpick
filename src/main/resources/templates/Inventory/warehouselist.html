@@ -1,289 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout1}">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <!-- Favicon -->
-    <link href="/img/favicon.ico" rel="icon">
-    <!-- Template Stylesheet -->
-    <link href="/assets/css/stylesWarehouseList.css" rel="stylesheet">
-
-    <!-- Google Web Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Icon Font Stylesheet -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
-
-    <!-- Libraries Stylesheet -->
-    <link href="/assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
-    <link href="/assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
-
-    <!-- Customized Bootstrap Stylesheet -->
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6b0f139097c40018ad6cfd4a3c2c5db8&libraries=services"></script>
-    <!-- Template Stylesheet
-    <link href="assets/css/style.css" rel="stylesheet"> -->
-    <style>
-        #map {
-            display: none;
-            width: 100%; /* 가로폭을 부모 요소의 100%로 설정하여 반응형으로 만듭니다. */
-            height: 60vh; /* 화면의 높이의 60%로 설정하여 반응형으로 만듭니다. */
-        }
-        .selected {
-            background-color: #acd1ea;
-        }
-    </style>
+    <title>Home2</title>
+    <link href="/assets/css/stylesWarehouseListDetail.css" rel="stylesheet">
 </head>
 
 <body>
-<div class="container-xxl position-relative bg-white d-flex p-0">
-    <!-- Spinner Start -->
-    <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-      <span class="sr-only">Loading...</span>
-  </div>
-</div> -->
+<div layout:fragment="content">
 
-
-    <!-- Sidebar Start -->
-    <div class="sidebar pe-4 pb-3">
-        <nav class="navbar bg-light navbar-light">
-            <a href="/inventory/home" class="navbar-brand mx-4 mb-3">
-                <h3 class="text-primary"><i class="fa fa-truck me-2"></i>2Commerce</h3>
-            </a>
-            <div class="d-flex align-items-center ms-4 mb-4">
-                <div class="position-relative">
-                    <img class="rounded-circle" src="/assets/TeamLogo.png" alt="" style="width: 40px; height: 40px;">
-                    <div
-                            class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
-                    </div>
-                </div>
-                <div class="ms-3">
-                    <h6 class="mb-0">관리자</h6>
-                    <span>Admin</span>
-                </div>
+    <!-- Navbar End -->
+    <div class="col-sm-12">
+        <form id="searchForm" class="bg-light rounded h-100 p-4" action="/inventory/warehouselist" method="get">
+            <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+            <select class="form-select" name="type">
+                <option selected>-카테고리-</option>
+                <option value="id">-창고번호-</option>
+                <option value="location">-주소-</option>
+                <option value="sectiontype" >-창고대분류-</option>
+                <option value="deliveryCompanyName">-택배사-</option>
+            </select>
+            <div class="form-group">
+                <input class="form-control border-0" type="search" placeholder="검색"
+                       name="keyword" th:value="${pageRequestDTO.keyword}">
             </div>
-            <div class="navbar-nav w-100">
-                <a href="/inventory/home" class="nav-item nav-link active"><i
-                        class="fa fa-tachometer-alt me-2"></i>Home</a>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                            class="fa fa-warehouse me-2"></i>창고관리</a>
-                    <div class="dropdown-menu bg-transparent border-0">
-                        <a href="button.html" class="dropdown-item">창고조회</a>
-                        <a href="typography.html" class="dropdown-item">창고등록</a>
-                        <a href="element.html" class="dropdown-item">빼도됌</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                            class="fa fa-calculator me-2"></i>발주관리</a>
-                    <div class="dropdown-menu bg-transparent border-0">
-                        <a href="button.html" class="dropdown-item">발주등록</a>
-                        <a href="typography.html" class="dropdown-item">발주확정</a>
-                        <a href="element.html" class="dropdown-item">발주조회</a>
-                        <a href="element.html" class="dropdown-item">발주대비미입고목록</a>
-                    </div>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                                class="fa fa-cubes me-2"></i></i>재고관리</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a href="button.html" class="dropdown-item">재고조회</a>
-                            <a href="typography.html" class="dropdown-item">미사용</a>
-                            <a href="element.html" class="dropdown-item">미사용</a>
-                        </div>
-
-                        <div class="nav-item dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                                    class="fa fa-plus me-2"></i>입고관리</a>
-                            <div class="dropdown-menu bg-transparent border-0">
-                                <a href="signin.html" class="dropdown-item">입고조회</a>
-                                <a href="signup.html" class="dropdown-item">미사용</a>
-                                <a href="404.html" class="dropdown-item">미사용</a>
-                                <a href="blank.html" class="dropdown-item">미사용</a>
-                            </div>
-
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                                        class="fa fa-minus me-2"></i>출고관리</a>
-                                <div class="dropdown-menu bg-transparent border-0">
-                                    <a href="signin.html" class="dropdown-item">출고조회</a>
-                                    <a href="signup.html" class="dropdown-item">미사용</a>
-                                    <a href="404.html" class="dropdown-item">미사용</a>
-                                    <a href="blank.html" class="dropdown-item">미사용</a>
-                                </div>
-                            </div>
-
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                                        class="fa fa-credit-card me-2"></i>주문관리</a>
-                                <div class="dropdown-menu bg-transparent border-0">
-                                    <a href="signin.html" class="dropdown-item">주문조회</a>
-                                    <a href="signup.html" class="dropdown-item">주문수정</a>
-                                    <a href="404.html" class="dropdown-item">주문최소</a>
-                                    <a href="blank.html" class="dropdown-item">미사용</a>
-                                </div>
-                            </div>
-
-                        </div>
-        </nav>
+            <div class="form-group">
+                <!-- 기타 입력 필드나 내용을 추가할 수 있습니다. -->
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">검색</button>
+            <!-- 리셋 및 쿼리 문자열 제거 버튼 -->
+            <button type="button" class="btn btn-primary m-2" onclick="resetFormAndQueryString()">지우기</button>
+        </form>
     </div>
-    <!-- Sidebar End -->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">창고조회(클릭하면상세지도와 정보가 나옵니다.)</h6>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="background-color: #acd1ea;">창고대분류</th>
+                        <th scope="col" style="background-color: #acd1ea;">창고번호</th>
+                        <th scope="col" style="background-color: #acd1ea;">택배사</th>
+                        <th scope="col" style="background-color: #acd1ea;">창고주소</th>
+                        <th scope="col" style="background-color: #acd1ea;display: none;">창고소분류(섹션)</th>
+                    </tr>
+                    </thead>
+                    <tbody id="warehouse-data">
+                    <tr th:each="w : ${responseDTO.dtoList}" th:data-location="${w.location}"
+                        onclick="showWarehouseMap(this)">
+                        <td th:text="${w.type}"></td>
+                        <td th:text="${w.id}"></td>
+                        <td th:text="${w.deliveryCompanyName}"></td>
+                        <td th:text="${w.location}"></td>
+                        <td th:text="${w.sectionType}" style="display: none;"></td>
+<!--                        <td th:text="${convertToKorean(w.sectionType)}"></td>-->
+<!--                        <td>-->
+<!--                            <span th:if="${w.sectionType == 'DRY'}">건조</span>-->
+<!--                            <span th:if="${w.sectionType == 'FROZEN'}">냉동</span>-->
+<!--                            <span th:if="${w.sectionType == 'REFRIGERATED'}">냉장</span>-->
+<!--                            <span th:if="${w.sectionType == 'PROCESSED'}">가공</span>-->
+<!--                            <span th:if="${w.sectionType != 'DRY' and w.sectionType != 'FROZEN' and w.sectionType != 'REFRIGERATED' and w.sectionType != 'PROCESSED'}" th:text="${w.sectionType}"></span>-->
+<!--                        </td>-->
 
 
-    <!-- Content Start -->
-    <div class="content">
-        <!-- Navbar Start -->
-        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
-            <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
-                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
-            </a>
-            <a href="#" class="sidebar-toggler flex-shrink-0">
-                <i class="fa fa-bars"></i>
-            </a>
-            <form class="d-none d-md-flex ms-4">
-                <input class="form-control border-0" type="search" placeholder="Search">
-            </form>
-            <div class="navbar-nav align-items-center ms-auto">
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-envelope me-lg-2"></i>
-                        <span class="d-none d-lg-inline-flex">Message</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle" src="img/user.jpg" alt=""
-                                     style="width: 40px; height: 40px;">
-                                <div class="ms-2">
-                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                    <small>15 minutes ago</small>
-                                </div>
-                            </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle" src="img/user.jpg" alt=""
-                                     style="width: 40px; height: 40px;">
-                                <div class="ms-2">
-                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                    <small>15 minutes ago</small>
-                                </div>
-                            </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <div class="d-flex align-items-center">
-                                <img class="rounded-circle" src="img/user.jpg" alt=""
-                                     style="width: 40px; height: 40px;">
-                                <div class="ms-2">
-                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
-                                    <small>15 minutes ago</small>
-                                </div>
-                            </div>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item text-center">See all message</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-bell me-lg-2"></i>
-                        <span class="d-none d-lg-inline-flex">Notificatin</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">
-                            <h6 class="fw-normal mb-0">Profile updated</h6>
-                            <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <h6 class="fw-normal mb-0">New user added</h6>
-                            <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <h6 class="fw-normal mb-0">Password changed</h6>
-                            <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item text-center">See all notifications</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <img class="rounded-circle me-lg-2" src="/assets/TeamLogo.png" alt=""
-                             style="width: 40px; height: 40px;">
-                        <span class="d-none d-lg-inline-flex">John Doe</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">My Profile</a>
-                        <a href="#" class="dropdown-item">Settings</a>
-                        <a href="#" class="dropdown-item">Log Out</a>
-                    </div>
-                </div>
+                    </tr>
+                    </tbody>
+                </table>
+
             </div>
-        </nav>
-        <!-- Navbar End -->
-        <div class="col-sm-12 col-xl-6">
-            <form class="bg-light rounded h-100 p-4">
-                <input class="form-control border-0" type="search" placeholder="Search">
-                <br>
-                <button type="submit" class="btn btn-primary m-2">Search</button>
-            </form>
         </div>
-<!--        <div id="map" style="width:530px;height:400px;"></div>-->
-<!--        <script>-->
-<!--            var container = document.getElementById('map');-->
-<!--            var options = {-->
-<!--                center: new kakao.maps.LatLng(33.450701, 126.570667),-->
-<!--                level: 3-->
-<!--            };-->
-<!--            var map = new kakao.maps.Map(container, options);-->
-<!--        </script>-->
-        <div class="row">
-            <div class="col-sm-12 col-xl-6" style="padding-right: 0">
-                <div class="bg-light rounded h-100 p-4">
-                    <h6 class="mb-4">창고조회</h6>
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th scope="col" style="background-color: #acd1ea;">창고타입</th>
-                            <th scope="col" style="background-color: #acd1ea;">창고번호</th>
-                            <th scope="col" style="background-color: #acd1ea;">택배사</th>
-                            <th scope="col" style="background-color: #acd1ea;">창고주소</th>
-                        </tr>
-                        </thead>
-                        <tbody id="warehouse-data">
-                        <tr th:each="w : ${responseDTO.dtoList}" th:data-location="${w.location}" onclick="showWarehouseMap(this)">
-                            <td th:text="${w.type}"></td>
-                            <td th:text="${w.id}"></td>
-                            <td th:text="${w.deliveryId}"></td>
-                            <td th:text="${w.location}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <br>
+        <div class="col-sm-12 col-xl-6" style="padding-right: 0;">
+
+            <div id="map">
+
             </div>
+        </div>
+        <div class="col-sm-12 col-xl-6" style="padding-left: 0; background-color: #F3F6F9;">
 
-            <div class="col-sm-12 col-xl-6" style="padding-left: 0;">
-                <div id="map" class="bg-light rounded h-100 p-4">
 
-                    </div>
+        <div class="bg-light rounded h-100 p-4" id="detail">
+                <h3 id="detailpage" class="mb-4">창고세부정보</h3>
+                <ul class="list-group" id="detailUl">
+                    <!-- 상세 정보가 여기에 동적으로 추가됩니다 -->
+                </ul>
             </div>
-
         </div>
 
+    </div>
+    <div class="bg-light rounded h-100 p-4" style="padding-right: 0;">
+        <div class="btn-toolbar" role="toolbar" style="justify-content: right">
+        <div class="btn-group me-2" role="group" aria-label="First group">
+            <a th:href="@{/inventory/warehouselist(page=${responseDTO.page - 1}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+               th:class="'btn btn-primary ' + (${responseDTO.prev} ? '' : 'disabled')"
+               th:text="'이전'"></a>
 
+            <a th:href="@{/inventory/warehouselist(page=${num}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+               th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}"
+               th:class="${responseDTO.page == num} ? 'btn btn-secondary' : 'btn btn-primary'"
+               th:text="${num}"></a>
+
+            <a th:href="@{/inventory/warehouselist(page=${responseDTO.page + 1}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+               th:class="'btn btn-primary ' + (${responseDTO.next} ? '' : 'disabled')"
+               th:text="'다음'"></a>
+        </div>
+    </div>
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">
+
             <div class="bg-light rounded-top p-4">
                 <div class="row">
                     <div class="col-12 col-sm-6 text-center text-sm-start">
@@ -301,63 +129,6 @@
         </div>
         <!-- Footer End -->
     </div>
-    <!-- Content End -->
 
-
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
-<script>
-    var mapContainer = document.getElementById('map');
-    var mapOptions = {
-        center: new kakao.maps.LatLng(37.5665, 126.9780),
-        level: 3
-    };
-    var map = new kakao.maps.Map(mapContainer, mapOptions);
-    var geocoder = new kakao.maps.services.Geocoder();
-
-    function showWarehouseMap(element) {
-        var location = element.getAttribute('data-location');
-        geocoder.addressSearch(location, function(result, status) {
-            if (status === kakao.maps.services.Status.OK) {
-                var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
-                var marker = new kakao.maps.Marker({
-                    map: map,
-                    position: coords
-                });
-                map.setCenter(coords);
-                mapContainer.style.display = 'block';
-                relayout();
-            }
-        });
-
-        var rows = document.querySelectorAll('#warehouse-data tr');
-        rows.forEach(function(row) {
-            row.classList.remove('selected');
-        });
-        element.classList.add('selected');
-    }
-    function relayout() {
-
-        // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
-        // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다
-        // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
-        map.relayout();
-    }
-</script>
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/assets/lib/chart/chart.min.js"></script>
-<script src="/assets/lib/easing/easing.min.js"></script>
-<script src="/assets/lib/waypoints/waypoints.min.js"></script>
-<script src="/assets/lib/owlcarousel/owl.carousel.min.js"></script>
-<script src="/assets/lib/tempusdominus/js/moment.min.js"></script>
-<script src="/assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
-<script src="/assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
-
-<!-- Template Javascript -->
-<script src="/assets/jsReal/warehouseList.js"></script>
 </body>
-
-</html>

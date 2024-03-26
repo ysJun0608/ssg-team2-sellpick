@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface BrandService {
     List<BrandVO> getAllBrand();
+    String getBrandName(int brandCodeId);
 
 }

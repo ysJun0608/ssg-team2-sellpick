@@ -157,7 +157,7 @@ public class MgtOrdersController {
 
 
     @GetMapping("/MgtOrderSearch")
-    public void search(Model model) {
+        public void search(Model model) {
         List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersService.selectAll();
         log.info("mgtOrdersDTOList" + mgtOrdersDTOList);
         model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);

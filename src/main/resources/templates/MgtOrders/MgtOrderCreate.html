@@ -380,19 +380,23 @@
                 const newRow = document.createElement('tr');
                 const tdNo = document.createElement('td');
                 tdNo.textContent = ++rowCount;
-
                 const tdCheckbox = document.createElement('td');
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
-                checkbox.name = 'checkedItems'; // Set the name for each checkbox
-                checkbox.value = itemName + ',' + itemQuantity; // Set a value to identify the checked item
+                checkbox.value = 'false';
                 tdCheckbox.appendChild(checkbox);
-
                 const tdItem = document.createElement('td');
-                tdItem.textContent = itemName;
-
+                const itemInput = document.createElement('input');
+                itemInput.type = 'text';
+                itemInput.name = 'itemNames';
+                itemInput.value = itemName;
+                tdItem.appendChild(itemInput);
                 const tdQuantity = document.createElement('td');
-                tdQuantity.textContent = itemQuantity;
+                const quantityInput = document.createElement('input');
+                quantityInput.type = 'number';
+                quantityInput.name = 'quantities';
+                quantityInput.value = itemQuantity;
+                tdQuantity.appendChild(quantityInput);
 
                 newRow.appendChild(tdNo);
                 newRow.appendChild(tdCheckbox);
@@ -405,7 +409,6 @@
             document.getElementById('item-quantity').value = '';
         }
     }
-
 
     function deleteCheckedItems() {
         // Serialize the form data containing the checked checkboxes
@@ -484,7 +487,6 @@
                 console.error('Error:', error);
             }
         });
-    });
 
     // 추가 버튼 클릭 이벤트 바인딩
     document.getElementById('addRowBtn').addEventListener('click', addRow);
