@@ -56,6 +56,7 @@ public class UserController {
     //회원 가입 페이지 라우팅
     @GetMapping("/join")
     public String join() {
+        log.info("UserController join");
         return "login/join";
     }
 
@@ -66,7 +67,6 @@ public class UserController {
         joinService.joinProcess(userDTO);
         return "redirect:/login/login";
     }
-
 
 }
 
