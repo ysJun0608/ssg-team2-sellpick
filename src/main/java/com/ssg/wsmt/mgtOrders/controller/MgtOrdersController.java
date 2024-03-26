@@ -3,6 +3,7 @@ package com.ssg.wsmt.mgtOrders.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
 import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
+import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import com.ssg.wsmt.mgtOrders.service.MgtOrdersService;
 import com.ssg.wsmt.mgtOrders.service.impl.MgtOrdersServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @Log4j2
@@ -28,7 +30,7 @@ import java.util.Map;
 public class MgtOrdersController {
 
     @Autowired
-    MgtOrdersService mgtOrdersService;
+    private MgtOrdersService mgtOrdersService;
 
     @GetMapping("/MgtOrderCreate")
     public void showCreate(Long id, Model model) {
@@ -118,9 +120,41 @@ public class MgtOrdersController {
 
 
     @GetMapping("/MgtOrderConfirm")
-    public void confirm() {
-        log.info("confirm....");
+    public void confirm(Model model) {
+        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersService.searchForStatus(MgtOrdersStatus.READY);
+        log.info("mgtOrdersDTOList" + mgtOrdersDTOList);
+        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
     }
+
+
+    @PostMapping("/MgtOrderConfirm")
+    public ResponseEntity<Map<String, Object>> orderConfirm(@RequestBody Map<String, Object> requestData) {
+        // Extract checkedItems and id from the requestData
+        log.info("requestData : " + requestData);
+
+        // Retrieve the list of IDs from the requestData
+        List<Long> ids = ((List<?>) requestData.get("id")).stream()
+                .map(id -> Long.parseLong(id.toString()))
+                .collect(Collectors.toList());
+
+        // Check for null or empty list
+        if (ids.isEmpty()) {
+            log.error("Received null or empty list of IDs");
+            return ResponseEntity.badRequest().body(null);
+        }
+
+        // Loop through each ID and perform the desired action
+        for (Long id : ids) {
+            log.info("Confirming ID: " + id);
+            mgtOrdersService.confirmOrder(id);
+        }
+
+        Map<String, Object> responseBody = new HashMap<>();
+        responseBody.put("ids", ids);
+        responseBody.put("size", ids.size()); // Adding the size of confirmed order IDs
+        return ResponseEntity.ok(responseBody);
+    }
+
 
     @GetMapping("/MgtOrderSearch")
     public void search(Model model) {
@@ -159,6 +193,20 @@ public class MgtOrdersController {
         return "/MgtOrders/MgtOrderSearch";
     }
 
+    @PostMapping("/findReadyState")
+    public String findReadyState(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String purchaser,
+            @RequestParam(required = false) String warehouseId,
+            Model model) {
+
+        List<MgtOrdersDTO> mgtOrdersDTOList = new ArrayList<>();
+        mgtOrdersDTOList = mgtOrdersService.searchOrdersAndStatus(startDate, endDate, purchaser, warehouseId, MgtOrdersStatus.READY);
+        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
+
+        return "/MgtOrders/MgtOrderConfirm";
+    }
 
     @GetMapping("/MgtOrderNondeliverd")
     public void searchNondeliverd() {

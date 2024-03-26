@@ -1,22 +1,25 @@
 package com.ssg.wsmt.mgtOrders.service;
 
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
-import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
+import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface MgtOrdersService {
     Long createForm(MgtOrdersDTO mgtOrdersDTO);
     void addItems(Long quantities, Long productId, Long id);
     void getAllOrders();
-    boolean confirmOrder();
+    boolean confirmOrder(Long orderId);
     boolean cancelOrder();
     void confirmList();
     void searchNonDelivered();
     void confirmArrival();
     void delete(Long id);
     void deleteItems(Long id);
+
+    List<MgtOrdersDTO> searchForStatus(MgtOrdersStatus status);
+
+    List<MgtOrdersDTO> searchOrdersAndStatus(String startDate, String endDate, String purchaser, String warehouseId, MgtOrdersStatus status);
 
     List<MgtOrdersDTO> searchOrders(String startDate, String endDate, String purchaser, String warehouseId);
 

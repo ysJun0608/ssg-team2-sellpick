@@ -60,7 +60,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
 //        }
     }
 
-//    @Override
+    //    @Override
     public void getAllOrders() {
 //
 //        System.out.println("조회할 날짜를 입력하세요");
@@ -86,29 +86,11 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     }
 
     @Override
-    public boolean confirmOrder() {
+    public boolean confirmOrder(Long orderId) {
         Integer flag = 0;
-        try {
-            System.out.print("확정할 발주 ID를 입력하세요 : ");
-            Long orderId = Long.parseLong(bufferedReader.readLine());
-
-            System.out.print("주문을 확정하시겠습니까 ? y/n : ");
-            String temp = bufferedReader.readLine();
-
-            if (temp.equals("y") || temp.equals("Y")) {
-                flag = mgtOrdersMapper.updateStatus(MgtOrdersStatus.DONE, orderId);
-                if (flag > 0) {
-                    System.out.println("발주가 확정되었습니다.");
-                } else {
-                    System.out.println("등록된 발주가 없습니다.");
-                }
-            } else {
-                System.out.println("발주 확정 메뉴를 종료합니다.");
-            }
-        } catch (IOException Ie) {
-            Ie.printStackTrace();
-        }
-        return flag > 0 ? true : false;
+        flag = mgtOrdersMapper.updateStatus(MgtOrdersStatus.DONE, orderId);
+        log.info("orderId : " + orderId);
+        return flag > 0 ;
     }
 
     @Override
@@ -238,13 +220,38 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     }
 
     @Override
+    public List<MgtOrdersDTO> searchForStatus(MgtOrdersStatus status) {
+        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersMapper.searchForStatus(status).stream()
+                .map(o ->
+                        MgtOrdersDTO.builder()
+                                .id(o.getId())
+                                .purchaser(o.getPurchaser())
+                                .status(String.valueOf(o.getStatus()))
+                                .createdAt(o.getCreatedAt())
+                                .warehouseId(o.getWarehouseId())
+                                .build()
+                ).collect(Collectors.toList());
+        return mgtOrdersDTOList;
+    }
+
+    @Override
+    public List<MgtOrdersDTO> searchOrdersAndStatus(String startDate, String endDate, String purchaser, String warehouseId, MgtOrdersStatus status) {
+        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersMapper.searchOrdersAndStatus(startDate, endDate, purchaser, warehouseId, status).stream()
+                .map(o ->
+                        MgtOrdersDTO.builder()
+                                .id(o.getId())
+                                .purchaser(o.getPurchaser())
+                                .status(String.valueOf(o.getStatus()))
+                                .createdAt(o.getCreatedAt())
+                                .warehouseId(o.getWarehouseId())
+                                .build()
+                ).collect(Collectors.toList());
+
+        return mgtOrdersDTOList;
+    }
+
+    @Override
     public List<MgtOrdersDTO> searchOrders(String startDate, String endDate, String purchaser, String warehouseId) {
-        log.info("impl - start date" + startDate);
-        log.info("impl - end date" + endDate);
-        log.info("impl - purchaser" + purchaser);
-        log.info("impl - warehouse" + warehouseId);
-        List<MgtOrders> mgtOrders = mgtOrdersMapper.searchOrders(startDate, endDate, purchaser, warehouseId);
-        log.info("mgtOrders searchOrders log: " + mgtOrders);
         List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersMapper.searchOrders(startDate, endDate, purchaser, warehouseId).stream()
                 .map(o ->
                         MgtOrdersDTO.builder()
@@ -256,7 +263,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                                 .build()
                 ).collect(Collectors.toList());
 
-        return  mgtOrdersDTOList;
+        return mgtOrdersDTOList;
     }
 
     @Override
