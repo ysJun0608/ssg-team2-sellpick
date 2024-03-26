@@ -33,9 +33,6 @@ public class PageResponseDTO<E> {
         this.dtoList = dtoList;
 
         this.totalPages = (int) Math.ceil((double) total / size);
-        if (totalPages == 0 && total > 0) {
-            totalPages = 1;
-        }
 
         int visiblePages = 10;
         this.start = Math.max(1, page - visiblePages / 2);
@@ -43,4 +40,5 @@ public class PageResponseDTO<E> {
 
         this.prev = start > 1;
         this.next = end < totalPages;
-    }}
+    }
+}

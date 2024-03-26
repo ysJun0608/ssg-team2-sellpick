@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Log4j2
 public class JoinService {
 
+    @Autowired
     private final UserRepository userRepository;
 
     //비밀번호 암호화
@@ -30,13 +31,9 @@ public class JoinService {
         if(ExistUser){
             return;
         }
-
-        String password = passwordEncoder.encode(userDTO.getPassword());
-
         UserEntity userEntity = UserEntity.builder()
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
-                .password(password)
                 .role(UserRole.ADMIN)
                 .phone(userDTO.getPhone())
                 .address(userDTO.getAddress())

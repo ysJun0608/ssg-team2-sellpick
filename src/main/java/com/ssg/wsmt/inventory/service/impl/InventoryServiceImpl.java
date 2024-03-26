@@ -1,8 +1,10 @@
 package com.ssg.wsmt.inventory.service.impl;
 
-import com.ssg.wsmt.inventory.domain.InventoryVO;
+
+import com.ssg.wsmt.inventory.dto.InventoryDTO;
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
+import com.ssg.wsmt.inventory.dto.PageResponseDTO;
 import com.ssg.wsmt.inventory.mapper.InventoryMapper;
-import com.ssg.wsmt.inventory.dto.InventoryOutput;
 import com.ssg.wsmt.inventory.service.InventoryService;
 import com.ssg.wsmt.product.dto.ProductDTO;
 import com.ssg.wsmt.product.dto.ProductDTO;
@@ -38,17 +40,17 @@ public class InventoryServiceImpl implements InventoryService {
         return inventoryMapper.findAll();
     }
     @Override
-    public InventoryVO findInventoryById(Long id) {
-        return inventoryMapper.findById(id);
-    }
-
-    @Override
-    public List<InventoryVO> findInventoryByWarehouseId(Long warehouseId) {
+    public List<InventoryDTO> findByWarehouseId(Long warehouseId) {
         return inventoryMapper.findByWarehouseId(warehouseId);
     }
 
-    @Override
-    public List<InventoryVO> search(String keyword) {
-        return inventoryMapper.search(keyword);
-    }
+//    @Override
+//    public PageResponseDTO<InventoryDTO> findWithPagination(PageRequestDTO pageRequestDTO) {
+//        return null;
+//    }
+//
+//    @Override
+//    public PageResponseDTO<InventoryDTO> findByWarehouseIdWithPagination(Long warehouseId, PageRequestDTO pageRequestDTO) {
+//        return null;
+//    }
 }
