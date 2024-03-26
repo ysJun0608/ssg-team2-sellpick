@@ -2,8 +2,10 @@ package com.ssg.wsmt.inventory.service.impl;
 
 import com.ssg.wsmt.inventory.domain.InventoryVO;
 import com.ssg.wsmt.inventory.mapper.InventoryMapper;
+import com.ssg.wsmt.inventory.dto.InventoryOutput;
 import com.ssg.wsmt.inventory.service.InventoryService;
-import com.ssg.wsmt.product.dto.ProductsDTO;
+import com.ssg.wsmt.product.dto.ProductDTO;
+import com.ssg.wsmt.product.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class InventoryServiceImpl implements InventoryService {
     }
 
     @Override
-    public ProductsDTO findProductById(Long id) {
+    public ProductDTO findProductById(Long id) {
         return inventoryMapper.findProductById(id);
     }
 

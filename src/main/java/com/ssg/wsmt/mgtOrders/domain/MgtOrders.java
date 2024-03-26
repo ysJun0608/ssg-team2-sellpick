@@ -1,8 +1,8 @@
 package com.ssg.wsmt.mgtOrders.domain;
 
-import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
+import  com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
+import jakarta.persistence.Column;
 import lombok.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 

@@ -1,7 +1,6 @@
 package com.ssg.wsmt.smOrders.controller;
 
 import com.ssg.wsmt.smOrders.domain.ShoppingMallVo;
-import com.ssg.wsmt.smOrders.dto.ShoppingMallDTO;
 import com.ssg.wsmt.smOrders.service.ShoppingMallService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -18,11 +17,11 @@ public class ShoppingMallController {
     private final ShoppingMallService shoppingMallService; // 이 필드를 클래스 내에 한 번만 선언해야 합니다.
 
 
-    @GetMapping("/ex/shop")
-    public String listShoppingMalls(Model model, ShoppingMallDTO shoppingMallDTO) {
-        model.addAttribute("shoppingMallsList", shoppingMallService.findAllShoppingMalls(shoppingMallDTO));
-        return "ex/shop"; // templates/ex/shop.html
-    }
+//    @GetMapping("/ex/shop")
+//    public String listShoppingMalls(Model model, ShoppingMallDTO shoppingMallDTO) {
+//        model.addAttribute("shoppingMallsList", shoppingMallService.findAllShoppingMalls(shoppingMallDTO));
+//        return "ex/shop"; // templates/ex/shop.html
+//    }
 
 
     @GetMapping("/index")

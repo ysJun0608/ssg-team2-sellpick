@@ -26,6 +26,7 @@ import java.util.List;
 public class InventoryController {
     private final WarehouseService warehouseService;
     private final InventoryService inventoryService;
+    private final WarehouseService warehouseService;
 
 
 
@@ -72,14 +73,14 @@ public class InventoryController {
 
     @GetMapping("/order/list")
     public String findAllProducts(Model model) {
-        List<ProductsDTO> productList = inventoryService.findAllProducts();
+        List<ProductDTO> productList = inventoryService.findAllProducts();
         model.addAttribute("productList", productList);
         return "productList";
     }
 
     @GetMapping("/order/{id}")
     public String findProductById(@PathVariable Long id, Model model) {
-        ProductsDTO product = inventoryService.findProductById(id);
+        ProductDTO product = inventoryService.findProductById(id);
         model.addAttribute("product", product);
         return "productDetail";
     }

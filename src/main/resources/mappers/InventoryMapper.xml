@@ -5,26 +5,14 @@
 <mapper namespace="com.ssg.wsmt.inventory.mapper.InventoryMapper">
     <resultMap id="InventoryResultMap" type="com.ssg.wsmt.inventory.dto.InventoryDTO">
         <id property="id" column="ID"/>
-        <result property="quantity" column="QUANTITY"/>
-        <result property="warehouseSectionId" column="WH_SECTION_ID"/>
-        <result property="productId" column="PRODUCTS_ID"/>
-        <result property="productName" column="NAME"/>
-        <result property="status" column="STATUS"/>
-        <result property="cost" column="COST"/>
-        <result property="price" column="PRICE"/>
-        <result property="brandName" column="BRAND_NAME"/>
-        <result property="businessOwnerId" column="OWNER_ID"/>
-<!--        <id property="id" column="ID"/>-->
-<!--        <result property="quantity" column="quantity"/>-->
-<!--        <result property="warehouseSectionId" column="wh_section_id"/>-->
-<!--        <result property="productId" column="product_id"/>-->
-<!--        <result property="warehouseId" column="id"/>-->
-<!--        <result property="status" column="status"/>-->
-<!--        <result property="cost" column="cost"/>-->
-<!--        <result property="price" column="price"/>-->
-<!--        <result property="brandname" column="name"/>-->
-<!--        <result property="businessOwnerId" column="id"/>-->
-
+        <result property="quantity" column="quantity"/>
+        <result property="warehouseSectionId" column="wh_section_id"/>
+        <result property="productId" column="product_id"/>
+        <result property="warehouseId" column="id"/>
+        <result property="location" column="location"/>
+        <result property="productName" column="name"/>
+        <result property="brandName" column="name"/>
+        <result property="productPrice" column="price"/>
 
     </resultMap>
 
@@ -32,25 +20,25 @@
         SELECT * FROM products
     </select>
 
-    <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">
-        SELECT * FROM INVENTORY
-    </select>
-    
+<<<<<<<<< Temporary merge branch 1
     <select id="findProductById" resultType="com.ssg.wsmt.product.dto.ProductsDTO" parameterType="Long">
         SELECT * FROM products WHERE id = #{id}
+=========
+    <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">
+        SELECT * FROM INVENTORY
+>>>>>>>>> Temporary merge branch 2
     </select>
-<!--    <select id="findAll" resultMap="om.ssg.wsmt.inventory.domain.InventoryVO">-->
-<!--        SELECT i.*, p.NAME AS NAME, p.STATUS AS STATUS, p.COST AS COST, p.PRICE AS PRICE, b.NAME AS BRAND_NAME, p.OWNER_ID AS OWNER_ID-->
-<!--        FROM inventory i-->
-<!--                 LEFT JOIN products p ON i.PRODUCTS_ID = p.ID-->
-<!--                 LEFT JOIN brand b ON p.BRAND_ID = b.ID-->
+    <select id="findAll" resultMap="InventoryResultMap">
+        SELECT i.*, p.name as productName, p.price as productPrice
+        FROM inventory i
+                 LEFT JOIN products p ON i.products_id = p.id
+    </select>
+
+
+<!--    <select id="findAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">-->
+<!--        SELECT i.*, p.* FROM inventory i-->
+<!--                                 LEFT JOIN products p ON i.products_id = p.id-->
 <!--    </select>-->
-
-
-    <select id="findAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">
-        SELECT i.*, p.* FROM inventory i
-                                 LEFT JOIN products p ON i.products_id = p.id
-    </select>
 
     <select id="findById" resultType="com.ssg.wsmt.inventory.domain.InventoryVO" parameterType="Long">
         SELECT i.*, p.* FROM inventory i

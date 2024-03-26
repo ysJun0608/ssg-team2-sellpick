@@ -23,8 +23,10 @@ public interface MgtOrdersMapper {
     Integer cancelOrder(Long orderId);
 
 
-    ArrayList<MgtOrders> selectAllForDate(String startDate, String endDate);
+    ArrayList<MgtOrders> selectAllForDate(String startDate, String endDate, String purchaser, String warehouseId);
 
+
+    List<MgtOrders> searchOrders(String startDate, String endDate, String purchaser, String warehouseId);
 
     ArrayList<MgtOrders> searchForStatus(MgtOrdersStatus status);
 
@@ -36,6 +38,7 @@ public interface MgtOrdersMapper {
 
 
     Integer delete(Long orderId);
+    Integer deleteItems(Long orderId);
 
 
     List<MgtOrders> selectAll();
