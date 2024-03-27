@@ -1,288 +1,214 @@
-
-
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout1}">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>주문 관리</title>
-    <link rel="stylesheet" href="/assets/css/styles.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+    <title>Home2</title>
 </head>
-<body id="body-pd">
-<header class="header" id="header">
-    <!-- 헤더 내용 -->
-</header>
 
-<div class="l-navbar" id="navbar">
-    <nav class="nav">
-        <div>
-            <a href="/" class="nav__logo">
-                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
-                <img src="/images/TeamLogo.png" style="width: 100px; height: 80px;">
-            </a>
-            <div class="nav__list">
-                <!-- 사이드바 항목 -->
-                <a href="#" class="nav__link active">
-                    <ion-icon name="add-circle-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">상품등록</span>
-                </a>
+<body>
+<div layout:fragment="content">
 
-                <a href="#" class="nav__link active">
-                    <ion-icon name="home-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">창고관리</span>
-                </a>
-                <a href="#" class="nav__link">
-                    <i class="bi bi-boxes"></i>
-                    <span class="nav_name">배송관리</span>
-                </a>
-
-                <a href="#" class="nav__link">
-                    <i class="bi bi-box-arrow-in-down"></i>
-                    <span class="nav_name">입고관리</span>
-                </a>
-                <a href="#" class="nav__link">
-                    <i class="bi bi-box-arrow-down"></i>
-                    <span class="nav_name">출고관리</span>
-                </a>
-                <a href="#" class="nav__link">
-                    <i class="bi bi-wallet-fill"></i>
-                    <span class="nav_name">정산관리</span>
-                </a>
-
-                <a href="#" class="nav__link">
-                    <ion-icon name="pie-chart-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">발주관리</span>
-                </a>
+    <!-- Content Start -->
+    <!-- Navbar Start -->
 
 
-                <!-- <div href="#" class="nav__link collapse">
-                    <ion-icon name="people-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">Team</span>
+    <!--        <div class="login-info">-->
+    <!--            <p th:if="${#authorization.expression('isAuthenticated()')}">-->
+    <!--                안녕하세요, <span th:text="${id}"></span>님! 역할: <span th:text='${role.substring(5)}'></span>-->
+    <!--            </p>-->
+    <!--        </div>-->
 
-                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
 
-                    <ul class="collapse__menu">
-                        <a href="#" class="collapse__sublink">Data</a>
-                        <a href="#" class="collapse__sublink">Group</a>
-                        <a href="#" class="collapse__sublink">Members</a>
-                    </ul>
-                </div> -->
 
-                <a href="#" class="nav__link">
-                    <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
-                    <span class="nav_name">재고관리</span>
-                </a>
-            </div>
-            <a href="#" class="nav__link">
-                <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
-                <span class="nav_name">주문관리</span>
-            </a>
+    <!-- Widgets End -->
+    <h1>창고 재고 및 상품 정보</h1>
 
-            <!-- 추가 사이드바 항목 -->
-        </div>
-    </nav>
-</div>
-
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>창고 재고 및 상품 정보</title>
+    <!-- 창고 ID 입력 폼 -->
+    <form id="getInventoryBy WarehouseForm">
+        <label for="warehouseId">창고 ID:</label>
+        <input type="number" id="warehouseId" name="warehouseId" min="1" required>
+        <button type="submit">조회</button>
+    </form>
     <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
         }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
         th, td {
-            padding: 8px;
+            padding: 12px 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
         }
+
         th {
+            background-color: #009CFF;
+            color: #fff;
+        }
+        th {
+            white-space: nowrap;
+        }
+
+        tr:nth-child(even) {
             background-color: #f2f2f2;
         }
+
+        form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #009CFF;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        #goToListButton {
+            margin-top: 20px;
+        }
     </style>
-</head>
-<body>
-<h1>창고 재고 및 상품 정보</h1>
 
-<!-- 창고 ID 입력 폼 -->
-<form id="getInventoryByWarehouseForm">
-    <label for="warehouseId">창고 ID:</label>
-    <input type="number" id="warehouseId" name="warehouseId" min="1" required>
-    <button type="submit">조회</button>
-</form>
 
-<!-- 재고 및 상품 정보 테이블 -->
-<table>
-    <thead>
-    <tr>
-        <th>재고 ID</th>
-        <th>재고 수량</th>
-        <th>창고 구역 ID</th>
-        <th>상품 ID</th>
-        <th>상품 이름</th>
-        <th>판매 상태</th>
-        <th>원가</th>
-        <th>판매가</th>
-        <th>브랜드</th>
-        <th>사업자</th>
-    </tr>
-    </thead>
-    <tbody id="inventoryList"></tbody>
-</table>
+    <!-- 재고 및 상품 정보 테이블 -->
+    <table>
+        <thead>
+        <tr>
+            <th>재고ID</th>
+            <th>재고수량</th>
+            <th>창고구역ID</th>
+            <th>상품ID</th>
+            <th>상품명</th>
+            <th>판매상태</th>
+            <th>원가</th>
+            <th>판매가</th>
+            <th>수량</th>
+            <th>브랜드</th>
+            <th>사업자명</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${inventoryList}">
+            <td th:text="${item.id}">"</td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.whSectionId}"></td>
+            <td th:text="${item.productId}"></td>
+            <td th:text="${item.productName}"></td>
+            <td th:text="${item.productStatus}"></td>
+            <td th:text="${item.cost}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.quantities}"></td>
+            <td th:text="${item.brandName}"></td>
+            <td th:text="${item.ownerNAME}"></td>
 
-<script>
-    const getInventoryByWarehouseForm = document.getElementById('getInventoryByWarehouseForm');
-    getInventoryByWarehouseForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const warehouseId = document.getElementById('warehouseId').value;
-        fetchInventoryAndProductsByWarehouse(warehouseId);
-    });
 
-    function fetchInventoryAndProductsByWarehouse(warehouseId) {
-        // 서버에서 창고 ID에 해당하는 재고 및 상품 정보를 가져오는 코드
-        // 예시: fetch(`/api/inventory/warehouse/${warehouseId}`)
-        //   .then(response => response.json())
-        //   .then(data => displayInventoryAndProducts(data))
-        //   .catch(error => console.error('Error:', error));
+        </tbody>
+    </table>
+    <button id="goToListButton">목록으로 돌아가기</button>
+    <script>
+        const getInventoryByWarehouseForm = document.getElementById('getInventoryByWarehouseForm');
+        document.addEventListener('DOMContentLoaded',function () {
+            const goToListButton = document.getElementById('goToListButton');
+            goToListButton.addEventListener('click', function (event) {
+                // 기본 동작(페이지 이동)을 방지합니다.
+                event.preventDefault();
 
-        // 테스트용 데이터
-        // const inventoryData = [
-        //     {
-        //         id: 1,
-        //         quantity: 100,
-        //         whSectionId: 1,
-        //         productId: 1,
-        //         product: {
-        //             id: 1,
-        //             name: '상품 A',
-        //             status: 'ON_SALE',
-        //             cost: 10000,
-        //             price: 15000,
-        //             brandId: 1,
-        //             ownerId: 1,
-        //             brand: '브랜드 A',
-        //             owner: '사업자 A'
-        //         }
-        //     },
-        //     {
-        //         id: 2,
-        //         quantity: 50,
-        //         whSectionId: 2,
-        //         productId: 2,
-        //         product: {
-        //             id: 2,
-        //             name: '상품 B',
-        //             status: 'STOP_SALE',
-        //             cost: 20000,
-        //             price: 25000,
-        //             brandId: 2,
-        //             ownerId: 2,
-        //             brand: '브랜드 B',
-        //             owner: '사업자 B'
-        //         }
-        //     }
-        // ];
-        // displayInventoryAndProducts(inventoryData);
-    }
-
-    function displayInventoryAndProducts(inventoryData) {
-        const inventoryList = document.getElementById('inventoryList');
-        inventoryList.innerHTML = '';
-
-        inventoryData.forEach(item => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                    <td>${item.id}</td>
-                    <td>${item.quantity}</td>
-                    <td>${item.whSectionId}</td>
-                    <td>${item.product.id}</td>
-                    <td>${item.product.name}</td>
-                    <td>${item.product.status}</td>
-                    <td>${item.product.cost}</td>
-                    <td>${item.product.price}</td>
-                    <td>${item.product.brand}</td>
-                    <td>${item.product.owner}</td>
-                `;
-            inventoryList.appendChild(row);
+                window.location.href = "/inventory/list";
+            });
         });
-    }
-</script>
-</body>
-</html>
+        getInventoryByWarehouseForm.addEventListener('click', function(event) {
+            console.log("버튼클릭?");
+            event.preventDefault();
+            const warehouseId = document.getElementById('warehouseId').value;
+            fetchInventoryAndProductsByWarehouse(warehouseId);
 
 
-
-
-
-
-<script>
-    let products = [];
-
-    function addProduct() {
-        const productId = document.getElementById('productId').value;
-        const productName = document.getElementById('productName').value;
-        const productStatus = document.getElementById('productStatus').value;
-        const sellingPrice = document.getElementById('sellingPrice').value;
-        const costPrice = document.getElementById('costPrice').value;
-        const brandId = document.getElementById('brandId').value;
-        const supplierId = document.getElementById('supplierId').value;
-
-        const product = {
-            id: productId,
-            name: productName,
-            status: productStatus,
-            sellingPrice: sellingPrice,
-            costPrice: costPrice,
-            brandId: brandId,
-            supplierId: supplierId
-        };
-
-        products.push(product);
-        renderProducts();
-    }
-
-    function renderProducts() {
-        const table = document.getElementById('productTable');
-        const tableBody = table.getElementsByTagName('tbody')[0] || table.createElement('tbody');
-        table.innerHTML = `
-      <tr>
-        <th>No.</th>
-        <th>상품 ID</th>
-        <th>상품 이름</th>
-        <th>상품 판매 상태</th>
-        <th>판매가</th>
-        <th>원가</th>
-        <th>브랜드 ID</th>
-        <th>사업자 ID</th>
-      </tr>
-    `;
-        tableBody.innerHTML = '';
-
-        products.forEach((product, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-        <td>${index + 1}</td>
-        <td>${product.id}</td>
-        <td>${product.name}</td>
-        <td>${product.status}</td>
-        <td>${product.sellingPrice}</td>
-        <td>${product.costPrice}</td>
-        <td>${product.brandId}</td>
-        <td>${product.supplierId}</td>
-      `;
-            tableBody.appendChild(row);
         });
 
-        table.appendChild(tableBody);
-    }
-</script>
 
 
-<script src="/assets/js/main.js"></script>
+        function fetchInventoryAndProductsByWarehouse(warehouseId) {
+            fetch(`/invetory/list/${warehouseId}`)
+                .then(response => response.json())
+                .then(data => displayInventoryAndProducts(data))
+                .catch(error => console.error('Error:', error));
+
+            console.log("작동하니?");
+        }
+
+        function displayInventoryAndProducts(inventoryData) {
+            const inventoryList = document.getElementById('inventoryList');
+            inventoryList.innerHTML = '';
+
+            inventoryData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td th:text="${item.id}">"</td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.whSectionId}"></td>
+        <td th:text="${item.productId}"></td>
+        <td th:text="${item.productName}"></td>
+        <td th:text="${item.productStatus}"></td>
+        <td th:text="${item.cost}"></td>
+        <td th:text="${item.price}"></td>
+        <td th:text="${item.quantities}"></td>
+        <td th:text="${item.brandName}"></td>
+        <td th:text="${item.ownerNAME}"></td>
+            `;
+                inventoryList.appendChild(row);
+            });
+        }
+    </script>
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded-top p-4">
+            <div class="row">
+                <div class="col-12 col-sm-6 text-center text-sm-start">
+                    &copy; <a href="#">2Commerce-Traning-Project by.2Commerce</a>, All Right Reserved.
+                </div>
+                <div class="col-12 col-sm-6 text-center text-sm-end">
+                    <!--/*** This template is free as long as you keep the footer author's credit link/attribution link/backlink. If you'd like to use the template without the footer author's credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                    Designed By <a href="https://htmlcodex.com">2Commerce</a>
+                    </br>
+                    Distributed By <a class="border-bottom" href="https://themewagon.com"
+                                      target="_blank">2Commerce</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+</div>
 </body>
-</html>

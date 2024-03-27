@@ -3,6 +3,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html"
       layout:decorate="~{layout/layout1}">
+
 <head>
     <title>Home2</title>
     <link href="/assets/css/styleMgtOrders.css" rel="stylesheet">
@@ -19,28 +20,28 @@
                 <h6 class="mb-4">발주조회</h6>
                 <div class="section top-section">
                     <form action="/MgtOrders/MgtOrderSearch" method="post">
-                        <div class="element-one">
-                            <div>
-                                <label for="order-date-start">발주일자 :</label>
-                                <input type="date" id="order-date-start" name="startDate">
-                                ~
-                                <input type="date" id="order-date-end" name="endDate">
-                            </div>
+                    <div class="element-one">
+                        <div>
+                            <label for="order-date-start">발주일자 :</label>
+                            <input type="date" id="order-date-start" name="startDate">
+                            ~
+                            <input type="date" id="order-date-end" name="endDate">
                         </div>
-                        <div class="element-two">
-                            <div>
-                                <label for="supplier">매입거래처 :</label>
-                                <input type="text" id="supplier" placeholder="Company" name="purchaser">
-                            </div>
-                            <div>
-                                <label for="warehouse">창고ID :</label>
-                                <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId">
-                            </div>
-                            <div></div>
+                    </div>
+                    <div class="element-two">
+                        <div>
+                            <label for="supplier">매입거래처 :</label>
+                            <input type="text" id="supplier" placeholder="Company" name="purchaser">
                         </div>
-                        <div class="button-row">
-                            <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>
+                        <div>
+                            <label for="warehouse">창고ID :</label>
+                            <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId">
                         </div>
+                        <div></div>
+                    </div>
+                    <div class="button-row">
+                        <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>
+                    </div>
                     </form>
                 </div>
                 <table class="table table-bordered">
@@ -68,45 +69,45 @@
     </div>
 </div>
 <script>
-    function searchOrders() {
-        var startDate = $('#order-date-start').val();
-        var endDate = $('#order-date-end').val();
-        var purchaser = $('#supplier').val();
-        var warehouseId = $('#warehouse').val();
+function searchOrders() {
+var startDate = $('#order-date-start').val();
+var endDate = $('#order-date-end').val();
+var purchaser = $('#supplier').val();
+var warehouseId = $('#warehouse').val();
 
-    </body>
-        <script>
-            // // Attach an event listener directly to the search button
-            // $('#searchBtn').click(function(event) {
-    //     console.log("searchBtn clieck");
-    //     // Prevent the default form submission behavior
-    //     event.preventDefault();
-    //
-    //     // Get the form data
-    //     var formData = {
-    //         startDate: $('#order-date-start').val(),
-    //         endDate: $('#order-date-end').val(),
-    //         purchaser: $('#supplier').val(),
-    //         warehouseId: $('#warehouse').val()
-    //     };
-    //
-    //     // Send an AJAX request to the server
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: '/MgtOrders/MgtOrderSearch',
-    //         data: formData,
-    //         success: function(response) {
-    //             // Update the page content with the response
-    //             // For example, update the table body with the search results
-    //             $('#mgtOrders-data').html(response);
-    //             console.log("success");
-    //         },
-    //         error: function(xhr, status, error) {
-    //             // Handle errors
-    //             console.error(error);
-    //         }
-    //     });
-    // });
+</body>
+<script>
+        // // Attach an event listener directly to the search button
+        // $('#searchBtn').click(function(event) {
+        //     console.log("searchBtn clieck");
+        //     // Prevent the default form submission behavior
+        //     event.preventDefault();
+        //
+        //     // Get the form data
+        //     var formData = {
+        //         startDate: $('#order-date-start').val(),
+        //         endDate: $('#order-date-end').val(),
+        //         purchaser: $('#supplier').val(),
+        //         warehouseId: $('#warehouse').val()
+        //     };
+        //
+        //     // Send an AJAX request to the server
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '/MgtOrders/MgtOrderSearch',
+        //         data: formData,
+        //         success: function(response) {
+        //             // Update the page content with the response
+        //             // For example, update the table body with the search results
+        //             $('#mgtOrders-data').html(response);
+        //             console.log("success");
+        //         },
+        //         error: function(xhr, status, error) {
+        //             // Handle errors
+        //             console.error(error);
+        //         }
+        //     });
+        // });
 </script>
 
 

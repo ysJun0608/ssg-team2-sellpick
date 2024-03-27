@@ -7,13 +7,19 @@ import lombok.*;
 @Builder
 
 public class InventoryDTO{
-        Long id;
-        Long quantity;
-        Long warehouseSectionId;
-        Long productId;
-        Long warehouseId;
-        String location;
-        String productName;
-        String brandName;
-        int productPrice;
+        private Long id;
+        private Long quantity;
+        private Long whSectionId;
+        private Long productId;
+        private Long warehouseId;
+        private String location;
+        private String productName;
+        private String brandName;
+        private int productPrice;
+        private String productStatus;
+        private Long cost;
+
+        private String ownerNAME;
+        private Long price;
+        private Long quantities;
 }

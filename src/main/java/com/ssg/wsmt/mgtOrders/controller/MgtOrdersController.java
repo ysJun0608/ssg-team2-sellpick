@@ -1,15 +1,25 @@
 package com.ssg.wsmt.mgtOrders.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
 import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
 import com.ssg.wsmt.mgtOrders.service.MgtOrdersService;
 import com.ssg.wsmt.mgtOrders.service.impl.MgtOrdersServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @Log4j2
@@ -18,7 +28,7 @@ import org.springframework.web.bind.annotation.*;
 public class MgtOrdersController {
 
     @Autowired
-    MgtOrdersServiceImpl mgtOrdersService;
+    MgtOrdersService mgtOrdersService;
 
     @GetMapping("/MgtOrderCreate")
     public void showCreate(Long id, Model model) {
@@ -26,30 +36,86 @@ public class MgtOrdersController {
         model.addAttribute("id", id);
     }
 
-    @PostMapping("/MgtOrderCreate")
-    public String create(MgtOrdersDTO mgtOrdersDTO, Model model) {
-        log.info("Create Post ....");
-        log.info(mgtOrdersDTO);
-        Long id = mgtOrdersService.createForm(mgtOrdersDTO);
-        log.info(id);
-        return "redirect:/MgtOrders/MgtOrderCreate?id=" + id;
+    @GetMapping("/home")
+    public String home() {
+        log.info("");
+        return "home";
     }
 
+    @GetMapping("/example")
+    public String example() {
+        log.info("");
+        return "example";
+    }
+
+    @PostMapping("/MgtOrderCreate")
+    public ResponseEntity<?> create(@RequestBody MgtOrdersDTO mgtOrdersDTO) {
+        try {
+            log.info("Create Post ....");
+            log.info(mgtOrdersDTO);
+            Long id = mgtOrdersService.createForm(mgtOrdersDTO);
+            log.info(id);
+            // Construct the JSON response
+            return ResponseEntity.ok().body("{\"id\": " + id + "}");
+        } catch (Exception e) {
+            // Handle any exceptions and return an error response
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"error\": \"An error occurred.\"}");
+        }
+    }
+
+
     @PostMapping("/AddItems")
-    public String addItems(@RequestParam(value = "id", required = false) Long id,
-                           @RequestParam(value = "itemNames", required = false) Long[] itemNames,
-                           @RequestParam(value = "quantities", required = false) Long[] quantities) {
-        log.info(id + " " + itemNames + " " + quantities);
-        System.out.println("Order ID: " + id);
-        if (itemNames != null && quantities != null) {
-            for (int i = 0; i < Math.min(itemNames.length, quantities.length); i++) {
-                System.out.println("Item: " + itemNames[i] + ", Quantity: " + quantities[i]);
+    public ResponseEntity<Map<String, String>> addItems(@RequestBody Map<String, Object> requestData) {
+        // Extract checkedItems and id from the requestData
+        log.info("requestData : " + requestData);
+        List<Map<String, String>> checkedItems = (List<Map<String, String>>) requestData.get("checkedItems");
+        String id = String.valueOf(requestData.get("id"));
+        log.info("addItems Id : " + id);
+        // Check for null values and log
+        if (checkedItems == null || id == null) {
+            log.error("Received null checked items or id");
+            return ResponseEntity.badRequest().build(); // Return bad request status
+        }
+
+        mgtOrdersService.deleteItems(Long.parseLong(id));
+
+        // Process the checked items list
+        for (Map<String, String> checkedItem : checkedItems) {
+            String itemName = checkedItem.get("itemName");
+            String quantity = checkedItem.get("quantity");
+
+            // Check for null or invalid numeric values
+            if (itemName == null || quantity == null) {
+                log.error("Null item name or quantity received");
+                return ResponseEntity.badRequest().build(); // Return bad request status
+            }
+
+            try {
+                // Parse itemName and quantity to Long
+                long itemId = Long.parseLong(itemName);
+                long itemQuantity = Long.parseLong(quantity);
+
+                // Process each checked item
+                mgtOrdersService.addItems(itemQuantity, itemId, Long.parseLong(id));
+
+                // Log item details
+                log.info("Item Name: " + itemName + ", Quantity: " + quantity);
+            } catch (NumberFormatException e) {
+                log.error("Invalid numeric value received for item ID or quantity");
+                return ResponseEntity.badRequest().build(); // Return bad request status
             }
         }
 
-        mgtOrdersService.addItems(quantities, itemNames, id);
-        return "redirect:/MgtOrders/MgtOrderCreate";
+        // Process the rest of the logic if needed
+        log.info("AddItems Success");
+
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("id", id);
+
+        return ResponseEntity.ok(responseBody);
     }
+
+
 
     @GetMapping("/MgtOrderConfirm")
     public void confirm() {
@@ -57,9 +123,42 @@ public class MgtOrdersController {
     }
 
     @GetMapping("/MgtOrderSearch")
-    public void search() {
-        log.info("confirm....");
+        public void search(Model model) {
+        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersService.selectAll();
+        log.info("mgtOrdersDTOList" + mgtOrdersDTOList);
+        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
     }
+
+
+    @PostMapping("/MgtOrderSearch")
+    public String searchOrders(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String purchaser,
+            @RequestParam(required = false) String warehouseId,
+            Model model) {
+        // Add your logic here to process the search parameters and retrieve the data
+        // For demonstration purposes, let's just return a success message
+
+        log.info("MgtOrderSeach PostMapping");
+        // Dummy data for demonstration
+        List<MgtOrdersDTO> mgtOrdersDTOList = new ArrayList<>();
+        // Add your logic to fetch data based on search parameters
+        // For example:
+        log.info("start date " + startDate);
+        log.info("end date : " + endDate);
+        log.info("purchaser : " + purchaser);
+        log.info("warehouseId : " + warehouseId);
+         mgtOrdersDTOList = mgtOrdersService.searchOrders(startDate, endDate, purchaser, warehouseId);
+        // Pass the data to the Thymeleaf template
+
+        log.info("mgtOrdersDTOLIst" + mgtOrdersDTOList);
+        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
+
+        // Return the name of your Thymeleaf view template
+        return "/MgtOrders/MgtOrderSearch";
+    }
+
 
     @GetMapping("/MgtOrderNondeliverd")
     public void searchNondeliverd() {

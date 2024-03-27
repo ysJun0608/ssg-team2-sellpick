@@ -1,7 +1,5 @@
 package com.ssg.wsmt.inventory.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,15 +18,12 @@ import java.net.URLEncoder;
 public class PageRequestDTO {
 
     @Builder.Default
-    @Min(1)
     private int page = 1;
 
     @Builder.Default
-    @Min(1)
-    @Max(100)
     private int size = 10;
 
-    private String type;
+    private String type; // 검색의 종류 t,c, w, tc,tw, twc
 
     private String keyword;
 
@@ -36,11 +31,11 @@ public class PageRequestDTO {
         if(type == null || type.isEmpty()){
             return null;
         }
-        return type.split("\\s+");
+        return type.split("");
     }
 
     public Pageable getPageable(String...props) {
-        return PageRequest.of(this.page - 1, this.size, Sort.by(props).descending());
+        return PageRequest.of(this.page -1, this.size, Sort.by(props).descending());
     }
 
     public int getOffset() {
@@ -50,12 +45,14 @@ public class PageRequestDTO {
     private String link;
 
     public String getLink() {
+
         if(link == null){
             StringBuilder builder = new StringBuilder();
 
             builder.append("page=" + this.page);
 
             builder.append("&size=" + this.size);
+
 
             if(type != null && type.length() > 0){
                 builder.append("&type=" + type);
@@ -65,7 +62,6 @@ public class PageRequestDTO {
                 try {
                     builder.append("&keyword=" + URLEncoder.encode(keyword,"UTF-8"));
                 } catch (UnsupportedEncodingException e) {
-                    throw new RuntimeException("인코딩 실패", e);
                 }
             }
             link = builder.toString();
@@ -73,4 +69,7 @@ public class PageRequestDTO {
 
         return link;
     }
+
+
+
 }

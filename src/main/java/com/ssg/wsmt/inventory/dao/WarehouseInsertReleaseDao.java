@@ -90,7 +90,7 @@ public class WarehouseInsertReleaseDao extends ObjectDBIO {
             // 주문된 상품들을 처리하기 위해 Batch 처리를 수행합니다.
             for (WarehouseInOutDTO dto : allInsertProducts) {
                 pstmt.setLong(1, dto.getQuantity());
-                pstmt.setString(2, WhInOutType.INSERT_WAIT.name());
+                pstmt.setString(2, WhInOutType.INSERT_REQUEST.name());
                 pstmt.setLong(3, dto.getProductsId());
                 pstmt.setLong(4, dto.getQuantity());
                 pstmt.setLong(5, dto.getMgtOrdersId());

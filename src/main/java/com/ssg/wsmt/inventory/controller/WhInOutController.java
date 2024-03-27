@@ -1,5 +1,6 @@
 package com.ssg.wsmt.inventory.controller;
 
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseInsertReleaseDTO;
 import com.ssg.wsmt.inventory.dto.WhPageRequestDTO;
 import com.ssg.wsmt.inventory.dto.WhPageResponseDTO;

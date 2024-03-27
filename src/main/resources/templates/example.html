@@ -4,93 +4,205 @@
       layout:decorate="~{layout/layout1}">
 
 <head>
-    <title>Home2</title>
+    <title>SMODERS MODIFY</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%; /* 전체 사이즈를 조정합니다 */
+            margin: 0 auto; /* 가운데 정렬 */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-details {
+            margin: 20px 0;
+        }
+
+
+
+
+        .order-label {
+            display: block; /* 라벨을 블록 요소로 변경 */
+            margin-bottom: 5px; /* 하단 여백 추가 */
+        }
+
+        .order-input, .order-select {
+            width: 100%; /* 입력 필드 너비를 100%로 설정 */
+            padding: 10px;
+            margin-bottom: 20px; /* 입력 필드 간 여백 추가 */
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        /*버튼 가운데 정렬 */
+        .order-button,
+        .delete-button {
+            display: inline-block; /* 인라인 블록 요소로 설정하여 가로로 배치합니다 */
+            margin-left: 500px;
+        }
+
+        .order-button, .delete-button {
+
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .order-button {
+            background-color: #87CEFA;
+            color: white;
+            margin-left: 120px; /* 버튼 간 여백 추가 */
+        }
+
+        .delete-button {
+            background-color: #87CEFA; /* 삭제 버튼 색상 변경 */
+            color: white;
+            margin-left: 10px; /* 버튼 간 여백 추가 */
+        }
+
+        .order-button:hover {
+            background-color: #1E90FF;
+        }
+
+        .delete-button:hover {
+            background-color: #1E90FF;
+        }
+
+
+        h2 {
+            color: #333;
+            text-align: center; /* 가운데 정렬 */
+            padding: 20px 0; /* 위아래로 여백 추가 */
+            border-bottom: 2px solid #ccc; /* 밑줄 추가 */
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* 기존 스타일 유지 */
+
+        /* 버튼을 가운데로 정렬하기 위한 새로운 컨테이너 스타일 */
+        .button-container {
+            text-align: center; /* 버튼을 가운데 정렬합니다 */
+        }
+
+
+
+
+        .order-button, .delete-button {
+            /* 기존 버튼 스타일 */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #87CEFA; /* 이 부분은 기존 색상을 유지하거나 변경할 수 있습니다 */
+            color: white;
+        }
+
+        /* 버튼 호버 스타일 */
+        .order-button:hover {
+            background-color: #1E90FF;
+        }
+
+        .delete-button:hover {
+            background-color: #1E90FF; /* 삭제 버튼에도 같은 호버 효과를 적용 */
+        }
+
+
+        .manual-button {
+            background-color: #87CEFA; /* 버튼 배경색 */
+            color: white; /* 글자색 */
+            border: none; /* 테두리 없애기 */
+            border-radius: 4px; /* 모서리 둥글게 */
+            padding: 3px 6px; /* 패딩 조정 */
+            cursor: pointer; /* 마우스 오버시 커서 변경 */
+            font-size: 12px; /* 글자 크기 조정 */
+        }
+
+
+    </style>
 </head>
 
 <body>
 <div layout:fragment="content">
+    <div class="container mt-5">
+        <!--main contents Start-->
 
-    <!-- Navbar End -->
-    <div class="col-sm-12">
-        <form id="searchForm" class="bg-light rounded h-100 p-4" action="/inventory/warehouselist" method="get">
-            <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
-            <select class="form-select" name="type">
-                <option selected>카테고리</option>
-                <option value="id">창고번호</option>
-                <option value="location">주소</option>
-                <option value="sectiontype">창고소분류(섹션)</option>
-                <option value="deliveryCompanyName">택배사</option>
-            </select>
-            <div class="form-group">
-                <input class="form-control border-0" type="search" placeholder="검색"
-                       name="keyword" th:value="${pageRequestDTO.keyword}">
-            </div>
-            <div class="form-group">
-                <!-- 기타 입력 필드나 내용을 추가할 수 있습니다. -->
-            </div>
-            <br>
-            <button type="submit" class="btn btn-primary">검색</button>
-            <!-- 리셋 및 쿼리 문자열 제거 버튼 -->
-            <button type="button" class="btn btn-primary m-2" onclick="resetFormAndQueryString()">지우기</button>
-        </form>
-    </div>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="bg-light rounded h-100 p-4">
-                <h6 class="mb-4">창고조회(클릭하면상세지도와 정보가 나옵니다.)</h6>
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th scope="col" style="background-color: #acd1ea;">창고대분류</th>
-                        <th scope="col" style="background-color: #acd1ea;">창고번호</th>
-                        <th scope="col" style="background-color: #acd1ea;">택배사</th>
-                        <th scope="col" style="background-color: #acd1ea;">창고주소</th>
-                        <th scope="col" style="background-color: #acd1ea;">창고소분류(섹션)</th>
-                    </tr>
-                    </thead>
-                    <tbody id="warehouse-data">
-                    <tr th:each="w : ${responseDTO.dtoList}" th:data-location="${w.location}"
-                        onclick="showWarehouseMap(this)">
-                        <td th:text="${w.type}"></td>
-                        <td th:text="${w.id}"></td>
-                        <td th:text="${w.deliveryCompanyName}"></td>
-                        <td th:text="${w.location}"></td>
-                        <td th:text="${w.sectionType}"></td>
+        <div class="container">
+            <h2 style="text-align: left;">주문 상세 조회   <button type="button" class="manual-button">매뉴얼</button></h2>
 
-                    </tr>
-                    </tbody>
-                </table>
-
-            </div>
-        </div>
-        <br>
-        <div class="col-sm-12 col-xl-6" style="padding-right: 0; background-color: #F3F6F9;">
-
-            <div id="map">
-
-            </div>
-        </div>
-        <div class="col-sm-12 col-xl-6" style="padding-left: 0;">
-
-            <div class="bg-light rounded h-100 p-4">상세보기
-                <button type="button" class="btn btn-primary m-2">상세보기</button>
-                <br>
-            </div>
+            <form th:action="@{/smorder/modify}" th:method="post" class="order-details">
+                <div class="order-detail">
+                    <label class="order-label">주문번호:</label>
+                    <input type="text" class="order-input" th:name="id" th:value="${orders.id}" readonly style="background-color: #d3d3d3;" />
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">수량:</label>
+                    <input type="number" class="order-input" th:name="quantity" th:value="${orders.quantity}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">결제 금액:</label>
+                    <input type="text" class="order-input" th:name="paymentAmount" th:value="${orders.paymentAmount}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">주문 상태:</label>
+                    <select class="order-select" id="seller_send_status" name="seller_send_status">
+                        <option value="">선택하세요...</option>
+                        <option value="PREPARING" th:selected="${orders.seller_send_status == 'PREPARING'}">배송준비중</option>
+                        <option value="COMPLETE" th:selected="${orders.seller_send_status == 'COMPLETE'}">배송완료</option>
+                        <option value="CANCEL" th:selected="${orders.seller_send_status == 'CANCEL'}">주문취소</option>
+                    </select>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">주문일:</label>
+                    <!--                    <input type="text" class="order-input" th:name="createdAt" th:value="${orders.createdAt}" readonly style="background-color: #d3d3d3;"/>-->
+                    <input type="text" class="order-input" id="createdAtAtDisplay" readonly style="background-color: #d3d3d3;" th:data-datetime="${orders.createdAt}" />
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">예상 배송일:</label>
+                    <!--                    <input type="text" class="order-input" th:name="expectedAt" th:value="${orders.expectedAt}" readonly style="background-color: #d3d3d3;"/>-->
+                    <input type="text" class="order-input" id="expectedAtDisplay" readonly style="background-color: #d3d3d3;" th:data-datetime="${orders.expectedAt}" />
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">고객 ID:</label>
+                    <input type="text" class="order-input" th:name="customerId" th:value="${orders.customerId}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">쇼핑몰 ID:</label>
+                    <input type="text" class="order-input" th:name="shoppingMallId" th:value="${orders.shoppingMallId}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">상품 ID:</label>
+                    <input type="text" class="order-input" th:name="productId" th:value="${orders.productId}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <div class="button-container">
+                        <button type="submit" class="order-button">수정</button>
+                        <button type="button" class="delete-button">삭제</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
-    </div>
-    <div class="bg-light rounded h-100 p-4" style="padding-right: 0;">
-        <div class="btn-toolbar" role="toolbar" style="justify-content: right">
-            <div class="btn-group me-2" role="group" aria-label="First group">
-                <a th:href="@{/inventory/warehouselist(page=${num}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
-                   th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}"
-                   th:class="${responseDTO.page == num} ? 'btn btn-secondary' : 'btn btn-primary'"
-                   th:text="${num}"></a>
-            </div>
-        </div>
+
+        <!--main contents End-->
+
+
+
+
+
         <!-- Footer Start -->
         <div class="container-fluid pt-4 px-4">
-
             <div class="bg-light rounded-top p-4">
                 <div class="row">
                     <div class="col-12 col-sm-6 text-center text-sm-start">
@@ -109,5 +221,7 @@
         <!-- Footer End -->
     </div>
 
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
 </body>

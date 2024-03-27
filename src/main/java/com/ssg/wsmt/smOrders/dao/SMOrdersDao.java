@@ -1,7 +1,7 @@
 //package com.ssg.wsmt.smOrders.dao;
 //
 //import com.ssg.wsmt.DBIO.ObjectDBIO;
-//import com.ssg.wsmt.smOrders.domain.SmOrdersVo;
+//import com.ssg.wsmt.smOrders.domain.smOrders;
 //import com.ssg.wsmt.smOrders.dto.SmOrdersAllOutput;
 //import com.ssg.wsmt.smOrders.dto.SmOrdersOutput;
 //import com.ssg.wsmt.smOrders.enums.SellerSendStatus;
@@ -259,7 +259,7 @@
 //     *
 //     * @param smorders 업데이트할 주문 정보
 //     */
-//    public void updateSmOrdersStatus(SmOrdersVo smorders) {
+//    public void updateSmOrdersStatus(smOrders smorders) {
 //
 //
 //        try {
@@ -286,8 +286,8 @@
 //     * @param id 조회할 주문 ID
 //     * @return 조회된 주문 객체
 //     */
-//    public SmOrdersVo findById(Long id) {
-//        SmOrdersVo smOrders = null;
+//    public smOrders findById(Long id) {
+//        smOrders smOrders = null;
 //
 //        try {
 //            conn = open();
@@ -298,7 +298,7 @@
 //
 //            ResultSet rs = pstmt.executeQuery();
 //            while (rs.next()) {
-//                smOrders = new SmOrdersVo();
+//                smOrders = new smOrders();
 //                smOrders.setId(id);
 //                smOrders.setQuantity(rs.getInt("quantity"));
 //                smOrders.setPaymentAmount(rs.getInt("payment_amount"));
@@ -322,7 +322,7 @@
 //     *
 //     * @param smorders 삽입할 주문 정보
 //     */
-//    public void insertSmOrdersStatus(SmOrdersVo smorders) {
+//    public void insertSmOrdersStatus(smOrders smorders) {
 //
 //        try {
 //            // Connection 연결 후 open 호출

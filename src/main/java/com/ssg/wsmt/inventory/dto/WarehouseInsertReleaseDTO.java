@@ -1,5 +1,6 @@
 package com.ssg.wsmt.inventory.dto;
 
+import com.ssg.wsmt.inventory.enums.WhInOutType;
 import lombok.Data;
 
 import java.time.LocalDateTime;

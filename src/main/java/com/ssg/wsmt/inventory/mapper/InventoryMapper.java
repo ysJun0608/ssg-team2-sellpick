@@ -2,7 +2,8 @@ package com.ssg.wsmt.inventory.mapper;
 
 import com.ssg.wsmt.inventory.domain.InventoryVO;
 import com.ssg.wsmt.inventory.dto.InventoryDTO;
-import com.ssg.wsmt.product.dto.ProductsDTO;
+import com.ssg.wsmt.product.dto.ProductDTO;
+import com.ssg.wsmt.smOrders.enums.SellerSendStatus;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
 
@@ -10,12 +11,14 @@ import java.util.List;
 
 @Mapper
 public interface InventoryMapper {
-    List<ProductsDTO> findAllProducts();
-    ProductsDTO findProductById(Long id);
-    List<InventoryVO> findAll();
-    InventoryVO findById(Long id);
-    List<InventoryVO> findByWarehouseId(@Param("warehouseId") Long warehouseId);
-    List<InventoryVO> search(String keyword);
+    List<InventoryDTO> findAll();
+    List<InventoryDTO> findByWarehouseId(Long warehouseId);
 
-    List<InventoryVO> selectAll();
+//    ProductDTO findProductById(Long id);
+//
+//    List<ProductDTO> findAllProducts();
+//    List<InventoryDTO> findOrdersByCriteria( Long orderId , Long customerId, SellerSendStatus sendStatus);
+//    List<InventoryDTO> searchAll(@Param("types") String[] types, @Param("keyword") String keyword, @Param("offset") int offset, @Param("size") int size);
+//    int getTotalCount(@Param("types") String[] types, @Param("keyword") String keyword);
 }
+
