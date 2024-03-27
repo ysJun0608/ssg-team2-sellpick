@@ -13,10 +13,10 @@ import java.util.List;
 public interface InventoryService {
     List<InventoryDTO> findAll();
     List<InventoryDTO> findByWarehouseId(Long warehouseId);
-    InventoryVO getOne(Long id);
-
-    List<InventoryDTO> searchOrders(Long warehouseId);
-    PageResponseDTO<InventoryDTO> list(PageRequestDTO pageRequestDTO);
-
-    List<ProductDTO> findAllProducts();
+//    InventoryVO getOne(Long id);
+//
+//    List<InventoryDTO> searchOrders(Long warehouseId);
+////    PageResponseDTO<InventoryDTO> list(PageRequestDTO pageRequestDTO);
+//
+//    List<ProductDTO> findAllProducts();
 }

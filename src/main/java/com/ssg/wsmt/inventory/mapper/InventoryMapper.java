@@ -14,11 +14,11 @@ public interface InventoryMapper {
     List<InventoryDTO> findAll();
     List<InventoryDTO> findByWarehouseId(Long warehouseId);
 
-    ProductDTO findProductById(Long id);
-
-    List<ProductDTO> findAllProducts();
-    List<InventoryDTO> findOrdersByCriteria( Long orderId , Long customerId, SellerSendStatus sendStatus);
-    List<InventoryDTO> searchAll(@Param("types") String[] types, @Param("keyword") String keyword, @Param("offset") int offset, @Param("size") int size);
-    int getTotalCount(@Param("types") String[] types, @Param("keyword") String keyword);
+//    ProductDTO findProductById(Long id);
+//
+//    List<ProductDTO> findAllProducts();
+//    List<InventoryDTO> findOrdersByCriteria( Long orderId , Long customerId, SellerSendStatus sendStatus);
+//    List<InventoryDTO> searchAll(@Param("types") String[] types, @Param("keyword") String keyword, @Param("offset") int offset, @Param("size") int size);
+//    int getTotalCount(@Param("types") String[] types, @Param("keyword") String keyword);
 }
 

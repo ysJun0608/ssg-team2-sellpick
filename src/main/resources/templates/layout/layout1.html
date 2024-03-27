@@ -96,40 +96,26 @@
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
                                 class="fa fa-cubes me-2"></i></i>재고관리</a>
                         <div class="dropdown-menu bg-transparent border-0">
-                            <a href="button.html" class="dropdown-item">재고조회</a>
-                            <a href="typography.html" class="dropdown-item">미사용</a>
-                            <a href="element.html" class="dropdown-item">미사용</a>
+                            <a href="/inventory/list" class="dropdown-item">재고조회</a>
                         </div>
 
                         <div class="nav-item dropdown">
                             <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                                    class="fa fa-plus me-2"></i>입고관리</a>
+                                    class="fa fa-plus me-2"></i>입출고관리</a>
                             <div class="dropdown-menu bg-transparent border-0">
+                                <a href="404.html" class="dropdown-item">전체조회</a>
                                 <a href="signin.html" class="dropdown-item">입고조회</a>
-                                <a href="signup.html" class="dropdown-item">미사용</a>
-                                <a href="404.html" class="dropdown-item">미사용</a>
-                                <a href="blank.html" class="dropdown-item">미사용</a>
-                            </div>
-
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
-                                        class="fa fa-minus me-2"></i>출고관리</a>
-                                <div class="dropdown-menu bg-transparent border-0">
-                                    <a href="signin.html" class="dropdown-item">출고조회</a>
-                                    <a href="signup.html" class="dropdown-item">미사용</a>
-                                    <a href="404.html" class="dropdown-item">미사용</a>
-                                    <a href="blank.html" class="dropdown-item">미사용</a>
-                                </div>
+                                <a href="signup.html" class="dropdown-item">출고조회</a>
                             </div>
 
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
                                         class="fa fa-credit-card me-2"></i>주문관리</a>
                                 <div class="dropdown-menu bg-transparent border-0">
-                                    <a href="signin.html" class="dropdown-item">주문조회</a>
-                                    <a href="signup.html" class="dropdown-item">주문수정</a>
-                                    <a href="404.html" class="dropdown-item">주문최소</a>
-                                    <a href="blank.html" class="dropdown-item">미사용</a>
+                                    <a href="/smorder/listall" class="dropdown-item">주문조회</a>
+                                    <a href="/smorder/listall?orderId=&customerId=&status=CANCEL" class="dropdown-item">취소된 주문조회</a>
+                                    <a href="/smorder/listall?orderId=&customerId=&status=PREPARING" class="dropdown-item">배송 준비중인 주문조회</a>
+                                    <a href="/smorder/listall?orderId=&customerId=&status=COMPLETE" class="dropdown-item">배송 완료된 주문조회</a>
                                 </div>
                             </div>
                         </div>

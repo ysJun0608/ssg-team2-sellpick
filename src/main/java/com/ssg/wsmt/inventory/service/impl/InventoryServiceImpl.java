@@ -2,9 +2,7 @@ package com.ssg.wsmt.inventory.service.impl;
 
 
 import com.ssg.wsmt.inventory.domain.InventoryVO;
-import com.ssg.wsmt.inventory.dto.InventoryDTO;
-import com.ssg.wsmt.inventory.dto.PageRequestDTO;
-import com.ssg.wsmt.inventory.dto.PageResponseDTO;
+import com.ssg.wsmt.inventory.dto.*;
 import com.ssg.wsmt.inventory.mapper.InventoryMapper;
 import com.ssg.wsmt.inventory.service.InventoryService;
 import com.ssg.wsmt.product.dto.ProductDTO;
@@ -25,21 +23,21 @@ import java.util.stream.Collectors;
 public class InventoryServiceImpl implements InventoryService {
     private final InventoryMapper inventoryMapper;
 
-    @Override
-    public List<ProductDTO> findAllProducts() {
-        return inventoryMapper.findAllProducts();
-    }
-
-    public ProductDTO findProductById(Long id) {
-        return inventoryMapper.findProductById(id);
-    }
+//    @Override
+//    public List<ProductDTO> findAllProducts() {
+//        return inventoryMapper.findAllProducts();
+//    }
+//
+//    public ProductDTO findProductById(Long id) {
+//        return inventoryMapper.findProductById(id);
+//    }
 
     public void searchInventory() {
 //        System.out.println("찾고자 하는 재고의 id를 입력해주세요 : ");
 //        Long id = Long.parseLong(sc.nextLine());
 //        Inventory inventory = inventoryDao.findById(id);
     }
-    
+
     public List<InventoryDTO> findAllInventory() {
         return inventoryMapper.findAll();
     }
@@ -54,33 +52,33 @@ public class InventoryServiceImpl implements InventoryService {
         return inventoryMapper.findByWarehouseId(warehouseId);
     }
 
-    @Override
-    public InventoryVO getOne(Long id) {
-        return null;
-    }
+//    @Override
+//    public InventoryVO getOne(Long id) {
+//        return null;
+//    }
+//
+//    @Override
+//    public List<InventoryDTO> searchOrders(Long warehouseId) {
+//        return null;
+//    }
 
-    @Override
-    public List<InventoryDTO> searchOrders(Long warehouseId) {
-        return null;
-    }
 
 
-
-    @Override
-    public PageResponseDTO<InventoryDTO> list(PageRequestDTO pageRequestDTO) {
-        int offset = pageRequestDTO.getOffset();
-        int size = pageRequestDTO.getSize();
-
-        List<InventoryDTO> dtoList = inventoryMapper.findAll();
-        int totalCount = inventoryMapper.getTotalCount(pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
-
-        return PageResponseDTO.<InventoryDTO>withAll()
-                .dtoList(dtoList)
-                .page(pageRequestDTO.getPage()) // 페이지 정보 설정
-                .size(pageRequestDTO.getSize()) // 페이지 크기 설정
-                .total(totalCount) // 전체 항목 수 설정
-                .build();
-    }
+//    @Override
+//    public InvenPageResponseDTO<InventoryDTO> list(InvenPageRequestDTO pageRequestDTO) {
+//        int offset = pageRequestDTO.getOffset();
+//        int size = pageRequestDTO.getSize();
+//
+//        List<InventoryDTO> dtoList = inventoryMapper.findAll();
+//        int totalCount = inventoryMapper.getTotalCount(pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+//
+//        return InvenPageResponseDTO.<InventoryDTO>withAll()
+//                .dtoList(dtoList)
+//                .page(pageRequestDTO.getPage()) // 페이지 정보 설정
+//                .size(pageRequestDTO.getSize()) // 페이지 크기 설정
+//                .total(totalCount) // 전체 항목 수 설정
+//                .build();
+//    }
 
 
 

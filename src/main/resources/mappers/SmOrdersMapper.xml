@@ -161,8 +161,8 @@
         SO.products_id AS "productId",
         WSMR.name AS "shoppingMallName"
         FROM
-        sm_orders AS SO
-        JOIN shopping_mall AS WSMR ON WSMR.id = SO.shopping_mall_id
+        SM_ORDERS AS SO
+        JOIN SHOPPING_MALL AS WSMR ON WSMR.id = SO.shopping_mall_id
         WHERE 1=1
         <if test="orderId != null and orderId != ''">
             AND SO.id = #{orderId}
