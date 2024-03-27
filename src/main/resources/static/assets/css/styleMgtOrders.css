@@ -25,14 +25,6 @@
     box-sizing: border-box;
 }
 
-body {
-    position: relative;
-    margin: 0;
-    padding: 2rem 0 0 6.75rem;
-    font-family: var(--body-font);
-    font-size: var(--normal-font-size);
-    transition: .5s;
-}
 
 h1 {
     margin: 0;
@@ -121,10 +113,6 @@ a {
     width: calc(var(--nav--width) + 9.25rem);
 }
 
-/* Add padding body*/
-.body-pd {
-    padding: 2rem 0 0 16rem;
-}
 
 /* Active links menu */
 .active {
@@ -181,10 +169,6 @@ a {
     padding: .5rem 0;
 }
 
-body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-}
 .section {
     padding: 20px;
     margin-bottom: 20px;

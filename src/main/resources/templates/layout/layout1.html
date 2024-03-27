@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -8,7 +9,7 @@
     <title>Document</title>
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="/images/favicon.ico" rel="icon">
     <!-- Template Stylesheet -->
     <link href="/assets/css/stylesWarehouseList.css" rel="stylesheet">
 
@@ -97,20 +98,13 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-plus me-2"></i>입/출고관리</a>
                     <div class="dropdown-menu bg-transparent border-0">
-                        <a href="/inventory/whInOut/list" class="dropdown-item" id="whInlist">입/출고조회</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-minus me-2"></i>출고관리</a>
-                    <div class="dropdown-menu bg-transparent border-0">
-                        <a href="/inventory/whInOut/list" class="dropdown-item" id="whOutlist">출고조회</a>
+                        <a href="/inventory/whInOut/list/1" class="dropdown-item" id="whInlist">입/출고조회</a>
                     </div>
                 </div>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-credit-card me-2"></i>정산관리</a>
                     <div class="dropdown-menu bg-transparent border-0">
                         <a href="signin.html" class="dropdown-item">정산조회</a>
-
                     </div>
                 </div>
                 <div class="nav-item dropdown">
@@ -161,7 +155,7 @@
                 <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
                     <a href="#" class="dropdown-item">
                         <div class="d-flex align-items-center">
-                            <img class="rounded-circle" src="images/user.png" alt=""
+                            <img class="rounded-circle" src="/images/user.png" alt=""
                                  style="width: 40px; height: 40px;">
                             <div class="ms-2">
                                 <h6 class="fw-normal mb-0">Jhon send you a message</h6>
@@ -172,7 +166,7 @@
                     <hr class="dropdown-divider">
                     <a href="#" class="dropdown-item">
                         <div class="d-flex align-items-center">
-                            <img class="rounded-circle" src="images/user.png" alt=""
+                            <img class="rounded-circle" src="/images/user.png" alt=""
                                  style="width: 40px; height: 40px;">
                             <div class="ms-2">
                                 <h6 class="fw-normal mb-0">Jhon send you a message</h6>
@@ -183,7 +177,7 @@
                     <hr class="dropdown-divider">
                     <a href="#" class="dropdown-item">
                         <div class="d-flex align-items-center">
-                            <img class="rounded-circle" src="images/user.png" alt=""
+                            <img class="rounded-circle" src="/images/user.png" alt=""
                                  style="width: 40px; height: 40px;">
                             <div class="ms-2">
                                 <h6 class="fw-normal mb-0">Jhon send you a message</h6>
@@ -237,11 +231,31 @@
             </div>
         </div>
     </nav>
+
     <!-- Navbar End -->
     <div layout:fragment="content">
 
     </div>
 
+    <!-- Footer Start -->
+    <div class="container-fluid pt-4 px-4">
+
+        <div class="bg-light rounded-top p-4">
+            <div class="row">
+                <div class="col-12 col-sm-6 text-center text-sm-start">
+                    &copy; <a href="#">2Commerce-Traning-Project by.2Commerce</a>, All Right Reserved.
+                </div>
+                <div class="col-12 col-sm-6 text-center text-sm-end">
+                    <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                    Designed By <a href="https://htmlcodex.com">2Commerce</a>
+                    </br>
+                    Distributed By <a class="border-bottom" href="https://themewagon.com"
+                                      target="_blank">2Commerce</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
 </div>
 <!-- Content End -->
 
