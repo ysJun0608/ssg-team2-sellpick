@@ -134,6 +134,24 @@
 
         </tbody>
     </table>
+    <div class="float-end">
+        <ul class="pagination">
+            <li class="page-item" th:if="${responseDTO.prev}">
+                <a class="page-link" th:href="@{/smorder/listall(page=${num})}" th:data-num="${responseDTO.start - 1}">Previous</a>
+            </li>
+
+            <th:block th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                <li class="page-item" th:class="${responseDTO.page == num ? 'active' : ''}">
+                    <a class="page-link" th:href="@{/smorder/listall(page=${num})}" th:data-num="${num}" th:text="${num}"></a>
+                </li>
+            </th:block>
+
+            <li class="page-item" th:if="${responseDTO.next}">
+                <a class="page-link"  th:href="@{/smorder/listall(page=${num})}" th:data-num="${responseDTO.end + 1}">Next</a>
+            </li>
+        </ul>
+    </div>
+
     <button id="goToListButton">목록으로 돌아가기</button>
     <script>
         const getInventoryByWarehouseForm = document.getElementById('getInventoryByWarehouseForm');
