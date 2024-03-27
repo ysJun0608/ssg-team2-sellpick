@@ -88,9 +88,9 @@
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
                             class="fa fa-calculator me-2"></i>발주관리</a>
                     <div class="dropdown-menu bg-transparent border-0">
-                        <a href="/mgtorders/create" class="dropdown-item" id="mgtordersCreate">발주등록</a>
-                        <a href="/mgtorders/confirm" class="dropdown-item" id="mgtordersConfirm">발주확정</a>
-                        <a href="/mgtorders/list"class="dropdown-item"  id="mgtordersList">발주조회</a>
+                        <a href="/MgtOrders/MgtOrderCreate" class="dropdown-item" id="mgtordersCreate">발주등록</a>
+                        <a href="/MgtOrders/MgtOrderConfirm" class="dropdown-item" id="mgtordersConfirm">발주확정</a>
+                        <a href="/mgtorders/MgtOrderSearch"class="dropdown-item"  id="mgtordersList">발주조회</a>
                     </div>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
@@ -138,8 +138,9 @@
             <a href="#" class="sidebar-toggler flex-shrink-0">
                 <i class="fa fa-bars"></i>
             </a>
-            <form class="d-none d-md-flex ms-4">
+            <form class="d-none d-md-flex ms-4 position-relative">
                 <input class="form-control border-0" type="search" placeholder="Search" id="searchInput">
+                <ul id="autocompleteList" class="position-absolute list-unstyled bg-light w-100 shadow" style="top: 100%;"></ul>
             </form>
             <div class="navbar-nav align-items-center ms-auto">
                 <div class="nav-item dropdown">
