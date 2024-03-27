@@ -1,70 +1,75 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout1}">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Product List</title>
+    <title>상품등록</title>
 </head>
+
 <body>
-<h2>Product register</h2>
-<div class="register-form">
-    <form action="/product/register" method="post">
-        <div class="input-group mb-3">
-            <span class="input-group-text">상품 이름</span>
-            <input type="text" name="name" class="form-control" placeholder="상품이름">
-        </div>
+<div layout:fragment="content">
+    <div class="register-form">
+        <form action="/product/register" method="post">
+            <div class="input-group mb-3">
+                <span class="input-group-text">상품 이름</span>
+                <input type="text" name="name" class="form-control" placeholder="상품이름">
+            </div>
 
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="status">상품 상태</label>
-            <select class="form-select" id="status" name="status">
-                <option value="ON_SALE">판매중</option>
-                <option value="STOP_SALE">품절</option>
-            </select>
-        </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="status">상품 상태</label>
+                <select class="form-select" id="status" name="status">
+                    <option value="ON_SALE">판매중</option>
+                    <option value="STOP_SALE">품절</option>
+                </select>
+            </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">상품 원가</span>
-            <input type="text" name="cost" class="form-control" placeholder="상품 원가">
-        </div>
-        <div class="input-group mb-3">
-            <span class="input-group-text">상품 가격</span>
-            <input type="text" name="price" class="form-control" placeholder="상품 가격">
-        </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">상품 원가</span>
+                <input type="text" name="cost" class="form-control" placeholder="상품 원가">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">상품 가격</span>
+                <input type="text" name="price" class="form-control" placeholder="상품 가격">
+            </div>
 
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="brandId">브랜드 ID</label>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="brandId">브랜드 ID</label>
 
-                    <select class="form-select" id="brandId" name="brandId">
+                <select class="form-select" id="brandId" name="brandId">
                     <option value="1">ID1</option>
                     <option value="2">ID2</option>
                     <option value="3">ID3</option>
                     <option value="4">ID4</option>
                     <option value="5">ID5</option>
                     <!-- Add more years as needed -->
-                    </select>
+                </select>
+            </div>
+
+
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="businessOwnerId">사업자 ID</label>
+
+                <select class="form-select" id="businessOwnerId" name="businessOwnerId">
+                    <option value="1">사업자1</option>
+                    <option value="2">사업자2</option>
+                    <option value="3">사업자3</option>
+                    <option value="4">사업자4</option>
+                    <option value="5">사업자5</option>
+                    <!-- Add more years as needed -->
+                </select>
+            </div>
+
+            <br>
+            <button type="submit" class="btn btn-primary m-2">상품 등록</button>
+        </form>
+        <div class="register-btn">
+            <form action="/product/list" >
+                <button type="submit" class="btn btn-primary m-2">리스트</button>
+            </form>
         </div>
 
 
-        <div class="input-group mb-3">
-            <label class="input-group-text" for="businessOwnerId">사업자 ID</label>
-
-            <select class="form-select" id="businessOwnerId" name="businessOwnerId">
-                <option value="1">사업자1</option>
-                <option value="2">사업자2</option>
-                <option value="3">사업자3</option>
-                <option value="4">사업자4</option>
-                <option value="5">사업자5</option>
-                <!-- Add more years as needed -->
-            </select>
-        </div>
-
-        <br>
-        <button type="submit">상품 등록</button>
-    </form>
-<div class="register-btn">
-    <form action="/product/list">
-        <button type="submit">리스트</button>
-    </form>
-</div>
+    </div>
 </div>
 </body>
-</html>

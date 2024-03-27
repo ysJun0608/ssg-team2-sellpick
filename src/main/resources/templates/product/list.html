@@ -1,72 +1,61 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout1}">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Product List</title>
+    <title>상품조회</title>
 </head>
+
 <body>
-<h2>Product List</h2>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>NAME</th>
-        <th>STATUS</th>
-        <th>COST</th>
-        <th>PRICE</th>
-        <th>BRAND_ID</th>
-        <th>BRAND_NAME</th>
-        <th>OWNER_ID</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="dto : ${dtoList}">
-        <td th:text="${dto.id}"></td>
-        <td><a th:href="@{'/product/read?id=' + ${dto.id}}" th:text="${dto.name}"></a></td>
-        <td th:text="${dto.status}"></td>
-        <td th:text="${dto.cost}"></td>
-        <td th:text="${dto.price}"></td>
-        <td th:text="${dto.brandId}"></td>
-        <td th:text="${dto.brandName}"></td>
-        <td th:text="${dto.businessOwnerId}"></td>
-    </tr>
-    </tbody>
-</table>
-<form action="/product/register">
-    <button type="submit">상품 추가</button>
-</form>
+<div layout:fragment="content">
+    <div class="col-sm-12">
+        <form class="bg-light rounded h-100 p-4 " action="/product/list">
+            <input class="form-control border-0" type="text" name="name" th:value="${name}" placeholder="상품이름을 입력해주세요.">
+            <button type="submit" class="btn btn-primary m-4">검색</button>
+        </form>
+    </div>
+    <div class="Product-List">
+        <div class="col-sm-12" style="padding-right: 0">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">상품조회</h6>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>NAME</th>
+                        <th>STATUS</th>
+                        <th>COST</th>
+                        <th>PRICE</th>
+                        <th>BRAND_ID</th>
+                        <th>BRAND_NAME</th>
+                        <th>OWNER_ID</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="dto : ${dtoList}">
+                        <td th:text="${dto.id}"></td>
+                        <td><a th:href="@{'/product/read?id=' + ${dto.id}}" th:text="${dto.name}"></a></td>
+                        <td th:text="${dto.status}"></td>
+                        <td th:text="${dto.cost}"></td>
+                        <td th:text="${dto.price}"></td>
+                        <td th:text="${dto.brandId}"></td>
+                        <td th:text="${dto.brandName}"></td>
+                        <td th:text="${dto.businessOwnerId}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <form action="/product/register">
+                    <button type="submit" class="btn btn-primary m-2">상품추가</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6" style="padding-left: 0;">
+            <div id="map" class="bg-light rounded h-100 p-4">
 
-
-
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
-    .header {
-        background-color: #F2F2F2;
-    }
-    .button-container {
-        margin-bottom: 20px;
-    }
-    .button {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-    }
-</style>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
-
