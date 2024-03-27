@@ -189,7 +189,16 @@
             document.getElementById('addRowBtn').addEventListener('click', addRow);
         });
 
-
+        $(document).ready(function() {
+            // Function to handle checkbox change event
+            $(document).ready(function() {
+                // Function to handle checkbox change event
+                $('#topCheckBox').on('change', function() {
+                    var isChecked = $(this).prop('checked');
+                    $('#table-body input[type="checkbox"]').prop('checked', isChecked);
+                });
+            });
+        });
     </script>
 </head>
 
@@ -258,7 +267,7 @@
                             <thead>
                             <tr>
                                 <th scope="col" style="background-color: #acd1ea;">No.</th>
-                                <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" checked>
+                                <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" id="topCheckBox">
                                 </th>
                                 <th scope="col" style="background-color: #acd1ea;">Item</th>
                                 <th scope="col" style="background-color: #acd1ea;">Quantity</th>
