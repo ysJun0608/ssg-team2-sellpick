@@ -22,7 +22,8 @@ public class WhPageRequestDTO {
     @Min(value = 10)
     @Max(value = 100)
     @Positive
-    private int size = 10;
+    private int size = 10
+            ;
 
     private String link;
 

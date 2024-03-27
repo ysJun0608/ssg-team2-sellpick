@@ -40,7 +40,7 @@ class WarehouseInsertReleaseMapperTest {
     void findWhInOutList2() {
         // given
         WhPageRequestDTO whPageRequestDTO = WhPageRequestDTO.builder()
-//                .page(2)
+                .page(2)
 //                .keyword("티셔")
 //                .type(WhInOutType.INSERT_REQUEST.toString())
 //                .from(LocalDate.of(2020, 1, 1))
