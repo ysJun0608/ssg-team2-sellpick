@@ -9,25 +9,9 @@ import com.ssg.wsmt.smOrders.mapper.SmOrdersMapper;
 import com.ssg.wsmt.smOrders.service.SmOrdersService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-
-import com.ssg.wsmt.smOrders.dto.PageRequestDTO;
-import com.ssg.wsmt.smOrders.dto.PageResponseDTO;
-import com.ssg.wsmt.smOrders.dto.SmOrdersDTO;
-import com.ssg.wsmt.smOrders.mapper.SmOrdersMapper;
-import com.ssg.wsmt.smOrders.service.SmOrdersService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -35,6 +19,22 @@ import java.util.stream.Collectors;
 public class SmOrderServiceImpl implements SmOrdersService {
 
     private final SmOrdersMapper smOrdersMapper;
+    @Override
+    public List<SmOrdersDTO> searchOrdersKeywordAll(Long orderId, Long customerId, SellerSendStatus sendStatus) {
+        return smOrdersMapper.findOrdersByAll(orderId, customerId, sendStatus);
+    }
+    @Override
+    public List<SmOrdersDTO> searchOrdersKeywordComplete(Long orderId, Long customerId, SellerSendStatus sendStatus) {
+        return smOrdersMapper.findOrdersByComplete(orderId, customerId, sendStatus);
+    }
+    @Override
+    public List<SmOrdersDTO> searchOrdersKeywordPrepare(Long orderId, Long customerId, SellerSendStatus sendStatus) {
+        return smOrdersMapper.findOrdersByPrepare(orderId, customerId, sendStatus);
+    }
+    @Override
+    public List<SmOrdersDTO> searchOrdersKeywordCancle(Long orderId, Long customerId, SellerSendStatus sendStatus) {
+        return smOrdersMapper.findOrdersByCancle(orderId, customerId, sendStatus);
+    }
 
     @Override
     public PageResponseDTO<SmOrdersDTO> ReadAlllist(PageRequestDTO pageRequestDTO) {
@@ -51,6 +51,55 @@ public class SmOrderServiceImpl implements SmOrdersService {
                 .total(totalCount) // 전체 항목 수 설정
                 .build();
     }
+    @Override
+    public PageResponseDTO<SmOrdersDTO> ReadCompletelist(PageRequestDTO pageRequestDTO) {
+        int offset = pageRequestDTO.getOffset();
+        int size = pageRequestDTO.getSize();
+
+        List<SmOrdersDTO> dtoList = smOrdersMapper.searchComplete(pageRequestDTO.getTypes(), pageRequestDTO.getKeyword(), offset, size);
+        int totalCount = smOrdersMapper.getTotalCount(pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        return PageResponseDTO.<SmOrdersDTO>withAll()
+                .dtoList(dtoList)
+                .page(pageRequestDTO.getPage()) // 페이지 정보 설정
+                .size(pageRequestDTO.getSize()) // 페이지 크기 설정
+                .total(totalCount) // 전체 항목 수 설정
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<SmOrdersDTO> ReadPreparelist(PageRequestDTO pageRequestDTO) {
+        int offset = pageRequestDTO.getOffset();
+        int size = pageRequestDTO.getSize();
+
+        List<SmOrdersDTO> dtoList = smOrdersMapper.searchPrepare(pageRequestDTO.getTypes(), pageRequestDTO.getKeyword(), offset, size);
+        int totalCount = smOrdersMapper.getTotalCount(pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        return PageResponseDTO.<SmOrdersDTO>withAll()
+                .dtoList(dtoList)
+                .page(pageRequestDTO.getPage()) // 페이지 정보 설정
+                .size(pageRequestDTO.getSize()) // 페이지 크기 설정
+                .total(totalCount) // 전체 항목 수 설정
+                .build();
+    }
+
+    @Override
+    public PageResponseDTO<SmOrdersDTO> ReadCanclelist(PageRequestDTO pageRequestDTO) {
+        int offset = pageRequestDTO.getOffset();
+        int size = pageRequestDTO.getSize();
+
+        List<SmOrdersDTO> dtoList = smOrdersMapper.searchCancle(pageRequestDTO.getTypes(), pageRequestDTO.getKeyword(), offset, size);
+        int totalCount = smOrdersMapper.getTotalCount(pageRequestDTO.getTypes(), pageRequestDTO.getKeyword());
+
+        return PageResponseDTO.<SmOrdersDTO>withAll()
+                .dtoList(dtoList)
+                .page(pageRequestDTO.getPage()) // 페이지 정보 설정
+                .size(pageRequestDTO.getSize()) // 페이지 크기 설정
+                .total(totalCount) // 전체 항목 수 설정
+                .build();
+    }
+
+
 
 
     @Override
@@ -100,10 +149,7 @@ public class SmOrderServiceImpl implements SmOrdersService {
         return smOrdersMapper.selectOne(id);
     }
 
-    @Override
-    public List<SmOrdersDTO> searchOrders(Long orderId, Long customerId, SellerSendStatus sendStatus) {
-        return smOrdersMapper.findOrdersByCriteria(orderId, customerId, sendStatus);
-    }
+
 
 
 }

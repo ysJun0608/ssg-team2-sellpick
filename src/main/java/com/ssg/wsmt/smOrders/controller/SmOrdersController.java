@@ -15,9 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/smorder")
@@ -28,11 +26,11 @@ public class SmOrdersController {
     @Autowired
     private final SmOrdersService smOrdersService;
 
-    @GetMapping("/listall")
-    public String list(PageRequestDTO pageRequestDTO, Model model,
-                       @RequestParam(value = "orderId", required = false) String orderIdStr,
-                       @RequestParam(value = "customerId", required = false) String customerIdStr,
-                       @RequestParam(value = "status", required = false) String statusStr) {
+    @GetMapping("/listcomplete")
+    public String listOrdersCancle(PageRequestDTO pageRequestDTO, Model model,
+                                   @RequestParam(value = "orderId", required = false) String orderIdStr,
+                                   @RequestParam(value = "customerId", required = false) String customerIdStr,
+                                   @RequestParam(value = "status", required = false) String statusStr) {
 
         Long orderId = null;
         Long customerId = null;
@@ -50,7 +48,134 @@ public class SmOrdersController {
 
         if (orderId != null || customerId != null || sendStatus != null) {
             // 검색 조건을 추가하여 검색을 실행합니다.
-            List<SmOrdersDTO> list = smOrdersService.searchOrders(orderId, customerId, sendStatus);
+            List<SmOrdersDTO> list = smOrdersService.searchOrdersKeywordComplete(orderId, customerId, sendStatus); // dddd
+            int total = list.size(); // 예시로 리스트 크기를 전체 개수로 사용합니다. 실제 데이터베이스에서 가져와야 합니다.
+            responseDTO = PageResponseDTO.<SmOrdersDTO>withAll()
+                    .dtoList(list)
+                    .page(pageRequestDTO.getPage())
+                    .size(pageRequestDTO.getSize())
+                    .total(total)
+                    .build();
+        } else {
+            // 검색 조건이 없을 경우, 전체 목록을 조회합니다.
+            responseDTO = smOrdersService.ReadCompletelist(pageRequestDTO);
+        }
+
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
+
+        return "smorder/listcomplete";
+    }
+
+    @GetMapping("/listprepare")
+    public String listOrdersPrepare(PageRequestDTO pageRequestDTO, Model model,
+                                     @RequestParam(value = "orderId", required = false) String orderIdStr,
+                                     @RequestParam(value = "customerId", required = false) String customerIdStr,
+                                     @RequestParam(value = "status", required = false) String statusStr) {
+
+        Long orderId = null;
+        Long customerId = null;
+        SellerSendStatus sendStatus = null;
+
+        try {
+            orderId = orderIdStr != null && !orderIdStr.isEmpty() ? Long.parseLong(orderIdStr) : null;
+            customerId = customerIdStr != null && !customerIdStr.isEmpty() ? Long.parseLong(customerIdStr) : null;
+            sendStatus = statusStr != null && !statusStr.isEmpty() ? SellerSendStatus.valueOf(statusStr.toUpperCase()) : null;
+        } catch (IllegalArgumentException e) {
+            log.error("Error converting parameters", e);
+        }
+
+        PageResponseDTO<SmOrdersDTO> responseDTO;
+
+        if (orderId != null || customerId != null || sendStatus != null) {
+            // 검색 조건을 추가하여 검색을 실행합니다.
+            List<SmOrdersDTO> list = smOrdersService.searchOrdersKeywordPrepare(orderId, customerId, sendStatus); // dddd
+            int total = list.size(); // 예시로 리스트 크기를 전체 개수로 사용합니다. 실제 데이터베이스에서 가져와야 합니다.
+            responseDTO = PageResponseDTO.<SmOrdersDTO>withAll()
+                    .dtoList(list)
+                    .page(pageRequestDTO.getPage())
+                    .size(pageRequestDTO.getSize())
+                    .total(total)
+                    .build();
+        } else {
+            // 검색 조건이 없을 경우, 전체 목록을 조회합니다.
+            responseDTO = smOrdersService.ReadPreparelist(pageRequestDTO); // ddddddd
+        }
+
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
+
+        return "smorder/listprepare";
+    }
+
+
+
+    @GetMapping("/listcancle")
+    public String listOrdersComplete(PageRequestDTO pageRequestDTO, Model model,
+                                     @RequestParam(value = "orderId", required = false) String orderIdStr,
+                                     @RequestParam(value = "customerId", required = false) String customerIdStr,
+                                     @RequestParam(value = "status", required = false) String statusStr) {
+
+        Long orderId = null;
+        Long customerId = null;
+        SellerSendStatus sendStatus = null;
+
+        try {
+            orderId = orderIdStr != null && !orderIdStr.isEmpty() ? Long.parseLong(orderIdStr) : null;
+            customerId = customerIdStr != null && !customerIdStr.isEmpty() ? Long.parseLong(customerIdStr) : null;
+            sendStatus = statusStr != null && !statusStr.isEmpty() ? SellerSendStatus.valueOf(statusStr.toUpperCase()) : null;
+        } catch (IllegalArgumentException e) {
+            log.error("Error converting parameters", e);
+        }
+
+        PageResponseDTO<SmOrdersDTO> responseDTO;
+
+        if (orderId != null || customerId != null || sendStatus != null) {
+            // 검색 조건을 추가하여 검색을 실행합니다.
+            List<SmOrdersDTO> list = smOrdersService.searchOrdersKeywordCancle(orderId, customerId, sendStatus);
+            int total = list.size(); // 예시로 리스트 크기를 전체 개수로 사용합니다. 실제 데이터베이스에서 가져와야 합니다.
+            responseDTO = PageResponseDTO.<SmOrdersDTO>withAll()
+                    .dtoList(list)
+                    .page(pageRequestDTO.getPage())
+                    .size(pageRequestDTO.getSize())
+                    .total(total)
+                    .build();
+        } else {
+            // 검색 조건이 없을 경우, 전체 목록을 조회합니다.
+            responseDTO = smOrdersService.ReadCanclelist(pageRequestDTO);
+        }
+
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
+
+        return "smorder/listcancle";
+    }
+
+
+
+    @GetMapping("/listall")
+    public String listOrdersAll(PageRequestDTO pageRequestDTO, Model model,
+                                @RequestParam(value = "orderId", required = false) String orderIdStr,
+                                @RequestParam(value = "customerId", required = false) String customerIdStr,
+                                @RequestParam(value = "status", required = false) String statusStr) {
+
+        Long orderId = null;
+        Long customerId = null;
+        SellerSendStatus sendStatus = null;
+
+        try {
+            orderId = orderIdStr != null && !orderIdStr.isEmpty() ? Long.parseLong(orderIdStr) : null;
+            customerId = customerIdStr != null && !customerIdStr.isEmpty() ? Long.parseLong(customerIdStr) : null;
+            sendStatus = statusStr != null && !statusStr.isEmpty() ? SellerSendStatus.valueOf(statusStr.toUpperCase()) : null;
+        } catch (IllegalArgumentException e) {
+            log.error("Error converting parameters", e);
+        }
+
+        PageResponseDTO<SmOrdersDTO> responseDTO;
+
+        if (orderId != null || customerId != null || sendStatus != null) {
+            // 검색 조건을 추가하여 검색을 실행합니다.
+            List<SmOrdersDTO> list = smOrdersService.searchOrdersKeywordAll(orderId, customerId, sendStatus);
             int total = list.size(); // 예시로 리스트 크기를 전체 개수로 사용합니다. 실제 데이터베이스에서 가져와야 합니다.
             responseDTO = PageResponseDTO.<SmOrdersDTO>withAll()
                     .dtoList(list)
@@ -69,25 +194,25 @@ public class SmOrdersController {
         return "smorder/listall";
     }
     // 기본 목록 메소드
-    @GetMapping("/listcomplete")
-    public String listOrdersComplete(Model model, SmOrdersDTO smOrdersDTO) {
-        // 완료건
-        model.addAttribute("orders", smOrdersService.readCompleteOrders(smOrdersDTO));
-        return "/smorder/listcomplete";
-    }
+//    @GetMapping("/listcomplete")
+//    public String listOrdersComplete(Model model, SmOrdersDTO smOrdersDTO) {
+//        // 완료건
+//        model.addAttribute("orders", smOrdersService.readCompleteOrders(smOrdersDTO));
+//        return "/smorder/listcomplete";
+//    }
 
-    @GetMapping("/listcancle")
-    public String listOrdersCancle(Model model ,SmOrdersDTO smOrdersDTO ) {
-        model.addAttribute("orders", smOrdersService.readAllCanceledOrders());
-        log.info(smOrdersService.readAllCanceledOrders());
-        return "/smorder/listcancle";
-    }
-    @GetMapping("/listprepare")
-    public String listOrdersPrepare(Model model ,SmOrdersDTO smOrdersDTO ) {
-        model.addAttribute("orders", smOrdersService.readAllPreparedOrders());
-        log.info(smOrdersService.readAllPreparedOrders());
-        return "/smorder/listprepare";
-    }
+//    @GetMapping("/listcancle")
+//    public String listOrdersCancle(Model model ,SmOrdersDTO smOrdersDTO ) {
+//        model.addAttribute("orders", smOrdersService.readAllCanceledOrders());
+//        log.info(smOrdersService.readAllCanceledOrders());
+//        return "/smorder/listcancle";
+//    }
+//    @GetMapping("/listprepare")
+//    public String listOrdersPrepare(Model model ,SmOrdersDTO smOrdersDTO ) {
+//        model.addAttribute("orders", smOrdersService.readAllPreparedOrders());
+//        log.info(smOrdersService.readAllPreparedOrders());
+//        return "/smorder/listprepare";
+//    }
 
 
     @PostMapping("/modify")

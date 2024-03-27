@@ -6,7 +6,6 @@ import com.ssg.wsmt.smOrders.dto.PageRequestDTO;
 import com.ssg.wsmt.smOrders.dto.PageResponseDTO;
 import com.ssg.wsmt.smOrders.dto.SmOrdersDTO;
 import com.ssg.wsmt.smOrders.enums.SellerSendStatus;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -29,7 +28,16 @@ public interface SmOrdersService {
     //한건조회
     SmOrdersVo getOne(Long id);
 
-    List<SmOrdersDTO> searchOrders(Long orderId, Long customerId, SellerSendStatus status);
-    PageResponseDTO<SmOrdersDTO> ReadAlllist(PageRequestDTO requestDTO);
+    List<SmOrdersDTO> searchOrdersKeywordAll(Long orderId, Long customerId, SellerSendStatus status);
+    List<SmOrdersDTO> searchOrdersKeywordComplete(Long orderId, Long customerId, SellerSendStatus status);
+
+    List<SmOrdersDTO> searchOrdersKeywordPrepare(Long orderId, Long customerId, SellerSendStatus sendStatus);
+
+    List<SmOrdersDTO> searchOrdersKeywordCancle(Long orderId, Long customerId, SellerSendStatus sendStatus);
+
+    PageResponseDTO<SmOrdersDTO> ReadAlllist(PageRequestDTO requestDTO); // 전체건
+    PageResponseDTO<SmOrdersDTO> ReadCompletelist(PageRequestDTO requestDTO); // 완료건
+    PageResponseDTO<SmOrdersDTO> ReadPreparelist(PageRequestDTO requestDTO); // 취소건
+    PageResponseDTO<SmOrdersDTO> ReadCanclelist(PageRequestDTO requestDTO); // 배송준비중인건
 
 }
