@@ -17,7 +17,7 @@ import java.util.*;
 @Getter
 @Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UserEntity implements UserDetails{
+public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,7 +25,7 @@ public class UserEntity implements UserDetails{
     @Column(nullable = false)
     private String username;
 
-    @Column(nullable = false,unique = true)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -48,21 +48,24 @@ public class UserEntity implements UserDetails{
     private String detailAddress;
 
     @Builder
-    public UserEntity(String username, String email, String password, UserRole role, String phone, String zipcode,String streetAddress,String detailAddress) {
+    public UserEntity(String username, String email, String password, UserRole role, String phone, String zipcode, String streetAddress, String detailAddress) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
         this.phone = phone;
         this.zipcode = zipcode;
-        this.streetAddress=streetAddress;
+        this.streetAddress = streetAddress;
         this.detailAddress = detailAddress;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.getRoleName()));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getRoleName())); // 사용자의 역할을 가져와서 "ROLE_"을 붙여서 반환
+        return authorities;
     }
+
     @Override
     public String getUsername() {
         return username;
@@ -72,6 +75,7 @@ public class UserEntity implements UserDetails{
     public String getPassword() {
         return password;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;

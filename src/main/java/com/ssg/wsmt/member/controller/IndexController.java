@@ -19,23 +19,5 @@ public class IndexController {
 
         return "home";
     }
-
-    @GetMapping("/2")
-    public String indexPage2(Model model) {
-
-        String id = SecurityContextHolder.getContext().getAuthentication().getName();
-        model.addAttribute("id", id);
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-        Iterator<? extends GrantedAuthority> iter = authorities.iterator();
-        GrantedAuthority authority = iter.next();
-        String role = authority.getAuthority();
-
-        model.addAttribute("role", role);
-        return "example";
-    }
-
 }
 
