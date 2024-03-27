@@ -84,7 +84,7 @@
             customer_id AS "customerId",
             shopping_mall_id AS "shoppingMallId",
             products_id AS "productId"
-        FROM sm_orders
+        FROM SM_ORDERS
         WHERE seller_send_status = 'COMPLETE'
     </select>
 
@@ -104,7 +104,7 @@
             customer_id AS "customerId",
             shopping_mall_id AS "shoppingMallId",
             products_id AS "productId"
-        FROM sm_orders
+        FROM SM_ORDERS
         WHERE seller_send_status = 'CANCEL'
     </select>
 
@@ -124,7 +124,7 @@
             customer_id AS "customerId",
             shopping_mall_id AS "shoppingMallId",
             products_id AS "productId"
-        FROM sm_orders
+        FROM SM_ORDERS
         WHERE seller_send_status = 'PREPARING'
     </select>
 
@@ -139,7 +139,7 @@
             customer_id AS "customerId",
             shopping_mall_id AS "shoppingMallId",
             products_id AS "productId"
-        FROM sm_orders
+        FROM SM_ORDERS
         WHERE id = #{id}
     </select>
 
@@ -180,7 +180,7 @@
 
 
     <update id="updateSmOrdersStatus">
-        UPDATE sm_orders
+        UPDATE SM_ORDERS
         SET seller_send_status = #{seller_send_status}
         WHERE id = #{id}
     </update>
