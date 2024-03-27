@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.wsmt.inventory.mapper.InventoryMapper">
+    <resultMap id="InventoryResultMap" type="com.ssg.wsmt.inventory.dto.InventoryDTO">
+
+        <id property="id" column="ID"/>
+        <result property="quantity" column="QUANTITY"/>
+        <result property="warehouseSectionId" column="WH_SECTION_ID"/>
+        <result property="productId" column="PRODUCTS_ID"/>
+        <result property="productName" column="NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="cost" column="COST"/>
+        <result property="location" column="location"/>
+        <result property="price" column="PRICE"/>
+        <result property="brandName" column="BRAND_NAME"/>
+        <result property="businessOwnerId" column="OWNER_ID"/>
+
+    </resultMap>
+
+    <select id="findAll">
+        SELECT
+            i.ID AS id,
+            i.QUANTITY AS quantity,
+            i.WH_SECTION_ID AS whSectionId,
+            i.PRODUCTS_ID AS productId,
+            w.LOCATION AS location,
+            p.NAME AS productName,
+            p.STATUS AS productStatus,
+            p.COST AS cost,
+            p.PRICE AS price,
+            p.QUANTITY AS quantities,
+            b.NAME AS brandName,
+            o.NAME AS ownerName
+        FROM inventory i
+                 LEFT JOIN products p ON i.PRODUCTS_ID = p.ID
+                 LEFT JOIN brand b ON p.BRAND_ID = b.ID
+                 LEFT JOIN business_owner o ON p.OWNER_ID = o.ID
+                 LEFT JOIN warehouse w ON i.WH_SECTION_ID = w.ID
+    </select>
+
+    <select id="findByWarehouseId">
+        SELECT
+            i.ID AS id,
+            i.QUANTITY AS quantity,
+            i.WH_SECTION_ID AS whSectionId,
+            i.PRODUCTS_ID AS productId,
+            w.LOCATION AS location,
+            p.NAME AS productName,
+            p.STATUS AS productStatus,
+            p.COST AS cost,
+            p.PRICE AS price,
+            p.QUANTITY AS quantities,
+            b.NAME AS brandName,
+            o.NAME AS ownerName
+        FROM inventory i
+                 LEFT JOIN products p ON i.PRODUCTS_ID = p.ID
+                 LEFT JOIN brand b ON p.BRAND_ID = b.ID
+                 LEFT JOIN business_owner o ON p.OWNER_ID = o.ID
+                 LEFT JOIN warehouse w ON i.WH_SECTION_ID = w.ID
+
+        where
+            w.ID = #{warehouseId}
+
+    </select>
+
+</mapper>
