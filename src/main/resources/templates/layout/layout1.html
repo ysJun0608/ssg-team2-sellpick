@@ -61,15 +61,16 @@
                     <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
                     </div>
                 </div>
-                <div class="ms-3">
-                    <h6 class="mb-0" th:if="${#authorization.expression('isAuthenticated()')}">
-                        <span th:text="${id}"></span>님! <br> 역할:
-                        <!--<span th:text="${role.substring(5)}"></span>-->
-                    </h6>
-                    <h6 class="mb-0" th:unless="${#authorization.expression('isAuthenticated')}">
-                        로그인 해주세요.
-                    </h6>
-                </div>
+<!--                <div class="ms-3">-->
+<!--                    <h6 class="mb-0" th:if="${#authorization.expression('isAuthenticated()')}">-->
+<!--                        <span th:text="${id}"></span>님! <br> 역할:-->
+<!--                        <span th:text="${role.substring(5)}"></span>-->
+<!--                    </h6>-->
+<!--                    <h6 class="mb-0" th:unless="${#authorization.expression('isAuthenticated')}">-->
+<!--                        로그인 해주세요.-->
+<!--                    </h6>-->
+<!--                </div>-->
+                <div th:replace="~{/layout/login-info-fragment :: login-info}" />
             </div>
             <div class="navbar-nav w-100">
                 <a href="/home" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Home</a>
@@ -213,22 +214,23 @@
                     <a href="#" class="dropdown-item text-center">See all notifications</a>
                 </div>
             </div>
-            <div class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                    <img class="rounded-circle me-lg-2" src="/images/TeamLogo.png" alt=""
-                         style="width: 40px; height: 40px;">
-                    <span class="d-none d-lg-inline-flex" th:if="${#authorization.expression('isAnonymous()')}"
-                          th:text="'로그인'">로그인</span>
-                    <span class="d-none d-lg-inline-flex" th:unless="${#authorization.expression('isAnonymous()')}"
-                          th:text="${id} + '님!'"></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                    <a href="#" class="dropdown-item">My Profile</a>
-                    <a href="#" class="dropdown-item">Settings</a>
-                    <a href="/login/logout" class="dropdown-item" sec:authorize="isAuthenticated()">Log Out</a>
-                    <a href="/login/login" class="dropdown-item" sec:authorize="isAnonymous()">Log in</a>
-                </div>
-            </div>
+<!--            <div class="nav-item dropdown">-->
+<!--                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">-->
+<!--                    <img class="rounded-circle me-lg-2" src="/images/TeamLogo.png" alt=""-->
+<!--                         style="width: 40px; height: 40px;">-->
+<!--                    <span class="d-none d-lg-inline-flex" th:if="${#authorization.expression('isAnonymous()')}"-->
+<!--                          th:text="'로그인'">로그인</span>-->
+<!--                    <span class="d-none d-lg-inline-flex" th:unless="${#authorization.expression('isAnonymous()')}"-->
+<!--                          th:text="${id} + '님!'"></span>-->
+<!--                </a>-->
+<!--                <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">-->
+<!--                    <a href="#" class="dropdown-item">My Profile</a>-->
+<!--                    <a href="#" class="dropdown-item">Settings</a>-->
+<!--                    <a href="/login/logout" class="dropdown-item" sec:authorize="isAuthenticated()">Log Out</a>-->
+<!--                    <a href="/login/login" class="dropdown-item" sec:authorize="isAnonymous()">Log in</a>-->
+<!--                </div>-->
+<!--            </div>-->
+                <div th:replace="~{/layout/login-info-side.html :: login-info-side}"></div>
         </div>
     </nav>
 

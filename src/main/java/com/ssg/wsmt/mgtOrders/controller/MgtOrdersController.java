@@ -33,9 +33,8 @@ public class MgtOrdersController {
     private MgtOrdersService mgtOrdersService;
 
     @GetMapping("/MgtOrderCreate")
-    public void showCreate(Long id, Model model) {
+    public void showCreate(Model model) {
         log.info("CreatePage....");
-        model.addAttribute("id", id);
     }
 
     @PostMapping("/MgtOrderCreate")
