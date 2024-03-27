@@ -119,10 +119,10 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-coins me-2"></i>주문관리</a>
                     <div class="dropdown-menu bg-transparent border-0">
-                        <a href="/MgtOrders/MgtOrderCreate" class="dropdown-item" id="smorderlist">전체주문조회</a>
-                        <a href="/MgtOrders/MgtOrderCreate" class="dropdown-item" id="smorderComplete">배송완료 주문조회</a>
-                        <a href="/MgtOrders/MgtOrderCreate" class="dropdown-item" id="smorderListCancle">배송중 주문조회</a>
-                        <a href="/product/register" class="dropdown-item" id="smorderListPrepare">취소주문조회</a>
+                        <a href="/smorder/listall" class="dropdown-item" id="smorderlist">전체주문조회</a>
+                        <a href="/smorder/listall?orderId=&customerId=&status=COMPLETE" class="dropdown-item" id="smorderComplete">배송완료 주문조회</a>
+                        <a href="/smorder/listall?orderId=&customerId=&status=PREPARING" class="dropdown-item" id="smorderListCancle">배송중 주문조회</a>
+                        <a href="/smorder/listall?orderId=&customerId=&status=CANCEL" class="dropdown-item" id="smorderListPrepare">취소주문조회</a>
 
                     </div>
                 </div>
