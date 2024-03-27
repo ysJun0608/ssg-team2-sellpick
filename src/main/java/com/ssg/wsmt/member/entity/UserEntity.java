@@ -38,18 +38,25 @@ public class UserEntity implements UserDetails{
     @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false)
-    private String address;
+    @Column(nullable = false) //우편 번호로 사용
+    private String zipcode;
 
+    @Column(nullable = false)
+    private String streetAddress;
+
+    @Column(nullable = false)
+    private String detailAddress;
 
     @Builder
-    public UserEntity(String username, String email, String password,UserRole role,String phone,String address) {
+    public UserEntity(String username, String email, String password, UserRole role, String phone, String zipcode,String streetAddress,String detailAddress) {
         this.username = username;
         this.email = email;
-        this.password=password;
-        this.role= role;
-        this.phone=phone;
-        this.address=address;
+        this.password = password;
+        this.role = role;
+        this.phone = phone;
+        this.zipcode = zipcode;
+        this.streetAddress=streetAddress;
+        this.detailAddress = detailAddress;
     }
 
     @Override
