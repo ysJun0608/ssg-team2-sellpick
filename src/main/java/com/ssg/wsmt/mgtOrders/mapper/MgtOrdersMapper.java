@@ -28,6 +28,8 @@ public interface MgtOrdersMapper {
 
     List<MgtOrders> searchOrders(String startDate, String endDate, String purchaser, String warehouseId);
 
+    List<MgtOrders> searchOrdersAndStatus(String startDate, String endDate, String purchaser, String warehouseId, MgtOrdersStatus status);
+
     ArrayList<MgtOrders> searchForStatus(MgtOrdersStatus status);
 
 

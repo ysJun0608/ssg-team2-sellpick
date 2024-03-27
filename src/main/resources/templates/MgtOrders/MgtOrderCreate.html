@@ -7,9 +7,189 @@
     <title>Home2</title>
     <link href="/assets/css/styleMgtOrders.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#createOrderBtn').click(function () {
+                console.log("생성 버튼");
+                // Form 데이터 수집
+                var formData = {
+                    createdAt: document.getElementById('order-date-start').value + "T00:00", // YYYY-MM-DD 형식으로 변환
+                    status: document.getElementById('status').value,
+                    purchaser: document.getElementById('supplier').value,
+                    warehouseId: document.getElementById('warehouse').value
+                };
 
-    <!-- Template Stylesheet
-    <link href="assets/css/style.css" rel="stylesheet"> -->
+                // AJAX 요청
+                $.ajax({
+                    type: 'POST',
+                    url: '/MgtOrders/MgtOrderCreate',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        console.info(response);
+                        var responseData = JSON.parse(response); // Parse the response as JSON
+                        console.info(responseData); // Log the parsed response object
+                        document.getElementById('order-id').value = responseData.id;
+                        // 서버 응답 처리 (성공)
+                        alert('발주가 성공적으로 생성되었습니다.');
+                        // 추가 동작이 필요한 경우에는 여기에 작성
+                    },
+                    error: function (error) {
+                        // 서버 응답 처리 (오류)
+                        alert('발주 생성 중 오류가 발생했습니다.');
+                    }
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add your JavaScript code here
+            let rowCount = document.querySelectorAll('#table-body tr').length; // 초기 행 개수
+
+            function addRow() {
+                const itemName = document.getElementById('item-name').value;
+                const itemQuantity = document.getElementById('item-quantity').value;
+
+                if (itemName && itemQuantity) {
+                    const tableBody = document.getElementById('table-body');
+                    if (tableBody) {
+                        const newRow = document.createElement('tr');
+                        const tdNo = document.createElement('td');
+                        tdNo.textContent = ++rowCount;
+                        const tdCheckbox = document.createElement('td');
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.value = 'false';
+                        tdCheckbox.appendChild(checkbox);
+                        const tdItem = document.createElement('td');
+                        const itemInput = document.createElement('input');
+                        itemInput.type = 'text';
+                        itemInput.name = 'itemNames';
+                        itemInput.value = itemName;
+                        tdItem.appendChild(itemInput);
+                        const tdQuantity = document.createElement('td');
+                        const quantityInput = document.createElement('input');
+                        quantityInput.type = 'number';
+                        quantityInput.name = 'quantities';
+                        quantityInput.value = itemQuantity;
+                        tdQuantity.appendChild(quantityInput);
+
+                        newRow.appendChild(tdNo);
+                        newRow.appendChild(tdCheckbox);
+                        newRow.appendChild(tdItem);
+                        newRow.appendChild(tdQuantity);
+
+                        tableBody.appendChild(newRow);
+                    }
+                    document.getElementById('item-name').value = '';
+                    document.getElementById('item-quantity').value = '';
+                }
+            }
+
+            // Function to delete checked items
+            function deleteCheckedItems() {
+                // Serialize the form data containing the checked checkboxes
+                var formData = $('#addItems').serialize();
+
+                // Send an AJAX request to the server to delete the selected rows
+                $.ajax({
+                    url: '/MgtOrders/DeleteItems', // Update the endpoint accordingly
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Log the response from the server
+                        console.log('Response:', response);
+
+                        // Check if the response indicates successful deletion
+                        if (response === 'Items deleted successfully') {
+                            // Iterate over the checked checkboxes and remove their parent rows
+                            $('#table-body input[type="checkbox"]:checked').each(function () {
+                                $(this).closest('tr').remove();
+                            });
+
+                            // Log a message indicating successful deletion
+                            console.log('Selected rows deleted successfully');
+
+                            // You can update the UI or perform any other actions here
+                        } else {
+                            // Log an error message if deletion was unsuccessful
+                            console.error('Failed to delete selected rows:', response);
+                            // You can handle the error or inform the user accordingly
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle any errors
+                        console.error('Error:', error);
+                    }
+                });
+            }
+
+            // Form submission handler
+            $('#addItems').submit(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                var checkedItems = [];
+
+                // Iterate over the table rows to collect checked items
+                $('#table-body tr').each(function (index, row) {
+                    console.log(row); // Log the selected row
+                    var checkbox = $(row).find('input[type="checkbox"]');
+                    if (checkbox.is(':checked')) {
+                        var itemName = $(row).find('input[name="itemNames"]').val();
+                        var quantity = $(row).find('input[name="quantities"]').val();
+
+                        checkedItems.push({itemName: itemName, quantity: quantity});
+                    }
+                });
+
+
+                // Get the order ID value
+                var idValue = $('#order-id').val();
+                console.log(idValue);
+
+                // Create the request data object
+                var requestData = {
+                    checkedItems: checkedItems,
+                    id: idValue
+                };
+                console.log("requestData : " + requestData);
+
+                // Send JSON data to the server using AJAX
+                $.ajax({
+                    url: '/MgtOrders/AddItems',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(requestData),
+                    success: function (response) {
+                        console.log("response id : " + response.id);
+                        console.log('Data submitted successfully');
+                        alert("저장되었습니다!");
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+
+            // Event listener for delete button click
+            $('#deleteBtn').click(function (event) {
+                // Prevent the default click behavior
+                event.preventDefault();
+
+                // Call the function to delete checked items
+                deleteCheckedItems();
+            });
+
+            // Function to show alert
+            function showAlert() {
+                alert("저장되었습니다!");
+            }
+
+            document.getElementById('addRowBtn').addEventListener('click', addRow);
+        });
+
+
+    </script>
 </head>
 
 <body id="body-pd">
@@ -53,9 +233,10 @@
                         </div>
                         <div class="button-row">
                             <!-- Check if id is present -->
-                            <button class="btn btn-primary" type="submit" th:if="${id == null}">Create</button>
+                            <button id="createOrderBtn" class="btn btn-primary" type="button" th:if="${id == null}">Create</button>
                             <!-- Disable the button if id is present -->
-                            <button class="btn btn-primary" type="submit" th:if="${id != null}" disabled>Create</button>
+                            <button class="btn btn-primary" type="button" th:if="${id != null}" disabled>Create</button>
+
                         </div>
                     </form>
                 </div>
@@ -99,43 +280,6 @@
                         </div>
                     </form>
                 </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="fa fa-bell me-lg-2"></i>
-                        <span class="d-none d-lg-inline-flex">Notificatin</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">
-                            <h6 class="fw-normal mb-0">Profile updated</h6>
-                            <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <h6 class="fw-normal mb-0">New user added</h6>
-                            <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item">
-                            <h6 class="fw-normal mb-0">Password changed</h6>
-                            <small>15 minutes ago</small>
-                        </a>
-                        <hr class="dropdown-divider">
-                        <a href="#" class="dropdown-item text-center">See all notifications</a>
-                    </div>
-                </div>
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
-                        <img class="rounded-circle me-lg-2" src="/images/TeamLogo.png" alt=""
-                             style="width: 40px; height: 40px;">
-                        <span class="d-none d-lg-inline-flex" th:text="${id}">님!</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
-                        <a href="#" class="dropdown-item">My Profile</a>
-                        <a href="#" class="dropdown-item">Settings</a>
-                        <a href="/login/logout" class="dropdown-item" sec:authorize="isAuthenticated()">Log Out</a>
-                        <a href="/login/login" class="dropdown-item" sec:authorize="isAnonymous()">Log in</a>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -143,183 +287,6 @@
 
 
 </div>
+
+
 </body>
-
-<script th:inline="javascript">
-    let rowCount = document.querySelectorAll('#table-body tr').length; // 초기 행 개수
-
-    function addRow() {
-        const itemName = document.getElementById('item-name').value;
-        const itemQuantity = document.getElementById('item-quantity').value;
-
-        if (itemName && itemQuantity) {
-            const tableBody = document.getElementById('table-body');
-            if (tableBody) {
-                const newRow = document.createElement('tr');
-                const tdNo = document.createElement('td');
-                tdNo.textContent = ++rowCount;
-                const tdCheckbox = document.createElement('td');
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.value = 'false';
-                tdCheckbox.appendChild(checkbox);
-                const tdItem = document.createElement('td');
-                const itemInput = document.createElement('input');
-                itemInput.type = 'text';
-                itemInput.name = 'itemNames';
-                itemInput.value = itemName;
-                tdItem.appendChild(itemInput);
-                const tdQuantity = document.createElement('td');
-                const quantityInput = document.createElement('input');
-                quantityInput.type = 'number';
-                quantityInput.name = 'quantities';
-                quantityInput.value = itemQuantity;
-                tdQuantity.appendChild(quantityInput);
-
-                newRow.appendChild(tdNo);
-                newRow.appendChild(tdCheckbox);
-                newRow.appendChild(tdItem);
-                newRow.appendChild(tdQuantity);
-
-                tableBody.appendChild(newRow);
-            }
-            document.getElementById('item-name').value = '';
-            document.getElementById('item-quantity').value = '';
-        }
-    }
-
-    function deleteCheckedItems() {
-        // Serialize the form data containing the checked checkboxes
-        var formData = $('#addItems').serialize();
-
-        // Send an AJAX request to the server to delete the selected rows
-        $.ajax({
-            url: '/MgtOrders/DeleteItems', // Update the endpoint accordingly
-            type: 'POST',
-            data: formData,
-            success: function (response) {
-                // Log the response from the server
-                console.log('Response:', response);
-
-                // Check if the response indicates successful deletion
-                if (response === 'Items deleted successfully') {
-                    // Iterate over the checked checkboxes and remove their parent rows
-                    $('#table-body input[type="checkbox"]:checked').each(function () {
-                        $(this).closest('tr').remove();
-                    });
-
-                    // Log a message indicating successful deletion
-                    console.log('Selected rows deleted successfully');
-
-                    // You can update the UI or perform any other actions here
-                } else {
-                    // Log an error message if deletion was unsuccessful
-                    console.error('Failed to delete selected rows:', response);
-                    // You can handle the error or inform the user accordingly
-                }
-            },
-            error: function (xhr, status, error) {
-                // Handle any errors
-                console.error('Error:', error);
-            }
-        });
-    }
-
-    $('#addItems').submit(function (event) {
-        event.preventDefault(); // Prevent the default form submission
-
-        var checkedItems = [];
-
-        $('#table-body tr').each(function (index, row) {
-            var checkbox = $(row).find('input[type="checkbox"]');
-            if (checkbox.is(':checked')) {
-                var values = checkbox.val().split(','); // Split value into itemName and quantity
-                var itemName = values[0];
-                var quantity = values[1];
-
-                checkedItems.push({itemName: itemName, quantity: quantity});
-            }
-        });
-
-        var idValue = $('#order-id').val();
-        console.log(idValue);
-        var requestData = {
-            checkedItems: checkedItems,
-            id: idValue
-        };
-        console.log(requestData);
-
-        // var idValue = [[${id}]];
-
-        // Send JSON data to server using Ajax
-        $.ajax({
-            url: '/MgtOrders/AddItems',
-            method: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(requestData),
-            success: function (response) {
-                console.log("response id : " + response.id);
-                console.log('Data submitted successfully');
-            },
-            error: function (xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
-    })
-    // 추가 버튼 클릭 이벤트 바인딩
-    document.getElementById('addRowBtn').addEventListener('click', addRow);
-
-    document.getElementById('deleteBtn').addEventListener('click', function (event) {
-        // Prevent the default click behavior
-        event.preventDefault();
-
-        // Call the function to delete checked items
-        deleteCheckedItems();
-    });
-
-    function showAlert() {
-        alert("저장되었습니다!");
-    }
-
-
-    document.addEventListener('DOMContentLoaded', function () {
-        document.getElementById('mgtOrderForm').addEventListener('submit', function (event) {
-            event.preventDefault(); // Prevent default form submission
-
-            // Get form data
-            var formData = {
-                createdAt: document.getElementById('order-date-start').value + "T00:00", // YYYY-MM-DD 형식으로 변환
-                purchaser: document.getElementById('supplier').value,
-                status: document.getElementById('status').value,
-                warehouseId: document.getElementById('warehouse').value
-            };
-
-            // Convert form data to JSON
-            var jsonData = JSON.stringify(formData);
-
-            // Send AJAX request
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/MgtOrders/MgtOrderCreate');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    // Handle success response
-                    var response = JSON.parse(xhr.responseText);
-                    console.log(response); // Log response to console
-                    // Optionally, update UI or redirect to another page
-                    // Check if the response contains the order ID
-                    if (response.id) {
-                        // Update the UI to display the order ID
-                        document.getElementById('order-id').value = response.id;
-                    } else {
-                        console.error('Order ID not found in the response');
-                    }
-                } else {
-                    // Handle error response
-                    console.error('Request failed with status:', xhr.status);
-                }
-            };
-            xhr.send(jsonData);
-        });
-    });
-</script>

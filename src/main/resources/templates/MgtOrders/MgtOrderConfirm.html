@@ -29,10 +29,10 @@
                     data: JSON.stringify(requestData), // Sending the wrapped object as JSON
                     success: function (response) {
                         console.log('Success:', response);
-                        // Perform further actions here if needed
-                        // For example, redirect to another page
-                        alert('선택한 주문이 확정되었습니다.');
-                        window.location.href = '/MgtOrders/MgtOrderConfirm';
+                            // Perform further actions here if needed
+                            // For example, redirect to another page
+                            alert('선택한 주문이 확정되었습니다.');
+                            window.location.href = '/MgtOrders/MgtOrderConfirm';
                     },
                     error: function (error) {
                         alert('선택된 발주 주문이 없습니다.');
