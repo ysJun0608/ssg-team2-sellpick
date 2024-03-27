@@ -35,7 +35,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         // Insert the new row into the mgt_Orders table
         MgtOrders mgtOrders = MgtOrders.builder()
                 .purchaser(mgtOrdersDTO.getPurchaser())
-                .status(MgtOrdersStatus.valueOf(mgtOrdersDTO.getStatus()))
+                .status(mgtOrdersDTO.getStatus())
                 .warehouseId(mgtOrdersDTO.getWarehouseId())
                 .build();
 
@@ -226,7 +226,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                         MgtOrdersDTO.builder()
                                 .id(o.getId())
                                 .purchaser(o.getPurchaser())
-                                .status(String.valueOf(o.getStatus()))
+                                .status(o.getStatus())
                                 .createdAt(o.getCreatedAt())
                                 .warehouseId(o.getWarehouseId())
                                 .build()
@@ -241,7 +241,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                         MgtOrdersDTO.builder()
                                 .id(o.getId())
                                 .purchaser(o.getPurchaser())
-                                .status(String.valueOf(o.getStatus()))
+                                .status(o.getStatus())
                                 .createdAt(o.getCreatedAt())
                                 .warehouseId(o.getWarehouseId())
                                 .build()
@@ -257,7 +257,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                         MgtOrdersDTO.builder()
                                 .id(o.getId())
                                 .purchaser(o.getPurchaser())
-                                .status(String.valueOf(o.getStatus()))
+                                .status(o.getStatus())
                                 .createdAt(o.getCreatedAt())
                                 .warehouseId(o.getWarehouseId())
                                 .build()
@@ -273,7 +273,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                         MgtOrdersDTO.builder()
                                 .id(o.getId())
                                 .purchaser(o.getPurchaser())
-                                .status(String.valueOf(o.getStatus()))
+                                .status(o.getStatus())
                                 .createdAt(o.getCreatedAt())
                                 .warehouseId(o.getWarehouseId())
                                 .build()
@@ -287,7 +287,7 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         MgtOrdersDTO mgtOrdersDTO = MgtOrdersDTO.builder()
                 .id(mgtOrders.getId())
                 .purchaser(mgtOrders.getPurchaser())
-                .status(String.valueOf(mgtOrders.getStatus()))
+                .status(mgtOrders.getStatus())
                 .createdAt(mgtOrders.getCreatedAt())
                 .warehouseId(mgtOrders.getWarehouseId())
                 .build();

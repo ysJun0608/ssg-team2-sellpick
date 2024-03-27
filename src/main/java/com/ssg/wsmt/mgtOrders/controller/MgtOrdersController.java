@@ -38,18 +38,6 @@ public class MgtOrdersController {
         model.addAttribute("id", id);
     }
 
-    @GetMapping("/home")
-    public String home() {
-        log.info("");
-        return "home";
-    }
-
-    @GetMapping("/example")
-    public String example() {
-        log.info("");
-        return "example";
-    }
-
     @PostMapping("/MgtOrderCreate")
     public ResponseEntity<?> create(@RequestBody MgtOrdersDTO mgtOrdersDTO) {
         try {
@@ -85,7 +73,7 @@ public class MgtOrdersController {
         for (Map<String, String> checkedItem : checkedItems) {
             String itemName = checkedItem.get("itemName");
             String quantity = checkedItem.get("quantity");
-
+            log.info("itemName : " + itemName + " " + quantity);
             // Check for null or invalid numeric values
             if (itemName == null || quantity == null) {
                 log.error("Null item name or quantity received");
