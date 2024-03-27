@@ -1,65 +1,176 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Settlement List</title>
-</head>
-<body>
-<div class="Settlement-List">
-<h2>Settlement List</h2>
-<table border="1">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Insert Quantity</th>
-        <th>Release Quantity</th>
-        <th>Total Price</th>
-        <th>Created At</th>
-        <th>Modified At</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="dto : ${dtoList}">
-        <td th:text="${dto.id}"></td>
-        <td th:text="${dto.insertQuantity}"></td>
-        <td th:text="${dto.releaseQuantity}"></td>
-        <td th:text="${dto.totalPrice}"></td>
-        <td th:text="${dto.createdAt}"></td>
-        <td th:text="${dto.modifiedAt}"></td>
-    </tr>
-    </tbody>
-</table>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout1}">
 
-<style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    th, td {
-        border: 1px solid black;
-        padding: 8px;
-        text-align: left;
-    }
-    .header {
-        background-color: #F2F2F2;
-    }
-    .button-container {
-        margin-bottom: 20px;
-    }
-    .button {
-        background-color: #4CAF50; /* Green */
-        border: none;
-        color: white;
-        padding: 10px 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-    }
-</style>
+<head>
+    <title>정산조회</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="col-sm-12">
+        <!--
+        -->
+    </div>
+    <div class="Settlement-List">
+        <div class="col-sm-12" style="padding-right: 0">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">정산 조회(전체) </h6>
+                <div class="search-section">
+                    <div class="d-flex">
+                        <form action="/settlement/list" method="post">
+                            <label>기간: </label>
+                            <select name="startyear">
+                                <option value="2020">2020년</option>
+                                <option value="2021">2021년</option>
+                                a
+                                <option value="2022">2022년</option>
+                                <option value="2023">2023년</option>
+                                <option value="2024">2024년</option>
+                                <option value="2025">2025년</option>
+                            </select>
+                            <select name="startmonth">
+                                <script>
+                                    for (let i = 1; i <= 12; i++) {
+                                        document.write(`<option value="${i}">${i}월</option>`);
+                                    }
+                                </script>
+                            </select>
+                            <select name="startday">
+                                <script>
+                                    for (let i = 1; i <= 31; i++) {
+                                        document.write(`<option value="${i}">${i}일</option>`);
+                                    }
+                                </script>
+                            </select>
+                            <label> ~ </label>
+                            <select name="endyear">
+                                <option value="2020">2020년</option>
+                                <option value="2021">2021년</option>
+                                <option value="2022">2022년</option>
+                                <option value="2023">2023년</option>
+                                <option value="2024">2024년</option>
+                                <option value="2025">2025년</option>
+                            </select>
+                            <select name="endmonth">
+                                <script>
+                                    for (let i = 1; i <= 12; i++) {
+                                        document.write(`<option value="${i}">${i}월</option>`);
+                                    }
+                                </script>
+                            </select>
+                            <select name="endday">
+                                <script>
+                                    for (let i = 1; i <= 31; i++) {
+                                        document.write(`<option value="${i}">${i}일</option>`);
+                                    }
+                                </script>
+                            </select>
+                            <button type="submit" class="btn btn-primary m-2">검색</button>
+                        </form>
+                        <form action="/settlement/list" method="get">
+                            <button type="submit" class="btn btn-primary m-2">전체조회</button>
+                        </form>
+                    </div>
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>입고 수량</th>
+                            <th>출고 수량</th>
+                            <th>최종 금액</th>
+                            <th>생성 날짜</th>
+                            <th>수정 날짜</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="dto : ${dtoList}">
+                            <td th:text="${dto.id}"></td>
+                            <td th:text="${dto.insertQuantity}"></td>
+                            <td th:text="${dto.releaseQuantity}"></td>
+                            <td th:text="${dto.totalPrice}"></td>
+                            <td th:text="${dto.createdAt}"></td>
+                            <td th:text="${dto.modifiedAt}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+</div>
+<!-- 페이지네이션 -->
+<div class="float-end">
+    <ul class="pagination">
+        <li class="page-item" th:if="${responseDTO.prev}">
+            <a class="page-link" th:href="@{/settlement/list(page=${num})}"
+               th:data-num="${responseDTO.start - 1}">Previous</a>
+        </li>
+
+        <th:block th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+            <li class="page-item" th:class="${responseDTO.page == num ? 'active' : ''}">
+                <a class="page-link" th:href="@{/settlement/list(page=${num})}" th:data-num="${num}"
+                   th:text="${num}"></a>
+            </li>
+        </th:block>
+
+        <li class="page-item" th:if="${responseDTO.next}">
+            <a class="page-link" th:href="@{/settlement/list(page=${num})}"
+               th:data-num="${responseDTO.end + 1}">Next</a>
+        </li>
+    </ul>
+</div>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
 </div>
 </body>
+<script th:inline="javascript">
+
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        if (target.tagName !== 'A') {
+            return
+        }
+
+        const num = target.getAttribute("data-num")
+
+        const formObj = document.querySelector("form")
+
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
+
+        formObj.submit();
+
+    }, false)
+
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        self.location = '/settlement/list'
+
+    }, false)
+
+    //show modal
+    const result = [[${result}]]
+
+    const modal = new bootstrap.Modal(document.querySelector(".modal"))
+
+    if (result) {
+        modal.show()
+    }
+    <!-- 페이지네이션 스크립트 클릭시 이동처리 -->
+
+
+</script>
 </html>
 

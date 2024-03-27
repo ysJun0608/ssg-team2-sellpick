@@ -14,34 +14,51 @@
         <result property="businessOwnerId" column="owner_id"/>
     </resultMap>
 
-<!--    상품 조회-->
+    <!--    상품 조회-->
     <select id="select" resultMap="productResultMap" resultType="com.ssg.wsmt.product.domain.ProductVO">
-        select id,name, status, cost, price, BRAND_ID, OWNER_ID from products where id = #{id}
+        select id,name, status, cost, price, BRAND_ID, OWNER_ID from PRODUCTS where id = #{id}
     </select>
 
-<!--    상품 리스트 조회-->
+    <!--    상품 리스트 조회-->
     <select id="selectAll" resultMap="productResultMap" resultType="com.ssg.wsmt.product.domain.ProductVO">
-        select id,name, status, cost, price, BRAND_ID, OWNER_ID from products
+        select id,name, status, cost, price, BRAND_ID, OWNER_ID from PRODUCTS where name like concat('%',#{name},'%' ) order by id;
     </select>
 
 
-<!--    상품 등록-->
+
+    <!--    상품 등록-->
     <insert id="insert" parameterType="com.ssg.wsmt.product.domain.ProductVO">
-        insert  into products(name, status, cost, price, BRAND_ID, OWNER_ID) values ( #{name}, #{status}, #{cost}, #{price}, #{brandId}, #{businessOwnerId})
+        insert  into PRODUCTS(name, status, cost, price, BRAND_ID, OWNER_ID) values ( #{name}, #{status}, #{cost}, #{price}, #{brandId}, #{businessOwnerId})
     </insert>
 
-<!--    상품 수정-->
+    <!--    상품 수정-->
     <update id="update" parameterType="com.ssg.wsmt.product.domain.ProductVO">
-        update products set name = #{name}, status = #{status}, cost = #{cost}, price =#{price}, BRAND_ID = #{brandId}, OWNER_ID = #{businessOwnerId} where id =#{id}
+        update PRODUCTS set name = #{name}, status = #{status}, cost = #{cost}, price =#{price}, BRAND_ID = #{brandId}, OWNER_ID = #{businessOwnerId} where id =#{id}
     </update>
 
-<!--    상품 삭제-->
+
+    <!--    상품 삭제-->
     <delete id="delete" >
-        delete from products where id = #{id}
+        delete from PRODUCTS where id = #{id}
     </delete>
 
-    <!--    이름 검색 -->
-    <!--    <select id="selectAll" resultType="com.ssg.wsmt.product.domain.ProductVO">-->
-    <!--        select * from product where pname like concat('%', #{pname},'%' ) order by pno;-->
-    <!--    </select>-->
+
+    <!-- productListInventory SELECT 쿼리 -->
+    <select id="productListInventory" resultType="com.ssg.wsmt.product.dto.ProductsDTO">
+        SELECT
+            P.ID,
+            P.NAME,
+            P.STATUS,
+            P.PRICE,
+            P.COST,
+            P.QUANTITY,
+            P.BRAND_ID,
+            P.OWNER_ID,
+            B.NAME AS BRAND_NAME
+        FROM PRODUCTS P
+                 JOIN BRAND B ON P.BRAND_ID = B.ID
+        ORDER BY P.ID
+
+    </select>
+
 </mapper>

@@ -1,160 +1,77 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout1}">
+
 <head>
-    <meta charset="UTF-8">
-    <title>Product Detail</title>
+    <title>Home2</title>
 </head>
+
 <body>
-<h2>Product Detail</h2>
-<table border="1">
-    <tbody>
-    <tr>
-        <th>ID</th>
-        <td th:text="${dto.id}"></td>
-    </tr>
-    <tr>
-        <th>NAME</th>
-        <td>
-            <span th:unless="${editing}" th:text="${dto.name}"></span>
-            <input th:if="${editing}" type="text" name="name" th:value="${dto.name}"/>
-        </td>
-    </tr>
-    <tr>
-        <th>STATUS</th>
-        <td>
-            <span th:unless="${editing}" th:text="${dto.status}"></span>
-            <input th:if="${editing}" type="text" name="status" th:value="${dto.status}"/>
-        </td>
-    </tr>
-    <tr>
-        <th>COST</th>
-        <td>
-            <span th:unless="${editing}" th:text="${dto.cost}"></span>
-            <input th:if="${editing}" type="text" name="cost" th:value="${dto.cost}"/>
-        </td>
-    </tr>
-    <tr>
-        <th>PRICE</th>
-        <td>
-            <span th:unless="${editing}" th:text="${dto.price}"></span>
-            <input th:if="${editing}" type="text" name="price" th:value="${dto.price}"/>
-        </td>
-    </tr>
-    <tr>
-        <th>BRAND_ID</th>
-        <td>
-            <span th:unless="${editing}" th:text="${dto.brandId}"></span>
-            <input th:if="${editing}" type="text" name="brandId" th:value="${dto.brandId}"/>
-        </td>
-    </tr>
-    <tr>
-        <th>OWNER_ID</th>
-        <td>
-            <span th:unless="${editing}" th:text="${dto.businessOwnerId}"></span>
-            <input th:if="${editing}" type="text" name="businessOwnerId" th:value="${dto.businessOwnerId}"/>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<div layout:fragment="content">
+    <h2>상품 상세정보</h2>
+    <div class="modify-form">
+        <form action="/product/modify">
+            <input type="hidden" name="id" th:value="${dto.id}" />
 
-<form action="/product/modify" method="get" >
-    <input type="hidden" name="id" th:value="${dto.id}" />
-    <button type="submit">수정</button>
-</form>
+            <div class="input-group mb-3">
+                <span class="input-group-text">상품  ID</span>
+                <input type="text" name="id" class="form-control" th:value="${dto.id}" readonly>
+            </div>
 
-<form action="/product/list" >
-    <button type="submit">리스트</button>
-</form>
-<form action="/product/remove" method="post">
-    <input type="hidden" name="id" th:value="${dto.id}" />
-    <button type="submit">삭제</button>
-</form>
+            <div class="input-group mb-3">
+                <span class="input-group-text">상품 이름</span>
+                <input type="text" name="name" class="form-control" th:value="${dto.name}" readonly>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">상품 상태</span>
+                <input type="text" name="status" class="form-control" th:value="${dto.status}" readonly>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">상품 원가</span>
+                <!-- 현재 상품의 원가를 기본값으로 설정 -->
+                <input type="text" name="cost" class="form-control" th:value="${dto.cost}" readonly>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">상품 가격</span>
+                <!-- 현재 상품의 가격을 기본값으로 설정 -->
+                <input type="text" name="price" class="form-control" th:value="${dto.price}" readonly>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">브랜드 ID</span>
+                <!-- 현재 상품의 가격을 기본값으로 설정 -->
+                <input type="text" name="brandId" class="form-control" th:value="${dto.brandId}" readonly>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">사업자 ID</span>
+                <!-- 현재 상품의 가격을 기본값으로 설정 -->
+                <input type="text" name="businessOwnerId" class="form-control" th:value="${dto.businessOwnerId}" readonly>
+            </div>
+
+            <br>
+            <button type="submit" class="btn btn-primary m-2">수정하기</button>
+        </form>
+
+
+        <!--   상품 삭제는 보기용임~~   -->
+        <div class="register-btn" >
+            <form action="/product/remove" method="post" >
+                <input type="text" th:value="${dto.id}" name="id" hidden />
+                <button type="submit" class="btn btn-primary m-2">상품삭제</button>
+            </form>
+        </div>
+
+        <div class="register-btn">
+            <form action="/product/list">
+                <button type="submit" class="btn btn-primary m-2">리스트</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>
-
-
-
-
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Product Detail</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h2>Product Detail</h2>-->
-<!--<table border="1">-->
-<!--    <tbody>-->
-<!--    <tr>-->
-<!--        <th>ID</th>-->
-<!--        <td th:text="${dto.id}"></td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <th>NAME</th>-->
-<!--        <td th:text="${dto.name}"></td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <th>STATUS</th>-->
-<!--        <td th:text="${dto.status}"></td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <th>COST</th>-->
-<!--        <td th:text="${dto.cost}"></td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <th>PRICE</th>-->
-<!--        <td th:text="${dto.price}"></td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <th>BRAND_ID</th>-->
-<!--        <td th:text="${dto.brandId}"></td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <th>OWNER_ID</th>-->
-<!--        <td th:text="${dto.businessOwnerId}"></td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--</table>-->
-<!--<form action="/product/modify">-->
-<!--    <input type="hidden" name="id" th:value="${dto.id}" />-->
-<!--    <button type="submit">수정</button>-->
-<!--</form>-->
-<!--</body>-->
-<!--</html>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--&lt;!&ndash; 상품 상세 페이지 &ndash;&gt;-->
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Product Details</title>-->
-<!--</head>-->
-<!--<body>-->
-<!--<h1>Product Details</h1>-->
-<!--&lt;!&ndash; 상품 정보 표시 &ndash;&gt;-->
-<!--<p>ID: 1</p>-->
-<!--<p>Name: Product 1</p>-->
-<!--&lt;!&ndash; 필요에 따라 다른 상품 정보 표시 &ndash;&gt;-->
-
-<!--&lt;!&ndash; 수정 버튼 &ndash;&gt;-->
-<!--<form action="/product/modify" method="get">-->
-<!--    <input type="hidden" name="id" value="1">-->
-<!--    <button type="submit">Modify</button>-->
-<!--</form>-->
-
-<!--&lt;!&ndash; 리스트 버튼 &ndash;&gt;-->
-<!--<a href="/product/list">Back to List</a>-->
-<!--</body>-->
-<!--</html>-->

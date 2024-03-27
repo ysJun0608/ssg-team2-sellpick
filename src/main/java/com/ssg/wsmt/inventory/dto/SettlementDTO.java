@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class SettlementDTO {
     // 마감 id
     private Long id;

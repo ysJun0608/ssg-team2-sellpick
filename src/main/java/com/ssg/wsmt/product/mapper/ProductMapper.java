@@ -12,7 +12,7 @@ public interface ProductMapper {
     // 상품 조회
     ProductVO select(Long id);
     // 상품 리스트 전체 조회
-    List<ProductVO> selectAll();
+    List<ProductVO> selectAll(String name);
     // 상품등록
     void insert(ProductVO productVO);
     // 상품 수정
@@ -23,7 +23,4 @@ public interface ProductMapper {
     // 상품 검색
     //ProductVO search();
 
-    List<ProductDTO> productListInventory();
-    void createProduct(ProductVO product);
-    void updateProduct(ProductVO product);
 }

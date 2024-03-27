@@ -57,10 +57,10 @@ public class ProductServiceImpl implements ProductService {
 
     // 상품 리스트 전체 조회
     @Override
-    public List<ProductDTO> getAll() {
-        List<ProductVO> productList = productMapper.selectAll();
-        log.info("select all실행 : "+productMapper.selectAll());
-        log.info(productList);
+    public List<ProductDTO> getAll(String name) {
+        List<ProductVO> productList = productMapper.selectAll(name);
+        log.info("select all실행 : "+ productList);
+
 
         List<ProductDTO> dtoList = productList.stream()
                 .map(productVO -> {
