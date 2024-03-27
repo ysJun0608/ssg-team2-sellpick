@@ -39,7 +39,9 @@ public class JoinService {
                 .password(password)
                 .role(UserRole.ADMIN)
                 .phone(userDTO.getPhone())
-                .address(userDTO.getAddress())
+                .zipcode(userDTO.getZipcode())
+                .streetAddress(userDTO.getStreetAddress())
+                .detailAddress(userDTO.getDetailAddress())
                 .build();
 
         userRepository.save(userEntity);

@@ -3,22 +3,19 @@ package com.ssg.wsmt.member.controller;
 
 import com.ssg.wsmt.member.dto.UserDTO;
 import com.ssg.wsmt.member.exception.DuplicateUserException;
-import com.ssg.wsmt.member.service.CustomUserDetailsService;
 import com.ssg.wsmt.member.service.JoinService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @Log4j2
@@ -27,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
 
     private final JoinService joinService;
-    private final CustomUserDetailsService customUserDetailsService;
 
     //관리자 페이지 라우팅
     @GetMapping("/admin")
@@ -72,8 +68,8 @@ public class UserController {
 //
 //    }
 
-    @PostMapping("/joinProc")
-    public ResponseEntity<String> joinProcess(UserDTO userDTO) {
+    @PostMapping(value = "/joinProc", produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> joinProcess(@ModelAttribute UserDTO userDTO) {
         log.info(userDTO.getUsername());
         try {
             joinService.joinProcess(userDTO);

@@ -13,5 +13,8 @@ public class UserDTO {
     private String password;
     private UserRole role;
     private String phone;
-    private String address;
+    private String zipcode;
+    private String streetAddress;
+    private String detailAddress;
+
 }
