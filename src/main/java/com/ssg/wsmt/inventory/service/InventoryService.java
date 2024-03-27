@@ -1,6 +1,7 @@
 package com.ssg.wsmt.inventory.service;
 
 import com.ssg.wsmt.inventory.domain.InventoryVO;
+import com.ssg.wsmt.inventory.dto.InvenInOutChartDTO;
 import com.ssg.wsmt.inventory.dto.InventoryDTO;
 import com.ssg.wsmt.inventory.dto.PageRequestDTO;
 import com.ssg.wsmt.inventory.dto.PageResponseDTO;

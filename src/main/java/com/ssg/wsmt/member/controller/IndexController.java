@@ -37,5 +37,13 @@ public class IndexController {
         return "example";
     }
 
+
+    @GetMapping({"test"})
+    public String testPage() {
+
+        return "example";
+    }
+
+
 }
 

@@ -20,7 +20,7 @@ class MgtOrdersServiceImplTest {
     public void add() {
         MgtOrdersDTO mgtOrders = MgtOrdersDTO.builder()
                 .purchaser("test")
-                .status("READY")
+                .status(MgtOrdersStatus.READY)
                 .warehouseId(1L)
                 .build();
 

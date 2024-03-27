@@ -1,5 +1,6 @@
 package com.ssg.wsmt.inventory.service;
 
+import com.ssg.wsmt.inventory.dto.SettlementChartDTO;
 import com.ssg.wsmt.inventory.dto.SettlementDTO;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
@@ -13,7 +14,7 @@ public interface SettlementService {
 //    void settlementList();
     List<SettlementDTO> settlementList();
 
-
+    List<SettlementChartDTO> getChartData();
 
     // 특정 날짜 정산 출력
    // void settlementByDate();

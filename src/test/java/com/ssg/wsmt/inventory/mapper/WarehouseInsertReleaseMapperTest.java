@@ -1,5 +1,6 @@
 package com.ssg.wsmt.inventory.mapper;
 
+import com.ssg.wsmt.inventory.dto.InvenInOutChartDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseInsertReleaseDTO;
 import com.ssg.wsmt.inventory.dto.WhPageRequestDTO;
 import com.ssg.wsmt.inventory.enums.WhInOutType;
@@ -71,5 +72,18 @@ class WarehouseInsertReleaseMapperTest {
         // then
         Assertions.assertTrue(count > 0);
         log.info("count = " + count);
+    }
+
+    @Test
+    void getAllSalesTest() {
+        // when
+        List<InvenInOutChartDTO> allSales = warehouseInsertReleaseMapper.getAllSales();
+
+        // then
+        Assertions.assertNotNull(allSales);
+
+        for (InvenInOutChartDTO dto : allSales) {
+            log.info("InvenInOutChartDTO = " + dto.toString());
+        }
     }
 }

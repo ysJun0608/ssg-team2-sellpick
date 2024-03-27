@@ -13,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Log4j2
 @Controller
@@ -33,4 +36,9 @@ public class WhInOutController {
         return "whInOut/list";
     }
 
+    @GetMapping("/recent")
+    @ResponseBody
+    public List<WarehouseInsertReleaseDTO> recent() {
+        return warehouseInsertReleaseService.recentInsertReleaseList();
+    }
 }

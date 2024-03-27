@@ -2,6 +2,7 @@ package com.ssg.wsmt.inventory.service.impl;
 
 import com.ssg.wsmt.inventory.dao.SettlementDao;
 import com.ssg.wsmt.inventory.domain.SettlementVO;
+import com.ssg.wsmt.inventory.dto.SettlementChartDTO;
 import com.ssg.wsmt.inventory.dto.SettlementDTO;
 import com.ssg.wsmt.inventory.mapper.SettlementMapper;
 import com.ssg.wsmt.inventory.service.SettlementService;
@@ -38,6 +39,11 @@ public class SettlementServiceImpl implements SettlementService {
                 ).collect(Collectors.toList());
         log.info(dtoList);
         return dtoList;
+    }
+
+    @Override
+    public List<SettlementChartDTO> getChartData() {
+        return settlementMapper.getChartData();
     }
 
 
