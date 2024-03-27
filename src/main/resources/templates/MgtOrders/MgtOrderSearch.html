@@ -8,7 +8,6 @@
     <title>Home2</title>
     <link href="/assets/css/styleMgtOrders.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 </head>
 
 <body>
@@ -19,7 +18,7 @@
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">발주조회</h6>
                 <div class="section top-section">
-                    <form action="/MgtOrders/MgtOrderSearch" method="post">
+                    <form action="/MgtOrders/MgtOrderSearch" method="get">
                         <div class="element-one">
                             <div>
                                 <label for="order-date-start">발주일자 :</label>
@@ -55,60 +54,40 @@
                     </tr>
                     </thead>
                     <tbody id="mgtOrders-data">
-                    <tr th:each="m : ${mgtOrdersDTOList}">
+                    <tr th:each="m : ${responseDTO.dtoList}">
                         <td th:text="${m.id}"></td>
                         <td th:text="${m.purchaser}"></td>
                         <td th:text="${m.status}"></td>
                         <td th:text="${m.createdAt}"></td>
                         <td th:text="${m.warehouseId}"></td>
                     </tr>
-                    </tbody>
                 </table>
             </div>
         </div>
     </div>
+
+    <div class="bg-light rounded h-100 p-4" style="padding-right: 0;">
+        <div class="btn-toolbar" role="toolbar" style="justify-content: right">
+            <div class="btn-group me-2" role="group" aria-label="First group">
+                <a th:href="@{/MgtOrders/MgtOrderSearch(page=${responseDTO.page - 1}, size=${pageRequestDTO.size})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.prev} ? '' : 'disabled')"
+                   th:text="'이전'"></a>
+
+                <th:block th:with="start=${responseDTO.start}, end=${responseDTO.end}">
+                    <a th:each="num : ${#numbers.sequence(start, end)}"
+                       th:href="@{/MgtOrders/MgtOrderSearch(page=${num}, size=${pageRequestDTO.size})}"
+                       th:class="${responseDTO.page == num} ? 'btn btn-secondary' : 'btn btn-primary'"
+                       th:text="${num}"></a>
+                </th:block>
+
+                <a th:href="@{/MgtOrders/MgtOrderSearch(page=${responseDTO.page + 1}, size=${pageRequestDTO.size})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.next} ? '' : 'disabled')"
+                   th:text="'다음'"></a>
+            </div>
+        </div>
+    </div>
 </div>
-<!--<script>-->
-<!--    function searchOrders() {-->
-<!--        var startDate = $('#order-date-start').val();-->
-<!--        var endDate = $('#order-date-end').val();-->
-<!--        var purchaser = $('#supplier').val();-->
-<!--        var warehouseId = $('#warehouse').val();-->
 
-    </body>
-        <script>
-            // // Attach an event listener directly to the search button
-            // $('#searchBtn').click(function(event) {
-    //     console.log("searchBtn clieck");
-    //     // Prevent the default form submission behavior
-    //     event.preventDefault();
-    //
-    //     // Get the form data
-    //     var formData = {
-    //         startDate: $('#order-date-start').val(),
-    //         endDate: $('#order-date-end').val(),
-    //         purchaser: $('#supplier').val(),
-    //         warehouseId: $('#warehouse').val()
-    //     };
-    //
-    //     // Send an AJAX request to the server
-    //     $.ajax({
-    //         type: 'POST',
-    //         url: '/MgtOrders/MgtOrderSearch',
-    //         data: formData,
-    //         success: function(response) {
-    //             // Update the page content with the response
-    //             // For example, update the table body with the search results
-    //             $('#mgtOrders-data').html(response);
-    //             console.log("success");
-    //         },
-    //         error: function(xhr, status, error) {
-    //             // Handle errors
-    //             console.error(error);
-    //         }
-    //     });
-    // });
-</script>
-
+</body>
 
 </html>

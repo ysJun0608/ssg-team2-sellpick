@@ -1,6 +1,9 @@
 package com.ssg.wsmt.mgtOrders.service.impl;
 
+import com.ssg.wsmt.inventory.dto.WarehouseDTO;
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
+import com.ssg.wsmt.mgtOrders.DTO.PageRequestDTO;
+import com.ssg.wsmt.mgtOrders.DTO.PageResponseDTO;
 import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import com.ssg.wsmt.mgtOrders.mapper.MgtOrdersMapper;
@@ -267,18 +270,21 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     }
 
     @Override
-    public List<MgtOrdersDTO> selectAll() {
-        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersMapper.selectAll().stream()
-                .map(o ->
-                        MgtOrdersDTO.builder()
-                                .id(o.getId())
-                                .purchaser(o.getPurchaser())
-                                .status(o.getStatus())
-                                .createdAt(o.getCreatedAt())
-                                .warehouseId(o.getWarehouseId())
-                                .build()
-                ).collect(Collectors.toList());
-        return mgtOrdersDTOList;
+    public PageResponseDTO<MgtOrdersDTO> selectAll(PageRequestDTO pageRequestDTO) {
+        // WarehouseMapper를 사용하여 페이지 요청에 따른 창고 정보 및 섹션 정보를 조회하는 메서드입니다.
+        List<MgtOrdersDTO> dtoList = mgtOrdersMapper.searchAll(pageRequestDTO);
+
+        // 페이지 요청에 따른 전체 창고 수를 조회하는 메서드를 호출합니다.
+        int total = mgtOrdersMapper.getTotalCount(pageRequestDTO);
+
+        // 페이지 응답 DTO를 생성하여 반환합니다.
+        return PageResponseDTO.<MgtOrdersDTO>withAll()
+                // 페이지 요청 DTO를 설정합니다.
+                .pageRequestDTO(pageRequestDTO)
+                // 조회된 창고 및 섹션 정보 DTO 리스트를 설정합니다.
+                .dtoList(dtoList)
+                // 전체 창고 수를 설정합니다.
+                .total(total).build();
     }
 
     @Override

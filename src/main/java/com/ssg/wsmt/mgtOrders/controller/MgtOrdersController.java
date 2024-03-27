@@ -1,12 +1,16 @@
 package com.ssg.wsmt.mgtOrders.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssg.wsmt.inventory.dto.WarehouseDTO;
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
+import com.ssg.wsmt.mgtOrders.DTO.PageRequestDTO;
+import com.ssg.wsmt.mgtOrders.DTO.PageResponseDTO;
 import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import com.ssg.wsmt.mgtOrders.service.MgtOrdersService;
 import com.ssg.wsmt.mgtOrders.service.impl.MgtOrdersServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,10 +148,13 @@ public class MgtOrdersController {
 
 
     @GetMapping("/MgtOrderSearch")
-        public void search(Model model) {
-        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersService.selectAll();
-        log.info("mgtOrdersDTOList" + mgtOrdersDTOList);
-        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
+        public void search(@Valid PageRequestDTO pageRequestDTO, Model model) {
+        log.info("log - search pageRequestDTO: " + pageRequestDTO);
+        PageResponseDTO<MgtOrdersDTO> responseDTO = mgtOrdersService.selectAll(pageRequestDTO);
+        log.info("log - search ResponseDTO: " + responseDTO);
+
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
     }
 
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+`<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
       xmlns="http://www.w3.org/1999/html"
@@ -37,6 +37,17 @@
                     error: function (error) {
                         alert('선택된 발주 주문이 없습니다.');
                     }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            // Function to handle checkbox change event
+            $(document).ready(function() {
+                // Function to handle checkbox change event
+                $('#topCheckBox').on('change', function() {
+                    var isChecked = $(this).prop('checked');
+                    $('#table-body input[type="checkbox"]').prop('checked', isChecked);
                 });
             });
         });
@@ -81,7 +92,7 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" checked>
+                            <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" id="topCheckBox">
                             <th scope="col" style="background-color: #acd1ea;">Id</th>
                             <th scope="col" style="background-color: #acd1ea;">Purchaser</th>
                             <th scope="col" style="background-color: #acd1ea;">status</th>
@@ -102,7 +113,7 @@
                     </table>
                     <div class="button-row">
                         <div>
-                            <input type="button" class="btn btn-primary" id="saveBtn" value="Save">
+                            <input type="button" class="btn btn-primary" id="saveBtn" value="Confirm">
                         </div>
                     </div>
                 </form>
@@ -118,3 +129,4 @@
 </script>
 
 </html>
+`

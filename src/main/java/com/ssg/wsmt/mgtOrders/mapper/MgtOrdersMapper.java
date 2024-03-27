@@ -1,6 +1,7 @@
 package com.ssg.wsmt.mgtOrders.mapper;
 
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
+import com.ssg.wsmt.mgtOrders.DTO.PageRequestDTO;
 import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import org.apache.ibatis.annotations.Mapper;
@@ -43,8 +44,9 @@ public interface MgtOrdersMapper {
     Integer deleteItems(Long orderId);
 
 
-    List<MgtOrders> selectAll();
+    List<MgtOrdersDTO> searchAll(PageRequestDTO pageRequestDTO);
 
+    int getTotalCount(PageRequestDTO pageRequestDTO);
 
     MgtOrders getOne(Long id);
 }

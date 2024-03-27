@@ -1,6 +1,8 @@
 package com.ssg.wsmt.mgtOrders.service;
 
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
+import com.ssg.wsmt.mgtOrders.DTO.PageRequestDTO;
+import com.ssg.wsmt.mgtOrders.DTO.PageResponseDTO;
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 
 import java.util.List;
@@ -23,6 +25,6 @@ public interface MgtOrdersService {
 
     List<MgtOrdersDTO> searchOrders(String startDate, String endDate, String purchaser, String warehouseId);
 
-    List<MgtOrdersDTO> selectAll();
+    PageResponseDTO<MgtOrdersDTO> selectAll(PageRequestDTO pageRequestDTO);
     MgtOrdersDTO getOne(Long id);
 }

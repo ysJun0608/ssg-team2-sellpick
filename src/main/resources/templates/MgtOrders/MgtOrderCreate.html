@@ -9,40 +9,6 @@
     <link href="/assets/css/styleMgtOrders.css" rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function () {
-            $('#createOrderBtn').click(function () {
-                console.log("생성 버튼");
-                // Form 데이터 수집
-                var formData = {
-                    createdAt: document.getElementById('order-date-start').value + "T00:00", // YYYY-MM-DD 형식으로 변환
-                    status: document.getElementById('status').value,
-                    purchaser: document.getElementById('supplier').value,
-                    warehouseId: document.getElementById('warehouse').value
-                };
-
-                // AJAX 요청
-                $.ajax({
-                    type: 'POST',
-                    url: '/MgtOrders/MgtOrderCreate',
-                    contentType: 'application/json',
-                    data: JSON.stringify(formData),
-                    success: function (response) {
-                        console.info(response);
-                        var responseData = JSON.parse(response); // Parse the response as JSON
-                        console.info(responseData); // Log the parsed response object
-                        document.getElementById('order-id').value = responseData.id;
-                        // 서버 응답 처리 (성공)
-                        alert('발주가 성공적으로 생성되었습니다.');
-                        // 추가 동작이 필요한 경우에는 여기에 작성
-                    },
-                    error: function (error) {
-                        // 서버 응답 처리 (오류)
-                        alert('발주 생성 중 오류가 발생했습니다.');
-                    }
-                });
-            });
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
             // Add your JavaScript code here
             let rowCount = document.querySelectorAll('#table-body tr').length; // 초기 행 개수
@@ -187,8 +153,50 @@
             }
 
             document.getElementById('addRowBtn').addEventListener('click', addRow);
+
+            $('#createOrderBtn').click(function () {
+                console.log("생성 버튼");
+                // Form 데이터 수집
+                var formData = {
+                    createdAt: document.getElementById('order-date-start').value + "T00:00", // YYYY-MM-DD 형식으로 변환
+                    status: document.getElementById('status').value,
+                    purchaser: document.getElementById('supplier').value,
+                    warehouseId: document.getElementById('warehouse').value
+                };
+
+                // AJAX 요청
+                $.ajax({
+                    type: 'POST',
+                    url: '/MgtOrders/MgtOrderCreate',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        console.info(response);
+                        var responseData = JSON.parse(response); // Parse the response as JSON
+                        console.info(responseData); // Log the parsed response object
+                        document.getElementById('order-id').value = responseData.id;
+                        // 서버 응답 처리 (성공)
+                        alert('발주가 성공적으로 생성되었습니다.');
+                        // 추가 동작이 필요한 경우에는 여기에 작성
+                    },
+                    error: function (error) {
+                        // 서버 응답 처리 (오류)
+                        alert('발주 생성 중 오류가 발생했습니다.');
+                    }
+                });
+            });
         });
 
+        $(document).ready(function() {
+            // Function to handle checkbox change event
+            $(document).ready(function() {
+                // Function to handle checkbox change event
+                $('#topCheckBox').on('change', function() {
+                    var isChecked = $(this).prop('checked');
+                    $('#table-body input[type="checkbox"]').prop('checked', isChecked);
+                });
+            });
+        });
 
     </script>
 </head>
@@ -203,40 +211,40 @@
     <div class="row">
         <div class="col-sm-12" style="padding-right: 0">
             <div class="bg-light rounded h-30">
-                <h6 class="mb-4">발주등록</h6>
+                <h6 class="mb-4" style="margin-top: 20px;">발주등록</h6>
                 <div class="section top-section">
                     <form id="mgtOrderForm" action="/MgtOrders/MgtOrderCreate" method="post">
                         <div class="row">
-                            <div>
-                                <label for="order-date-start">발주일자 * :</label>
-                                <input type="date" id="order-date-start" name="createdAt">
+                            <div class="col-md-20">
+                                <label for="order-date-start">발주일자 *</label>
+                                <input type="date" id="order-date-start" name="createdAt" class="form-control">
                             </div>
-                            <div>
-                                <label for="order-id">발주번호 :</label>
-                                <input type="number" id="order-id" th:value="${id}" readonly>
+                            <div class="col-md-20">
+                                <label for="order-id">발주번호</label>
+                                <input type="number" id="order-id" th:value="${id}" readonly class="form-control">
                                 <input type="hidden" id="orderId" value="${id}">
                             </div>
-                            <div>
-                                <label for="supplier">발주상태 :</label>
-                                <input type="text" id="status" value="READY" name="status" readonly>
+                            <div class="col-md-20">
+                                <label for="status">발주상태</label>
+                                <input type="text" id="status" value="READY" name="status" readonly class="form-control">
                             </div>
                         </div>
                         <div class="row">
-                            <div>
-                                <label for="supplier">매입거래처 :</label>
-                                <input type="text" id="supplier" placeholder="Company" name="purchaser">
+                            <div class="col-md-20">
+                                <label for="supplier">매입거래처</label>
+                                <input type="text" id="supplier" placeholder="Company" name="purchaser" class="form-control">
                             </div>
-                            <div>
-                                <label for="warehouse">창고ID :</label>
-                                <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId">
+                            <div class="col-md-20">
+                                <label for="warehouse">창고ID</label>
+                                <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId" class="form-control">
                             </div>
-                            <div></div>
                         </div>
                         <div class="button-row">
-                            <!-- Check if id is present -->
-                            <button id="createOrderBtn" class="btn btn-primary" type="button" th:if="${id == null}">Create</button>
+                                <!-- Check if id is present -->
+                            <button id="createOrderBtn" class="btn btn-primary" type="button" th:unless="${id != null and id.getClass().getSimpleName() == 'Long'}">Create</button>
                             <!-- Disable the button if id is present -->
-                            <button class="btn btn-primary" type="button" th:if="${id != null}" disabled>Create</button>
+                            <button class="btn btn-primary" type="button" th:if="${id != null and id.getClass().getSimpleName() == 'Long'}" disabled>Create</button>
+
 
                         </div>
                     </form>
@@ -258,7 +266,7 @@
                             <thead>
                             <tr>
                                 <th scope="col" style="background-color: #acd1ea;">No.</th>
-                                <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" checked>
+                                <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" id="topCheckBox">
                                 </th>
                                 <th scope="col" style="background-color: #acd1ea;">Item</th>
                                 <th scope="col" style="background-color: #acd1ea;">Quantity</th>
