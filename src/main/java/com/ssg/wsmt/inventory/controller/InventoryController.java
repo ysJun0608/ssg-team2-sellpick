@@ -4,6 +4,7 @@ import com.ssg.wsmt.inventory.domain.InventoryVO;
 import com.ssg.wsmt.inventory.dto.PageRequestDTO;
 import com.ssg.wsmt.inventory.dto.PageResponseDTO;
 import com.ssg.wsmt.inventory.dto.InventoryDTO;
+import com.ssg.wsmt.inventory.dto.PageRequestDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseCreateDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseDTO;
 import com.ssg.wsmt.inventory.service.InventoryService;
@@ -25,6 +26,7 @@ import java.util.List;
 public class InventoryController {
     private final WarehouseService warehouseService;
     private final InventoryService inventoryService;
+    
 
 
 
@@ -69,17 +71,39 @@ public class InventoryController {
 //        log.info("warehouseSearch");
 //    }
 
-    @GetMapping("/order/list")
-    public String findAllProducts(Model model) {
-        List<ProductDTO> productList = inventoryService.findAllProducts();
-        model.addAttribute("productList", productList);
-        return "productList";
-    }
+//    @GetMapping("/order/list")
+//    public String findAllProducts(Model model) {
+//        List<ProductDTO> productList = inventoryService.findAllProducts();
+//        model.addAttribute("productList", productList);
+//        return "productList";
+//    }
+
+
+//@GetMapping("/list")
+//    public String list(PageRequestDTO pageRequestDTO, Model model,
+//                       @RequestParam(value = "warehouseId", required = false) Long warehouseId) {
+//        log.info("Requested page: {}, size: {}, warehouseId: {}",
+//                pageRequestDTO.getPage(), pageRequestDTO.getSize(), warehouseId);
+//        List<InventoryDTO> inventoryList;
+//
+//        if (warehouseId != null) {
+//            // warehouseId가 null이 아닌 경우 해당 창고의 재고 목록을 조회합니다.
+//            inventoryList = inventoryService.findByWarehouseId(warehouseId);
+//        } else {
+//            // warehouseId가 null이면 전체 재고 목록을 조회합니다.
+//            inventoryList = inventoryService.findAll();
+//        }
+//
+//        model.addAttribute("inventoryList", inventoryList);
+//        model.addAttribute("pageRequestDTO", pageRequestDTO);
+//
+//        return "inventory/inventoryList";
+//    }
+
 
 
     @GetMapping("/list")
     public String listInventory(@RequestParam(value = "warehouseId", required = false) Long warehouseId, Model model) {
-        log.info(inventoryService.findAll());
         List<InventoryDTO> inventoryList;
 
         if (warehouseId == null) {
@@ -88,21 +112,20 @@ public class InventoryController {
             inventoryList = inventoryService.findByWarehouseId(warehouseId);
         }
         model.addAttribute("inventoryList", inventoryList);
-        return "inventory/inventoryList";
+        return "/Inventory/inventoryList";
     }
 
     @GetMapping("/list/{warehouseId}")
     public String listInventoryById(@PathVariable Long warehouseId, Model model) {
-        log.info(inventoryService.findByWarehouseId(warehouseId));
         List<InventoryDTO> inventoryList;
         log.info("getmapping method");
         inventoryList = inventoryService.findByWarehouseId(warehouseId);
         model.addAttribute("inventoryList", inventoryList);
-        return "inventory/inventoryList";
+        return "/Inventory/inventoryList";
     }
     @GetMapping("/inventory/list")
     public String showInventoryListPage(){
 
-        return "inventoryList";
+        return "/inventoryList";
     }
 }

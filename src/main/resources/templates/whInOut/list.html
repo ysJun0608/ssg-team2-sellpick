@@ -66,6 +66,28 @@
                     </tr>
                     </tbody>
                 </table>
+                <div class="float-end">
+                    <div class="float-end">
+                        <ul class="pagination flex-wrap">
+                            <li class="page-item" th:if="${responseDTO.prev}">
+                                <a class="page-link" th:href="@{/inventory/whInOut/list/{warehouseId}(warehouseId=${warehouseId}, page=${responseDTO.start - 1})}" th:text="'Previous'"></a>
+                            </li>
+
+                            <li th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}"
+                                class="page-item"
+                                th:classappend="${responseDTO.page == num ? 'active' : ''}">
+                                <a class="page-link" th:href="@{/inventory/whInOut/list/{warehouseId}(warehouseId=${warehouseId}, page=${num})}" th:text="${num}"></a>
+                            </li>
+
+                            <li class="page-item" th:if="${responseDTO.next}">
+                                <a class="page-link" th:href="@{/inventory/whInOut/list/{warehouseId}(warehouseId=${warehouseId}, page=${responseDTO.end + 1})}" th:text="'Next'"></a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+
+                </div>
             </div>
         </div>
 
