@@ -4,61 +4,65 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssg.wsmt.inventory.mapper.InventoryMapper">
     <resultMap id="InventoryResultMap" type="com.ssg.wsmt.inventory.dto.InventoryDTO">
+
         <id property="id" column="ID"/>
-        <result property="quantity" column="quantity"/>
-        <result property="warehouseSectionId" column="wh_section_id"/>
-        <result property="productId" column="product_id"/>
-        <result property="warehouseId" column="id"/>
+        <result property="quantity" column="QUANTITY"/>
+        <result property="warehouseSectionId" column="WH_SECTION_ID"/>
+        <result property="productId" column="PRODUCTS_ID"/>
+        <result property="productName" column="NAME"/>
+        <result property="status" column="STATUS"/>
+        <result property="cost" column="COST"/>
         <result property="location" column="location"/>
-        <result property="productName" column="name"/>
-        <result property="brandName" column="name"/>
-        <result property="productPrice" column="price"/>
+        <result property="price" column="PRICE"/>
+        <result property="brandName" column="BRAND_NAME"/>
+        <result property="businessOwnerId" column="OWNER_ID"/>
 
     </resultMap>
 
-    <select id="findAllProducts" resultType="com.ssg.wsmt.product.dto.ProductsDTO">
-        SELECT * FROM PRODUCTS
+    <select id="findAll">
+        SELECT
+            i.ID AS id,
+            i.QUANTITY AS quantity,
+            i.WH_SECTION_ID AS whSectionId,
+            i.PRODUCTS_ID AS productId,
+            w.LOCATION AS location,
+            p.NAME AS productName,
+            p.STATUS AS productStatus,
+            p.COST AS cost,
+            p.PRICE AS price,
+            p.QUANTITY AS quantities,
+            b.NAME AS brandName,
+            o.NAME AS ownerName
+        FROM inventory i
+                 LEFT JOIN products p ON i.PRODUCTS_ID = p.ID
+                 LEFT JOIN brand b ON p.BRAND_ID = b.ID
+                 LEFT JOIN business_owner o ON p.OWNER_ID = o.ID
+                 LEFT JOIN warehouse w ON i.WH_SECTION_ID = w.ID
     </select>
 
-    <select id="findProductById" resultType="com.ssg.wsmt.product.dto.ProductsDTO" parameterType="Long">
-        SELECT * FROM PRODUCTS WHERE id = #{id}
-    </select>
+    <select id="findByWarehouseId">
+        SELECT
+            i.ID AS id,
+            i.QUANTITY AS quantity,
+            i.WH_SECTION_ID AS whSectionId,
+            i.PRODUCTS_ID AS productId,
+            w.LOCATION AS location,
+            p.NAME AS productName,
+            p.STATUS AS productStatus,
+            p.COST AS cost,
+            p.PRICE AS price,
+            p.QUANTITY AS quantities,
+            b.NAME AS brandName,
+            o.NAME AS ownerName
+        FROM inventory i
+                 LEFT JOIN products p ON i.PRODUCTS_ID = p.ID
+                 LEFT JOIN brand b ON p.BRAND_ID = b.ID
+                 LEFT JOIN business_owner o ON p.OWNER_ID = o.ID
+                 LEFT JOIN warehouse w ON i.WH_SECTION_ID = w.ID
 
-    <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">
-        SELECT * FROM INVENTORY
-    </select>
+        where
+            w.ID = #{warehouseId}
 
-    <select id="findAll" resultMap="InventoryResultMap">
-        SELECT i.*, p.name as productName, p.price as productPrice
-        FROM INVENTORY i
-                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
-    </select>
-
-
-<!--    <select id="findAll" resultType="com.ssg.wsmt.inventory.domain.InventoryVO">-->
-<!--        SELECT i.*, p.* FROM inventory i-->
-<!--                                 LEFT JOIN products p ON i.products_id = p.id-->
-<!--    </select>-->
-
-    <select id="findById" resultType="com.ssg.wsmt.inventory.domain.InventoryVO" parameterType="Long">
-        SELECT i.*, p.* FROM INVENTORY i
-                                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
-        WHERE i.id = #{id}
-    </select>
-
-    <select id="findByWarehouseId" resultType="com.ssg.wsmt.inventory.domain.InventoryVO" parameterType="Long">
-        SELECT i.*, p.* FROM INVENTORY i
-                                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
-                                 JOIN WAREHOUSE_SECTION ws ON i.wh_section_id = ws.id
-                                 JOIN WAREHOUSE w ON ws.warehouse_id = w.id
-        WHERE w.id = #{warehouseId}
-    </select>
-
-    <select id="search" resultType="com.ssg.wsmt.inventory.domain.InventoryVO" parameterType="String">
-        SELECT i.*, p.* FROM INVENTORY i
-                                 LEFT JOIN PRODUCTS p ON i.products_id = p.id
-        WHERE i.id LIKE CONCAT('%', #{keyword}, '%')
-           OR p.name LIKE CONCAT('%', #{keyword}, '%')
     </select>
 
 </mapper>
