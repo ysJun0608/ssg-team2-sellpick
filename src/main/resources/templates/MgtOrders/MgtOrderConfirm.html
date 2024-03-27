@@ -40,6 +40,17 @@
                 });
             });
         });
+
+        $(document).ready(function() {
+            // Function to handle checkbox change event
+            $(document).ready(function() {
+                // Function to handle checkbox change event
+                $('#topCheckBox').on('change', function() {
+                    var isChecked = $(this).prop('checked');
+                    $('#table-body input[type="checkbox"]').prop('checked', isChecked);
+                });
+            });
+        });
     </script>
 
 </head>
@@ -81,7 +92,7 @@
                     <table class="table table-bordered">
                         <thead>
                         <tr>
-                            <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" checked>
+                            <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" id="topCheckBox">
                             <th scope="col" style="background-color: #acd1ea;">Id</th>
                             <th scope="col" style="background-color: #acd1ea;">Purchaser</th>
                             <th scope="col" style="background-color: #acd1ea;">status</th>
