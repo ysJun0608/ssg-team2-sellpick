@@ -1,5 +1,6 @@
 package com.ssg.wsmt.mgtOrders.DTO;
 
+import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class PageRequestDTO {
     private LocalDate endDate;
     private String purchaser;
     private Long warehouseId;
+    private MgtOrdersStatus status;
 
     public Pageable getPageable(String... props) {
         return PageRequest.of(this.page - 1, this.size, Sort.by(props).descending());

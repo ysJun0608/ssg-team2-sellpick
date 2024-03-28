@@ -21,7 +21,8 @@ public interface MgtOrdersService {
 
     List<MgtOrdersDTO> searchForStatus(MgtOrdersStatus status);
 
-    List<MgtOrdersDTO> searchOrdersAndStatus(String startDate, String endDate, String purchaser, String warehouseId, MgtOrdersStatus status);
+    PageResponseDTO<MgtOrdersDTO> searchOrdersAndStatus(PageRequestDTO pageRequestDTO);
+
 
     List<MgtOrdersDTO> searchOrders(String startDate, String endDate, String purchaser, String warehouseId);
 

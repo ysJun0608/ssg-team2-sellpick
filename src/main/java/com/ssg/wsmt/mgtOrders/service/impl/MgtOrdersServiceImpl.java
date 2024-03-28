@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -237,20 +238,17 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
         return mgtOrdersDTOList;
     }
 
-    @Override
-    public List<MgtOrdersDTO> searchOrdersAndStatus(String startDate, String endDate, String purchaser, String warehouseId, MgtOrdersStatus status) {
-        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersMapper.searchOrdersAndStatus(startDate, endDate, purchaser, warehouseId, status).stream()
-                .map(o ->
-                        MgtOrdersDTO.builder()
-                                .id(o.getId())
-                                .purchaser(o.getPurchaser())
-                                .status(o.getStatus())
-                                .createdAt(o.getCreatedAt())
-                                .warehouseId(o.getWarehouseId())
-                                .build()
-                ).collect(Collectors.toList());
+    public PageResponseDTO<MgtOrdersDTO> searchOrdersAndStatus(PageRequestDTO pageRequestDTO) {
+        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersMapper.searchOrdersAndStatus(pageRequestDTO);
 
-        return mgtOrdersDTOList;
+        // Get the total count of orders matching the search criteria
+        int total = mgtOrdersMapper.getTotalCount(pageRequestDTO);
+
+        return PageResponseDTO.<MgtOrdersDTO>withAll()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(mgtOrdersDTOList)
+                .total(total)
+                .build();
     }
 
     @Override

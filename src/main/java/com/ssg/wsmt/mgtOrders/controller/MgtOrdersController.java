@@ -14,6 +14,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -111,10 +112,18 @@ public class MgtOrdersController {
 
 
     @GetMapping("/MgtOrderConfirm")
-    public void confirm(Model model) {
-        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersService.searchForStatus(MgtOrdersStatus.READY);
-        log.info("mgtOrdersDTOList" + mgtOrdersDTOList);
-        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
+    public void confirm(@Valid PageRequestDTO pageRequestDTO, Model model) {
+        log.info("log - confirm pageRequestDTO: " + pageRequestDTO);
+
+        // Set the status to READY in the PageRequestDTO
+        pageRequestDTO.setStatus(MgtOrdersStatus.READY);
+
+        // Call the searchOrdersAndStatusPage method in the service layer
+        PageResponseDTO<MgtOrdersDTO> responseDTO = mgtOrdersService.searchOrdersAndStatus(pageRequestDTO);
+        log.info("log - confirm responseDTO: " + responseDTO);
+
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
     }
 
 
@@ -196,8 +205,8 @@ public class MgtOrdersController {
             Model model) {
 
         List<MgtOrdersDTO> mgtOrdersDTOList = new ArrayList<>();
-        mgtOrdersDTOList = mgtOrdersService.searchOrdersAndStatus(startDate, endDate, purchaser, warehouseId, MgtOrdersStatus.READY);
-        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
+//        mgtOrdersDTOList = mgtOrdersService.searchOrdersAndStatus();
+//        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
 
         return "/MgtOrders/MgtOrderConfirm";
     }
