@@ -6,15 +6,12 @@ import com.ssg.wsmt.smOrders.dto.PageRequestDTO;
 import com.ssg.wsmt.smOrders.dto.PageResponseDTO;
 import com.ssg.wsmt.smOrders.dto.SmOrdersDTO;
 import com.ssg.wsmt.smOrders.enums.SellerSendStatus;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 
 public interface SmOrdersService {
 
-    //전체 조회
-    List<SmOrdersVo> findAllSmorders(SmOrdersDTO smOrdersDTO);
     List<SmOrdersVo> readCompleteOrders(SmOrdersDTO smOrdersDTO);
 
     //취소건 조회

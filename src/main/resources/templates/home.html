@@ -151,6 +151,7 @@
                             '<td>' + data[i].id + '</td>' +
                             '<td>' + data[i].productName + '</td>' +
                             '<td>' + data[i].totalPrice + '원</td>';
+
                             // '<td><a class="btn btn-sm btn-primary" href="">Detail</a></td>';
                             // type이 발주이면 "/mgtOrders'로 이동, 출고이면 "/smOrders"로 이동 하는 조건문
                             if (data[i].type == '입고') {
@@ -248,7 +249,7 @@
     <div class="container-fluid pt-4 px-4">
         <div class="bg-light text-center rounded p-4">
             <div class="d-flex align-items-center justify-content-between mb-4">
-                <h6 class="mb-0">Recent Sales</h6>
+                <h6 class="mb-0">최근 주문 요청</h6>
             </div>
             <div class="table-responsive" id="recentSalesTable">
                 <!-- Sales data will be dynamically inserted here -->

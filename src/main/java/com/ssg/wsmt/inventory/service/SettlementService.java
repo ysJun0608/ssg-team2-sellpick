@@ -15,9 +15,6 @@ import java.util.List;
 
 @Service
 public interface SettlementService {
-    // 정산 리스트 출력
-////    void settlementList();
-//    List<SettlementDTO> settlementList(); 임시주석
 
     List<SettlementChartDTO> getChartData();
 
@@ -26,8 +23,6 @@ public interface SettlementService {
 
     //페이징 처리
     List<SettlementDTO> searchSet(Long settlementId);
+
     PageResponseDTO<SettlementDTO> ReadAllSetlist(PageRequestDTO requestDTO);
-//
-//    List<SettlementDTO> searchOrders(Long settlementId);
-//    PageResponseDTO<SettlementDTO> ReadAlllist(PageRequestDTO requestDTO);
 }

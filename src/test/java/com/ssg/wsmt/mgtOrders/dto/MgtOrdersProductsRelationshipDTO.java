@@ -1,4 +1,4 @@
-package com.ssg.wsmt.mgtOrders;
+package com.ssg.wsmt.mgtOrders.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

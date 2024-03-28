@@ -54,14 +54,6 @@ public class SmOrderServiceImpl implements SmOrdersService {
 
 
     @Override
-    public List<SmOrdersVo> findAllSmorders(SmOrdersDTO smOrdersDTO) {
-//        SmOrdersVo smOrdersVo = SmOrdersVo.builder()
-//                .id(smOrdersDTO.getId()) //
-//                .build();
-        return smOrdersMapper.findAll();
-    }
-
-    @Override
     public List<SmOrdersVo> readCompleteOrders(SmOrdersDTO smOrdersDTO) {
         return smOrdersMapper.findCompleteOrders();
     }

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
-
 @Controller
 @RequestMapping("/product")
 @Log4j2
@@ -26,27 +25,27 @@ public class ProductController {
 
     // 리스트
     @GetMapping("/list")
-    public String list(@RequestParam(required = false) String name, Model model){
+    public String list(@RequestParam(required = false) String name, Model model) {
         log.info("product list");
-        if(name == null){
+        if (name == null) {
             model.addAttribute("dtoList", productService.getAll(""));
+        } else {
+            model.addAttribute("dtoList", productService.getAll(name));
         }
-        else{
-            model.addAttribute("dtoList",productService.getAll(name));
-        }  return "/Product/list";
+        return "/Product/list";
 
     }
 
     // 상품 등록
     @GetMapping("/register")
-    public void register(){
+    public void register() {
         log.info("product register ~~이야");
     }
 
     @PostMapping("/register")
-    public String register(@Valid ProductDTO productDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    public String register(@Valid ProductDTO productDTO, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         log.info("Post product register이야~");
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             log.info("has errors ...");
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/product/register";
@@ -60,8 +59,8 @@ public class ProductController {
     }
 
     // 상품 상세페이지
-    @GetMapping({"/read","/modify"})
-    public void read(@RequestParam long id, Model model){
+    @GetMapping({"/read", "/modify"})
+    public void read(@RequestParam long id, Model model) {
         ProductDTO productDTO = productService.getOne(id);
         model.addAttribute("dto", productDTO);
 //        return "product/read";
@@ -70,7 +69,7 @@ public class ProductController {
 
     // 상품 수정
     @PostMapping("/modify")
-    public String modifyComplete(@Valid ProductDTO productDTO, BindingResult bindingResult){
+    public String modifyComplete(@Valid ProductDTO productDTO, BindingResult bindingResult) {
 //        if(bindingResult.hasErrors()){
 //            return "redirect:/product/modify?id=" + productDTO.getId();
 //        }
@@ -81,7 +80,7 @@ public class ProductController {
 
     // 상품 삭제
     @PostMapping("/remove")
-    public String remove(long id, RedirectAttributes redirectAttributes){
+    public String remove(long id, RedirectAttributes redirectAttributes) {
         log.info(id);
         productService.remove(id);
         return "redirect:/product/list";

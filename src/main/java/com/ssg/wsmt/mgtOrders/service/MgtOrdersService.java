@@ -14,10 +14,6 @@ public interface MgtOrdersService {
     void addItems(Long quantities, Long productId, Long id);
     void getAllOrders();
     boolean confirmOrder(Long orderId);
-    boolean cancelOrder();
-    void confirmList();
-    void searchNonDelivered();
-    void confirmArrival();
     void delete(Long id);
     void deleteItems(Long id);
 

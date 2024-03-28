@@ -12,6 +12,4 @@ import java.util.ArrayList;
 public interface WarehouseSectionMapper {
     Long saveWarehouseSection(WarehouseSectionVO section);
     ArrayList selectWarehouseSection(Long chooseScId);
-
-
 }

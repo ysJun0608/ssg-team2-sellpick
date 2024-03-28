@@ -19,8 +19,4 @@ public interface ProductMapper {
     void update(ProductVO productVO);
     // 상품 삭제
     void delete(Long id);
-
-    // 상품 검색
-    //ProductVO search();
-
 }

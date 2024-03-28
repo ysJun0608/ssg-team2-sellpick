@@ -1,6 +1,3 @@
-
-
-
 var mapContainer = document.getElementById('map');
 var detailContainer = document.getElementById('detail');
 var mapOptions = {
@@ -37,7 +34,9 @@ function showWarehouseMap(element) {
     var id = element.cells[1].textContent;
     var deliveryCompanyName = element.cells[2].textContent;
     var location = element.cells[3].textContent;
-    var sectionType = element.cells[4].textContent;
+    var sectionType = element.getAttribute('data-section-type');
+    var sectionTypes = sectionType.split(',').slice(0, 2);
+    sectionType = sectionTypes.join(', ');
 
     // 상세 정보 업데이트
     var detailList = detailContainer.querySelector('.list-group');

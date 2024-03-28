@@ -1,6 +1,5 @@
 package com.ssg.wsmt.inventory.controller;
 
-import com.ssg.wsmt.inventory.dto.PageRequestDTO;
 import com.ssg.wsmt.inventory.dto.WarehouseInsertReleaseDTO;
 import com.ssg.wsmt.inventory.dto.WhPageRequestDTO;
 import com.ssg.wsmt.inventory.dto.WhPageResponseDTO;
@@ -13,9 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 @Log4j2
 @Controller
@@ -35,6 +31,4 @@ public class WhInOutController {
 
         return "whInOut/list";
     }
-
-
 }

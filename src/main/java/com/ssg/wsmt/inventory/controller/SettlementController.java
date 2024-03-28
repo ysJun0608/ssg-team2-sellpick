@@ -4,13 +4,8 @@ import com.ssg.wsmt.inventory.dto.PageRequestDTO;
 import com.ssg.wsmt.inventory.dto.PageResponseDTO;
 import com.ssg.wsmt.inventory.dto.SettlementDTO;
 import com.ssg.wsmt.inventory.service.SettlementService;
-import com.ssg.wsmt.smOrders.dto.SmOrdersDTO;
-import com.ssg.wsmt.smOrders.enums.SellerSendStatus;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -66,7 +61,6 @@ public class SettlementController {
 
         return "settlement/list";
     }
-
 
 
     // 기간별 정산 리스트

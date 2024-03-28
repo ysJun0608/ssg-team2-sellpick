@@ -106,27 +106,14 @@
                         <th scope="col" style="background-color: #acd1ea;">창고번호</th>
                         <th scope="col" style="background-color: #acd1ea;">택배사</th>
                         <th scope="col" style="background-color: #acd1ea;">창고주소</th>
-                        <th scope="col" style="background-color: #acd1ea;display: none;">창고소분류(섹션)</th>
                     </tr>
                     </thead>
                     <tbody id="warehouse-data">
-                    <tr th:each="w : ${responseDTO.dtoList}" th:data-location="${w.location}"
-                        onclick="showWarehouseMap(this)">
+                    <tr th:each="w : ${responseDTO.dtoList}" th:data-location="${w.location}" th:data-section-type="${w.sectionType}" onclick="showWarehouseMap(this)">
                         <td th:text="${w.type}"></td>
                         <td th:text="${w.id}"></td>
                         <td th:text="${w.deliveryCompanyName}"></td>
                         <td th:text="${w.location}"></td>
-                        <td th:text="${w.sectionType}" style="display: none;"></td>
-                        <!--                        <td th:text="${convertToKorean(w.sectionType)}"></td>-->
-                        <!--                        <td>-->
-                        <!--                            <span th:if="${w.sectionType == 'DRY'}">건조</span>-->
-                        <!--                            <span th:if="${w.sectionType == 'FROZEN'}">냉동</span>-->
-                        <!--                            <span th:if="${w.sectionType == 'REFRIGERATED'}">냉장</span>-->
-                        <!--                            <span th:if="${w.sectionType == 'PROCESSED'}">가공</span>-->
-                        <!--                            <span th:if="${w.sectionType != 'DRY' and w.sectionType != 'FROZEN' and w.sectionType != 'REFRIGERATED' and w.sectionType != 'PROCESSED'}" th:text="${w.sectionType}"></span>-->
-                        <!--                        </td>-->
-
-
                     </tr>
                     </tbody>
                 </table>

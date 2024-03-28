@@ -36,7 +36,7 @@
                     <tr th:each="dto : ${dtoList}">
                         <td th:text="${dto.id}"></td>
                         <td><a th:href="@{'/product/read?id=' + ${dto.id}}" th:text="${dto.name}"></a></td>
-                        <td th:text="${dto.status}"></td>
+                        <td th:text="${dto.status.equals('ON_SALE') ? '판매중' : '판매종료'}"></td>
                         <td th:text="${dto.cost}"></td>
                         <td th:text="${dto.price}"></td>
                         <td th:text="${dto.brandId}"></td>

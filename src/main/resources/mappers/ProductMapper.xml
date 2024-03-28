@@ -42,23 +42,4 @@
         delete from PRODUCTS where id = #{id}
     </delete>
 
-
-    <!-- productListInventory SELECT 쿼리 -->
-    <select id="productListInventory" resultType="com.ssg.wsmt.product.dto.ProductsDTO">
-        SELECT
-            P.ID,
-            P.NAME,
-            P.STATUS,
-            P.PRICE,
-            P.COST,
-            P.QUANTITY,
-            P.BRAND_ID,
-            P.OWNER_ID,
-            B.NAME AS BRAND_NAME
-        FROM PRODUCTS P
-                 JOIN BRAND B ON P.BRAND_ID = B.ID
-        ORDER BY P.ID
-
-    </select>
-
 </mapper>

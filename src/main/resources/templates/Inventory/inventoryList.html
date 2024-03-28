@@ -107,7 +107,6 @@
             <th>재고ID</th>
             <th>재고수량</th>
             <th>창고구역ID</th>
-            <th>상품ID</th>
             <th>상품명</th>
             <th>판매상태</th>
             <th>원가</th>
@@ -122,9 +121,8 @@
             <td th:text="${item.id}">"</td>
             <td th:text="${item.quantity}"></td>
             <td th:text="${item.whSectionId}"></td>
-            <td th:text="${item.productId}"></td>
             <td th:text="${item.productName}"></td>
-            <td th:text="${item.productStatus}"></td>
+            <td th:text="${item.productStatus.equals('ON_SALE') ? '판매중' : '판매종료'}"></td>
             <td th:text="${item.cost}"></td>
             <td th:text="${item.price}"></td>
             <td th:text="${item.quantities}"></td>

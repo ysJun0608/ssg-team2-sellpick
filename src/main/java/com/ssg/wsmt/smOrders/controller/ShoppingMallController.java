@@ -16,23 +16,9 @@ public class ShoppingMallController {
 
     private final ShoppingMallService shoppingMallService; // 이 필드를 클래스 내에 한 번만 선언해야 합니다.
 
-
-//    @GetMapping("/ex/shop")
-//    public String listShoppingMalls(Model model, ShoppingMallDTO shoppingMallDTO) {
-//        model.addAttribute("shoppingMallsList", shoppingMallService.findAllShoppingMalls(shoppingMallDTO));
-//        return "ex/shop"; // templates/ex/shop.html
-//    }
-
-
     @GetMapping("/index")
     public void index(Model model, ShoppingMallVo shoppingMall) {
         log.info("hello~~~");
         model.addAttribute("msg", "hello spring boot 임 ㅋㅋㅋ");
     }
-
-
-
-
-
-
 }

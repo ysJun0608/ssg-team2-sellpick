@@ -1,4 +1,5 @@
 package com.ssg.wsmt.smOrders.controller;
+
 import com.ssg.wsmt.smOrders.domain.SmOrdersVo;
 import com.ssg.wsmt.smOrders.dto.PageRequestDTO;
 import com.ssg.wsmt.smOrders.dto.PageResponseDTO;
@@ -12,12 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/smorder")
@@ -68,6 +70,7 @@ public class SmOrdersController {
 
         return "smorder/listall";
     }
+
     // 기본 목록 메소드
     @GetMapping("/listcomplete")
     public String listOrdersComplete(Model model, SmOrdersDTO smOrdersDTO) {
@@ -77,13 +80,14 @@ public class SmOrdersController {
     }
 
     @GetMapping("/listcancle")
-    public String listOrdersCancle(Model model ,SmOrdersDTO smOrdersDTO ) {
+    public String listOrdersCancle(Model model, SmOrdersDTO smOrdersDTO) {
         model.addAttribute("orders", smOrdersService.readAllCanceledOrders());
         log.info(smOrdersService.readAllCanceledOrders());
         return "/smorder/listcancle";
     }
+
     @GetMapping("/listprepare")
-    public String listOrdersPrepare(Model model ,SmOrdersDTO smOrdersDTO ) {
+    public String listOrdersPrepare(Model model, SmOrdersDTO smOrdersDTO) {
         model.addAttribute("orders", smOrdersService.readAllPreparedOrders());
         log.info(smOrdersService.readAllPreparedOrders());
         return "/smorder/listprepare";
@@ -93,11 +97,11 @@ public class SmOrdersController {
     @PostMapping("/modify")
     public String modify(@Valid SmOrdersDTO smOrdersDTO,
                          BindingResult bindingResult,
-                         RedirectAttributes redirectAttributes){
-        if(bindingResult.hasErrors()) {
+                         RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
             log.info("has errors.......");
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors() );
-            redirectAttributes.addAttribute("id", smOrdersDTO.getId() );
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            redirectAttributes.addAttribute("id", smOrdersDTO.getId());
             return "redirect:/smorder/modify";
         }
         log.info(smOrdersDTO);
@@ -107,8 +111,8 @@ public class SmOrdersController {
     }
 
     @GetMapping("/modify")
-    public void modify( Model model, Long orderId2) {
-        log.info(smOrdersService.getOne( orderId2));
+    public void modify(Model model, Long orderId2) {
+        log.info(smOrdersService.getOne(orderId2));
         log.info(orderId2);
 
         SmOrdersVo smOrdersVo = smOrdersService.getOne(orderId2);

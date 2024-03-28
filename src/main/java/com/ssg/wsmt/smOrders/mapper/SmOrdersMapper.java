@@ -1,18 +1,12 @@
 package com.ssg.wsmt.smOrders.mapper;
 
-//import com.ssg.wsmt.smOrders.domain.SmOrdersVo;
 import com.ssg.wsmt.smOrders.domain.SmOrdersVo;
-import com.ssg.wsmt.smOrders.dto.PageRequestDTO;
-import com.ssg.wsmt.smOrders.dto.PageResponseDTO;
 import com.ssg.wsmt.smOrders.dto.SmOrdersDTO;
 import com.ssg.wsmt.smOrders.enums.SellerSendStatus;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Map;
-
-import org.apache.ibatis.annotations.Param;
-import org.springframework.data.domain.Pageable;
 @Mapper
 public interface SmOrdersMapper {
     List<SmOrdersVo> findAll();// 전체 조회
@@ -26,7 +20,4 @@ public interface SmOrdersMapper {
 
     List<SmOrdersDTO> searchAll(@Param("types") String[] types, @Param("keyword") String keyword, @Param("offset") int offset, @Param("size") int size);
     int getTotalCount(@Param("types") String[] types, @Param("keyword") String keyword);
-
-
-
 }
