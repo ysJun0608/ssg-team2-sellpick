@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 private final WarehouseInsertReleaseService warehouseInsertReleaseService;
 
-    @GetMapping({"", "/home"})
-    public void goHome(Model model, @Valid WarehouseInsertReleaseDTO warehouseInsertReleaseDTO) {
+    @GetMapping({"/","/home"})
+    public String goHome(Model model, @Valid WarehouseInsertReleaseDTO warehouseInsertReleaseDTO) {
         Long TodayCost = warehouseInsertReleaseService.findTodayInsertCost(warehouseInsertReleaseDTO);
         Long TodayPrice = warehouseInsertReleaseService.findTodayReleasePrice(warehouseInsertReleaseDTO);
         Long TodayRevenue = warehouseInsertReleaseService.findTodayRevenue(warehouseInsertReleaseDTO);
@@ -27,6 +27,7 @@ private final WarehouseInsertReleaseService warehouseInsertReleaseService;
         model.addAttribute("TodayPrice", TodayPrice);
         model.addAttribute("TodayRevenue", TodayRevenue);
 
+        return "/home";
     }
 
 }
