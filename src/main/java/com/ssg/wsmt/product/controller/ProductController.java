@@ -25,15 +25,16 @@ public class ProductController {
     private final ProductService productService;
 
     // 리스트
-    @RequestMapping("/list")
-    public void list(String name, Model model){
+    @GetMapping("/list")
+    public String list(@RequestParam(required = false) String name, Model model){
         log.info("product list");
         if(name == null){
-            model.addAttribute("dtoList", productService.getAll());
+            model.addAttribute("dtoList", productService.getAll(""));
         }
         else{
-            model.addAttribute("dtoList",productService.getAll());
-        }
+            model.addAttribute("dtoList",productService.getAll(name));
+        }  return "/Product/list";
+
     }
 
     // 상품 등록

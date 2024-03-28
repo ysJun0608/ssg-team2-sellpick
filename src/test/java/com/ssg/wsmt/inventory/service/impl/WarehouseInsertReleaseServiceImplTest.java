@@ -25,4 +25,9 @@ class WarehouseInsertReleaseServiceImplTest {
         log.info(warehouseInsertReleaseService.findAllInsertReleaseList(1L, whPageRequestDTO));
     }
 
+    @Test
+    void getAllSales() {
+        // when
+        log.info(warehouseInsertReleaseService.getAllSales());
+    }
 }

@@ -5,23 +5,88 @@
 <mapper namespace="com.ssg.wsmt.inventory.mapper.SettlementMapper">
 
 
-<!--    정산 조회-->
+    <!--    정산 조회-->
     <select id="select" resultType="com.ssg.wsmt.inventory.domain.SettlementVO">
-        select * from settlement where id = #{id}
+        select * from SETTLEMENT where id = #{id}
     </select>
 
-<!--    정산 리스트 전체 조회-->
+    <!--    정산 리스트 전체 조회-->
     <select id="selectAll" resultType="com.ssg.wsmt.inventory.domain.SettlementVO">
         SELECT ID, IN_QUANTITY as insertQuantity, OUT_QUANTITY as releaseQuantity,
                TOTAL_PRICE as totalPrice, CREATED_AT as createdAt, MODIFIED_AT as modifiedAt
-        FROM settlement
+        FROM SETTLEMENT
     </select>
 
 
-<!--     정산 삭제-->
+
+    <!--    정산 리스트 기간별 조회 -->
+    <select id="selectSetDate" resultType="com.ssg.wsmt.inventory.domain.SettlementVO">
+        SELECT ID, IN_QUANTITY as insertQuantity, OUT_QUANTITY as releaseQuantity,
+               TOTAL_PRICE as totalPrice, CREATED_AT as createdAt, MODIFIED_AT as modifiedAt
+        FROM SETTLEMENT
+        WHERE CREATED_AT BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <!--    페이징 처리-->
+
+
+    <!--     정산 삭제-->
     <delete id="delete">
-        delete from settlement where id =#{id}
+        delete from SETTLEMENT where id =#{id}
     </delete>
 
 
+    <!--    페이징 처리-->
+
+
+    <!--    페이징 처리-->
+    <select id="searchSetAll" resultType="com.ssg.wsmt.inventory.dto.SettlementDTO">
+        SELECT
+            ID AS id,
+            IN_QUANTITY AS insertQuantity,
+            OUT_QUANTITY AS releaseQuantity,
+            TOTAL_PRICE AS totalPrice,
+            CREATED_AT AS createdAt,
+            MODIFIED_AT AS modifiedAt
+        FROM
+            SETTLEMENT
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="getSetTotalCount" resultType="int">
+        SELECT COUNT(*) FROM SETTLEMENT
+        <where>
+            <if test="keyword != null">
+                AND (ID LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findSetByCriteria" resultType="com.ssg.wsmt.inventory.domain.SettlementVO">
+        SELECT
+        ID AS id,
+        IN_QUANTITY AS insertQuantity,
+        OUT_QUANTITY AS releaseQuantity,
+        TOTAL_PRICE AS totalPrice,
+        CREATED_AT AS createdAt,
+        MODIFIED_AT AS modifiedAt
+        FROM
+        SETTLEMENT as sle
+        <if test="settlementId != null and settlementId != ''">
+            AND sle.id = #{settlementId}
+        </if>
+
+    </select>
+
+    <select id="getChartData" resultType="com.ssg.wsmt.inventory.dto.SettlementChartDTO">
+        SELECT
+            YEAR(s.CREATED_AT) as year,
+            MONTH(s.CREATED_AT) as month,
+            COALESCE(SUM(s.IN_QUANTITY), 0) AS inQuantity,
+            COALESCE(SUM(s.OUT_QUANTITY), 0) AS outQuantity
+        FROM SETTLEMENT AS s
+        GROUP BY YEAR(s.CREATED_AT), MONTH(s.CREATED_AT)
+        ORDER BY YEAR(s.CREATED_AT) ASC, MONTH(s.CREATED_AT) ASC
+    </select>
 </mapper>

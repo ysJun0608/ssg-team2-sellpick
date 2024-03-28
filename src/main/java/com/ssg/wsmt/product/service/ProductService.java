@@ -13,7 +13,7 @@ public interface ProductService {
     ProductDTO getOne(long id);
 
     // 상품 리스트 전체 조회
-    List<ProductDTO> getAll();
+    List<ProductDTO> getAll(String name);
 
     // 상품 수정
     void modify(ProductDTO productDTO);
