@@ -192,13 +192,13 @@
             }
         </script>
         <div style="position: relative;">
-            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-            <i class="fas fa-map-marker-alt icon"></i>
-            <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" readonly>
-            <div class="address-inputs">
-                <input type="text" name="streetAddress" id="streetAddress" placeholder="주소" required><br>
-                <input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소" required>
-            </div>
+            <input type="text" name="zipcode" id="zipcode" placeholder="우편번호" readonly style="width: calc(100% - 300px); margin-left: -137px; display: inline-block; vertical-align: top;">
+            <i class="fas fa-map-marker-alt icon" style="position: absolute; left: -390px; margin-top: 18px;"></i>
+            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" style="width: 90px; margin-left: 10px; margin-top: 20px; position: relative; z-index: 1;">
+        </div>
+        <div class="address-inputs">
+            <input type="text" name="streetAddress" id="streetAddress" placeholder="주소" required><br>
+            <input type="text" name="detailAddress" id="detailAddress" placeholder="상세주소" required>
         </div>
 
         <br>
@@ -225,6 +225,12 @@
                 }
             });
         });
+    });
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            submitForm();
+        }
     });
 </script>
 </body>

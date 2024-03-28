@@ -65,6 +65,35 @@
     </style>
 </head>
 <body>
+<script type="text/javascript">
+    $(document).ready(function() { // html 문서가 다 로딩 되면
+        $("#login").click(function() { // 로그인 버튼이 눌렸을때
+            let username = $("#username").val(); // 사용자 id를 가져와서
+
+            $.ajax({ // 서버로 보내서 기존 세션이 존재하는지 (중복인지) 검사해준다.
+                url : "/checkUser",
+                method : "GET",
+                dataType : "json",
+                data : {
+                    username : username,
+                },
+                success : function(result){
+                    if(result == false) {
+                        $('#login-form').submit();
+                    }else{
+                        let check = confirm(
+                            "Existing login users will be logged out. Do you want to continue?"
+                        );
+                        if(check) {
+                            $('#login-form').submit();
+                        }
+                    }
+                }
+            })
+        })
+    })
+</script>
+
 <div class="login-container">
     <div class="logo">
         <img th:src="@{/images/TeamLogo.png}" alt="Logo">
@@ -73,13 +102,22 @@
     <form id="loginForm" action="/login/loginProc" method="post">
         <input id="email" type="email" name="username" placeholder="Email"/>
         <input id="password" type="password" name="password" placeholder="Password"/>
+        <input type="hidden" th:name="_csrf" th:value="${_csrf.token}"/>
         <button type="button" onclick="submitForm()">LOGIN</button>
     </form>
-    <p class="find-id">Forget ID?<a th:href="@{/login/findId}">Click here</a></p>
     <p class="signup-link">Don't have an account? <a th:href="@{/login/join}">Sign up</a></p>
+</div>
+<div th:if="${message}">
+    <p th:text="${message}"></p>
 </div>
 
 <script>
+    document.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            submitForm();
+        }
+    });
+
     function submitForm() {
         var email = document.getElementById("email").value;
         var password = document.getElementById("password").value;

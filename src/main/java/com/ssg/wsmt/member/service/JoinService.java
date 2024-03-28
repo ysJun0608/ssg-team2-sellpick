@@ -19,15 +19,13 @@ public class JoinService {
 
     private final UserRepository userRepository;
 
-    //비밀번호 암호화
     private final BCryptPasswordEncoder passwordEncoder;
 
     //회원 가입 로직,회원 가입 폼에서 입력하는거 그대로 입력됨 role은 현재 수동으로 입력해야함
-    public void joinProcess(UserDTO userDTO){
+    public void joinProcess(UserDTO userDTO) {
 
         boolean ExistUser = userRepository.existsByEmail(userDTO.getEmail());
-        if(ExistUser){
-//            return;
+        if (ExistUser) {
             throw new DuplicateUserException("User with email " + userDTO.getEmail() + " already exists.");
         }
 
@@ -37,7 +35,7 @@ public class JoinService {
                 .username(userDTO.getUsername())
                 .email(userDTO.getEmail())
                 .password(password)
-                .role(UserRole.ADMIN)
+                .role(UserRole.WAREHOUSE_MANAGER)
                 .phone(userDTO.getPhone())
                 .zipcode(userDTO.getZipcode())
                 .streetAddress(userDTO.getStreetAddress())

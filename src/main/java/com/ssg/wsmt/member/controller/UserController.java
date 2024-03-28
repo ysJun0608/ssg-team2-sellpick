@@ -25,15 +25,13 @@ public class UserController {
 
     private final JoinService joinService;
 
-    //관리자 페이지 라우팅
-    @GetMapping("/admin")
-    public String adminPage(){
-        return "login/admin";
-    }
-
-    //로그인 페이지 라우팅
+    //로그인 페이지 라우팅,에러 시 에러 처리한 문구 실행
     @GetMapping("/login")
-    public String login(@RequestParam(value = "error",required = false) String error, @RequestParam(value = "exception",required = false)String exception, Model model){
+    public String login(@RequestParam(value ="expired" ,required = false) String expired,
+                        @RequestParam(value = "error",required = false) String error, @RequestParam(value = "exception",required = false)String exception, Model model){
+        if("true".equals("expired")){
+            model.addAttribute("message", "다른 곳에서 접근되었습니다, 연결을 종료합니다");
+        }
         model.addAttribute("error", error);
         model.addAttribute("exception", exception);
         return "login/login";
@@ -55,20 +53,8 @@ public class UserController {
         return "login/join";
     }
 
-    //회원 가입 완료 후 로그인 페이지 이동
-//    @PostMapping("/joinProc")
-//    public String joinProcess(UserDTO userDTO) {
-//        log.info(userDTO.getUsername());
-//        try {
-//            joinService.joinProcess(userDTO);
-//            return "redirect:/login/login";
-//        }catch (DuplicateUserException d){
-//            d.printStackTrace();
-//            return "redirect:/login/login";
-//        }
-//
-//    }
 
+    //회원 가입 processing 이메일이 중복된 경우 이미 존재하는 회원 반환
     @PostMapping(value = "/joinProc", produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> joinProcess(@ModelAttribute UserDTO userDTO) {
         log.info(userDTO.getUsername());
@@ -79,37 +65,5 @@ public class UserController {
             return ResponseEntity.badRequest().body("이미 존재하는 회원입니다.");
         }
     }
-
-//    @PostMapping("/loginProc")
-//    public String loginProc(HttpServletRequest request, HttpServletResponse response) {
-//        // 사용자가 제출한 로그인 폼에서 입력한 이메일과 비밀번호 가져오기
-//        String email = request.getParameter("email");
-//        String password = request.getParameter("password");
-//
-//        // 사용자를 나타내는 UserDetails 객체 생성
-//        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-//
-//        try {
-//            // 사용자 인증을 위한 UsernamePasswordAuthenticationToken 생성
-//            UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, password, userDetails.getAuthorities());
-//
-//            // AuthenticationManager를 사용하여 사용자 인증 수행
-//            Authentication authentication = authenticationManager.authenticate(authToken);
-//
-//            // 인증이 성공하면 SecurityContextHolder에 인증 정보 저장
-//            SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//            // 세션에 사용자 정보 저장
-//            HttpSession session = request.getSession();
-//            session.setAttribute("user", userDetails);
-//
-//            // 홈 페이지로 리다이렉트
-//            return "redirect:/";
-//        } catch (AuthenticationException e) {
-//            // 인증 실패 시 에러 메시지를 파라미터로 전달하여 로그인 페이지로 리다이렉트
-//            return "redirect:/login/login?error=true";
-//        }
-//    }
-
 }
 

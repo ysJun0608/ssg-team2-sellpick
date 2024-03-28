@@ -15,6 +15,7 @@ import java.io.IOException;
 
 
 
+//실패 처리 handler
 public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
@@ -32,6 +33,7 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
             errorMessage = ErrorCode.UNKNOWN_ERROR.getDescription();
         }
 
+        // 로그인 실패 시 밑의 url주소로 리다이렉션되며 예외 메시지 번호(ErrorCode로 따로 관리중)
         String redirectUrl = "/login/login?error=true&exception=" + errorMessage;
         response.sendRedirect(redirectUrl);
 

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
+//예외 코드 모음
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
