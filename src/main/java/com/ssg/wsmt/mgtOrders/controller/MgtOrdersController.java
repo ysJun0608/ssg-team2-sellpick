@@ -1,15 +1,23 @@
 package com.ssg.wsmt.mgtOrders.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssg.wsmt.inventory.domain.WarehouseVO;
+import com.ssg.wsmt.inventory.dto.WarehouseDTO;
+import com.ssg.wsmt.inventory.mapper.WarehouseMapper;
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
+import com.ssg.wsmt.mgtOrders.DTO.PageRequestDTO;
+import com.ssg.wsmt.mgtOrders.DTO.PageResponseDTO;
 import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import com.ssg.wsmt.mgtOrders.service.MgtOrdersService;
 import com.ssg.wsmt.mgtOrders.service.impl.MgtOrdersServiceImpl;
+import com.ssg.wsmt.product.domain.ProductVO;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,9 +40,14 @@ public class MgtOrdersController {
     @Autowired
     private MgtOrdersService mgtOrdersService;
 
+
     @GetMapping("/MgtOrderCreate")
     public void showCreate(Model model) {
         log.info("CreatePage....");
+        List<WarehouseVO> warehouseList = mgtOrdersService.selectWarehouseList(); // warehouse 데이터 조회
+        List<ProductVO> productList = mgtOrdersService.selectProductList(); // products 데이터 조회
+        model.addAttribute("warehouseList", warehouseList); // 모델에 추가
+        model.addAttribute("productList", productList); // 모델에 추가
     }
 
     @PostMapping("/MgtOrderCreate")
@@ -107,10 +120,18 @@ public class MgtOrdersController {
 
 
     @GetMapping("/MgtOrderConfirm")
-    public void confirm(Model model) {
-        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersService.searchForStatus(MgtOrdersStatus.READY);
-        log.info("mgtOrdersDTOList" + mgtOrdersDTOList);
-        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
+    public void confirm(@Valid PageRequestDTO pageRequestDTO, Model model) {
+        log.info("log - confirm pageRequestDTO: " + pageRequestDTO);
+
+        // Set the status to READY in the PageRequestDTO
+        pageRequestDTO.setStatus(MgtOrdersStatus.READY);
+
+        // Call the searchOrdersAndStatusPage method in the service layer
+        PageResponseDTO<MgtOrdersDTO> responseDTO = mgtOrdersService.searchOrdersAndStatus(pageRequestDTO);
+        log.info("log - confirm responseDTO: " + responseDTO);
+
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
     }
 
 
@@ -144,10 +165,13 @@ public class MgtOrdersController {
 
 
     @GetMapping("/MgtOrderSearch")
-        public void search(Model model) {
-        List<MgtOrdersDTO> mgtOrdersDTOList = mgtOrdersService.selectAll();
-        log.info("mgtOrdersDTOList" + mgtOrdersDTOList);
-        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
+        public void search(@Valid PageRequestDTO pageRequestDTO, Model model) {
+        log.info("log - search pageRequestDTO: " + pageRequestDTO);
+        PageResponseDTO<MgtOrdersDTO> responseDTO = mgtOrdersService.selectAll(pageRequestDTO);
+        log.info("log - search ResponseDTO: " + responseDTO);
+
+        model.addAttribute("responseDTO", responseDTO);
+        model.addAttribute("pageRequestDTO", pageRequestDTO);
     }
 
 
@@ -189,8 +213,8 @@ public class MgtOrdersController {
             Model model) {
 
         List<MgtOrdersDTO> mgtOrdersDTOList = new ArrayList<>();
-        mgtOrdersDTOList = mgtOrdersService.searchOrdersAndStatus(startDate, endDate, purchaser, warehouseId, MgtOrdersStatus.READY);
-        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
+//        mgtOrdersDTOList = mgtOrdersService.searchOrdersAndStatus();
+//        model.addAttribute("mgtOrdersDTOList", mgtOrdersDTOList);
 
         return "/MgtOrders/MgtOrderConfirm";
     }

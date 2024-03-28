@@ -41,17 +41,22 @@
         SELECT
         id, purchaser, status, created_at as createdAt, warehouse_id as warehouseId
         FROM MGT_ORDERS
-        WHERE 1=1
-        <if test="startDate != null and endDate != null and startDate != '' and endDate != ''">
-            AND CREATED_AT BETWEEN #{startDate} AND #{endDate} + INTERVAL 1 DAY
-        </if>
-        <if test="purchaser != null and !purchaser.isEmpty() and purchaser != ''">
-            AND PURCHASER = #{purchaser}
-        </if>
-        <if test="warehouseId != null and warehouseId > 0">
-            AND WAREHOUSE_ID = #{warehouseId}
-        </if>
-        AND STATUS = #{status}
+        <where>
+            <if test="startDate != null and endDate != null">
+                AND CREATED_AT BETWEEN #{startDate} AND #{endDate} + INTERVAL 1 DAY
+            </if>
+            <if test="purchaser != null and purchaser != ''">
+                AND PURCHASER LIKE CONCAT ('%', #{purchaser}, '%')
+            </if>
+            <if test="warehouseId != null">
+                AND WAREHOUSE_ID = #{warehouseId}
+            </if>
+            <if test="status != null">
+                AND STATUS = #{status}
+            </if>
+        </where>
+        ORDER BY created_at
+        LIMIT #{size} OFFSET #{offset}
     </select>
 
 
@@ -83,9 +88,65 @@
         SELECT * FROM MGT_ORDERS where ID =#{id}
     </select>
 
-    <select id="selectAll" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
+<!--    <select id="selectAll" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">-->
+<!--        SELECT-->
+<!--            id, purchaser, status, created_at as createdAt, warehouse_id as warehouseId-->
+<!--            FROM MGT_ORDERS-->
+<!--    </select>-->
+
+    <select id="searchAll" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
         SELECT
-            id, purchaser, status, created_at as createdAt, warehouse_id as warehouseId
-            FROM MGT_ORDERS
+        id,
+        purchaser,
+        status,
+        created_at as createdAt,
+        warehouse_id as warehouseId
+        FROM MGT_ORDERS
+        <where>
+            <if test="startDate != null and endDate != null">
+                AND created_at BETWEEN #{startDate} AND #{endDate}
+            </if>
+            <if test="purchaser != null and purchaser != ''">
+                AND PURCHASER LIKE CONCAT ('%', #{purchaser}, '%')
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId}
+            </if>
+            <if test="status != null">
+                AND STATUS = #{status}
+            </if>
+        </where>
+        <if test="startDate == null and endDate == null and (purchaser == null or purchaser == '') and warehouseId == null">
+            ORDER BY created_at
+        </if>
+        LIMIT #{size} OFFSET #{offset}
     </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(DISTINCT id)
+        FROM MGT_ORDERS
+        <where>
+            <if test="startDate != null and endDate != null">
+                AND CREATED_AT BETWEEN #{startDate} AND #{endDate} + INTERVAL 1 DAY
+            </if>
+            <if test="purchaser != null and purchaser != ''">
+                AND PURCHASER LIKE CONCAT ('%', #{purchaser}, '%')
+            </if>
+            <if test="warehouseId != null">
+                AND WAREHOUSE_ID = #{warehouseId}
+            </if>
+            <if test="status != null">
+                AND STATUS = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWarehouseList" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
+        SELECT * FROM WAREHOUSE
+    </select>
+
+    <select id="selectProductList" resultType="com.ssg.wsmt.product.domain.ProductVO">
+        SELECT * FROM PRODUCTS
+    </select>
+
 </mapper>

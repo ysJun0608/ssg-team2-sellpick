@@ -192,7 +192,9 @@ a {
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 10px;
     margin-bottom: 10px;
-} {
+}
+
+{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 10px;
@@ -206,6 +208,7 @@ a {
 .top-section label {
     margin-right: 5px;
 }
+.top-section input[type="date"],
 .top-section input[type="text"],
 .top-section input[type="number"] {
     padding: 6px 12px;
@@ -289,4 +292,49 @@ input[type="text"][readonly] {
     background-color: #f2f2f2; /* Light gray background */
     color: #555; /* Dark gray text color */
     cursor: not-allowed; /* Show disabled cursor */
+}
+
+input[type="text"], input[type="number"], input[type="date"] {
+    text-align: center;
+}
+
+select option {
+    text-align: center;
+}
+
+.input-fields {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.input-fields > div {
+    display: flex;
+    align-items: center;
+}
+
+.input-fields label {
+    margin-right: 10px;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-field label {
+    margin-bottom: 5px;
+}
+
+.input-fieldTwo {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+    align-items: center;
+    justify-content: center;
+    /*margin-bottom: 10px;*/
 }

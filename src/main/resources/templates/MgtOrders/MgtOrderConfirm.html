@@ -29,10 +29,10 @@
                     data: JSON.stringify(requestData), // Sending the wrapped object as JSON
                     success: function (response) {
                         console.log('Success:', response);
-                            // Perform further actions here if needed
-                            // For example, redirect to another page
-                            alert('선택한 주문이 확정되었습니다.');
-                            window.location.href = '/MgtOrders/MgtOrderConfirm';
+                        // Perform further actions here if needed
+                        // For example, redirect to another page
+                        alert('선택한 주문이 확정되었습니다.');
+                        window.location.href = '/MgtOrders/MgtOrderConfirm';
                     },
                     error: function (error) {
                         alert('선택된 발주 주문이 없습니다.');
@@ -40,6 +40,7 @@
                 });
             });
         });
+
 
         $(document).ready(function() {
             // Function to handle checkbox change event
@@ -59,35 +60,32 @@
 <div layout:fragment="content">
 
     <div class="row">
-        <div class="col-sm-12 " style="padding-right: 0">
+        <div class="col-sm-12" style="padding-right: 0">
             <div class="bg-light rounded h-100 p-4">
                 <h6 class="mb-4">발주확정</h6>
-                <div class="section top-section">
-                    <form action="/MgtOrders/findReadyState" method="post">
-                        <div class="element-one">
-                            <div>
-                                <label for="order-date-start">발주일자 :</label>
-                                <input type="date" id="order-date-start" name="startDate">
-                                ~
-                                <input type="date" id="order-date-end" name="endDate">
+                <form action="/MgtOrders/MgtOrderConfirm" method="get" th:object="${pageRequestDTO}">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="order-date-start">발주일자</label>
+                            <div class="input-group">
+                                <input type="date" id="order-date-start" name="startDate" th:field="*{startDate}" class="form-control">
+                                <span class="input-group-text">~</span>
+                                <input type="date" id="order-date-end" name="endDate" th:field="*{endDate}" class="form-control">
                             </div>
                         </div>
-                        <div class="element-two">
-                            <div>
-                                <label for="supplier">매입거래처 :</label>
-                                <input type="text" id="supplier" placeholder="Company" name="purchaser">
-                            </div>
-                            <div>
-                                <label for="warehouse">창고ID :</label>
-                                <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId">
-                            </div>
-                            <div></div>
+                        <div class="col-md-4">
+                            <label for="supplier">매입거래처</label>
+                            <input type="text" id="supplier" placeholder="Company" name="purchaser" th:field="*{purchaser}" class="form-control">
                         </div>
-                        <div class="button-row">
-                            <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>
+                        <div class="col-md-4">
+                            <label for="warehouse">창고ID</label>
+                            <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId" th:field="*{warehouseId}" class="form-control">
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="button-row">
+                        <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>
+                    </div>
+                </form>
                 <form id="orderConfirm">
                     <table class="table table-bordered">
                         <thead>
@@ -101,7 +99,7 @@
                         </tr>
                         </thead>
                         <tbody id="table-body">
-                        <tr th:each="m : ${mgtOrdersDTOList}">
+                        <tr th:each="m : ${responseDTO.dtoList}">
                             <td><input type="checkbox"></td>
                             <td class="order-id" th:text="${m.id}"></td>
                             <td th:text="${m.purchaser}"></td>
@@ -117,15 +115,32 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
 
+    <div class="bg-light rounded h-100 p-4" style="padding-right: 0;">
+        <div class="btn-toolbar" role="toolbar" style="justify-content: right">
+            <div class="btn-group me-2" role="group" aria-label="First group">
+                <a th:href="@{/MgtOrders/MgtOrderConfirm(page=${responseDTO.page - 1}, size=${pageRequestDTO.size}, startDate=${pageRequestDTO.startDate}, endDate=${pageRequestDTO.endDate}, purchaser=${pageRequestDTO.purchaser}, warehouseId=${pageRequestDTO.warehouseId})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.prev} ? '' : 'disabled')"
+                   th:text="'이전'"></a>
+
+                <th:block th:with="start=${responseDTO.start}, end=${responseDTO.end}">
+                    <a th:each="num : ${#numbers.sequence(start, end)}"
+                       th:href="@{/MgtOrders/MgtOrderConfirm(page=${num}, size=${pageRequestDTO.size}, startDate=${pageRequestDTO.startDate}, endDate=${pageRequestDTO.endDate}, purchaser=${pageRequestDTO.purchaser}, warehouseId=${pageRequestDTO.warehouseId})}"
+                       th:class="${responseDTO.page == num} ? 'btn btn-secondary' : 'btn btn-primary'"
+                       th:text="${num}"></a>
+                </th:block>
+
+                <a th:href="@{/MgtOrders/MgtOrderConfirm(page=${responseDTO.page + 1}, size=${pageRequestDTO.size}, startDate=${pageRequestDTO.startDate}, endDate=${pageRequestDTO.endDate}, purchaser=${pageRequestDTO.purchaser}, warehouseId=${pageRequestDTO.warehouseId})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.next} ? '' : 'disabled')"
+                   th:text="'다음'"></a>
             </div>
         </div>
     </div>
 </div>
 
 </body>
-<script>
-    // JavaScript code for AJAX method and other functionalities
-</script>
 
 </html>
