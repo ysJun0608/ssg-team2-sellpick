@@ -17,6 +17,7 @@ public class CommonControllerAdvice {
         String role = authentication.getAuthorities().iterator().next().getAuthority();
         model.addAttribute("id", id);
         model.addAttribute("role", role);
-
     }
+
+
 }
