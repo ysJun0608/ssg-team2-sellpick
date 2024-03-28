@@ -1,22 +1,13 @@
-DROP DATABASE SELLPICK;
-CREATE DATABASE SELLPICK DEFAULT CHARACTER SET UTF8MB4 COLLATE UTF8MB4_0900_AI_CI;
-
 USE SELLPICK;
 
-#회원 가입
-CREATE TABLE users
-(
-    id       INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    role     VARCHAR(255) NOT NULL
-);
+
+
 
 # 쇼핑몰(ONLINE MALL)
 CREATE TABLE SHOPPING_MALL
 (
     ID   INT AUTO_INCREMENT NOT NULL,
-    NAME VARCHAR(20)        NOT NULL COMMENT '쇼핑몰 이름',
+    NAME VARCHAR(255)        NOT NULL COMMENT '쇼핑몰 이름',
 
     PRIMARY KEY (ID)
 ) ENGINE = INNODB
@@ -28,7 +19,7 @@ CREATE TABLE SHOPPING_MALL
 CREATE TABLE BRAND
 (
     ID   INT AUTO_INCREMENT NOT NULL COMMENT '브랜드 코드',
-    NAME VARCHAR(20)        NOT NULL COMMENT '브랜드 이름',
+    NAME VARCHAR(255)        NOT NULL COMMENT '브랜드 이름',
 
     PRIMARY KEY (ID)
 ) ENGINE = INNODB
@@ -40,7 +31,7 @@ CREATE TABLE BRAND
 CREATE TABLE DELIVERY_CMP
 (
     ID   INT AUTO_INCREMENT NOT NULL,
-    NAME VARCHAR(20)        NOT NULL,
+    NAME VARCHAR(255)        NOT NULL,
 
     PRIMARY KEY (ID)
 ) ENGINE = INNODB
@@ -52,11 +43,11 @@ CREATE TABLE DELIVERY_CMP
 CREATE TABLE BUSINESS_OWNER
 (
     ID       INT AUTO_INCREMENT NOT NULL,
-    EMAIL    VARCHAR(30)        NOT NULL COMMENT '사업자 이메일',
-    PASSWORD VARCHAR(20)        NOT NULL COMMENT '사업자 비밀번호',
-    NAME     VARCHAR(10)        NOT NULL COMMENT '사업자 이름',
-    PHONE    VARCHAR(15)        NOT NULL COMMENT '사업자 전화번호',
-    ADDRESS  VARCHAR(20)        NOT NULL COMMENT '사업자 주소',
+    EMAIL    VARCHAR(255)        NOT NULL COMMENT '사업자 이메일',
+    PASSWORD VARCHAR(255)        NOT NULL COMMENT '사업자 비밀번호',
+    NAME     VARCHAR(255)        NOT NULL COMMENT '사업자 이름',
+    PHONE    VARCHAR(255)        NOT NULL COMMENT '사업자 전화번호',
+    ADDRESS  VARCHAR(255)        NOT NULL COMMENT '사업자 주소',
 
     PRIMARY KEY (ID)
 ) ENGINE = INNODB
@@ -68,11 +59,11 @@ CREATE TABLE BUSINESS_OWNER
 CREATE TABLE CUSTOMER
 (
     ID       INT AUTO_INCREMENT NOT NULL,
-    EMAIL    VARCHAR(30)        NOT NULL COMMENT '고객 이메일',
-    PASSWORD VARCHAR(20)        NOT NULL COMMENT '고객 비밀번호',
-    NAME     VARCHAR(10)        NOT NULL COMMENT '고객 이름',
-    PHONE    VARCHAR(15)        NOT NULL COMMENT '고객 전화번호',
-    ADDRESS  VARCHAR(50)        NOT NULL COMMENT '고객 주소',
+    EMAIL    VARCHAR(255)        NOT NULL COMMENT '고객 이메일',
+    PASSWORD VARCHAR(255)        NOT NULL COMMENT '고객 비밀번호',
+    NAME     VARCHAR(255)        NOT NULL COMMENT '고객 이름',
+    PHONE    VARCHAR(255)        NOT NULL COMMENT '고객 전화번호',
+    ADDRESS  VARCHAR(255)        NOT NULL COMMENT '고객 주소',
 
     PRIMARY KEY (ID)
 ) ENGINE = INNODB
@@ -104,7 +95,7 @@ CREATE TABLE WAREHOUSE
 (
     ID              INT AUTO_INCREMENT          NOT NULL,
     TYPE            ENUM ('DRY', 'WET', 'BOTH') NOT NULL COMMENT '입고 OR 출고',
-    LOCATION        VARCHAR(50)                 NULL COMMENT '창고 위치',
+    LOCATION        VARCHAR(255)                 NULL COMMENT '창고 위치',
 
     DELIVERY_CMP_ID INT                         NOT NULL COMMENT '택배사 ID(FK)',
 
@@ -119,7 +110,7 @@ CREATE TABLE WAREHOUSE
 CREATE TABLE MGT_ORDERS
 (
     ID           INT AUTO_INCREMENT                                                                NOT NULL,
-    PURCHASER    VARCHAR(10)                                                                       NULL COMMENT '매입 거래처',
+    PURCHASER    VARCHAR(255)                                                                       NULL COMMENT '매입 거래처',
     STATUS       ENUM ('READY', 'DONE', 'DELIVERED', 'CANCEL', 'RETURN') DEFAULT 'READY'           NOT NULL COMMENT '발주 상태 (준비중, 완료, 배송완료)',
     CREATED_AT   DATETIME                                                DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '발주 일자',
     WAREHOUSE_ID INT                                                                               NOT NULL COMMENT '창고 ID(FK)',
@@ -136,7 +127,7 @@ CREATE TABLE MGT_ORDERS
 CREATE TABLE WAREHOUSE_SECTION
 (
     ID           INT AUTO_INCREMENT                                  NOT NULL,
-    NAME         VARCHAR(10)                                         NOT NULL COMMENT '창고 구역 이름',
+    NAME         VARCHAR(255)                                         NOT NULL COMMENT '창고 구역 이름',
     # 냉장, 냉동, 건조, 가공 식품
     TYPE         ENUM ('REFRIGERATED', 'FROZEN', 'DRY', 'PROCESSED') NOT NULL COMMENT '창고 구역 타입(냉장, 냉동, 건조, 가공 식품)',
 
@@ -153,7 +144,7 @@ CREATE TABLE WAREHOUSE_SECTION
 CREATE TABLE PRODUCTS
 (
     ID       INT AUTO_INCREMENT            NOT NULL,
-    NAME     VARCHAR(20)                   NOT NULL COMMENT '상품 이름',
+    NAME     VARCHAR(255)                   NOT NULL COMMENT '상품 이름',
     STATUS   ENUM ('ON_SALE', 'STOP_SALE') NOT NULL COMMENT '판매 중(Y) OR 판매 중지(N)',
     COST     INT                           NULL COMMENT '원가',
     PRICE    INT DEFAULT 0                 NOT NULL COMMENT '판매가',
@@ -288,11 +279,14 @@ CREATE TABLE WAYBILL
     ORDERS_ID   INT                NOT NULL COMMENT '주문 ID(FK)',
 
     PRIMARY KEY (ID),
+    
     CONSTRAINT FK_WAYBILL_ORDERS_ID FOREIGN KEY (ORDERS_ID) REFERENCES SM_ORDERS (ID)
 ) ENGINE = INNODB
   DEFAULT CHARSET = UTF8MB4
   COLLATE = UTF8MB4_0900_AI_CI
     COMMENT = '운송장';
+
+
 
 # ================================================================================================================================================================
 # TRIGGER
