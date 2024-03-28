@@ -8,4 +8,10 @@ import java.util.List;
 
 public interface WarehouseInsertReleaseService {
     WhPageResponseDTO<WarehouseInsertReleaseDTO> findAllInsertReleaseList(Long warehouseId, WhPageRequestDTO pageRequestDTO);
+
+    Long findTodayInsertCost(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
+
+    Long findTodayReleasePrice(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
+
+    Long findTodayRevenue(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
 }

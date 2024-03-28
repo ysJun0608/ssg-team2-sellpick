@@ -48,7 +48,7 @@ public class InventoryController {
 
 
     @GetMapping("/warehouselist")
-    public void warehouseCreate(@Valid PageRequestDTO pageRequestDTO, Model model) {
+    public void callWarehouseList(@Valid PageRequestDTO pageRequestDTO, Model model) {
         PageResponseDTO<WarehouseDTO> responseDTO = warehouseService.readAllWarehouseWithSection(pageRequestDTO);
         model.addAttribute("responseDTO", responseDTO);
         model.addAttribute("pageRequestDTO", pageRequestDTO);

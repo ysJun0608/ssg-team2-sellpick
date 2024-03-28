@@ -10,7 +10,6 @@ import com.ssg.wsmt.mgtOrders.MgtOrdersProductsRelationshipDTO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Mapper
@@ -24,4 +23,10 @@ public interface WarehouseInsertReleaseMapper {
 
     List<WarehouseInsertReleaseDTO> findAllInsertReleaseList(WhPageRequestDTO pageRequestDTO);
     int getCount(WhPageRequestDTO pageRequestDTO);
+
+    Long getTotalPrice(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
+
+    Long getTotalCost(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
+
+    Long getTotalRevenue(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
 }
