@@ -32,13 +32,8 @@ public class WhInOutController {
         WhPageResponseDTO<WarehouseInsertReleaseDTO> list = warehouseInsertReleaseService.findAllInsertReleaseList(warehouseId, whPageRequestDTO);
         model.addAttribute("responseDTO", list);
 
-
         return "whInOut/list";
     }
 
-    @GetMapping("/recent")
-    @ResponseBody
-    public List<WarehouseInsertReleaseDTO> recent() {
-        return warehouseInsertReleaseService.recentInsertReleaseList();
-    }
+
 }

@@ -158,4 +158,28 @@
         ORDER BY W.CREATED_AT DESC
         LIMIT 5
     </select>
+
+    <select id="getTotalPrice" resultType="Long">
+        SELECT SUM(TOTAL_PRICE)
+        FROM WAREHOUSE_INSERT_RELEASE
+        WHERE DATE(CREATED_AT) = DATE(now())
+          AND TYPE LIKE '%RELEASE_CONFIRM%';
+    </select>
+    <select id="getTotalCost" resultType="Long">
+        SELECT SUM(TOTAL_PRICE)
+        FROM WAREHOUSE_INSERT_RELEASE
+        WHERE DATE(CREATED_AT) = DATE(now())
+          AND TYPE LIKE '%INSERT_CONFIRM%';
+    </select>
+    <select id="getTotalRevenue" resultType="Long">
+        SELECT
+            (SELECT SUM(TOTAL_PRICE)
+             FROM WAREHOUSE_INSERT_RELEASE
+             WHERE DATE(CREATED_AT) = DATE(now())
+               AND TYPE LIKE '%RELEASE_CONFIRM%') -
+            (SELECT SUM(TOTAL_PRICE)
+             FROM WAREHOUSE_INSERT_RELEASE
+             WHERE DATE(CREATED_AT) = DATE(now())
+               AND TYPE LIKE '%INSERT_CONFIRM%')
+    </select>
 </mapper>

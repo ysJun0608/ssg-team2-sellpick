@@ -117,10 +117,4 @@ public class SmOrdersController {
         model.addAttribute("orders", smOrdersVo);
     }
 
-    @GetMapping("/home")
-    public void index(Model model, SmOrdersVo smOrdersVo) {
-        log.info("hello~~~");
-        model.addAttribute("msg", "hello spring boot 임 ㅋㅋㅋ");
-    }
-
 }

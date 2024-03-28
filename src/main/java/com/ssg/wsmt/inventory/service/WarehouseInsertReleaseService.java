@@ -13,4 +13,10 @@ public interface WarehouseInsertReleaseService {
     List<InvenInOutChartDTO> getAllSales();
 
     List<WarehouseInsertReleaseDTO> recentInsertReleaseList();
+    Long findTodayInsertCost(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
+
+    Long findTodayReleasePrice(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
+
+    Long findTodayRevenue(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
+
 }

@@ -46,5 +46,20 @@ public class WarehouseInsertReleaseServiceImpl implements WarehouseInsertRelease
     public List<WarehouseInsertReleaseDTO> recentInsertReleaseList() {
         return warehouseInOutMapper.recentInsertReleaseList();
     }
+
+    @Override
+    public Long findTodayInsertCost(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO) {
+        return warehouseInOutMapper.getTotalCost(warehouseInsertReleaseDTO);
+    }
+
+    @Override
+    public Long findTodayReleasePrice(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO) {
+        return warehouseInOutMapper.getTotalPrice(warehouseInsertReleaseDTO);
+    }
+
+    @Override
+    public Long findTodayRevenue(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO) {
+        return warehouseInOutMapper.getTotalRevenue(warehouseInsertReleaseDTO);
+    }
 }
 

@@ -25,4 +25,11 @@ public interface WarehouseInsertReleaseMapper {
     List<InvenInOutChartDTO> getAllSales();
 
     List<WarehouseInsertReleaseDTO> recentInsertReleaseList();
+
+
+    Long getTotalPrice(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
+
+    Long getTotalCost(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
+
+    Long getTotalRevenue(WarehouseInsertReleaseDTO warehouseInsertReleaseDTO);
 }

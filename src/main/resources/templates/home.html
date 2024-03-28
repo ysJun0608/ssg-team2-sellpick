@@ -124,7 +124,7 @@
 
             // Ajax request to fetch recent sales data
             $.ajax({
-                url: '/inventory/whInOut/recent', // 실제 데이터를 가져올 URL로 수정해야 합니다.
+                url: '/chart/whInOut/recent', // 실제 데이터를 가져올 URL로 수정해야 합니다.
                 type: 'GET',
                 dataType: 'json',
                 success: function(data) {
@@ -188,30 +188,30 @@
     <!-- Sale & Revenue Start -->
     <div class="container-fluid pt-4 px-4">
         <div class="row g-4">
-            <div class="col-sm-6 col-xl-4"> <!-- 수정 -->
-                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
-                    <i class="fa fa-chart-line fa-3x text-primary"></i>
-                    <div class="ms-3">
-                        <p class="mb-2">Today 입고 총량</p>
-                        <h6 class="mb-0">$원가(Cost)</h6>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6 col-xl-4"> <!-- 수정 -->
+            <div class="col-sm-6 col-xl-4">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                     <i class="fa fa-chart-bar fa-3x text-primary"></i>
                     <div class="ms-3">
                         <p class="mb-2">Today 출고 총량</p>
-                        <h6 class="mb-0">$판매가(Price)</h6>
+                        <h6 class="mb-0">₩<span th:text="${#numbers.formatInteger(TodayPrice, 3, 'COMMA')}"></span>원</h6>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6 col-xl-4"> <!-- 수정 -->
+            <div class="col-sm-6 col-xl-4">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-line fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Today 입고 총량</p>
+                        <h6 class="mb-0">₩<span th:text="${#numbers.formatInteger(TodayCost, 3, 'COMMA')}"></span>원</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-4">
                 <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
                     <i class="fa fa-chart-area fa-3x text-primary"></i>
                     <div class="ms-3">
                         <p class="mb-2">Today 수익</p>
-                        <h6 class="mb-0">$Price-Cost</h6>
+                        <h6 class="mb-0">₩<span th:text="${#numbers.formatInteger(TodayRevenue, 3, 'COMMA')}"></span>원</h6>
                     </div>
                 </div>
             </div>

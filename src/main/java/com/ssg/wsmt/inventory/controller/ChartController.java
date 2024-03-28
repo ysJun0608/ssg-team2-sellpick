@@ -2,6 +2,7 @@ package com.ssg.wsmt.inventory.controller;
 
 import com.ssg.wsmt.inventory.dto.InvenInOutChartDTO;
 import com.ssg.wsmt.inventory.dto.SettlementChartDTO;
+import com.ssg.wsmt.inventory.dto.WarehouseInsertReleaseDTO;
 import com.ssg.wsmt.inventory.mapper.WarehouseInsertReleaseMapper;
 import com.ssg.wsmt.inventory.service.InventoryService;
 import com.ssg.wsmt.inventory.service.SettlementService;
@@ -34,5 +35,11 @@ public class ChartController {
     public List<SettlementChartDTO> getSettlementData() {
         // 정산 데이터 가져오기
         return settlementService.getChartData();
+    }
+
+    @GetMapping("/whInOut/recent")
+    @ResponseBody
+    public List<WarehouseInsertReleaseDTO> recent() {
+        return warehouseInsertReleaseService.recentInsertReleaseList();
     }
 }

@@ -1,23 +1,32 @@
 package com.ssg.wsmt.member.controller;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.ssg.wsmt.inventory.dto.WarehouseInsertReleaseDTO;
+import com.ssg.wsmt.inventory.service.WarehouseInsertReleaseService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Collection;
-import java.util.Iterator;
-
+@Log4j2
 @Controller
+@RequestMapping
+@RequiredArgsConstructor
 public class IndexController {
+private final WarehouseInsertReleaseService warehouseInsertReleaseService;
 
-    @GetMapping({"", "/"})
-    public String indexPage() {
+    @GetMapping({"", "/home"})
+    public void goHome(Model model, @Valid WarehouseInsertReleaseDTO warehouseInsertReleaseDTO) {
+        Long TodayCost = warehouseInsertReleaseService.findTodayInsertCost(warehouseInsertReleaseDTO);
+        Long TodayPrice = warehouseInsertReleaseService.findTodayReleasePrice(warehouseInsertReleaseDTO);
+        Long TodayRevenue = warehouseInsertReleaseService.findTodayRevenue(warehouseInsertReleaseDTO);
 
-        return "home";
+        model.addAttribute("TodayCost", TodayCost);
+        model.addAttribute("TodayPrice", TodayPrice);
+        model.addAttribute("TodayRevenue", TodayRevenue);
+
     }
 
 }
