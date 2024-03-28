@@ -11,6 +11,7 @@ import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import com.ssg.wsmt.mgtOrders.service.MgtOrdersService;
 import com.ssg.wsmt.mgtOrders.service.impl.MgtOrdersServiceImpl;
+import com.ssg.wsmt.product.domain.ProductVO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,9 @@ public class MgtOrdersController {
     public void showCreate(Model model) {
         log.info("CreatePage....");
         List<WarehouseVO> warehouseList = mgtOrdersService.selectWarehouseList(); // warehouse 데이터 조회
+        List<ProductVO> productList = mgtOrdersService.selectProductList(); // products 데이터 조회
         model.addAttribute("warehouseList", warehouseList); // 모델에 추가
+        model.addAttribute("productList", productList); // 모델에 추가
     }
 
     @PostMapping("/MgtOrderCreate")

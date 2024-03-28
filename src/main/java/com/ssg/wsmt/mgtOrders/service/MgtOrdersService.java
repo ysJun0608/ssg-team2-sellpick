@@ -5,6 +5,7 @@ import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
 import com.ssg.wsmt.mgtOrders.DTO.PageRequestDTO;
 import com.ssg.wsmt.mgtOrders.DTO.PageResponseDTO;
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
+import com.ssg.wsmt.product.domain.ProductVO;
 
 import java.util.List;
 
@@ -31,5 +32,8 @@ public interface MgtOrdersService {
     MgtOrdersDTO getOne(Long id);
 
     List<WarehouseVO> selectWarehouseList(); // warehouse 테이블의 모든 데이터 조회
+
+    List<ProductVO> selectProductList(); // products 테이블의 모든 데이터 조회
+
 
 }

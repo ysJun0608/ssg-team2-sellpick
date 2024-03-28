@@ -33,6 +33,7 @@
                         itemInput.type = 'text';
                         itemInput.name = 'itemNames';
                         itemInput.value = itemName;
+                        itemInput.readOnly = true; // 추가
                         tdItem.appendChild(itemInput);
                         const tdQuantity = document.createElement('td');
                         const quantityInput = document.createElement('input');
@@ -208,33 +209,33 @@
     <!--main contents Start-->
 
 
-    <div class="row">
+
         <div class="col-sm-12" style="padding-right: 0">
             <div class="bg-light rounded h-30">
                 <h6 class="mb-4" style="margin-top: 20px;">발주등록</h6>
-                <div class="section top-section">
+<!--                <div class="section top-section">-->
                     <form id="mgtOrderForm" action="/MgtOrders/MgtOrderCreate" method="post">
                         <div class="row">
-                            <div class="col-md-20">
+                            <div class="col-md-4">
                                 <label for="order-date-start">발주일자 *</label>
                                 <input type="date" id="order-date-start" name="createdAt" class="form-control">
                             </div>
-                            <div class="col-md-20">
+                            <div class="col-md-4">
                                 <label for="order-id">발주번호</label>
                                 <input type="number" id="order-id" th:value="${id}" readonly class="form-control">
                                 <input type="hidden" id="orderId" value="${id}">
                             </div>
-                            <div class="col-md-20">
+                            <div class="col-md-4">
                                 <label for="status">발주상태</label>
                                 <input type="text" id="status" value="READY" name="status" readonly class="form-control">
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-20">
+                            <div class="col-md-4">
                                 <label for="supplier">매입거래처</label>
                                 <input type="text" id="supplier" placeholder="Company" name="purchaser" class="form-control">
                             </div>
-                            <div class="col-md-20">
+                            <div class="col-md-4">
                                 <label for="warehouse">창고ID</label>
                                 <select id="warehouse" name="warehouseId" class="form-control">
                                     <option value="">선택</option>
@@ -251,19 +252,24 @@
 
                         </div>
                     </form>
-                </div>
+<!--                </div>-->
             </div>
             <div></div>
             <div class="bg-light rounded h-50 p-4">
-
-                <div class="section bottom-section">
+                <div class="row">
+<!--                <div class="section bottom-section">-->
                     <form id="addItems" action="/MgtOrders/AddItems" method="post">
-                        <div class="input-fields">
-                            <label for="item-name">상품번호:</label>
-                            <input type="number" id="item-name" placeholder="상품번호 입력">
-                            <label for="item-quantity">수량:</label>
-                            <input type="number" id="item-quantity" placeholder="수량 입력">
-                            <button class="btn btn-primary" type="button" id="addRowBtn">추가</button>
+                        <div class="input-fieldTwo">
+                                <label for="item-name">상품번호:</label>
+                                <select id="item-name" name="itemNames" class="form-control">
+                                    <option value="">선택</option>
+                                    <option th:each="product : ${productList}" th:value="${product.id}" th:text="${product.id}"></option>
+                                </select>
+                                <label for="item-quantity">수 량:</label>
+                                <input type="number" id="item-quantity" placeholder="수량 입력" class="form-control">
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btn-primary" type="button" id="addRowBtn">Add</button>
                         </div>
                         <table class="table table-bordered">
                             <thead>
@@ -291,7 +297,7 @@
                             </div>
                         </div>
                     </form>
-                </div>
+<!--                </div>-->
             </div>
         </div>
     </div>

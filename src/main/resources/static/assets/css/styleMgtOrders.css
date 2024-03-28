@@ -293,3 +293,48 @@ input[type="text"][readonly] {
     color: #555; /* Dark gray text color */
     cursor: not-allowed; /* Show disabled cursor */
 }
+
+input[type="text"], input[type="number"], input[type="date"] {
+    text-align: center;
+}
+
+select option {
+    text-align: center;
+}
+
+.input-fields {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.input-fields > div {
+    display: flex;
+    align-items: center;
+}
+
+.input-fields label {
+    margin-right: 10px;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-field label {
+    margin-bottom: 5px;
+}
+
+.input-fieldTwo {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+    align-items: center;
+    justify-content: center;
+    /*margin-bottom: 10px;*/
+}

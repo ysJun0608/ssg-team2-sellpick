@@ -9,6 +9,7 @@ import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
 import com.ssg.wsmt.mgtOrders.enums.MgtOrdersStatus;
 import com.ssg.wsmt.mgtOrders.mapper.MgtOrdersMapper;
 import com.ssg.wsmt.mgtOrders.service.MgtOrdersService;
+import com.ssg.wsmt.product.domain.ProductVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -302,6 +303,11 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
     @Override
     public List<WarehouseVO> selectWarehouseList() {
         return mgtOrdersMapper.selectWarehouseList();
+    }
+
+    @Override
+    public List<ProductVO> selectProductList() {
+        return mgtOrdersMapper.selectProductList();
     }
 
 

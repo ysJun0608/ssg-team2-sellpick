@@ -145,4 +145,8 @@
         SELECT * FROM WAREHOUSE
     </select>
 
+    <select id="selectProductList" resultType="com.ssg.wsmt.product.domain.ProductVO">
+        SELECT * FROM PRODUCTS
+    </select>
+
 </mapper>
