@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 
 
 import java.io.PrintWriter;
@@ -54,12 +55,11 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth //3.1점대라 람다로 표현해야함(필수)
                         .requestMatchers("/assets/css/**", "/images/**", "/assets/jsReal/**", "/assets/lib/**", "/layout","/expired").permitAll() //정적 영역에 대해서 전부 허가
-                        .requestMatchers("/", "/home", "/login/login", "/login/join", "/login/loginProc", "/login/joinProc", "/login/logout", "/checkUser").permitAll() //루트 경로나 로그인, 회원가입에 대한 로직은 접근 허용
-                        .requestMatchers("/inventory/**", "/inventory/whInOut/**/*", "/chart/**").hasAnyRole("창고관리자","총관리자") //창고 관리자는 창고,입출고 관리,재고 관리 영역만 접근 가능
+                        .requestMatchers("/login/login", "/login/join", "/login/loginProc", "/login/joinProc", "/login/logout", "/checkUser").permitAll() //루트 경로나 로그인, 회원가입에 대한 로직은 접근 허용
+                        .requestMatchers("/inventory/**","/","/chart/**").hasAnyRole("창고관리자","총관리자") //창고 관리자는 창고,입출고 관리,재고 관리 영역만 접근 가능
                         .requestMatchers("/**").hasRole("총관리자") // 총 관리자 즉 ADMIN은 모든 권한 존재
                         .anyRequest().authenticated() //위에서 처리 못한 경로에 대한 처리,로그인한 사용자만 접근 가능
                 );
-
 
         //로그인 처리
         http
