@@ -31,6 +31,7 @@ public class WhInOutController {
         log.info("whPageRequestDTO: " + whPageRequestDTO);
         WhPageResponseDTO<WarehouseInsertReleaseDTO> list = warehouseInsertReleaseService.findAllInsertReleaseList(warehouseId, whPageRequestDTO);
         model.addAttribute("responseDTO", list);
+        model.addAttribute("whPageRequestDTO", whPageRequestDTO);
 
         return "whInOut/list";
     }
