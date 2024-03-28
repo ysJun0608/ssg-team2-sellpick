@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout1}">
+
+<head>
+    <title>SMORDERS LIST ALL</title>
+    <style>
+        /* 메뉴 항목 간격 조정 */
+        .navbar-nav .nav-item {
+            margin-bottom: 10px;
+            /* 각 항목 사이의 여백 조정 */
+        }
+
+        /* 메뉴바 높이 조정 */
+        .sidebar {
+            min-height: 100vh;
+            /* 전체 높이를 차지하도록 설정 */
+            background-color: #f4f4f4;
+            /* 배경색 조정 */
+        }
+
+        /* 메뉴바 내부 여백 조정 */
+        .sidebar .navbar-nav {
+            padding: 20px 0;
+            /* 상하 여백 조정 */
+        }
+
+        /* 메뉴 항목 폰트 사이즈 조정 */
+        .navbar-nav .nav-link {
+            font-size: 16px;
+            /* 폰트 크기 조정 */
+        }
+
+        /* 메뉴바 추가 스타일링 */
+        .sidebar .nav-link {
+            color: #333;
+            /* 메뉴 항목 색상 조정 */
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #ddd;
+            /* 메뉴 항목 호버 시 배경색 조정 */
+        }
+
+        .sidebar .active {
+            background-color: #bbb;
+            /* 활성 메뉴 항목의 배경색 조정 */
+            color: white;
+            /* 활성 메뉴 항목의 텍스트 색상 조정 */
+        }
+
+
+
+        /* 메인 컨텐츠 영역 수정 */
+        .content {
+            /*margin-left: 120px;*/
+            /* 사이드바 너비에 따라 조정 */
+            /*padding: 20px;*/
+            /*width: calc(100% - 240px);*/
+            /* 전체 너비에서 사이드바 너비만큼 빼줌 */
+        }
+
+        /*!* '.temp' 클래스 스타일링 수정 *!*/
+        /*.temp {*/
+        /*    margin-left: 0;*/
+        /*    !* 왼쪽 여백 제거 *!*/
+        /*    padding: 20px;*/
+        /*    !* 내부 여백 추가 *!*/
+        /*    background-color: #ffffff;*/
+        /*    !* 배경색 설정 *!*/
+        /*    border-radius: 5px;*/
+        /*    !* 모서리 둥글게 처리 *!*/
+        /*    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);*/
+        /*    !* 그림자 효과 추가 *!*/
+        /*}*/
+
+        /* 테이블 스타일링 */
+        .table-bordered {
+            border-collapse: collapse;
+            margin-top: 20px;
+            /* 테이블 상단 여백 */
+            width: 95%;
+            /* 테이블 너비 전체 */
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            /* 셀 패딩 조정 */
+        }
+
+        .table-bordered thead th {
+            background-color: #acd1ea;
+            /* 테이블 헤더 배경색 */
+            color: #000000;
+            /* 테이블 헤더 글자색 */
+        }
+        /* 테이블 셀에 hover 효과 적용 */
+        .table-bordered tbody tr:hover td {
+            background-color: #ACD1EA; /* hover 시 배경색 변경 */
+            color: var(--primary); /* hover 시 텍스트 색상 변경 */
+        }
+
+
+        /*페이지 네이션 */
+        .form-control .form-select {
+            width: 80px;
+            padding: 2px;
+            /* 내부 여백 조정 */
+            margin: 5px 0;
+            /* 위아래 여백 추가 */
+            /* 테두리 색상 */
+
+        }
+        .form-btn{
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .form-btn .btn {
+            margin-right: 10px; /* 오른쪽 마진 추가 */
+        }
+
+
+        /* 페이지네이션 스타일 */
+        /* 페이지네이션 스타일 조정 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+            list-style: none; /* 목록 스타일 제거 */
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a {
+            background-color: #007bff; /* 버튼 배경 색상 */
+            color: white;
+            text-decoration: none;
+            font-size: 14px; /* 폰트 사이즈 */
+            padding: 0.375rem 0.75rem;
+            /*padding: 12px 15px; !* 상하 8px, 좌우 12px의 패딩 *!*/
+            display: inline-block;
+            border-radius: 5px; /* 둥근 모서리 */
+            transition: background-color 0.3s;
+        }
+
+        .pagination a:hover {
+            background-color: #009CFF; ; /* 호버 시 배경 색상 */
+        }
+
+        .pagination .active a {
+            background-color: #6c757d;; /* 현재 페이지 버튼 색상 */
+            border-color: #6c757d;;
+        }
+
+        .pagination .disabled a {
+            background-color: #cccccc; /* 비활성화 버튼 색상 */
+            pointer-events: none; /* 클릭 불가능 하게 */
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <div class="search-form">
+        <form action="/smorder/listall" method="get">
+            <div class="form-group">
+                <div class="me-3 mb-3">
+                    <label for="orderId">주문 ID:</label>
+                    <input type="text" id="orderId" name="orderId" class="form-control" placeholder="주문 ID 입력">
+                </div>
+                <div class="me-3 mb-3">
+                    <label for="customerId" class="form-label">고객 ID</label>
+                    <input type="text" name="customerId" class="form-control" id="customerId" placeholder="고객 ID">
+                </div>
+                <!--                    <div class="me-3 mb-3">-->
+                <!--                        <label for="productName" class="form-label">상품명</label>-->
+                <!--                        <input type="text" name="productName" class="form-control" id="productName" placeholder="상품명">-->
+                <!--                    </div>-->
+                <div class="me-3 mb-3">
+                    <label for="status" class="form-label">주문상태</label>
+                    <select class="form-select" name="status" id="status">
+                        <option value="">전체</option>
+                        <option value="PREPARING">배송준비중</option>
+                        <option value="COMPLETE">배송완료</option>
+                        <option value="CANCEL">주문취소</option>
+                    </select>
+                </div>
+                <div class="form-btn">
+                    <button type="submit" class="btn btn-primary">검색</button>
+                    <button type="reset" class="btn btn-primary">초기화</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-12" style="padding-right: 0">
+            <h6 class="mb-4"> 주문 조회 </h6>
+            <table class="table table-bordered">
+                <thead>
+                <tr class="custom-header">
+                    <th>주문 ID</th>
+                    <th>고객 ID</th>
+                    <th>상품 수량</th>
+                    <th>결제 금액</th>
+                    <th>주문 상태</th>
+                    <th>주문일</th>
+                    <th>발송 예정일</th>
+                    <th>상품명</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 게시글 목록 -->
+                <tr th:each="order : ${responseDTO.dtoList}">
+<!--                    <td th:text="${order.id}"></td>-->
+                    <td><a th:href="@{/smorder/modify(orderId2=${order.id})}" class="order-link" th:text="${order.id}"></a></td>
+                    <td th:text="${order.customerId}"></td>
+                    <td th:text="${order.quantity}"></td>
+                    <td th:text="${order.paymentAmount}"></td>
+                    <td th:text="${order.seller_send_status}"></td>
+                    <td th:text="${order.createdAt}"></td>
+                    <td th:text="${order.expectedAt}"></td>
+                    <td th:text="${order.shoppingMallName}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 페이지네이션 -->
+        <div class="float-end">
+            <ul class="pagination">
+                <li class="page-item" th:if="${responseDTO.prev}">
+                    <a class="page-link" th:href="@{/smorder/listall(page=${num})}"
+                       th:data-num="${responseDTO.start - 1}">Previous</a>
+                </li>
+
+                <th:block th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                    <li class="page-item" th:class="${responseDTO.page == num ? 'active' : ''}">
+                        <a class="page-link" th:href="@{/smorder/listall(page=${num})}" th:data-num="${num}"
+                           th:text="${num}"></a>
+                    </li>
+                </th:block>
+
+                <li class="page-item" th:if="${responseDTO.next}">
+                    <a class="page-link" th:href="@{/smorder/listall(page=${num})}"
+                       th:data-num="${responseDTO.end + 1}">Next</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <!-- 페이지네이션 -->
+</div>
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+<script th:inline="javascript">
+
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        if (target.tagName !== 'A') {
+            return
+        }
+
+        const num = target.getAttribute("data-num")
+
+        const formObj = document.querySelector("form")
+
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
+
+        formObj.submit();
+
+    }, false)
+
+    document.querySelector(".clearBtn").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        self.location = '/smorder/listall'
+
+    }, false)
+
+    //show modal
+    const result = [[${result}]]
+
+    const modal = new bootstrap.Modal(document.querySelector(".modal"))
+
+    if (result) {
+        modal.show()
+    }
+    <!-- 페이지네이션 스크립트 클릭시 이동처리 -->
+
+
+</script>
+
+</body>

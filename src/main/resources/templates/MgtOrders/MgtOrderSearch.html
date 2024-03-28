@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout1}">
+
+<head>
+    <title>Home2</title>
+    <link href="/assets/css/styleMgtOrders.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-sm-12 " style="padding-right: 0">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">발주조회</h6>
+                <div class="section top-section">
+                    <form action="/MgtOrders/MgtOrderSearch" method="post">
+                    <div class="element-one">
+                        <div>
+                            <label for="order-date-start">발주일자 :</label>
+                            <input type="date" id="order-date-start" name="startDate">
+                            ~
+                            <input type="date" id="order-date-end" name="endDate">
+                        </div>
+                    </div>
+                    <div class="element-two">
+                        <div>
+                            <label for="supplier">매입거래처 :</label>
+                            <input type="text" id="supplier" placeholder="Company" name="purchaser">
+                        </div>
+                        <div>
+                            <label for="warehouse">창고ID :</label>
+                            <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId">
+                        </div>
+                        <div></div>
+                    </div>
+                    <div class="button-row">
+                        <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>
+                    </div>
+                    </form>
+                </div>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="background-color: #acd1ea;">Id</th>
+                        <th scope="col" style="background-color: #acd1ea;">Purchaser</th>
+                        <th scope="col" style="background-color: #acd1ea;">status</th>
+                        <th scope="col" style="background-color: #acd1ea;">createdAt</th>
+                        <th scope="col" style="background-color: #acd1ea;">warehouseId</th>
+                    </tr>
+                    </thead>
+                    <tbody id="mgtOrders-data">
+                    <tr th:each="m : ${mgtOrdersDTOList}">
+                        <td th:text="${m.id}"></td>
+                        <td th:text="${m.purchaser}"></td>
+                        <td th:text="${m.status}"></td>
+                        <td th:text="${m.createdAt}"></td>
+                        <td th:text="${m.warehouseId}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function searchOrders() {
+var startDate = $('#order-date-start').val();
+var endDate = $('#order-date-end').val();
+var purchaser = $('#supplier').val();
+var warehouseId = $('#warehouse').val();
+
+</body>
+<script>
+        // // Attach an event listener directly to the search button
+        // $('#searchBtn').click(function(event) {
+        //     console.log("searchBtn clieck");
+        //     // Prevent the default form submission behavior
+        //     event.preventDefault();
+        //
+        //     // Get the form data
+        //     var formData = {
+        //         startDate: $('#order-date-start').val(),
+        //         endDate: $('#order-date-end').val(),
+        //         purchaser: $('#supplier').val(),
+        //         warehouseId: $('#warehouse').val()
+        //     };
+        //
+        //     // Send an AJAX request to the server
+        //     $.ajax({
+        //         type: 'POST',
+        //         url: '/MgtOrders/MgtOrderSearch',
+        //         data: formData,
+        //         success: function(response) {
+        //             // Update the page content with the response
+        //             // For example, update the table body with the search results
+        //             $('#mgtOrders-data').html(response);
+        //             console.log("success");
+        //         },
+        //         error: function(xhr, status, error) {
+        //             // Handle errors
+        //             console.error(error);
+        //         }
+        //     });
+        // });
+</script>
+
+
+</html>

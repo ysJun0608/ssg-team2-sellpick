@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main menu</title>
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+    <!-- Template Stylesheet -->
+    <link href="/assets/css/styles.css" rel="stylesheet">
+    <link href="/assets/css/styles_regacy.css" rel="stylesheet">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="/assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/assets/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet"/>
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Template Stylesheet
+    <link href="assets/css/style.css" rel="stylesheet"> -->
+
+
+
+    <style>
+        /* 메뉴 항목 간격 조정 */
+        .navbar-nav .nav-item {
+            margin-bottom: 10px;
+            /* 각 항목 사이의 여백 조정 */
+        }
+
+        /* 메뉴바 높이 조정 */
+        .sidebar {
+            min-height: 100vh;
+            /* 전체 높이를 차지하도록 설정 */
+            background-color: #f4f4f4;
+            /* 배경색 조정 */
+        }
+
+        /* 메뉴바 내부 여백 조정 */
+        .sidebar .navbar-nav {
+            padding: 20px 0;
+            /* 상하 여백 조정 */
+        }
+
+        /* 메뉴 항목 폰트 사이즈 조정 */
+        .navbar-nav .nav-link {
+            font-size: 16px;
+            /* 폰트 크기 조정 */
+        }
+
+        /* 메뉴바 추가 스타일링 */
+        .sidebar .nav-link {
+            color: #333;
+            /* 메뉴 항목 색상 조정 */
+        }
+
+        .sidebar .nav-link:hover {
+            background-color: #ddd;
+            /* 메뉴 항목 호버 시 배경색 조정 */
+        }
+
+        .sidebar .active {
+            background-color: #bbb;
+            /* 활성 메뉴 항목의 배경색 조정 */
+            color: white;
+            /* 활성 메뉴 항목의 텍스트 색상 조정 */
+        }
+
+
+
+        /* 메인 컨텐츠 영역 수정 */
+        .content {
+            margin-left: 120px;
+            /* 사이드바 너비에 따라 조정 */
+            padding: 20px;
+            width: calc(100% - 240px);
+            /* 전체 너비에서 사이드바 너비만큼 빼줌 */
+        }
+
+        /* '.temp' 클래스 스타일링 수정 */
+        .temp {
+            margin-left: 0;
+            /* 왼쪽 여백 제거 */
+            padding: 20px;
+            /* 내부 여백 추가 */
+            background-color: #ffffff;
+            /* 배경색 설정 */
+            border-radius: 5px;
+            /* 모서리 둥글게 처리 */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* 그림자 효과 추가 */
+        }
+
+        /* 테이블 스타일링 */
+        .table-bordered {
+            border-collapse: collapse;
+            margin-top: 20px;
+            /* 테이블 상단 여백 */
+            width: 100%;
+            /* 테이블 너비 전체 */
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #dee2e6;
+            padding: 8px;
+            /* 셀 패딩 조정 */
+        }
+
+        .table-bordered thead th {
+            background-color: #acd1ea;
+            /* 테이블 헤더 배경색 */
+            color: #000000;
+            /* 테이블 헤더 글자색 */
+        }
+        /* 테이블 셀에 hover 효과 적용 */
+        .table-bordered tbody tr:hover td {
+            background-color: #ACD1EA; /* hover 시 배경색 변경 */
+            color: var(--primary); /* hover 시 텍스트 색상 변경 */
+        }
+
+
+        /*페이지 네이션 */
+        .form-control .form-select {
+            width: 80px;
+            padding: 2px;
+            /* 내부 여백 조정 */
+            margin: 5px 0;
+            /* 위아래 여백 추가 */
+            /* 테두리 색상 */
+
+        }
+        .form-btn{
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        .form-btn .btn {
+            margin-right: 10px; /* 오른쪽 마진 추가 */
+        }
+
+
+        /* 페이지네이션 스타일 */
+        /* 페이지네이션 스타일 조정 */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+            list-style: none; /* 목록 스타일 제거 */
+        }
+
+        .pagination li {
+            margin: 0 5px;
+        }
+
+        .pagination a {
+            background-color: #007bff; /* 버튼 배경 색상 */
+            color: white;
+            text-decoration: none;
+            font-size: 14px; /* 폰트 사이즈 */
+            padding: 0.375rem 0.75rem;
+            /*padding: 12px 15px; !* 상하 8px, 좌우 12px의 패딩 *!*/
+            display: inline-block;
+            border-radius: 5px; /* 둥근 모서리 */
+            transition: background-color 0.3s;
+        }
+
+        .pagination a:hover {
+            background-color: #009CFF; ; /* 호버 시 배경 색상 */
+        }
+
+        .pagination .active a {
+            background-color: #6c757d;; /* 현재 페이지 버튼 색상 */
+            border-color: #6c757d;;
+        }
+
+        .pagination .disabled a {
+            background-color: #cccccc; /* 비활성화 버튼 색상 */
+            pointer-events: none; /* 클릭 불가능 하게 */
+        }
+
+
+    </style>
+
+</head>
+
+<body id="body-pd">
+<div class="container-xxl position-relative bg-white d-flex p-0">
+    <!-- Spinner Start -->
+    <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+  <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+      <span class="sr-only">Loading...</span>
+  </div>
+</div> -->
+
+
+    <!-- Sidebar Start -->
+    <div class="sidebar pe-4 pb-3">
+        <nav class="navbar bg-light navbar-light">
+            <a href="../home.html" class="navbar-brand mx-4 mb-3">
+                <h3 class="text-primary"><i class="fa fa-truck me-2"></i>2Commerce</h3>
+            </a>
+            <div class="d-flex align-items-center ms-4 mb-4">
+                <div class="position-relative">
+                    <img class="rounded-circle" src="/images/TeamLogo.png" alt="" style="width: 40px; height: 40px;">
+                    <div
+                            class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
+                    </div>
+                </div>
+                <div class="ms-3">
+                    <h6 class="mb-0">관리자</h6>
+                    <span>Admin</span>
+                </div>
+            </div>
+            <div class="navbar-nav w-100">
+                <a href="../home.html" class="nav-item nav-link active"><i
+                        class="fa fa-tachometer-alt me-2"></i>Home</a>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-warehouse me-2"></i>창고관리</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="/inventory/warehouselist" class="dropdown-item">창고조회</a>
+                        <a href="typography.html" class="dropdown-item">창고등록</a>
+                        <a href="element.html" class="dropdown-item">빼도됌</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                            class="fa fa-calculator me-2"></i>발주관리</a>
+                    <div class="dropdown-menu bg-transparent border-0">
+                        <a href="button.html" class="dropdown-item">발주등록</a>
+                        <a href="typography.html" class="dropdown-item">발주확정</a>
+                        <a href="element.html" class="dropdown-item">발주조회</a>
+                        <a href="element.html" class="dropdown-item">발주대비미입고목록</a>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                class="fa fa-cubes me-2"></i></i>재고관리</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="button.html" class="dropdown-item">재고조회</a>
+                            <a href="typography.html" class="dropdown-item">미사용</a>
+                            <a href="element.html" class="dropdown-item">미사용</a>
+                        </div>
+
+                        <div class="nav-item dropdown">
+                            <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                    class="fa fa-plus me-2"></i>입고관리</a>
+                            <div class="dropdown-menu bg-transparent border-0">
+                                <a href="signin.html" class="dropdown-item">입고조회</a>
+                                <a href="signup.html" class="dropdown-item">미사용</a>
+                                <a href="404.html" class="dropdown-item">미사용</a>
+                                <a href="blank.html" class="dropdown-item">미사용</a>
+                            </div>
+
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                        class="fa fa-minus me-2"></i>출고관리</a>
+                                <div class="dropdown-menu bg-transparent border-0">
+                                    <a href="signin.html" class="dropdown-item">출고조회</a>
+                                    <a href="signup.html" class="dropdown-item">미사용</a>
+                                    <a href="404.html" class="dropdown-item">미사용</a>
+                                    <a href="blank.html" class="dropdown-item">미사용</a>
+                                </div>
+                            </div>
+
+                            <div class="nav-item dropdown">
+                                <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i
+                                        class="fa fa-credit-card me-2"></i>주문관리</a>
+                                <div class="dropdown-menu bg-transparent border-0">
+                                    <a href="/smorder/listall" class="dropdown-item">전체 주문 조회</a>
+                                    <a href="/smorder/listcomplete" class="dropdown-item">배송완료 주문 조회</a>
+                                    <a href="/smorder/listprepare" class="dropdown-item">배송중 주문 조회</a>
+                                    <a href="/smorder/listcancle" class="dropdown-item">취소 주문 조회</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Sidebar End -->
+
+
+    <!-- Content Start -->
+    <div class="content">
+        <!-- Navbar Start -->
+        <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+            <a href="../index.html" class="navbar-brand d-flex d-lg-none me-4">
+                <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+            </a>
+            <a href="#" class="sidebar-toggler flex-shrink-0">
+                <i class="fa fa-bars"></i>
+            </a>
+            <form class="d-none d-md-flex ms-4">
+                <input class="form-control border-0" type="search" placeholder="Search">
+            </form>
+            <div class="navbar-nav align-items-center ms-auto">
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-envelope me-lg-2"></i>
+                        <span class="d-none d-lg-inline-flex">Message</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" src="images/user.png" alt=""
+                                     style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" src="images/user.png" alt=""
+                                     style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <div class="d-flex align-items-center">
+                                <img class="rounded-circle" src="images/user.png" alt=""
+                                     style="width: 40px; height: 40px;">
+                                <div class="ms-2">
+                                    <h6 class="fw-normal mb-0">Jhon send you a message</h6>
+                                    <small>15 minutes ago</small>
+                                </div>
+                            </div>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item text-center">See all message</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fa fa-bell me-lg-2"></i>
+                        <span class="d-none d-lg-inline-flex">Notificatin</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">
+                            <h6 class="fw-normal mb-0">Profile updated</h6>
+                            <small>15 minutes ago</small>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <h6 class="fw-normal mb-0">New user added</h6>
+                            <small>15 minutes ago</small>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item">
+                            <h6 class="fw-normal mb-0">Password changed</h6>
+                            <small>15 minutes ago</small>
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="#" class="dropdown-item text-center">See all notifications</a>
+                    </div>
+                </div>
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <img class="rounded-circle me-lg-2" src="/images/TeamLogo.png" alt=""
+                             style="width: 40px; height: 40px;">
+                        <span class="d-none d-lg-inline-flex" th:text="${id}">님!</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                        <a href="#" class="dropdown-item">My Profile</a>
+                        <a href="#" class="dropdown-item">Settings</a>
+                        <a href="/login/logout" class="dropdown-item" sec:authorize="isAuthenticated()">Log Out</a>
+                        <a href="/login/login" class="dropdown-item" sec:authorize="isAnonymous()">Log in</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <!-- Navbar End -->
+
+        <!--        <div class="login-info">-->
+        <!--            <p th:if="${#authorization.expression('isAuthenticated()')}">-->
+        <!--                안녕하세요, <span th:text="${id}"></span>님! 역할: <span th:text='${role.substring(5)}'></span>-->
+        <!--            </p>-->
+        <!--        </div>-->
+
+        <!--main contents Start-->
+
+
+
+        <div class="search-form">
+            <form action="/smorder/listall2" method="get">
+                <div class="form-group">
+                    <div class="me-3 mb-3">
+                        <label for="orderId">주문 ID:</label>
+                        <input type="text" id="orderId" name="orderId" class="form-control" placeholder="주문 ID 입력">
+                    </div>
+                    <div class="me-3 mb-3">
+                        <label for="customerId" class="form-label">고객 ID</label>
+                        <input type="text" name="customerId" class="form-control" id="customerId" placeholder="고객 ID">
+                    </div>
+                    <div class="me-3 mb-3">
+                        <label for="productName" class="form-label">상품명</label>
+                        <input type="text" name="productName" class="form-control" id="productName" placeholder="상품명">
+                    </div>
+                    <div class="me-3 mb-3">
+                        <label for="status" class="form-label">주문상태</label>
+                        <select class="form-select" name="status" id="status">
+                            <option value="">전체</option>
+                            <option value="PREPARING">배송준비중</option>
+                            <option value="COMPLETE">배송완료</option>
+                            <option value="CANCEL">주문취소</option>
+                        </select>
+                    </div>
+                    <div class="form-btn">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                        <button type="reset" class="btn btn-primary">초기화</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-sm-12" style="padding-right: 0">
+                <h6 class="mb-4">주문 조회(전체) </h6>
+                <table class="table table-bordered">
+                <thead>
+                <tr class="custom-header">
+                    <th>주문 ID</th>
+                    <th>고객 ID</th>
+                    <th>상품 수량</th>
+                    <th>결제 금액</th>
+                    <th>주문 상태</th>
+                    <th>주문일</th>
+                    <th>발송 예정일</th>
+                    <th>상품명</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- 게시글 목록 -->
+                <tr th:each="order : ${responseDTO.dtoList}">
+                    <td th:text="${order.id}"></td>
+                    <td th:text="${order.customerId}"></td>
+                    <td th:text="${order.quantity}"></td>
+                    <td th:text="${order.paymentAmount}"></td>
+                    <td th:text="${order.seller_send_status}"></td>
+                    <td th:text="${order.createdAt}"></td>
+                    <td th:text="${order.expectedAt}"></td>
+                    <td th:text="${order.shoppingMallName}"></td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+
+            <!-- 페이지네이션 -->
+            <div class="float-end">
+                <ul class="pagination">
+                    <li class="page-item" th:if="${responseDTO.prev}">
+                        <a class="page-link" th:href="@{/smorder/listall2(page=${num})}" th:data-num="${responseDTO.start - 1}">Previous</a>
+                    </li>
+
+                    <th:block th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                        <li class="page-item" th:class="${responseDTO.page == num ? 'active' : ''}">
+                            <a class="page-link" th:href="@{/smorder/listall2(page=${num})}" th:data-num="${num}" th:text="${num}"></a>
+                        </li>
+                    </th:block>
+
+                    <li class="page-item" th:if="${responseDTO.next}">
+                        <a class="page-link"  th:href="@{/smorder/listall2(page=${num})}" th:data-num="${responseDTO.end + 1}">Next</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 페이지네이션 -->
+
+        </div>
+        <!-- Content End -->
+    </div>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/lib/chart/chart.min.js"></script>
+<script src="/assets/lib/easing/easing.min.js"></script>
+<script src="/assets/lib/waypoints/waypoints.min.js"></script>
+<script src="/assets/lib/owlcarousel/owl.carousel.min.js"></script>
+<!--<script src="/assets/lib/owlcarousel/owl.carousel.js/owl.carousel.min.js"></script>-->
+<script src="/assets/lib/tempusdominus/js/moment.min.js"></script>
+<script src="/assets/lib/tempusdominus/js/moment-timezone.min.js"></script>
+<!--<script src="/assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.js/tempusdominus-bootstrap-4.min.js"></script>-->
+<script src="/assets/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="/assets/jsReal/main.js"></script>
+
+</body>
+<!-- 페이지네이션 스크립트 클릭시 이동처리 -->
+<script  th:inline="javascript">
+
+    document.querySelector(".pagination").addEventListener("click", function (e) {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const target = e.target
+
+        if(target.tagName !== 'A') {
+            return
+        }
+
+        const num = target.getAttribute("data-num")
+
+        const formObj = document.querySelector("form")
+
+        formObj.innerHTML += `<input type='hidden' name='page' value='${num}'>`
+
+        formObj.submit();
+
+    },false)
+
+    document.querySelector(".clearBtn").addEventListener("click", function (e){
+        e.preventDefault()
+        e.stopPropagation()
+
+        self.location ='/smorder/listall2'
+
+    },false)
+
+    //show modal
+    const result = [[${result}]]
+
+    const modal = new bootstrap.Modal(document.querySelector(".modal"))
+
+    if(result){
+        modal.show()
+    }
+<!-- 페이지네이션 스크립트 클릭시 이동처리 -->
+
+
+</script>
+
+
+
+</html>

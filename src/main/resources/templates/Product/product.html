@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주문 관리</title>
+    <link rel="stylesheet" href="/assets/css/styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+</head>
+<body id="body-pd">
+<header class="header" id="header">
+    <!-- 헤더 내용 -->
+</header>
+
+<div class="l-navbar" id="navbar">
+    <nav class="nav">
+        <div>
+            <a href="/" class="nav__logo">
+                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>
+                <img src="/assets/TeamLogo.png" style="width: 100px; height: 80px;">
+            </a>
+            <div class="nav__list">
+                <!-- 사이드바 항목 -->
+                <a href="#" class="nav__link active">
+                    <ion-icon name="add-circle-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">상품등록</span>
+                </a>
+
+                <a href="#" class="nav__link active">
+                    <ion-icon name="home-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">창고관리</span>
+                </a>
+                <a href="#" class="nav__link">
+                    <i class="bi bi-boxes"></i>
+                    <span class="nav_name">배송관리</span>
+                </a>
+
+                <a href="#" class="nav__link">
+                    <i class="bi bi-box-arrow-in-down"></i>
+                    <span class="nav_name">입고관리</span>
+                </a>
+                <a href="#" class="nav__link">
+                    <i class="bi bi-box-arrow-down"></i>
+                    <span class="nav_name">출고관리</span>
+                </a>
+                <a href="#" class="nav__link">
+                    <i class="bi bi-wallet-fill"></i>
+                    <span class="nav_name">정산관리</span>
+                </a>
+
+                <a href="#" class="nav__link">
+                    <ion-icon name="pie-chart-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">발주관리</span>
+                </a>
+
+
+                <!-- <div href="#" class="nav__link collapse">
+                    <ion-icon name="people-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">Team</span>
+
+                    <ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
+
+                    <ul class="collapse__menu">
+                        <a href="#" class="collapse__sublink">Data</a>
+                        <a href="#" class="collapse__sublink">Group</a>
+                        <a href="#" class="collapse__sublink">Members</a>
+                    </ul>
+                </div> -->
+
+                <a href="#" class="nav__link">
+                    <ion-icon name="settings-outline" class="nav__icon"></ion-icon>
+                    <span class="nav_name">재고관리</span>
+                </a>
+            </div>
+            <a href="#" class="nav__link">
+                <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>
+                <span class="nav_name">주문관리</span>
+            </a>
+
+            <!-- 추가 사이드바 항목 -->
+        </div>
+</nav>
+</div>
+
+<div style="display: flex; height: 100vh;">
+    <div style="flex: 0 0 auto; padding: 10px; border: 1px solid #ccc;">
+        <h3>상품등록 조건</h3>
+<!--        <label>-->
+<!--            상품 ID:-->
+<!--            <input type="text" name="id"> &lt;!&ndash; 예시로 상품 ID를 12345로 지정 &ndash;&gt;-->
+<!--        </label><br>-->
+<!--        <form action="product/register" method="POST">-->
+<!--        <label>-->
+<!--            상품 이름:-->
+<!--            <input type="text"  name="name" class="form-control" value ='<c:out value="${name}"/>' >-->
+<!--           -->
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            상품 판매 상태:-->
+<!--            <select id="productStatus">-->
+<!--                <option value="ON_SALE">판매중</option>-->
+<!--                <option value="STOP_SALE">품절</option>-->
+<!--            </select>-->
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            판매가:-->
+
+<!--            <input type="text"  name="price" class="form-control" value ='<c:out value="${price}"/>' >-->
+
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            원가:-->
+<!--            <input type="text"  name="cost" class="form-control" value ='<c:out value="${cost}"/>' >-->
+
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            브랜드 ID:-->
+<!--            <input type="text"  name="brandid" class="form-control" value ='<c:out value="${brandid}"/>' >-->
+
+<!--        </label><br>-->
+<!--        <label>-->
+<!--            사업자 ID:-->
+<!--            <input type="text"  name="owerid" class="form-control" value ='<c:out value="${owerid}"/>' >-->
+
+<!--        </label><br>-->
+<!--            -->
+<!--            <button type="submit" name="register_btn">등록</button>-->
+<!--        </form>-->
+
+        <form action="/product/register" method="POST">
+            <label>
+                상품 이름:
+                <input type="text" name="name" class="form-control">
+            </label><br>
+            <label>
+                상품 판매 상태:
+                <select name="status" id="productStatus">
+                    <option value="ON_SALE">판매중</option>
+                    <option value="STOP_SALE">품절</option>
+                </select>
+            </label><br>
+            <label>
+                판매가:
+                <input type="text" name="price" class="form-control" >
+            </label><br>
+            <label>
+                원가:
+                <input type="text" name="cost" class="form-control" >
+            </label><br>
+            <label>
+                브랜드 ID:
+                <input type="text" name="brandId" class="form-control" >
+            </label><br>
+            <label>
+                사업자 ID:
+                <input type="text" name="businessOwnerId" class="form-control" >
+            </label><br>
+            <button type="submit" name="register_btn">등록</button>
+        </form>
+    </div>
+
+    <div style="flex: 1 1 auto; padding: 10px; overflow: auto;">
+        <table id="productTable" style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <th>No.</th>
+                <th>상품 ID</th>
+                <th>상품 이름</th>
+                <th>상품 판매 상태</th>
+                <th>판매가</th>
+                <th>원가</th>
+                <th>브랜드 ID</th>
+                <th>사업자 ID</th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<script>
+    let products = [];
+
+    function addProduct() {
+        const productId = document.getElementById('productId').value;
+        const productName = document.getElementById('productName').value;
+        const productStatus = document.getElementById('productStatus').value;
+        const sellingPrice = document.getElementById('sellingPrice').value;
+        const costPrice = document.getElementById('costPrice').value;
+        const brandId = document.getElementById('brandId').value;
+        const supplierId = document.getElementById('supplierId').value;
+
+        const product = {
+            id: productId,
+            name: productName,
+            status: productStatus,
+            sellingPrice: sellingPrice,
+            costPrice: costPrice,
+            brandId: brandId,
+            supplierId: supplierId
+        };
+
+        products.push(product);
+        renderProducts();
+    }
+
+    function renderProducts() {
+        const table = document.getElementById('productTable');
+        const tableBody = table.getElementsByTagName('tbody')[0] || table.createElement('tbody');
+        table.innerHTML = `
+      <tr>
+        <th>No.</th>
+        <th>상품 ID</th>
+        <th>상품 이름</th>
+        <th>상품 판매 상태</th>
+        <th>판매가</th>
+        <th>원가</th>
+        <th>브랜드 ID</th>
+        <th>사업자 ID</th>
+      </tr>
+    `;
+        tableBody.innerHTML = '';
+
+        products.forEach((product, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+        <td>${index + 1}</td>
+        <td>${product.id}</td>
+        <td>${product.name}</td>
+        <td>${product.status}</td>
+        <td>${product.sellingPrice}</td>
+        <td>${product.costPrice}</td>
+        <td>${product.brandId}</td>
+        <td>${product.supplierId}</td>
+      `;
+            tableBody.appendChild(row);
+        });
+
+        table.appendChild(tableBody);
+    }
+</script>
+
+
+<script src="/assets/js/main.js"></script>
+</body>
+</html>

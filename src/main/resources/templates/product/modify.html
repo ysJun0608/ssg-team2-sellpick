@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Product modify</title>
+</head>
+<body>
+<h2>Product modify</h2>
+<div class="modify-form">
+    <form action="/product/modify" method="post">
+        <input type="hidden" name="id" th:value="${dto.id}" />
+        <div class="input-group mb-3">
+            <span class="input-group-text">상품 이름</span>
+            <!-- 현재 상품의 이름을 기본값으로 설정 -->
+<!--            <input type="text" name="name" class="form-control" value="${dto.name}" placeholder="상품이름">-->
+            <input type="text" name="name" class="form-control" th:value="${dto.name}" placeholder="상품이름">
+
+        </div>
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="status">상품 상태</label>
+            <!-- 현재 상품의 상태를 기본값으로 설정 -->
+            <select class="form-select" id="status" name="status" placeholder="상품 상태">
+                <option value="ON_SALE" th:selected="${dto.status == 'ON_SALE'}">판매중</option>
+                <option value="STOP_SALE" th:selected="${dto.status == 'STOP_SALE'}">품절</option>
+            </select>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">상품 원가</span>
+            <!-- 현재 상품의 원가를 기본값으로 설정 -->
+            <input type="text" name="cost" class="form-control" th:value="${dto.cost}" placeholder="상품 원가">
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">상품 가격</span>
+            <!-- 현재 상품의 가격을 기본값으로 설정 -->
+            <input type="text" name="price" class="form-control" th:value="${dto.price}" placeholder="상품 가격">
+        </div>
+
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="brandId">브랜드 ID</label>
+            <!-- 현재 상품의 브랜드 ID를 기본값으로 설정 -->
+            <select class="form-select" id="brandId" name="brandId">
+                <option value="1" th:selected="${dto.brandId == 1}">ID1</option>
+                <option value="2" th:selected="${dto.brandId == 2}">ID2</option>
+                <option value="3" th:selected="${dto.brandId == 3}">ID3</option>
+                <option value="4" th:selected="${dto.brandId == 4}">ID4</option>
+                <option value="5" th:selected="${dto.brandId == 5}">ID5</option>
+            </select>
+        </div>
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="businessOwnerId">사업자 ID</label>
+            <!-- 현재 상품의 사업자 ID를 기본값으로 설정 -->
+            <select class="form-select" id="businessOwnerId" name="businessOwnerId">
+                <option value="1" th:selected="${dto.businessOwnerId == 1}">사업자1</option>
+                <option value="2" th:selected="${dto.businessOwnerId == 2}">사업자2</option>
+                <option value="3" th:selected="${dto.businessOwnerId == 3}">사업자3</option>
+                <option value="4" th:selected="${dto.businessOwnerId == 4}">사업자4</option>
+                <option value="5" th:selected="${dto.businessOwnerId == 5}">사업자5</option>
+            </select>
+        </div>
+
+        <br>
+        <button type="submit">수정하기</button>
+    </form>
+    <div class="register-btn">
+        <form action="/product/list">
+            <button type="submit">리스트</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{/layout/layout1}">
+
+<head>
+
+    <title>Home2</title>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Ajax request to fetch data
+            $.ajax({
+                url: '/chart/chart-data', // 실제 데이터를 가져올 URL로 수정해야 합니다.
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // 데이터 배열 초기화
+                    var labels = [];
+                    var insertQuantities = [];
+                    var releaseQuantities = [];
+
+                    // 데이터를 추출하여 배열에 저장
+                    for (var i = 0; i < data.length; i++) {
+                        labels.push(data[i].year + '-' + data[i].month);
+                        insertQuantities.push(data[i].insertQuantity);
+                        releaseQuantities.push(data[i].releaseQuantity);
+                    }
+
+                    // 차트 생성
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Insert Total Price',
+                                data: insertQuantities,
+                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }, {
+                                label: 'Release Total Price',
+                                data: releaseQuantities,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    // Log any errors to the console
+                    console.error('Error fetching data:', error);
+                }
+            });
+
+            $.ajax({
+                url: '/chart/settlement-data', // 실제 데이터를 가져올 URL로 수정해야 합니다.
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // 데이터 배열 초기화
+                    var labels = [];
+                    var inQuantity = [];
+                    var outQuantity = [];
+
+                    // 데이터를 추출하여 배열에 저장
+                    for (var i = 0; i < data.length; i++) {
+                        labels.push(data[i].year + '-' + data[i].month);
+                        inQuantity.push(data[i].inQuantity);
+                        outQuantity.push(data[i].outQuantity);
+                    }
+
+                    // 차트 생성
+                    var ctx = document.getElementById('settlement-Chart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Insert Quantity',
+                                data: inQuantity,
+                                backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }, {
+                                label: 'Release Quantity',
+                                data: outQuantity,
+                                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
+                            }
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    // Log any errors to the console
+                    console.error('Error fetching data:', error);
+                }
+            });
+
+            // Ajax request to fetch recent sales data
+            $.ajax({
+                url: '/inventory/whInOut/recent', // 실제 데이터를 가져올 URL로 수정해야 합니다.
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // 테이블안 내용물들 가운데 정렬
+                    // var salesHtml = '<table class="table text-start align-middle table-bordered table-hover mb-0" >' +
+                    var salesHtml = '<table class="table table-bordered table-hover mb-0" >' +
+                        '<thead>' +
+                        '<tr class="text-dark">' +
+                        '<th scope="col">날짜</th>' +
+                        '<th scope="col">타입</th>' +
+                        '<th scope="col">입출고 ID</th>' +
+                        '<th scope="col">상품 이름</th>' +
+                        '<th scope="col">가격</th>' +
+                        '<th scope="col">리스트 확인하러가기</th>' +
+                        '</tr>' +
+                        '</thead>' +
+                        '<tbody>';
+
+                    for (var i = 0; i < data.length; i++) {
+                        console.log(data[i].name + ' ' + data[i].totalPrice);
+                        salesHtml += '<tr>' +
+                            '<td>' + formatDate(data[i].createdAt) + '</td>' +
+                            '<td>' + data[i].type + '</td>' +
+                            '<td>' + data[i].id + '</td>' +
+                            '<td>' + data[i].productName + '</td>' +
+                            '<td>' + data[i].totalPrice + '원</td>';
+                            // '<td><a class="btn btn-sm btn-primary" href="">Detail</a></td>';
+                            // type이 발주이면 "/mgtOrders'로 이동, 출고이면 "/smOrders"로 이동 하는 조건문
+                            if (data[i].type == '입고') {
+                                salesHtml += '<td class="m-0"><a class="btn btn-primary" href="/MgtOrders/MgtOrderSearch">발주 리스트</a></td>';
+                            } else {
+                                salesHtml += '<td class="m-0"><a class="btn btn-primary" href="/smorder/listall">주문 리스트</a></td>';
+                            }
+                            salesHtml += '</tr>';
+                    }
+
+                    salesHtml += '</tbody></table>';
+                    $('#recentSalesTable').html(salesHtml);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error fetching recent sales data:', error);
+                }
+            });
+
+            // Function to format date
+            function formatDate(dateString) {
+                var date = new Date(dateString);
+                var year = date.getFullYear();
+                var month = date.getMonth() + 1;
+                var day = date.getDate();
+                return year + '-' + (month < 10 ? '0' : '') + month + '-' + (day < 10 ? '0' : '') + day;
+            }
+        });
+
+    </script>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <!-- Sale & Revenue Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-sm-6 col-xl-4">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Today 출고 총량</p>
+                        <h6 class="mb-0">₩<span th:text="${#numbers.formatInteger(TodayPrice, 3, 'COMMA')}"></span>원</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-line fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Today 입고 총량</p>
+                        <h6 class="mb-0">₩<span th:text="${#numbers.formatInteger(TodayCost, 3, 'COMMA')}"></span>원</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-xl-4">
+                <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                    <i class="fa fa-chart-area fa-3x text-primary"></i>
+                    <div class="ms-3">
+                        <p class="mb-2">Today 수익</p>
+                        <h6 class="mb-0">₩<span th:text="${#numbers.formatInteger(TodayRevenue, 3, 'COMMA')}"></span>원</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sale & Revenue End -->
+
+
+    <!-- Sales Chart Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-light text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">입출고 수량</h6>
+                    </div>
+                    <canvas id="settlement-Chart"></canvas>
+                </div>
+            </div>
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-light text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">입출고 가격</h6>
+                    </div>
+                    <canvas id="myChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Sales Chart End -->
+
+
+    <!-- Recent Sales Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Recent Sales</h6>
+            </div>
+            <div class="table-responsive" id="recentSalesTable">
+                <!-- Sales data will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+    <!-- Recent Sales End -->
+
+</div>
+</body>
+
+
+</html>

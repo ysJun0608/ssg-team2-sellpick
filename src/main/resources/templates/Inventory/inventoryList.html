@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout1}">
+
+<head>
+    <title>Home2</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <!-- Content Start -->
+    <!-- Navbar Start -->
+
+
+    <!--        <div class="login-info">-->
+    <!--            <p th:if="${#authorization.expression('isAuthenticated()')}">-->
+    <!--                안녕하세요, <span th:text="${id}"></span>님! 역할: <span th:text='${role.substring(5)}'></span>-->
+    <!--            </p>-->
+    <!--        </div>-->
+
+
+
+    <!-- Widgets End -->
+    <h1>창고 재고 및 상품 정보</h1>
+
+    <!-- 창고 ID 입력 폼 -->
+    <form id="getInventoryBy WarehouseForm">
+        <label for="warehouseId">창고 ID:</label>
+        <input type="number" id="warehouseId" name="warehouseId" min="1" required>
+        <button type="submit">조회</button>
+    </form>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #009CFF;
+            color: #fff;
+        }
+        th {
+            white-space: nowrap;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        input[type="number"] {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #009CFF;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        #goToListButton {
+            margin-top: 20px;
+        }
+    </style>
+
+
+    <!-- 재고 및 상품 정보 테이블 -->
+    <table>
+        <thead>
+        <tr>
+            <th>재고ID</th>
+            <th>재고수량</th>
+            <th>창고구역ID</th>
+            <th>상품ID</th>
+            <th>상품명</th>
+            <th>판매상태</th>
+            <th>원가</th>
+            <th>판매가</th>
+            <th>수량</th>
+            <th>브랜드</th>
+            <th>사업자명</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${inventoryList}">
+            <td th:text="${item.id}">"</td>
+            <td th:text="${item.quantity}"></td>
+            <td th:text="${item.whSectionId}"></td>
+            <td th:text="${item.productId}"></td>
+            <td th:text="${item.productName}"></td>
+            <td th:text="${item.productStatus}"></td>
+            <td th:text="${item.cost}"></td>
+            <td th:text="${item.price}"></td>
+            <td th:text="${item.quantities}"></td>
+            <td th:text="${item.brandName}"></td>
+            <td th:text="${item.ownerNAME}"></td>
+
+
+        </tbody>
+    </table>
+    <button id="goToListButton">목록으로 돌아가기</button>
+    <script>
+        const getInventoryByWarehouseForm = document.getElementById('getInventoryByWarehouseForm');
+        document.addEventListener('DOMContentLoaded',function () {
+            const goToListButton = document.getElementById('goToListButton');
+            goToListButton.addEventListener('click', function (event) {
+                // 기본 동작(페이지 이동)을 방지합니다.
+                event.preventDefault();
+
+                window.location.href = "/inventory/list";
+            });
+        });
+        getInventoryByWarehouseForm.addEventListener('click', function(event) {
+            console.log("버튼클릭?");
+            event.preventDefault();
+            const warehouseId = document.getElementById('warehouseId').value;
+            fetchInventoryAndProductsByWarehouse(warehouseId);
+
+
+        });
+
+
+
+        function fetchInventoryAndProductsByWarehouse(warehouseId) {
+            fetch(`/invetory/list/${warehouseId}`)
+                .then(response => response.json())
+                .then(data => displayInventoryAndProducts(data))
+                .catch(error => console.error('Error:', error));
+
+            console.log("작동하니?");
+        }
+
+        function displayInventoryAndProducts(inventoryData) {
+            const inventoryList = document.getElementById('inventoryList');
+            inventoryList.innerHTML = '';
+
+            inventoryData.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                <td th:text="${item.id}">"</td>
+        <td th:text="${item.quantity}"></td>
+        <td th:text="${item.whSectionId}"></td>
+        <td th:text="${item.productId}"></td>
+        <td th:text="${item.productName}"></td>
+        <td th:text="${item.productStatus}"></td>
+        <td th:text="${item.cost}"></td>
+        <td th:text="${item.price}"></td>
+        <td th:text="${item.quantities}"></td>
+        <td th:text="${item.brandName}"></td>
+        <td th:text="${item.ownerNAME}"></td>
+            `;
+                inventoryList.appendChild(row);
+            });
+        }
+    </script>
+
+
+    <!-- Footer Start -->
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-light rounded-top p-4">
+            <div class="row">
+                <div class="col-12 col-sm-6 text-center text-sm-start">
+                    &copy; <a href="#">2Commerce-Traning-Project by.2Commerce</a>, All Right Reserved.
+                </div>
+                <div class="col-12 col-sm-6 text-center text-sm-end">
+                    <!--/*** This template is free as long as you keep the footer author's credit link/attribution link/backlink. If you'd like to use the template without the footer author's credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                    Designed By <a href="https://htmlcodex.com">2Commerce</a>
+                    </br>
+                    Distributed By <a class="border-bottom" href="https://themewagon.com"
+                                      target="_blank">2Commerce</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Footer End -->
+
+</div>
+</body>

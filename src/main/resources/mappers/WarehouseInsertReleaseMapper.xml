@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssg.wsmt.inventory.mapper.WarehouseInsertReleaseMapper">
+
+    <sql id="search">
+        <where>
+            <if test="type != null and type.length() > 0">
+                <choose>
+                    <when test="type == 'INSERT'">
+                        type LIKE 'INSERT%'
+                    </when>
+                    <when test="type == 'RELEASE'">
+                        type LIKE 'RELEASE%'
+                    </when>
+                </choose>
+            </if>
+
+            <if test="keyword != null and keyword.length() > 0">
+                productName like concat('%', #{keyword}, '%')
+            </if>
+
+            <if test="from != null and to != null">
+                createdAt BETWEEN #{from} AND #{to}
+            </if>
+        </where>
+    </sql>
+    <select id="getTotalPrice" resultType="Long">
+        SELECT SUM(TOTAL_PRICE)
+        FROM warehouse_insert_release
+        WHERE DATE(CREATED_AT) = '2024-03-27'
+          AND TYPE = 'RELEASE_CONFIRM';
+    </select>
+    <select id="getTotalCost" resultType="Long">
+        SELECT SUM(TOTAL_PRICE)
+        FROM warehouse_insert_release
+        WHERE DATE(CREATED_AT) = '2024-03-27'
+          AND TYPE = 'INSERT_CONFIRM';
+    </select>
+    <select id="getTotalRevenue" resultType="Long">
+        SELECT
+            (SELECT SUM(TOTAL_PRICE)
+             FROM warehouse_insert_release
+             WHERE DATE(CREATED_AT) = '2024-03-27'
+                AND TYPE = 'RELEASE_CONFIRM') -
+                (SELECT SUM(TOTAL_PRICE)
+        FROM warehouse_insert_release
+        WHERE DATE(CREATED_AT) = '2024-03-27'
+          AND TYPE = 'INSERT_CONFIRM');
+
+
+    </select>
+    <select id="findAllInsertReleaseList" resultType="com.ssg.wsmt.inventory.dto.WarehouseInsertReleaseDTO">
+        SELECT
+        T.id as id,
+        T.quantity as quantity,
+        T.type as type,
+        T.totalPrice as totalPrice,
+        T.createdAt as createdAt,
+        T.fkId as fkId,
+        T.productsId as productsId,
+        T.productName as productName
+        FROM
+        (
+        SELECT W.ID as id,
+        W.QUANTITY as quantity,
+        W.CREATED_AT as createdAt,
+        W.TYPE as type,
+        W.FK_ID as fkId,
+        W.TOTAL_PRICE as totalPrice,
+        W.PRODUCTS_ID as productsId,
+        P.NAME as productName
+        FROM WAREHOUSE_INSERT_RELEASE AS W
+        JOIN PRODUCTS AS P
+        ON W.PRODUCTS_ID = P.ID
+        WHERE W.TYPE LIKE 'INSERT%'
+        AND W.FK_ID IN (SELECT MGT.ID FROM MGT_ORDERS AS MGT WHERE MGT.WAREHOUSE_ID = #{warehouseId})
+
+        UNION
+
+        SELECT W.ID as id,
+        W.QUANTITY as quantity,
+        W.CREATED_AT as createdAt,
+        W.TYPE as type,
+        W.FK_ID as fkId,
+        W.TOTAL_PRICE as totalPrice,
+        W.PRODUCTS_ID as productsId,
+        P.NAME as productName
+        FROM WAREHOUSE_INSERT_RELEASE AS W
+        JOIN PRODUCTS AS P
+        ON W.PRODUCTS_ID = P.ID
+        WHERE W.TYPE LIKE 'RELEASE%'
+        AND W.FK_ID IN (SELECT SO.ID
+        FROM SM_ORDERS AS SO
+        WHERE SO.SHOPPING_MALL_ID = (SELECT SM.ID
+        FROM SHOPPING_MALL AS SM
+        JOIN SELLPICK.WAREHOUSE_SHOPPING_MALL_RELATIONSHIP WSMR
+        ON SM.ID = WSMR.SM_ID
+        WHERE WSMR.WAREHOUSE_ID = #{warehouseId}))
+
+        ) AS T
+        <include refid="search"/>
+        ORDER BY T.createdAt DESC
+        LIMIT #{skip}, #{size}
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(T.ID)
+        FROM
+        (
+        SELECT W.ID as id,
+        W.QUANTITY as quantity,
+        W.CREATED_AT as createdAt,
+        W.TYPE as type,
+        W.FK_ID as fkId,
+        W.TOTAL_PRICE as totalPrice,
+        W.PRODUCTS_ID as productsId,
+        P.NAME as productName
+        FROM WAREHOUSE_INSERT_RELEASE AS W
+        JOIN PRODUCTS AS P
+        ON W.PRODUCTS_ID = P.ID
+        WHERE W.TYPE LIKE 'INSERT%'
+        AND W.FK_ID IN (SELECT MGT.ID FROM MGT_ORDERS AS MGT WHERE MGT.WAREHOUSE_ID = #{warehouseId})
+
+        UNION
+
+        SELECT W.ID as id,
+        W.QUANTITY as quantity,
+        W.CREATED_AT as createdAt,
+        W.TYPE as type,
+        W.FK_ID as fkId,
+        W.TOTAL_PRICE as totalPrice,
+        W.PRODUCTS_ID as productsId,
+        P.NAME as productName
+        FROM WAREHOUSE_INSERT_RELEASE AS W
+        JOIN PRODUCTS AS P
+        ON W.PRODUCTS_ID = P.ID
+        WHERE W.TYPE LIKE 'RELEASE%'
+        AND W.FK_ID IN (SELECT SO.ID
+        FROM SM_ORDERS AS SO
+        WHERE SO.SHOPPING_MALL_ID = (SELECT SM.ID
+        FROM SHOPPING_MALL AS SM
+        JOIN SELLPICK.WAREHOUSE_SHOPPING_MALL_RELATIONSHIP WSMR
+        ON SM.ID = WSMR.SM_ID
+        WHERE WSMR.WAREHOUSE_ID = #{warehouseId}))
+
+        ) AS T
+        <include refid="search"/>
+    </select>
+
+    <select id="getAllSales" resultType="com.ssg.wsmt.inventory.dto.InvenInOutChartDTO">
+        SELECT YEAR(CREATED_AT)                                                 AS Year,
+               MONTH(CREATED_AT)                                                AS Month,
+               SUM(CASE WHEN TYPE LIKE 'INSERT%' THEN TOTAL_PRICE ELSE 0 END)  AS Insert_Confirm_Quantity,
+               SUM(CASE WHEN TYPE LIKE 'RELEASE%' THEN TOTAL_PRICE ELSE 0 END) AS Release_Confirm_Quantity
+        FROM WAREHOUSE_INSERT_RELEASE
+        WHERE TYPE LIKE '%CONFIRM'
+        GROUP BY YEAR(CREATED_AT), MONTH(CREATED_AT)
+        ORDER BY Year ASC , Month ASC
+        LIMIT 12;
+    </select>
+
+    <select id="recentInsertReleaseList" resultType="com.ssg.wsmt.inventory.dto.WarehouseInsertReleaseDTO">
+        SELECT
+            W.ID as id,
+            W.QUANTITY as quantity,
+            W.CREATED_AT as createdAt,
+            CASE
+                WHEN W.TYPE LIKE 'INSERT%' THEN '입고'
+                ELSE '출고'
+                END as type,
+            W.FK_ID as fkId,
+            W.TOTAL_PRICE as totalPrice,
+            W.PRODUCTS_ID as productsId,
+            P.NAME as productName
+        FROM WAREHOUSE_INSERT_RELEASE AS W
+                 JOIN PRODUCTS AS P
+                      ON W.PRODUCTS_ID = P.ID
+        WHERE W.TYPE LIKE '%REQUEST'
+        ORDER BY W.CREATED_AT DESC
+        LIMIT 5
+    </select>
+</mapper>
