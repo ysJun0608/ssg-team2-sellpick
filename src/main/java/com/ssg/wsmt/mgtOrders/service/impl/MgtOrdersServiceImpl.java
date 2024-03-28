@@ -1,5 +1,6 @@
 package com.ssg.wsmt.mgtOrders.service.impl;
 
+import com.ssg.wsmt.inventory.domain.WarehouseVO;
 import com.ssg.wsmt.inventory.dto.WarehouseDTO;
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
 import com.ssg.wsmt.mgtOrders.DTO.PageRequestDTO;
@@ -296,6 +297,11 @@ public class MgtOrdersServiceImpl implements MgtOrdersService {
                 .warehouseId(mgtOrders.getWarehouseId())
                 .build();
         return mgtOrdersDTO;
+    }
+
+    @Override
+    public List<WarehouseVO> selectWarehouseList() {
+        return mgtOrdersMapper.selectWarehouseList();
     }
 
 

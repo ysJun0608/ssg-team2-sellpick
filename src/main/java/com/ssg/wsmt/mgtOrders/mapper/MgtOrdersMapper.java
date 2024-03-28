@@ -1,5 +1,6 @@
 package com.ssg.wsmt.mgtOrders.mapper;
 
+import com.ssg.wsmt.inventory.domain.WarehouseVO;
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
 import com.ssg.wsmt.mgtOrders.DTO.PageRequestDTO;
 import com.ssg.wsmt.mgtOrders.domain.MgtOrders;
@@ -50,4 +51,6 @@ public interface MgtOrdersMapper {
     int getTotalCount(PageRequestDTO pageRequestDTO);
 
     MgtOrders getOne(Long id);
+
+    List<WarehouseVO> selectWarehouseList(); // warehouse 테이블의 모든 데이터 조회
 }

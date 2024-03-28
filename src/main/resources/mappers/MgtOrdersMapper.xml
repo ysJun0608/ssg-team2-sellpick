@@ -112,6 +112,9 @@
             <if test="warehouseId != null">
                 AND warehouse_id = #{warehouseId}
             </if>
+            <if test="status != null">
+                AND STATUS = #{status}
+            </if>
         </where>
         <if test="startDate == null and endDate == null and (purchaser == null or purchaser == '') and warehouseId == null">
             ORDER BY created_at
@@ -136,6 +139,10 @@
                 AND STATUS = #{status}
             </if>
         </where>
+    </select>
+
+    <select id="selectWarehouseList" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
+        SELECT * FROM WAREHOUSE
     </select>
 
 </mapper>

@@ -1,7 +1,9 @@
 package com.ssg.wsmt.mgtOrders.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssg.wsmt.inventory.domain.WarehouseVO;
 import com.ssg.wsmt.inventory.dto.WarehouseDTO;
+import com.ssg.wsmt.inventory.mapper.WarehouseMapper;
 import com.ssg.wsmt.mgtOrders.DTO.MgtOrdersDTO;
 import com.ssg.wsmt.mgtOrders.DTO.PageRequestDTO;
 import com.ssg.wsmt.mgtOrders.DTO.PageResponseDTO;
@@ -37,9 +39,12 @@ public class MgtOrdersController {
     @Autowired
     private MgtOrdersService mgtOrdersService;
 
+
     @GetMapping("/MgtOrderCreate")
     public void showCreate(Model model) {
         log.info("CreatePage....");
+        List<WarehouseVO> warehouseList = mgtOrdersService.selectWarehouseList(); // warehouse 데이터 조회
+        model.addAttribute("warehouseList", warehouseList); // 모델에 추가
     }
 
     @PostMapping("/MgtOrderCreate")

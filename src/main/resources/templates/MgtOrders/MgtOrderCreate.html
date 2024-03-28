@@ -236,7 +236,10 @@
                             </div>
                             <div class="col-md-20">
                                 <label for="warehouse">창고ID</label>
-                                <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId" class="form-control">
+                                <select id="warehouse" name="warehouseId" class="form-control">
+                                    <option value="">선택</option>
+                                    <option th:each="warehouse : ${warehouseList}" th:value="${warehouse.id}" th:text="${warehouse.id}"></option>
+                                </select>
                             </div>
                         </div>
                         <div class="button-row">
