@@ -97,38 +97,33 @@
                     </table>
                 </div>
 
+                <!-- 페이지네이션 -->
+                <div class="float-end">
+                    <ul class="pagination">
+                        <li class="page-item" th:if="${responseDTO.prev}">
+                            <a class="page-link" th:href="@{/settlement/list(page=${num})}"
+                               th:data-num="${responseDTO.start - 1}">Previous</a>
+                        </li>
+
+                        <th:block th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
+                            <li class="page-item" th:class="${responseDTO.page == num ? 'active' : ''}">
+                                <a class="page-link" th:href="@{/settlement/list(page=${num})}" th:data-num="${num}"
+                                   th:text="${num}"></a>
+                            </li>
+                        </th:block>
+
+                        <li class="page-item" th:if="${responseDTO.next}">
+                            <a class="page-link" th:href="@{/settlement/list(page=${num})}"
+                               th:data-num="${responseDTO.end + 1}">Next</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
-</div>
-</div>
-<!-- 페이지네이션 -->
-<div class="float-end">
-    <ul class="pagination">
-        <li class="page-item" th:if="${responseDTO.prev}">
-            <a class="page-link" th:href="@{/settlement/list(page=${num})}"
-               th:data-num="${responseDTO.start - 1}">Previous</a>
-        </li>
-
-        <th:block th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}">
-            <li class="page-item" th:class="${responseDTO.page == num ? 'active' : ''}">
-                <a class="page-link" th:href="@{/settlement/list(page=${num})}" th:data-num="${num}"
-                   th:text="${num}"></a>
-            </li>
-        </th:block>
-
-        <li class="page-item" th:if="${responseDTO.next}">
-            <a class="page-link" th:href="@{/settlement/list(page=${num})}"
-               th:data-num="${responseDTO.end + 1}">Next</a>
-        </li>
-    </ul>
-</div>
 <!-- Back to Top -->
 <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
-</div>
-</div>
 </body>
 <script th:inline="javascript">
 
