@@ -10,10 +10,10 @@
             <if test="type != null and type.length() > 0">
                 <choose>
                     <when test="type == 'INSERT'">
-                        type LIKE 'INSERT%'
+                        type LIKE '%INSERT%'
                     </when>
                     <when test="type == 'RELEASE'">
-                        type LIKE 'RELEASE%'
+                        type LIKE '%RELEASE%'
                     </when>
                 </choose>
             </if>
@@ -40,41 +40,44 @@
         T.productName as productName
         FROM
         (
-        SELECT W.ID as id,
-        W.QUANTITY as quantity,
-        W.CREATED_AT as createdAt,
-        W.TYPE as type,
-        W.FK_ID as fkId,
-        W.TOTAL_PRICE as totalPrice,
-        W.PRODUCTS_ID as productsId,
-        P.NAME as productName
-        FROM WAREHOUSE_INSERT_RELEASE AS W
-        JOIN PRODUCTS AS P
-        ON W.PRODUCTS_ID = P.ID
-        WHERE W.TYPE LIKE 'INSERT%'
-        AND W.FK_ID IN (SELECT MGT.ID FROM MGT_ORDERS AS MGT WHERE MGT.WAREHOUSE_ID = #{warehouseId})
+            SELECT W.ID as id,
+            W.QUANTITY as quantity,
+            W.CREATED_AT as createdAt,
+            W.TYPE as type,
+            W.FK_ID as fkId,
+            W.TOTAL_PRICE as totalPrice,
+            W.PRODUCTS_ID as productsId,
+            P.NAME as productName
+            FROM WAREHOUSE_INSERT_RELEASE AS W
+            JOIN PRODUCTS AS P
+            ON W.PRODUCTS_ID = P.ID
+            WHERE W.TYPE LIKE 'INSERT%'
+            AND W.FK_ID IN (SELECT MGT.ID FROM MGT_ORDERS AS MGT WHERE MGT.WAREHOUSE_ID = #{warehouseId})
 
-        UNION
+            UNION
 
-        SELECT W.ID as id,
-        W.QUANTITY as quantity,
-        W.CREATED_AT as createdAt,
-        W.TYPE as type,
-        W.FK_ID as fkId,
-        W.TOTAL_PRICE as totalPrice,
-        W.PRODUCTS_ID as productsId,
-        P.NAME as productName
-        FROM WAREHOUSE_INSERT_RELEASE AS W
-        JOIN PRODUCTS AS P
-        ON W.PRODUCTS_ID = P.ID
-        WHERE W.TYPE LIKE 'RELEASE%'
-        AND W.FK_ID IN (SELECT SO.ID
-        FROM SM_ORDERS AS SO
-        WHERE SO.SHOPPING_MALL_ID = (SELECT SM.ID
-        FROM SHOPPING_MALL AS SM
-        JOIN SELLPICK.WAREHOUSE_SHOPPING_MALL_RELATIONSHIP WSMR
-        ON SM.ID = WSMR.SM_ID
-        WHERE WSMR.WAREHOUSE_ID = #{warehouseId}))
+            SELECT W.ID as id,
+            W.QUANTITY as quantity,
+            W.CREATED_AT as createdAt,
+            W.TYPE as type,
+            W.FK_ID as fkId,
+            W.TOTAL_PRICE as totalPrice,
+            W.PRODUCTS_ID as productsId,
+            P.NAME as productName
+            FROM WAREHOUSE_INSERT_RELEASE AS W
+            JOIN PRODUCTS AS P
+            ON W.PRODUCTS_ID = P.ID
+            WHERE W.TYPE LIKE 'RELEASE%'
+            AND W.FK_ID IN (
+                SELECT SO.ID
+                FROM SM_ORDERS AS SO
+                WHERE SO.SHOPPING_MALL_ID = (
+                    SELECT SM.ID
+                    FROM SHOPPING_MALL AS SM
+                        JOIN SELLPICK.WAREHOUSE_SHOPPING_MALL_RELATIONSHIP AS WSMR
+                            ON SM.ID = WSMR.SM_ID
+                    WHERE WSMR.WAREHOUSE_ID = #{warehouseId}
+                    LIMIT 1))
 
         ) AS T
         <include refid="search"/>
@@ -114,13 +117,16 @@
         JOIN PRODUCTS AS P
         ON W.PRODUCTS_ID = P.ID
         WHERE W.TYPE LIKE 'RELEASE%'
-        AND W.FK_ID IN (SELECT SO.ID
+        AND W.FK_ID IN (
+        SELECT SO.ID
         FROM SM_ORDERS AS SO
-        WHERE SO.SHOPPING_MALL_ID = (SELECT SM.ID
+        WHERE SO.SHOPPING_MALL_ID = (
+        SELECT SM.ID
         FROM SHOPPING_MALL AS SM
-        JOIN SELLPICK.WAREHOUSE_SHOPPING_MALL_RELATIONSHIP WSMR
+        JOIN SELLPICK.WAREHOUSE_SHOPPING_MALL_RELATIONSHIP AS WSMR
         ON SM.ID = WSMR.SM_ID
-        WHERE WSMR.WAREHOUSE_ID = #{warehouseId}))
+        WHERE WSMR.WAREHOUSE_ID = #{warehouseId}
+        LIMIT 1))
 
         ) AS T
         <include refid="search"/>
