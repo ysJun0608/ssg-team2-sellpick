@@ -1,0 +1,16 @@
+<div th:fragment="login-info-side">
+    <div class="nav-item dropdown" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+        <img class="rounded-circle me-lg-2" src="/images/TeamLogo.png" alt=""
+             style="width: 40px; height: 40px;">
+        <span class="d-none d-lg-inline-flex" th:if="${#authorization.expression('isAnonymous()')}" th:text="'로그인'">로그인</span>
+        <span class="d-none d-lg-inline-flex" th:unless="${#authorization.expression('isAnonymous()')}" th:text="${id} + '님!'"></span>
+    </a>
+    <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+        <a href="#" class="dropdown-item">My Profile</a>
+        <a href="#" class="dropdown-item">Settings</a>
+        <a href="/login/logout" class="dropdown-item" sec:authorize="isAuthenticated()">Log Out</a>
+        <a href="/login/login" class="dropdown-item" sec:authorize="isAnonymous()">Log in</a>
+    </div>
+</div>
+</div>

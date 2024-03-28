@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout1}">
+
+<head>
+    <title>Home2</title>
+    <link href="/assets/css/styleMgtOrders.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <div class="col-sm-12" style="padding-right: 0">
+        <div class="bg-light rounded h-100 p-4">
+            <h6 class="mb-4">발주조회</h6>
+            <form action="/MgtOrders/MgtOrderSearch" method="get" th:object="${pageRequestDTO}">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="order-date-start">발주일자</label>
+                        <div class="input-group">
+                            <input type="date" id="order-date-start" name="startDate" th:field="*{startDate}" class="form-control">
+                            <span class="input-group-text">~</span>
+                            <input type="date" id="order-date-end" name="endDate" th:field="*{endDate}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="supplier">매입거래처</label>
+                        <input type="text" id="supplier" placeholder="Company" name="purchaser" th:field="*{purchaser}" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="warehouse">창고ID</label>
+                        <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId" th:field="*{warehouseId}" class="form-control">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="status">상태</label>
+                        <select id="status" name="status" th:field="*{status}" class="form-control">
+                            <option value="">전체</option>
+                            <option value="READY">READY</option>
+                            <option value="DONE">DONE</option>
+                            <option value="DELIVERED">DELIVERED</option>
+                            <option value="CANCEL">CANCEL</option>
+                            <option value="RETURN">RETURN</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="hidden" name="page" th:value="*{page}">
+                <input type="hidden" name="size" th:value="*{size}">
+                <div class="button-row">
+                    <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th scope="col" style="background-color: #acd1ea;">Id</th>
+            <th scope="col" style="background-color: #acd1ea;">Purchaser</th>
+            <th scope="col" style="background-color: #acd1ea;">status</th>
+            <th scope="col" style="background-color: #acd1ea;">createdAt</th>
+            <th scope="col" style="background-color: #acd1ea;">warehouseId</th>
+        </tr>
+        </thead>
+        <tbody id="mgtOrders-data">
+        <tr th:each="m : ${responseDTO.dtoList}">
+            <td th:text="${m.id}"></td>
+            <td th:text="${m.purchaser}"></td>
+            <td th:text="${m.status}"></td>
+            <td th:text="${m.createdAt}"></td>
+            <td th:text="${m.warehouseId}"></td>
+        </tr>
+    </table>
+
+    <div class="bg-light rounded h-100 p-4" style="padding-right: 0;">
+        <div class="btn-toolbar" role="toolbar" style="justify-content: right">
+            <div class="btn-group me-2" role="group" aria-label="First group">
+                <a th:href="@{/MgtOrders/MgtOrderSearch(page=${responseDTO.page - 1}, size=${pageRequestDTO.size}, startDate=${pageRequestDTO.startDate}, endDate=${pageRequestDTO.endDate}, purchaser=${pageRequestDTO.purchaser}, warehouseId=${pageRequestDTO.warehouseId}, status=${pageRequestDTO.status})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.prev} ? '' : 'disabled')"
+                   th:text="'이전'"></a>
+
+                <th:block th:with="start=${responseDTO.start}, end=${responseDTO.end}">
+                    <a th:each="num : ${#numbers.sequence(start, end)}"
+                       th:href="@{/MgtOrders/MgtOrderSearch(page=${num}, size=${pageRequestDTO.size}, startDate=${pageRequestDTO.startDate}, endDate=${pageRequestDTO.endDate}, purchaser=${pageRequestDTO.purchaser}, warehouseId=${pageRequestDTO.warehouseId}, status=${pageRequestDTO.status})}"
+                       th:class="${responseDTO.page == num} ? 'btn btn-secondary' : 'btn btn-primary'"
+                       th:text="${num}"></a>
+                </th:block>
+
+                <a th:href="@{/MgtOrders/MgtOrderSearch(page=${responseDTO.page + 1}, size=${pageRequestDTO.size}, startDate=${pageRequestDTO.startDate}, endDate=${pageRequestDTO.endDate}, purchaser=${pageRequestDTO.purchaser}, warehouseId=${pageRequestDTO.warehouseId}, status=${pageRequestDTO.status})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.next} ? '' : 'disabled')"
+                   th:text="'다음'"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

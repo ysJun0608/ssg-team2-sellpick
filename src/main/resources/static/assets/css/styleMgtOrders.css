@@ -1,0 +1,340 @@
+/* GOOGLE FONTS */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+/* VARIABLES CSS */
+:root {
+    --nav--width: 92px;
+
+    /* Colores */
+    --first-color: #0c5df4;
+    --bg-color: #d4a1e3;
+    --sub-color: #b6cefc;
+    --white-color: #fff;
+
+    /* Fuente y tipografia */
+    --body-font: 'Poppins', sans-serif;
+    --normal-font-size: 1rem;
+    --small-font-size: .875rem;
+
+    /* z index */
+    --z-fixed: 100;
+}
+
+/* BASE */
+*, ::before, ::after {
+    box-sizing: border-box;
+}
+
+
+h1 {
+    margin: 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* l NAV */
+.l-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--nav--width);
+    height: 100vh;
+    background-color: var(--bg-color);
+    color: var(--white-color);
+    padding: 1.5rem 1.5rem 2rem;
+    transition: .5s;
+    z-index: var(--z-fixed);
+}
+
+/* NAV */
+.nav {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+}
+
+.nav__brand {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.nav__toggle {
+    font-size: 1.25rem;
+    padding: .75rem;
+    cursor: pointer;
+}
+
+.nav__logo {
+    color: var(--white-color);
+    font-weight: 600;
+}
+
+.nav__link {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    align-items: center;
+    column-gap: .75rem;
+    padding: .75rem;
+    color: var(--white-color);
+    border-radius: .5rem;
+    margin-bottom: 1rem;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.nav__link:hover {
+    background-color: var(--first-color);
+}
+
+.nav__icon {
+    font-size: 1.25rem;
+}
+
+.nav_name {
+    font-size: var(--small-font-size);
+    margin-left: 10px;
+}
+
+/* Expander menu */
+.expander {
+    width: calc(var(--nav--width) + 9.25rem);
+}
+
+
+/* Active links menu */
+.active {
+    background-color: var(--first-color);
+}
+
+/* COLLAPSE */
+.collapse {
+    grid-template-columns: 20px max-content 1fr;
+}
+
+.collapse__link {
+    justify-self: flex-end;
+    transition: .5s;
+}
+
+.collapse__menu {
+    display: none;
+    padding: .75rem 2.25rem;
+}
+
+.collapse__sublink {
+    color: var(--sub-color);
+    font-size: var(--small-font-size);
+}
+
+.collapse__sublink:hover {
+    color: var(--white-color);
+}
+
+/* Show collapse */
+.showCollapse {
+    display: block;
+}
+
+/* Rotate icon */
+.rotate {
+    transform: rotate(180deg);
+    transition: .5s;
+}
+
+/* 하위메뉴 수직정렬 */
+.collapse__menu {
+    display: none; /* 기본적으로는 숨겨짐 */
+}
+
+.collapse__menu.show {
+    display: block; /* 마우스를 올렸을 때 보이도록 함 */
+}
+
+.collapse__sublink {
+    display: flex;
+    align-items: center;
+    padding: .5rem 0;
+}
+
+.section {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.top-section .row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 10px;
+}
+
+.top-section .element-one {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 10px;
+}
+
+.top-section .element-two {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 10px;
+}
+
+{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    margin-bottom: 10px;
+}
+
+.top-section div {
+    display: flex;
+    align-items: center;
+}
+.top-section label {
+    margin-right: 5px;
+}
+.top-section input[type="date"],
+.top-section input[type="text"],
+.top-section input[type="number"] {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+}
+/*.top-section button {*/
+/*    padding: 6px 12px;*/
+/*    margin: 4px 0;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 4px;*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*    cursor: pointer;*/
+/*}*/
+.button-row {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.button-row > div{
+    padding: 0px 20px;
+}
+/* Style for disabled button */
+.button-row button:disabled {
+    background-color: #ced4da; /* Your desired disabled background color */
+    color: #6c757d; /* Disabled text color */
+    cursor: not-allowed; /* Optional: Change cursor to indicate button is disabled */
+}
+
+.bottom-section {
+    text-align: center;
+}
+.bottom-section .search-bar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+.bottom-section input[type="text"] {
+    padding: 6px 12px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex: 1;
+}
+/*.bottom-section button {*/
+/*    padding: 6px 12px;*/
+/*    margin: 4px 0 4px 10px;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 4px;*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*    cursor: pointer;*/
+/*}*/
+table {
+    border-collapse: collapse;
+    width: 100%;
+    border: 1px solid #ddd;
+    margin: 0 auto;
+}
+th, td {
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+th {
+    background-color: #f2f2f2;
+}
+
+/* Style for readonly input */
+input[type="number"][readonly] {
+    background-color: #f2f2f2; /* Light gray background */
+    color: #555; /* Dark gray text color */
+    cursor: not-allowed; /* Show disabled cursor */
+}
+input[type="text"][readonly] {
+    background-color: #f2f2f2; /* Light gray background */
+    color: #555; /* Dark gray text color */
+    cursor: not-allowed; /* Show disabled cursor */
+}
+
+input[type="text"], input[type="number"], input[type="date"] {
+    text-align: center;
+}
+
+select option {
+    text-align: center;
+}
+
+.input-fields {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.input-fields > div {
+    display: flex;
+    align-items: center;
+}
+
+.input-fields label {
+    margin-right: 10px;
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input-field label {
+    margin-bottom: 5px;
+}
+
+.input-fieldTwo {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-gap: 10px;
+    align-items: center;
+    justify-content: center;
+    /*margin-bottom: 10px;*/
+}

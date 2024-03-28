@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout1}">
+
+<head>
+    <title>Home2</title>
+    <link href="/assets/css/styleMgtOrders.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#saveBtn').click(function () {
+                var selectedOrders = [];
+                $('#table-body tr').each(function () {
+                    if ($(this).find('input[type="checkbox"]').prop('checked')) {
+                        var orderId = $(this).find('.order-id').text();
+                        selectedOrders.push(orderId);
+                    }
+                });
+
+                var requestData = { "id": selectedOrders }; // Wrapping the array in an object with key "id"
+
+                $.ajax({
+                    method: 'POST',
+                    url: '/MgtOrders/MgtOrderConfirm',
+                    contentType: 'application/json',
+                    data: JSON.stringify(requestData), // Sending the wrapped object as JSON
+                    success: function (response) {
+                        console.log('Success:', response);
+                        // Perform further actions here if needed
+                        // For example, redirect to another page
+                        alert('선택한 주문이 확정되었습니다.');
+                        window.location.href = '/MgtOrders/MgtOrderConfirm';
+                    },
+                    error: function (error) {
+                        alert('선택된 발주 주문이 없습니다.');
+                    }
+                });
+            });
+        });
+
+
+        $(document).ready(function() {
+            // Function to handle checkbox change event
+            $(document).ready(function() {
+                // Function to handle checkbox change event
+                $('#topCheckBox').on('change', function() {
+                    var isChecked = $(this).prop('checked');
+                    $('#table-body input[type="checkbox"]').prop('checked', isChecked);
+                });
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+<div layout:fragment="content">
+
+    <div class="row">
+        <div class="col-sm-12" style="padding-right: 0">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">발주확정</h6>
+                <form action="/MgtOrders/MgtOrderConfirm" method="get" th:object="${pageRequestDTO}">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label for="order-date-start">발주일자</label>
+                            <div class="input-group">
+                                <input type="date" id="order-date-start" name="startDate" th:field="*{startDate}" class="form-control">
+                                <span class="input-group-text">~</span>
+                                <input type="date" id="order-date-end" name="endDate" th:field="*{endDate}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="supplier">매입거래처</label>
+                            <input type="text" id="supplier" placeholder="Company" name="purchaser" th:field="*{purchaser}" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="warehouse">창고ID</label>
+                            <input type="text" id="warehouse" placeholder="Warehouse 1" name="warehouseId" th:field="*{warehouseId}" class="form-control">
+                        </div>
+                    </div>
+                    <div class="button-row">
+                        <button type="submit" class="btn btn-primary" id="searchBtn">Search</button>
+                    </div>
+                </form>
+                <form id="orderConfirm">
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" id="topCheckBox">
+                            <th scope="col" style="background-color: #acd1ea;">Id</th>
+                            <th scope="col" style="background-color: #acd1ea;">Purchaser</th>
+                            <th scope="col" style="background-color: #acd1ea;">status</th>
+                            <th scope="col" style="background-color: #acd1ea;">createdAt</th>
+                            <th scope="col" style="background-color: #acd1ea;">warehouseId</th>
+                        </tr>
+                        </thead>
+                        <tbody id="table-body">
+                        <tr th:each="m : ${responseDTO.dtoList}">
+                            <td><input type="checkbox"></td>
+                            <td class="order-id" th:text="${m.id}"></td>
+                            <td th:text="${m.purchaser}"></td>
+                            <td th:text="${m.status}"></td>
+                            <td th:text="${m.createdAt}"></td>
+                            <td th:text="${m.warehouseId}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div class="button-row">
+                        <div>
+                            <input type="button" class="btn btn-primary" id="saveBtn" value="Save">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-light rounded h-100 p-4" style="padding-right: 0;">
+        <div class="btn-toolbar" role="toolbar" style="justify-content: right">
+            <div class="btn-group me-2" role="group" aria-label="First group">
+                <a th:href="@{/MgtOrders/MgtOrderConfirm(page=${responseDTO.page - 1}, size=${pageRequestDTO.size}, startDate=${pageRequestDTO.startDate}, endDate=${pageRequestDTO.endDate}, purchaser=${pageRequestDTO.purchaser}, warehouseId=${pageRequestDTO.warehouseId})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.prev} ? '' : 'disabled')"
+                   th:text="'이전'"></a>
+
+                <th:block th:with="start=${responseDTO.start}, end=${responseDTO.end}">
+                    <a th:each="num : ${#numbers.sequence(start, end)}"
+                       th:href="@{/MgtOrders/MgtOrderConfirm(page=${num}, size=${pageRequestDTO.size}, startDate=${pageRequestDTO.startDate}, endDate=${pageRequestDTO.endDate}, purchaser=${pageRequestDTO.purchaser}, warehouseId=${pageRequestDTO.warehouseId})}"
+                       th:class="${responseDTO.page == num} ? 'btn btn-secondary' : 'btn btn-primary'"
+                       th:text="${num}"></a>
+                </th:block>
+
+                <a th:href="@{/MgtOrders/MgtOrderConfirm(page=${responseDTO.page + 1}, size=${pageRequestDTO.size}, startDate=${pageRequestDTO.startDate}, endDate=${pageRequestDTO.endDate}, purchaser=${pageRequestDTO.purchaser}, warehouseId=${pageRequestDTO.warehouseId})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.next} ? '' : 'disabled')"
+                   th:text="'다음'"></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

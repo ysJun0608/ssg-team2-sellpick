@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout2}">
+<head>
+    <title>Warehouse List</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            $.ajax({
+                url: '/inventory/warehouselist2',
+                type: 'GET',
+                dataType: 'json',
+                success: function(responseDTO) {
+                    var warehouseData = responseDTO.dtoList;
+                    var tableBody = $('#warehouse-data');
+
+                    // 기존 데이터 초기화
+                    tableBody.empty();
+
+                    // 새로운 데이터 추가
+                    $.each(warehouseData, function(index, warehouse) {
+                        var row = '<tr data-location="' + warehouse.location + '" onclick="showWarehouseMap(this)">' +
+                            '<td>' + warehouse.type + '</td>' +
+                            '<td>' + warehouse.id + '</td>' +
+                            '<td>' + warehouse.deliveryCompanyName + '</td>' +
+                            '<td>' + warehouse.location + '</td>' +
+                            '<td style="display: none;">' + warehouse.sectionType + '</td>' +
+                            '</tr>';
+                        tableBody.append(row);
+                    });
+                },
+                error: function() {
+                    alert('데이터를 가져오는 중 오류가 발생했습니다.');
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <!-- Navbar End -->
+    <div class="col-sm-12">
+        <form id="searchForm" class="bg-light rounded h-100 p-4" action="/inventory/warehouselist" method="get">
+            <input type="hidden" name="size" th:value="${pageRequestDTO.size}">
+            <select class="form-select" name="type">
+                <option selected>-카테고리-</option>
+                <option value="id">-창고번호-</option>
+                <option value="location">-주소-</option>
+                <option value="sectiontype" >-창고대분류-</option>
+                <option value="deliveryCompanyName">-택배사-</option>
+            </select>
+            <div class="form-group">
+                <input class="form-control border-0" type="search" placeholder="검색"
+                       name="keyword" th:value="${pageRequestDTO.keyword}">
+            </div>
+            <div class="form-group">
+                <!-- 기타 입력 필드나 내용을 추가할 수 있습니다. -->
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">검색</button>
+            <!-- 리셋 및 쿼리 문자열 제거 버튼 -->
+            <button type="button" class="btn btn-primary m-2" onclick="resetFormAndQueryString()">지우기</button>
+        </form>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">창고조회(클릭하면상세지도와 정보가 나옵니다.)</h6>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="background-color: #acd1ea;">창고대분류</th>
+                        <th scope="col" style="background-color: #acd1ea;">창고번호</th>
+                        <th scope="col" style="background-color: #acd1ea;">택배사</th>
+                        <th scope="col" style="background-color: #acd1ea;">창고주소</th>
+                        <th scope="col" style="background-color: #acd1ea;display: none;">창고소분류(섹션)</th>
+                    </tr>
+                    </thead>
+                    <tbody id="warehouse-data">
+                    <tr th:each="w : ${responseDTO.dtoList}" th:data-location="${w.location}"
+                        onclick="showWarehouseMap(this)">
+                        <td th:text="${w.type}"></td>
+                        <td th:text="${w.id}"></td>
+                        <td th:text="${w.deliveryCompanyName}"></td>
+                        <td th:text="${w.location}"></td>
+                        <td th:text="${w.sectionType}" style="display: none;"></td>
+                        <!--                        <td th:text="${convertToKorean(w.sectionType)}"></td>-->
+                        <!--                        <td>-->
+                        <!--                            <span th:if="${w.sectionType == 'DRY'}">건조</span>-->
+                        <!--                            <span th:if="${w.sectionType == 'FROZEN'}">냉동</span>-->
+                        <!--                            <span th:if="${w.sectionType == 'REFRIGERATED'}">냉장</span>-->
+                        <!--                            <span th:if="${w.sectionType == 'PROCESSED'}">가공</span>-->
+                        <!--                            <span th:if="${w.sectionType != 'DRY' and w.sectionType != 'FROZEN' and w.sectionType != 'REFRIGERATED' and w.sectionType != 'PROCESSED'}" th:text="${w.sectionType}"></span>-->
+                        <!--                        </td>-->
+
+
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <br>
+        <div class="col-sm-12 col-xl-6" style="padding-right: 0;">
+
+            <div id="map">
+
+            </div>
+        </div>
+        <div class="col-sm-12 col-xl-6" style="padding-left: 0;">
+
+            <div class="bg-light rounded h-100 p-4" id="detail">
+                <h6 class="mb-4">상세페이지</h6>
+                <ul class="list-group">
+                    <!-- 상세 정보가 여기에 동적으로 추가됩니다 -->
+                </ul>
+                <button type="button" class="btn btn-primary" style="margin-top: 15px;">재고조회</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="bg-light rounded h-100 p-4" style="padding-right: 0;">
+        <div class="btn-toolbar" role="toolbar" style="justify-content: right">
+            <div class="btn-group me-2" role="group" aria-label="First group">
+                <a th:href="@{/inventory/warehouselist(page=${responseDTO.page - 1}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.prev} ? '' : 'disabled')"
+                   th:text="'이전'"></a>
+
+                <a th:href="@{/inventory/warehouselist(page=${num}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+                   th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}"
+                   th:class="${responseDTO.page == num} ? 'btn btn-secondary' : 'btn btn-primary'"
+                   th:text="${num}"></a>
+
+                <a th:href="@{/inventory/warehouselist(page=${responseDTO.page + 1}, size=${pageRequestDTO.size}, type=${pageRequestDTO.type}, keyword=${pageRequestDTO.keyword})}"
+                   th:class="'btn btn-primary ' + (${responseDTO.next} ? '' : 'disabled')"
+                   th:text="'다음'"></a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+</body>

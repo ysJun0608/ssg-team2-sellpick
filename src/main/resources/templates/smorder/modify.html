@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{layout/layout1}">
+
+<head>
+    <title>SMODERS MODIFY</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 80%; /* 전체 사이즈를 조정합니다 */
+            margin: 0 auto; /* 가운데 정렬 */
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .order-details {
+            margin: 20px 0;
+        }
+
+
+
+
+        .order-label {
+            display: block; /* 라벨을 블록 요소로 변경 */
+            margin-bottom: 5px; /* 하단 여백 추가 */
+        }
+
+        .order-input, .order-select {
+            width: 100%; /* 입력 필드 너비를 100%로 설정 */
+            padding: 10px;
+            margin-bottom: 20px; /* 입력 필드 간 여백 추가 */
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+        }
+
+        /*버튼 가운데 정렬 */
+        .order-button,
+        .delete-button {
+            display: inline-block; /* 인라인 블록 요소로 설정하여 가로로 배치합니다 */
+            margin-left: 500px;
+        }
+
+        .order-button, .delete-button {
+
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .order-button {
+            background-color: #87CEFA;
+            color: white;
+            margin-left: 120px; /* 버튼 간 여백 추가 */
+        }
+
+        .delete-button {
+            background-color: #87CEFA; /* 삭제 버튼 색상 변경 */
+            color: white;
+            margin-left: 10px; /* 버튼 간 여백 추가 */
+        }
+
+        .order-button:hover {
+            background-color: #1E90FF;
+        }
+
+        .delete-button:hover {
+            background-color: #1E90FF;
+        }
+
+
+        h2 {
+            color: #333;
+            text-align: center; /* 가운데 정렬 */
+            padding: 20px 0; /* 위아래로 여백 추가 */
+            border-bottom: 2px solid #ccc; /* 밑줄 추가 */
+            font-family: Arial, sans-serif;
+        }
+
+
+        /* 기존 스타일 유지 */
+
+        /* 버튼을 가운데로 정렬하기 위한 새로운 컨테이너 스타일 */
+        .button-container {
+            text-align: center; /* 버튼을 가운데 정렬합니다 */
+        }
+
+
+
+
+        .order-button, .delete-button {
+            /* 기존 버튼 스타일 */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            background-color: #87CEFA; /* 이 부분은 기존 색상을 유지하거나 변경할 수 있습니다 */
+            color: white;
+        }
+
+        /* 버튼 호버 스타일 */
+        .order-button:hover {
+            background-color: #1E90FF;
+        }
+
+        .delete-button:hover {
+            background-color: #1E90FF; /* 삭제 버튼에도 같은 호버 효과를 적용 */
+        }
+
+
+        .manual-button {
+            background-color: #87CEFA; /* 버튼 배경색 */
+            color: white; /* 글자색 */
+            border: none; /* 테두리 없애기 */
+            border-radius: 4px; /* 모서리 둥글게 */
+            padding: 3px 6px; /* 패딩 조정 */
+            cursor: pointer; /* 마우스 오버시 커서 변경 */
+            font-size: 12px; /* 글자 크기 조정 */
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <div class="container mt-5">
+        <!--main contents Start-->
+
+        <div class="container">
+            <h2 style="text-align: left;">주문 상세 조회   <button type="button" class="manual-button">매뉴얼</button></h2>
+
+            <form th:action="@{/smorder/modify}" th:method="post" class="order-details">
+                <div class="order-detail">
+                    <label class="order-label">주문번호:</label>
+                    <input type="text" class="order-input" th:name="id" th:value="${orders.id}" readonly style="background-color: #d3d3d3;" />
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">수량:</label>
+                    <input type="number" class="order-input" th:name="quantity" th:value="${orders.quantity}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">결제 금액:</label>
+                    <input type="text" class="order-input" th:name="paymentAmount" th:value="${orders.paymentAmount}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">주문 상태:</label>
+                    <select class="order-select" id="seller_send_status" name="seller_send_status">
+                        <option value="">선택하세요...</option>
+                        <option value="PREPARING" th:selected="${orders.seller_send_status == 'PREPARING'}">배송준비중</option>
+                        <option value="COMPLETE" th:selected="${orders.seller_send_status == 'COMPLETE'}">배송완료</option>
+                        <option value="CANCEL" th:selected="${orders.seller_send_status == 'CANCEL'}">주문취소</option>
+                    </select>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">주문일:</label>
+                                        <input type="text" class="order-input" th:name="createdAt" th:value="${orders.createdAt}" readonly style="background-color: #d3d3d3;"/>
+<!--                    <input type="text" class="order-input" id="createdAtAtDisplay" readonly style="background-color: #d3d3d3;" th:data-datetime="${orders.createdAt}" />-->
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">예상 배송일:</label>
+                                        <input type="text" class="order-input" th:name="expectedAt" th:value="${orders.expectedAt}" readonly style="background-color: #d3d3d3;"/>
+<!--                    <input type="text" class="order-input" id="expectedAtDisplay" readonly style="background-color: #d3d3d3;" th:data-datetime="${orders.expectedAt}" />-->
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">고객 ID:</label>
+                    <input type="text" class="order-input" th:name="customerId" th:value="${orders.customerId}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">쇼핑몰 ID:</label>
+                    <input type="text" class="order-input" th:name="shoppingMallId" th:value="${orders.shoppingMallId}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <label class="order-label">상품 ID:</label>
+                    <input type="text" class="order-input" th:name="productId" th:value="${orders.productId}" readonly style="background-color: #d3d3d3;"/>
+                </div>
+                <div class="order-detail">
+                    <div class="button-container">
+                        <button type="submit" class="order-button">수정</button>
+                        <button type="button" class="delete-button">삭제</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+
+        <!--main contents End-->
+
+
+
+
+
+        <!-- Footer Start -->
+        <div class="container-fluid pt-4 px-4">
+            <div class="bg-light rounded-top p-4">
+                <div class="row">
+                    <div class="col-12 col-sm-6 text-center text-sm-start">
+                        &copy; <a href="#">2Commerce-Traning-Project by.2Commerce</a>, All Right Reserved.
+                    </div>
+                    <div class="col-12 col-sm-6 text-center text-sm-end">
+                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                        Designed By <a href="https://htmlcodex.com">2Commerce</a>
+                        </br>
+                        Distributed By <a class="border-bottom" href="https://themewagon.com"
+                                          target="_blank">2Commerce</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+    </div>
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+</div>
+
+<script>
+    /* 주문상태 값이 없을때 submit 알림창 (검증)  */
+    $(document).ready(function () {
+        // 수정 버튼 클릭 시
+        $('.order-button').click(function (event) {
+            // 폼의 제출을 중지
+            event.preventDefault();
+
+            // 주문 상태를 선택하는 셀렉트 요소의 값을 가져옴
+            var orderStatus = $('#seller_send_status').val();
+
+            // 주문 상태가 선택되지 않았을 경우
+            if (orderStatus === '') {
+                // 알림 창을 띄움
+                alert('주문 상태 값은 필수 입력입니다.');
+            } else {
+                // 주문 상태가 선택되었을 경우 폼을 제출
+                $(this).closest('form').submit();
+            }
+        });
+    })
+    //주문일 형식 변경
+    $(document).ready(function() {
+        // 예상 배송일을 위한 JavaScript
+        var originalDateTime = $('#createdAtAtDisplay').data('datetime'); // Thymeleaf를 통해 설정된 값
+        var originalDate = new Date(originalDateTime); // 문자열을 Date 객체로 변환
+        var year = originalDate.getFullYear(); // 년도 가져오기
+        var month = originalDate.getMonth() + 1; // 월 가져오기 (+1을 해야 정확한 월이 됨)
+        var day = originalDate.getDate(); // 일 가져오기
+        var hour = originalDate.getHours(); // 시간 가져오기
+        var minute = originalDate.getMinutes(); // 분 가져오기
+
+        // 'YYYY년MM월DD일 HH시:mm분' 형식으로 변환
+        var formattedDate = year + '년 ' + month + '월 ' + day + '일  ' + hour + '시 ' + minute + '분';
+
+        // 변환된 날짜를 입력 필드에 설정
+        $('#createdAtAtDisplay').val(formattedDate);
+    });
+
+    //배송예정일 형식 변경
+    $(document).ready(function() {
+        // 예상 배송일을 위한 JavaScript
+        var originalDateTime = $('#expectedAtDisplay').data('datetime'); // Thymeleaf를 통해 설정된 값
+        var originalDate = new Date(originalDateTime); // 문자열을 Date 객체로 변환
+        var year = originalDate.getFullYear(); // 년도 가져오기
+        var month = originalDate.getMonth() + 1; // 월 가져오기 (+1을 해야 정확한 월이 됨)
+        var day = originalDate.getDate(); // 일 가져오기
+        var hour = originalDate.getHours(); // 시간 가져오기
+        var minute = originalDate.getMinutes(); // 분 가져오기
+
+        // 'YYYY년MM월DD일 HH시:mm분' 형식으로 변환
+        var formattedDate = year + '년 ' + month + '월 ' + day + '일  ' + hour + '시 ' + minute + '분';
+
+        // 변환된 날짜를 입력 필드에 설정
+        $('#expectedAtDisplay').val(formattedDate);
+    });
+
+</script>
+
+</body>

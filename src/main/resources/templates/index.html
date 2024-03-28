@@ -1,0 +1,136 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+
+<!--    &lt;!&ndash; CSS &ndash;&gt;-->
+<!--    <link rel="stylesheet" href="../assets/css/styles.css">-->
+
+<!--    <title>SideBar sub menus</title>-->
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">-->
+<!--    <style>-->
+<!--        /* 추가한 CSS */-->
+<!--        .login-btn {-->
+<!--            position: absolute;-->
+<!--            top: 15px;-->
+<!--            right: 200px;-->
+<!--            background-color: #007bff;-->
+<!--            color: #fff;-->
+<!--            padding: 8px 16px;-->
+<!--            border: none;-->
+<!--            border-radius: 4px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+<!--        .login-info{-->
+<!--            position: absolute;-->
+<!--            top: 5px;-->
+<!--            right: calc(200px + 100px);-->
+
+<!--        }-->
+
+<!--    </style>-->
+<!--</head>-->
+<!--<body id="body-pd">-->
+<!--<div class="l-navbar" id="navbar">-->
+<!--    <nav class="nav">-->
+<!--        <div>-->
+<!--            <div class="nav__brand">-->
+<!--                <ion-icon name="menu-outline" class="nav__toggle" id="nav-toggle"></ion-icon>-->
+<!--                <a href="#" class="nav__logo"><img src="/images/TeamLogo.png" style="width: 100px; height: 80px;">-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            <div class="nav__list">-->
+<!--                <a href="#" class="nav__link">-->
+<!--                    <ion-icon name="home-outline" class="nav__icon"></ion-icon>-->
+<!--                    <span class="nav_name">창고관리</span>-->
+<!--                </a>-->
+
+<!--                <a href="#" class="nav__link">-->
+<!--                    <i class="bi bi-boxes"></i>-->
+<!--                    <span class="nav_name">배송관리</span>-->
+<!--                </a>-->
+<!--                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">-->
+<!--                    <i class="bi bi-box-arrow-down"></i>-->
+<!--                    <span class="nav_name">출고관리</span>-->
+<!--                </a>-->
+<!--                <div class="collapse__menu">-->
+<!--                    <a href="#" class="collapse__sublink">출고 신청</a>-->
+<!--                    <a href="#" class="collapse__sublink">배송 준비</a>-->
+<!--                    <a href="#" class="collapse__sublink">배송 완료</a>-->
+<!--                </div>-->
+
+<!--                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">-->
+<!--                    <i class="bi bi-box-arrow-in-down"></i>-->
+<!--                    <span class="nav_name">입고관리</span>-->
+<!--                </a>-->
+<!--                <div class="collapse__menu">-->
+<!--                    <a href="#" class="collapse__sublink">입고 접수</a>-->
+<!--                    <a href="#" class="collapse__sublink">입고 처리</a>-->
+<!--                    <a href="#" class="collapse__sublink">반품 처리</a>-->
+<!--                </div>-->
+
+<!--                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">-->
+<!--                    <i class="bi bi-wallet-fill"></i>-->
+<!--                    <span class="nav_name">정산관리</span>-->
+<!--                </a>-->
+<!--                <div class="collapse__menu">-->
+<!--                    <a href="#" class="collapse__sublink">정산 항목1</a>-->
+<!--                    <a href="#" class="collapse__sublink">정산 항목2</a>-->
+<!--                    <a href="#" class="collapse__sublink">정산 항목3</a>-->
+<!--                </div>-->
+
+<!--                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">-->
+<!--                    <ion-icon name="pie-chart-outline" class="nav__icon"></ion-icon>-->
+<!--                    <span class="nav_name">발주관리</span>-->
+<!--                </a>-->
+<!--                <div class="collapse__menu">-->
+<!--                    <a href="#" class="collapse__sublink">발주 항목1</a>-->
+<!--                    <a href="#" class="collapse__sublink">발주 항목2</a>-->
+<!--                    <a href="#" class="collapse__sublink">발주 항목3</a>-->
+<!--                </div>-->
+
+<!--                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">-->
+<!--                    <ion-icon name="settings-outline" class="nav__icon"></ion-icon>-->
+<!--                    <span class="nav_name">재고관리</span>-->
+<!--                </a>-->
+<!--                <div class="collapse__menu">-->
+<!--                    <a href="#" class="collapse__sublink">재고 항목1</a>-->
+<!--                    <a href="#" class="collapse__sublink">재고 항목2</a>-->
+<!--                    <a href="#" class="collapse__sublink">재고 항목3</a>-->
+<!--                </div>-->
+
+<!--                <a href="#" class="nav__link has-submenu" onmouseover="showSubmenu(this)">-->
+<!--                    <ion-icon name="log-out-outline" class="nav__icon"></ion-icon>-->
+<!--                    <span class="nav_name">주문관리</span>-->
+<!--                </a>-->
+<!--                <div class="collapse__menu">-->
+<!--                    <a href="#" class="collapse__sublink">주문 항목1</a>-->
+<!--                    <a href="#" class="collapse__sublink">주문 항목2</a>-->
+<!--                    <a href="#" class="collapse__sublink">주문 항목3</a>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </nav>-->
+<!--</div>-->
+
+
+<!--&lt;!&ndash;로그인하기전에는 로그인 버튼만 활성화 되어있고 로그인이 완료된 상태에서는 로그아웃 버튼과 이름과 역할이 출력됩니다.&ndash;&gt;-->
+<!--<button class="login-btn" sec:authorize="isAnonymous()" onclick="window.location.href='/login/login'">로그인</button>-->
+<!--<button class="login-btn" sec:authorize="isAuthenticated()" onclick="window.location.href='/login/logout'">로그아웃</button>-->
+<!--<div class="login-info">-->
+<!--    <p th:if="${#authorization.expression('isAuthenticated()')}">-->
+<!--        안녕하세요, <span th:text="${id}"></span>님! 역할: <span th:text='${role.substring(5)}'></span>-->
+<!--    </p>-->
+<!--</div>-->
+
+
+<!--&lt;!&ndash; IONICONS &ndash;&gt;-->
+<!--<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>-->
+<!--&lt;!&ndash; JS &ndash;&gt;-->
+<!--<script src="../assets/js/main.js"></script>-->
+
+<!--</body>-->
+<!--</html>-->
+

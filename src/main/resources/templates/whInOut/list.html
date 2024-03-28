@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{/layout/layout1}">
+
+<head>
+    <title>Home2</title>
+</head>
+
+<body>
+<div layout:fragment="content">
+    <br>
+    <div class="col-sm-12 col-xl-12">
+        <form class="bg-light rounded h-100 p-4">
+            <input type="text" name="warehouseId" hidden>
+            <input class="form-control border-0" type="search" name="keyword" placeholder="상품 이름 입력해주세요">
+            <!--입고(INSERT), 출고(RELEASE), 전부(NULL) 을 선택하는 -->
+            <select class="form-select border-0 mt-2" name="type" aria-label="Default select example">
+                <option selected>전체</option>
+                <option value="INSERT">입고</option>
+                <option value="RELEASE">출고</option>
+            </select>
+            <div class="m-2 d-flex">
+            <input type="date" name="from">
+            <input type="date" name="to">
+            <button type="submit" class="btn btn-primary mt-2">Search</button>
+            </div>
+        </form>
+    </div>
+    <!--        <div id="map" style="width:530px;height:400px;"></div>-->
+    <!--        <script>-->
+    <!--            var container = document.getElementById('map');-->
+    <!--            var options = {-->
+    <!--                center: new kakao.maps.LatLng(33.450701, 126.570667),-->
+    <!--                level: 3-->
+    <!--            };-->
+    <!--            var map = new kakao.maps.Map(container, options);-->
+    <!--        </script>-->
+    <div class="row">
+        <div class="col-sm-12 col-xl-12" style="padding-right: 0">
+            <div class="bg-light rounded h-100 p-4">
+                <h6 class="mb-4">창고조회</h6>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th scope="col" style="background-color: #acd1ea;">입출고 ID</th>
+                        <th scope="col" style="background-color: #acd1ea;">수량</th>
+                        <th scope="col" style="background-color: #acd1ea;">금액</th>
+                        <th scope="col" style="background-color: #acd1ea;">타입(입고/출고)</th>
+                        <th scope="col" style="background-color: #acd1ea;">주문 ID(발주/주문)</th>
+                        <th scope="col" style="background-color: #acd1ea;">상품 ID</th>
+                        <th scope="col" style="background-color: #acd1ea;">상품 이름</th>
+                        <th scope="col" style="background-color: #acd1ea;">날짜</th>
+                    </tr>
+                    </thead>
+                    <tbody id="warehouse-data">
+                    <tr th:each="w : ${responseDTO.dtoList}">
+                        <td th:text="${w.id}"></td>
+                        <td th:text="${w.quantity}"></td>
+                        <td th:text="${w.totalPrice}"></td>
+                        <td th:text="${#strings.substringBefore(w.type, '_')}"></td>
+                        <td th:text="${w.fkId}"></td>
+                        <td th:text="${w.productsId}"></td>
+                        <td th:text="${w.productName}"></td>
+                        <td th:text="${w.createdAt}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="float-end">
+                    <div class="float-end">
+                        <ul class="pagination flex-wrap">
+                            <li class="page-item" th:if="${responseDTO.prev}">
+                                <a class="page-link" th:href="@{/inventory/whInOut/list/{warehouseId}(warehouseId=${warehouseId}, page=${responseDTO.start - 1})}" th:text="'Previous'"></a>
+                            </li>
+
+                            <li th:each="num : ${#numbers.sequence(responseDTO.start, responseDTO.end)}"
+                                class="page-item"
+                                th:classappend="${responseDTO.page == num ? 'active' : ''}">
+                                <a class="page-link" th:href="@{/inventory/whInOut/list/{warehouseId}(warehouseId=${warehouseId}, page=${num})}" th:text="${num}"></a>
+                            </li>
+
+                            <li class="page-item" th:if="${responseDTO.next}">
+                                <a class="page-link" th:href="@{/inventory/whInOut/list/{warehouseId}(warehouseId=${warehouseId}, page=${responseDTO.end + 1})}" th:text="'Next'"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>

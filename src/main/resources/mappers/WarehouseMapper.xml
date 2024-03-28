@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssg.wsmt.inventory.mapper.WarehouseMapper">
+
+    <insert id="createWarehouse" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO WAREHOUSE(TYPE, LOCATION, DELIVERY_CMP_ID)
+        VALUES (#{TYPE}, #{LOCATION}, #{DELIVERY_CMP_ID})
+    </insert>
+
+    <insert id="saveWarehouseSection" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO WAREHOUSE_SECTION (WAREHOUSE_ID, NAME, TYPE)
+        VALUES (#{WAREHOUSE_ID}, #{NAME}, #{TYPE})
+    </insert>
+
+    <!--    <select id="readWarehouse" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">-->
+    <!--        SELECT-->
+    <!--            ID as id,-->
+    <!--            TYPE as type,-->
+    <!--            LOCATION as location,-->
+    <!--            DELIVERY_CMP_ID as deliveryId-->
+    <!--            FROM WAREHOUSE-->
+    <!--    </select>-->
+    <select id="readWarehouse" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
+        SELECT
+        ID as id,
+        TYPE as type,
+        LOCATION as location,
+        DELIVERY_CMP_ID as deliveryId
+        FROM WAREHOUSE
+        <where>
+            <if test="type != null and keyword != null">
+                <choose>
+                    <when test="type == 'type'">
+                        TYPE LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'location'">
+                        LOCATION LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <!-- 다른 검색 조건 추가 -->
+                </choose>
+            </if>
+        </where>
+        ORDER BY ID
+        LIMIT #{page}, #{size}
+    </select>
+    <select id="readWarehouseSection" resultType="com.ssg.wsmt.inventory.dto.WarehouseDTO">
+        SELECT
+        WAREHOUSE.ID AS id,
+        WAREHOUSE.TYPE AS type,
+        WAREHOUSE.LOCATION AS location,
+        WAREHOUSE.DELIVERY_CMP_ID AS deliveryId,
+        DELIVERY_CMP.NAME AS deliveryCompanyName,
+        (
+        SELECT GROUP_CONCAT(WAREHOUSE_SECTION.TYPE)
+        FROM WAREHOUSE_SECTION
+        WHERE WAREHOUSE_SECTION.WAREHOUSE_ID = WAREHOUSE.ID
+        ) AS SECTIONTYPE
+        FROM
+        WAREHOUSE
+        LEFT JOIN DELIVERY_CMP ON WAREHOUSE.DELIVERY_CMP_ID = DELIVERY_CMP.ID
+        <where>
+            <if test="type != null and keyword != null">
+                <choose>
+                    <when test="type == 'type'">
+                        AND WAREHOUSE.TYPE LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'location'">
+                        AND WAREHOUSE.LOCATION LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'id'">
+                        AND WAREHOUSE.ID = #{keyword}
+                    </when>
+                    <when test="type=='deliveryCompanyName'">
+                        AND DELIVERY_CMP.NAME LIKE CONCAT('%',#{keyword},'%')
+                    </when>
+                    <!-- 다른 검색 조건 추가 -->
+                </choose>
+            </if>
+        </where>
+        ORDER BY WAREHOUSE.ID
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(DISTINCT WAREHOUSE.ID)
+        FROM WAREHOUSE
+        LEFT JOIN WAREHOUSE_SECTION ON WAREHOUSE.ID = WAREHOUSE_SECTION.WAREHOUSE_ID
+        <if test="type == 'deliveryCompanyName'">
+            LEFT JOIN DELIVERY_CMP ON WAREHOUSE.DELIVERY_CMP_ID = DELIVERY_CMP.ID
+        </if>
+        <where>
+            <if test="type != null and keyword != null">
+                <choose>
+                    <when test="type == 'type'">
+                        AND WAREHOUSE.TYPE LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'location'">
+                        AND WAREHOUSE.LOCATION LIKE CONCAT('%', #{keyword}, '%')
+                    </when>
+                    <when test="type == 'id'">
+                        AND WAREHOUSE.ID = #{keyword}
+                    </when>
+                    <when test="type == 'sectiontype'">
+                        AND WAREHOUSE_SECTION.TYPE LIKE CONCAT('%',#{keyword},'%')
+                    </when>
+                    <when test="type=='deliveryCompanyName'">
+                        AND DELIVERY_CMP.NAME LIKE CONCAT('%',#{keyword},'%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+    </select>
+
+    <update id="updateDeliveryCmpId">
+        UPDATE WAREHOUSE SET DELIVERY_CMP_ID = #{delivery_id} WHERE ID = #{id}
+    </update>
+
+    <update id="updateWarehouse">
+        UPDATE WAREHOUSE SET TYPE = #{type}, LOCATION = #{location}, DELIVERY_CMP_ID = #{delivery_id} WHERE ID = #{id}
+    </update>
+
+    <select id="findById" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
+        SELECT * FROM WAREHOUSE WHERE ID = #{id}
+    </select>
+
+
+</mapper>

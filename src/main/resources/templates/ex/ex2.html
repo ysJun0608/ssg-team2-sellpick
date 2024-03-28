@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+  <h4 th:text="${list}"></h4>
+  <hr/>
+  <h4 th:text="${map}"></h4>
+  <hr/>
+  <h4 th:text="${dto}"></h4>
+  <hr/>
+    <ul>
+        <li th:each=" str: ${list}" th:text="${str}"></li>
+    </ul>
+    <ul>
+        <li th:each="str: ${map}" th:text="${str}"></li>
+    </ul>
+</div>
+</body>
+</html>

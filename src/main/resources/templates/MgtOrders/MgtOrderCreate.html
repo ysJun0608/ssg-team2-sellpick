@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns="http://www.w3.org/1999/html"
+      layout:decorate="~{layout/layout1}">
+
+<head>
+    <title>Home2</title>
+    <link href="/assets/css/styleMgtOrders.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add your JavaScript code here
+            let rowCount = document.querySelectorAll('#table-body tr').length; // 초기 행 개수
+
+            function addRow() {
+                const itemName = document.getElementById('item-name').value;
+                const itemQuantity = document.getElementById('item-quantity').value;
+
+                if (itemName && itemQuantity) {
+                    const tableBody = document.getElementById('table-body');
+                    if (tableBody) {
+                        const newRow = document.createElement('tr');
+                        const tdNo = document.createElement('td');
+                        tdNo.textContent = ++rowCount;
+                        const tdCheckbox = document.createElement('td');
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.value = 'false';
+                        tdCheckbox.appendChild(checkbox);
+                        const tdItem = document.createElement('td');
+                        const itemInput = document.createElement('input');
+                        itemInput.type = 'text';
+                        itemInput.name = 'itemNames';
+                        itemInput.value = itemName;
+                        itemInput.readOnly = true; // 추가
+                        tdItem.appendChild(itemInput);
+                        const tdQuantity = document.createElement('td');
+                        const quantityInput = document.createElement('input');
+                        quantityInput.type = 'number';
+                        quantityInput.name = 'quantities';
+                        quantityInput.value = itemQuantity;
+                        tdQuantity.appendChild(quantityInput);
+
+                        newRow.appendChild(tdNo);
+                        newRow.appendChild(tdCheckbox);
+                        newRow.appendChild(tdItem);
+                        newRow.appendChild(tdQuantity);
+
+                        tableBody.appendChild(newRow);
+                    }
+                    document.getElementById('item-name').value = '';
+                    document.getElementById('item-quantity').value = '';
+                }
+            }
+
+            // Function to delete checked items
+            function deleteCheckedItems() {
+                // Serialize the form data containing the checked checkboxes
+                var formData = $('#addItems').serialize();
+
+                // Send an AJAX request to the server to delete the selected rows
+                $.ajax({
+                    url: '/MgtOrders/DeleteItems', // Update the endpoint accordingly
+                    type: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        // Log the response from the server
+                        console.log('Response:', response);
+
+                        // Check if the response indicates successful deletion
+                        if (response === 'Items deleted successfully') {
+                            // Iterate over the checked checkboxes and remove their parent rows
+                            $('#table-body input[type="checkbox"]:checked').each(function () {
+                                $(this).closest('tr').remove();
+                            });
+
+                            // Log a message indicating successful deletion
+                            console.log('Selected rows deleted successfully');
+
+                            // You can update the UI or perform any other actions here
+                        } else {
+                            // Log an error message if deletion was unsuccessful
+                            console.error('Failed to delete selected rows:', response);
+                            // You can handle the error or inform the user accordingly
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle any errors
+                        console.error('Error:', error);
+                    }
+                });
+            }
+
+            // Form submission handler
+            $('#addItems').submit(function (event) {
+                event.preventDefault(); // Prevent the default form submission
+
+                var checkedItems = [];
+
+                // Iterate over the table rows to collect checked items
+                $('#table-body tr').each(function (index, row) {
+                    console.log(row); // Log the selected row
+                    var checkbox = $(row).find('input[type="checkbox"]');
+                    if (checkbox.is(':checked')) {
+                        var itemName = $(row).find('input[name="itemNames"]').val();
+                        var quantity = $(row).find('input[name="quantities"]').val();
+
+                        checkedItems.push({itemName: itemName, quantity: quantity});
+                    }
+                });
+
+
+                // Get the order ID value
+                var idValue = $('#order-id').val();
+                console.log(idValue);
+
+                // Create the request data object
+                var requestData = {
+                    checkedItems: checkedItems,
+                    id: idValue
+                };
+                console.log("requestData : " + requestData);
+
+                // Send JSON data to the server using AJAX
+                $.ajax({
+                    url: '/MgtOrders/AddItems',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(requestData),
+                    success: function (response) {
+                        console.log("response id : " + response.id);
+                        console.log('Data submitted successfully');
+                        alert("저장되었습니다!");
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+
+            // Event listener for delete button click
+            $('#deleteBtn').click(function (event) {
+                // Prevent the default click behavior
+                event.preventDefault();
+
+                // Call the function to delete checked items
+                deleteCheckedItems();
+            });
+
+            // Function to show alert
+            function showAlert() {
+                alert("저장되었습니다!");
+            }
+
+            document.getElementById('addRowBtn').addEventListener('click', addRow);
+
+            $('#createOrderBtn').click(function () {
+                console.log("생성 버튼");
+                // Form 데이터 수집
+                var formData = {
+                    createdAt: document.getElementById('order-date-start').value + "T00:00", // YYYY-MM-DD 형식으로 변환
+                    status: document.getElementById('status').value,
+                    purchaser: document.getElementById('supplier').value,
+                    warehouseId: document.getElementById('warehouse').value
+                };
+
+                // AJAX 요청
+                $.ajax({
+                    type: 'POST',
+                    url: '/MgtOrders/MgtOrderCreate',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function (response) {
+                        console.info(response);
+                        var responseData = JSON.parse(response); // Parse the response as JSON
+                        console.info(responseData); // Log the parsed response object
+                        document.getElementById('order-id').value = responseData.id;
+                        // 서버 응답 처리 (성공)
+                        alert('발주가 성공적으로 생성되었습니다.');
+                        // 추가 동작이 필요한 경우에는 여기에 작성
+                    },
+                    error: function (error) {
+                        // 서버 응답 처리 (오류)
+                        alert('발주 생성 중 오류가 발생했습니다.');
+                    }
+                });
+            });
+        });
+
+        $(document).ready(function() {
+            // Function to handle checkbox change event
+            $(document).ready(function() {
+                // Function to handle checkbox change event
+                $('#topCheckBox').on('change', function() {
+                    var isChecked = $(this).prop('checked');
+                    $('#table-body input[type="checkbox"]').prop('checked', isChecked);
+                });
+            });
+        });
+
+    </script>
+</head>
+
+<body   >
+
+<div layout:fragment="content">
+
+    <!--main contents Start-->
+
+
+
+        <div class="col-sm-12" style="padding-right: 0">
+            <div class="bg-light rounded h-30">
+                <h6 class="mb-4" style="margin-top: 20px;">발주등록</h6>
+<!--                <div class="section top-section">-->
+                    <form id="mgtOrderForm" action="/MgtOrders/MgtOrderCreate" method="post">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="order-date-start">발주일자 *</label>
+                                <input type="date" id="order-date-start" name="createdAt" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="order-id">발주번호</label>
+                                <input type="number" id="order-id" th:value="${id}" readonly class="form-control">
+                                <input type="hidden" id="orderId" value="${id}">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="status">발주상태</label>
+                                <input type="text" id="status" value="READY" name="status" readonly class="form-control">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label for="supplier">매입거래처</label>
+                                <input type="text" id="supplier" placeholder="Company" name="purchaser" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <label for="warehouse">창고ID</label>
+                                <select id="warehouse" name="warehouseId" class="form-control">
+                                    <option value="">선택</option>
+                                    <option th:each="warehouse : ${warehouseList}" th:value="${warehouse.id}" th:text="${warehouse.id}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="button-row">
+                                <!-- Check if id is present -->
+                            <button id="createOrderBtn" class="btn btn-primary" type="button" th:unless="${id != null and id.getClass().getSimpleName() == 'Long'}">Create</button>
+                            <!-- Disable the button if id is present -->
+                            <button class="btn btn-primary" type="button" th:if="${id != null and id.getClass().getSimpleName() == 'Long'}" disabled>Create</button>
+
+
+                        </div>
+                    </form>
+<!--                </div>-->
+            </div>
+            <div></div>
+            <div class="bg-light rounded h-50 p-4">
+                <div class="row">
+<!--                <div class="section bottom-section">-->
+                    <form id="addItems" action="/MgtOrders/AddItems" method="post">
+                        <div class="input-fieldTwo">
+                                <label for="item-name">상품번호:</label>
+                                <select id="item-name" name="itemNames" class="form-control">
+                                    <option value="">선택</option>
+                                    <option th:each="product : ${productList}" th:value="${product.id}" th:text="${product.id}"></option>
+                                </select>
+                                <label for="item-quantity">수 량:</label>
+                                <input type="number" id="item-quantity" placeholder="수량 입력" class="form-control">
+                        </div>
+                        <div class="button-row">
+                            <button class="btn btn-primary" type="button" id="addRowBtn">Add</button>
+                        </div>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th scope="col" style="background-color: #acd1ea;">No.</th>
+                                <th scope="col" style="background-color: #acd1ea;"><input type="checkbox" id="topCheckBox">
+                                </th>
+                                <th scope="col" style="background-color: #acd1ea;">Item</th>
+                                <th scope="col" style="background-color: #acd1ea;">Quantity</th>
+                            </tr>
+                            </thead>
+                            <!--                        <tbody id="warehouse-data">-->
+                            <!--                        </tbody>-->
+                            <!--            아이템 테이블 리스트-->
+                            <tbody id="table-body">
+
+                            </tbody>
+                        </table>
+                        <div class="button-row">
+                            <div>
+                                <button class="btn btn-primary" type="submit" onclick="showAlert()">Save</button>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" type="button" id="deleteBtn">Delete</button>
+                            </div>
+                        </div>
+                    </form>
+<!--                </div>-->
+            </div>
+        </div>
+    </div>
+    <!--main contents End-->
+
+
+</div>
+
+
+</body>

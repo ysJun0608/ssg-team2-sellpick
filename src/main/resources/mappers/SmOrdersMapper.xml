@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssg.wsmt.smOrders.mapper.SmOrdersMapper">
+
+    <select id="searchAll" resultType="com.ssg.wsmt.smOrders.dto.SmOrdersDTO">
+        SELECT
+        SO.ID AS "id",
+        SO.QUANTITY AS "quantity",
+        SO.PAYMENT_AMOUNT AS "paymentAmount",
+        SO.SELLER_SEND_STATUS AS "seller_send_status",
+        SO.CREATED_AT AS "createdAt",
+        SO.EXPECTED_AT AS "expectedAt",
+        SO.CUSTOMER_ID AS "customerId",
+        SO.SHOPPING_MALL_ID AS "shoppingMallId",
+        SO.PRODUCTS_ID AS "productId",
+        WSMR.NAME AS "shoppingMallName"
+        FROM
+        SM_ORDERS SO
+        JOIN SHOPPING_MALL AS WSMR ON WSMR.ID = SO.SHOPPING_MALL_ID
+        <where>
+            <if test="types != null">
+                AND SO.SELLER_SEND_STATUS IN
+                <foreach item="type" collection="types" open="(" separator="," close=")">
+                    #{type}
+                </foreach>
+            </if>
+            <if test="keyword != null">
+                AND (SO.ID LIKE CONCAT('%', #{keyword}, '%') OR
+                SM.NAME LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+        ORDER BY SO.CREATED_AT DESC
+        LIMIT #{offset}, #{size}
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(*) FROM SM_ORDERS SO
+        LEFT JOIN SHOPPING_MALL SM ON SO.SHOPPING_MALL_ID = SM.ID
+        <where>
+            <if test="types != null">
+                AND SO.SELLER_SEND_STATUS IN
+                <foreach item="type" collection="types" open="(" separator="," close=")">
+                    #{type}
+                </foreach>
+            </if>
+            <if test="keyword != null">
+                AND (SO.ID LIKE CONCAT('%', #{keyword}, '%') OR
+                SM.NAME LIKE CONCAT('%', #{keyword}, '%'))
+            </if>
+        </where>
+    </select>
+
+
+    <select id="findAll" resultType="com.ssg.wsmt.smOrders.domain.SmOrdersVo">
+        SELECT
+            SO.ID AS "id",
+            SO.QUANTITY AS "quantity",
+            SO.PAYMENT_AMOUNT AS "paymentAmount",
+            SO.SELLER_SEND_STATUS AS "seller_send_status",
+            SO.CREATED_AT AS "createdAt",
+            SO.EXPECTED_AT AS "expectedAt",
+            SO.CUSTOMER_ID AS "customerId",
+            SO.SHOPPING_MALL_ID AS "shoppingMallId",
+            SO.PRODUCTS_ID AS "productId",
+            WSMR.NAME AS "shoppingMallName"
+        FROM
+            SM_ORDERS AS SO
+                JOIN SHOPPING_MALL AS WSMR ON WSMR.ID = SO.SHOPPING_MALL_ID;
+    </select>
+
+    <select id="findCompleteOrders" resultType="com.ssg.wsmt.smOrders.domain.SmOrdersVo">
+        SELECT
+            id AS "id",
+            quantity AS "quantity",
+            payment_amount AS "paymentAmount",
+            CASE seller_send_status
+                WHEN '배송준비중' THEN 'PREPARING'
+                WHEN '배송완료' THEN 'COMPLETE'
+                WHEN '주문 취소' THEN 'CANCEL'
+                ELSE seller_send_status -- 예기치 않은 상태를 처리
+                END as "seller_send_status",
+            created_at AS "createdAt",
+            expected_at AS "expectedAt",
+            customer_id AS "customerId",
+            shopping_mall_id AS "shoppingMallId",
+            products_id AS "productId"
+        FROM SM_ORDERS
+        WHERE seller_send_status = 'COMPLETE'
+    </select>
+
+    <select id="findCanceledOrders" resultType="com.ssg.wsmt.smOrders.domain.SmOrdersVo">
+        SELECT
+            id AS "id",
+            quantity AS "quantity",
+            payment_amount AS "paymentAmount",
+            CASE seller_send_status
+                WHEN '배송준비중' THEN 'PREPARING'
+                WHEN '배송완료' THEN 'COMPLETE'
+                WHEN '주문 취소' THEN 'CANCEL'
+                ELSE seller_send_status -- 예기치 않은 상태를 처리
+                END as "seller_send_status",
+            created_at AS "createdAt",
+            expected_at AS "expectedAt",
+            customer_id AS "customerId",
+            shopping_mall_id AS "shoppingMallId",
+            products_id AS "productId"
+        FROM SM_ORDERS
+        WHERE seller_send_status = 'CANCEL'
+    </select>
+
+    <select id="findPreparedOrders" resultType="com.ssg.wsmt.smOrders.domain.SmOrdersVo">
+        SELECT
+            id AS "id",
+            quantity AS "quantity",
+            payment_amount AS "paymentAmount",
+            CASE seller_send_status
+                WHEN '배송준비중' THEN 'PREPARING'
+                WHEN '배송완료' THEN 'COMPLETE'
+                WHEN '주문 취소' THEN 'CANCEL'
+                ELSE seller_send_status -- 예기치 않은 상태를 처리
+                END as "seller_send_status",
+            created_at AS "createdAt",
+            expected_at AS "expectedAt",
+            customer_id AS "customerId",
+            shopping_mall_id AS "shoppingMallId",
+            products_id AS "productId"
+        FROM SM_ORDERS
+        WHERE seller_send_status = 'PREPARING'
+    </select>
+
+    <select id="selectOne" resultType="com.ssg.wsmt.smOrders.domain.SmOrdersVo" >
+        SELECT
+            id AS "id",
+            quantity AS "quantity",
+            payment_amount AS "paymentAmount",
+            seller_send_status as "seller_send_status",
+            created_at AS "createdAt",
+            expected_at AS "expectedAt",
+            customer_id AS "customerId",
+            shopping_mall_id AS "shoppingMallId",
+            products_id AS "productId"
+        FROM SM_ORDERS
+        WHERE id = #{id}
+    </select>
+
+    <select id="findOrdersByCriteria" resultType="com.ssg.wsmt.smOrders.domain.SmOrdersVo">
+        SELECT
+        SO.id AS "id",
+        SO.quantity AS "quantity",
+        SO.payment_amount AS "paymentAmount",
+        CASE
+        WHEN SO.seller_send_status = '배송준비중' THEN 'PREPARING'
+        WHEN SO.seller_send_status = '배송완료' THEN 'COMPLETE'
+        WHEN SO.seller_send_status = '주문 취소' THEN 'CANCEL'
+        ELSE SO.seller_send_status
+        END AS "seller_send_status",
+        SO.created_at AS "createdAt",
+        SO.expected_at AS "expectedAt",
+        SO.customer_id AS "customerId",
+        SO.shopping_mall_id AS "shoppingMallId",
+        SO.products_id AS "productId",
+        WSMR.name AS "shoppingMallName"
+        FROM
+        SM_ORDERS AS SO
+        JOIN SHOPPING_MALL AS WSMR ON WSMR.id = SO.shopping_mall_id
+        WHERE 1=1
+        <if test="orderId != null and orderId != ''">
+            AND SO.id = #{orderId}
+        </if>
+        <if test="customerId != null and customerId != ''">
+            AND SO.customer_id = #{customerId}
+        </if>
+        <if test="sendStatus != null">
+            AND SO.seller_send_status = #{sendStatus}
+        </if>
+
+
+
+    </select>
+
+
+    <update id="updateSmOrdersStatus">
+        UPDATE SM_ORDERS
+        SET seller_send_status = #{seller_send_status}
+        WHERE id = #{id}
+    </update>
+
+
+
+
+</mapper>

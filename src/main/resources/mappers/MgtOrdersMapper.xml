@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssg.wsmt.mgtOrders.mapper.MgtOrdersMapper">
+
+    <insert id="createOrder" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO MGT_ORDERS(PURCHASER, STATUS, WAREHOUSE_ID) VALUES (#{purchaser}, #{status}, #{warehouseId})
+    </insert>
+
+    <insert id="addItems">
+        INSERT INTO MGT_ORDERS_PRODUCTS_RELATIONSHIP(QUANTITY, PRODUCTS_ID, MGT_ORDERS_ID) VALUES (#{quantity}, #{productId}, #{mgtOrderId})
+    </insert>
+
+    <update id="updateStatus">
+        UPDATE MGT_ORDERS SET STATUS = #{status} WHERE ID = #{orderId}
+
+    </update>
+
+    <update id="cancelOrder">
+        UPDATE MGT_ORDERS SET STATUS = 'CANCEL' WHERE ID = #{orderId}
+    </update>
+
+    <select id="searchOrders" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
+        SELECT
+        id, purchaser, status, created_at as createdAt, warehouse_id as warehouseId
+        FROM MGT_ORDERS
+        WHERE 1=1
+        <if test="startDate != null and endDate != null and startDate != '' and endDate != ''">
+            AND CREATED_AT BETWEEN #{startDate} AND #{endDate} + INTERVAL 1 DAY
+        </if>
+        <if test="purchaser != null and !purchaser.isEmpty() and purchaser != ''">
+            AND PURCHASER = #{purchaser}
+        </if>
+        <if test="warehouseId != null and warehouseId > 0">
+            AND WAREHOUSE_ID = #{warehouseId}
+        </if>
+    </select>
+
+    <select id="searchOrdersAndStatus" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
+        SELECT
+        id, purchaser, status, created_at as createdAt, warehouse_id as warehouseId
+        FROM MGT_ORDERS
+        <where>
+            <if test="startDate != null and endDate != null">
+                AND CREATED_AT BETWEEN #{startDate} AND #{endDate} + INTERVAL 1 DAY
+            </if>
+            <if test="purchaser != null and purchaser != ''">
+                AND PURCHASER LIKE CONCAT ('%', #{purchaser}, '%')
+            </if>
+            <if test="warehouseId != null">
+                AND WAREHOUSE_ID = #{warehouseId}
+            </if>
+            <if test="status != null">
+                AND STATUS = #{status}
+            </if>
+        </where>
+        ORDER BY created_at
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+
+    <select id="searchForStatus" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
+        SELECT id, purchaser, status, created_at as createdAt, warehouse_id as warehouseId
+        FROM MGT_ORDERS
+        WHERE STATUS = #{status}
+    </select>
+
+    <delete id="insertList">
+        UPDATE MGT_ORDERS SET STATUS = #{status} WHERE ID = #{num}
+    </delete>
+
+    <select id="searchNoneDelived" resultType="java.util.ArrayList">
+        SELECT * FROM MGT_ORDERS WHERE STATUS != 'DELIVERED' AND CREATED_AT BETWEEN #{date} AND #{date}+0.999999999
+    </select>
+
+    <delete id="delete">
+        DELETE FROM MGT_ORDERS WHERE ID = #{orderId}
+    </delete>
+
+    <delete id="deleteItems">
+    DELETE FROM MGT_ORDERS_products_relationship
+        WHERE MGT_ORDERS_ID = #{orderId}
+          AND EXISTS (SELECT 1 FROM MGT_ORDERS WHERE ID = #{orderId})
+</delete>
+
+    <select id="getOne" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
+        SELECT * FROM MGT_ORDERS where ID =#{id}
+    </select>
+
+<!--    <select id="selectAll" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">-->
+<!--        SELECT-->
+<!--            id, purchaser, status, created_at as createdAt, warehouse_id as warehouseId-->
+<!--            FROM MGT_ORDERS-->
+<!--    </select>-->
+
+    <select id="searchAll" resultType="com.ssg.wsmt.mgtOrders.domain.MgtOrders">
+        SELECT
+        id,
+        purchaser,
+        status,
+        created_at as createdAt,
+        warehouse_id as warehouseId
+        FROM MGT_ORDERS
+        <where>
+            <if test="startDate != null and endDate != null">
+                AND created_at BETWEEN #{startDate} AND #{endDate}
+            </if>
+            <if test="purchaser != null and purchaser != ''">
+                AND PURCHASER LIKE CONCAT ('%', #{purchaser}, '%')
+            </if>
+            <if test="warehouseId != null">
+                AND warehouse_id = #{warehouseId}
+            </if>
+            <if test="status != null">
+                AND STATUS = #{status}
+            </if>
+        </where>
+        <if test="startDate == null and endDate == null and (purchaser == null or purchaser == '') and warehouseId == null">
+            ORDER BY created_at
+        </if>
+        LIMIT #{size} OFFSET #{offset}
+    </select>
+
+    <select id="getTotalCount" resultType="int">
+        SELECT COUNT(DISTINCT id)
+        FROM MGT_ORDERS
+        <where>
+            <if test="startDate != null and endDate != null">
+                AND CREATED_AT BETWEEN #{startDate} AND #{endDate} + INTERVAL 1 DAY
+            </if>
+            <if test="purchaser != null and purchaser != ''">
+                AND PURCHASER LIKE CONCAT ('%', #{purchaser}, '%')
+            </if>
+            <if test="warehouseId != null">
+                AND WAREHOUSE_ID = #{warehouseId}
+            </if>
+            <if test="status != null">
+                AND STATUS = #{status}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectWarehouseList" resultType="com.ssg.wsmt.inventory.domain.WarehouseVO">
+        SELECT * FROM WAREHOUSE
+    </select>
+
+    <select id="selectProductList" resultType="com.ssg.wsmt.product.domain.ProductVO">
+        SELECT * FROM PRODUCTS
+    </select>
+
+</mapper>

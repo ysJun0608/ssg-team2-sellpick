@@ -1,0 +1,11 @@
+<div th:fragment="login-info">
+    <div class="ms-3">
+        <h6 class="mb-0" th:if="${#authorization.expression('isAuthenticated()')}">
+            <span th:text="${id}"></span>님! <br> 역할:
+            <span th:text="${role.substring(5)}"></span>
+        </h6>
+        <h6 class="mb-0" th:unless="${#authorization.expression('isAuthenticated')}">
+            로그인 해주세요.
+        </h6>
+    </div>
+</div>
